@@ -10,6 +10,7 @@ class SignUpViewModel extends ChangeNotifier {
   String birthday = '';
   String password = '';
   String confirmPassword = '';
+  bool userType = true;
 
   String get getName => name;
   set setName(value) {
@@ -38,6 +39,17 @@ class SignUpViewModel extends ChangeNotifier {
   String get getConfirmPassword => confirmPassword;
   set setConfirmPassword(value) {
     confirmPassword = value;
+    notifyListeners();
+  }
+
+  bool get getUserType => userType;
+  set setUserType(value) {
+    if (value) {
+      userType = true;
+    } else {
+      userType = false;
+    }
+    debugPrint(value.toString());
     notifyListeners();
   }
 

@@ -18,8 +18,6 @@ class SignUpScreen extends StatelessWidget {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
-  final _profileController = TextEditingController();
-
   SignUpScreen({Key? key}) : super(key: key);
 
   @override
@@ -130,6 +128,15 @@ class SignUpScreen extends StatelessWidget {
                       ),
                       validator: RequiredValidator(
                           errorText: 'O usuário precisa ser informado'),
+                    ),
+                    const SizedBox(height: 8),
+                    Consumer<SignUpViewModel>(
+                      builder: (context, signUpController, child) {
+                        return Switch(
+                          value: signUpController.userType,
+                          onChanged: (value) => signUpController.setUserType = value,
+                        );
+                      }
                     ),
                     const SizedBox(
                       height: 16.0,
