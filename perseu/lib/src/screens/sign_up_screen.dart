@@ -18,6 +18,8 @@ class SignUpScreen extends StatelessWidget {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
+  var userTypeName = 'Atleta';
+
   SignUpScreen({Key? key}) : super(key: key);
 
   @override
@@ -131,13 +133,19 @@ class SignUpScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Consumer<SignUpViewModel>(
-                      builder: (context, signUpController, child) {
-                        return Switch(
-                          value: signUpController.userType,
-                          onChanged: (value) => signUpController.setUserType = value,
-                        );
-                      }
-                    ),
+                        builder: (context, signUpController, child) {
+                      return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Switch(
+                                value: signUpController.userType,
+                                onChanged: (value) {
+                                  signUpController.setUserType = value;
+                                  userTypeName = value ? 'Atleta' : 'Treinador';
+                                }),
+                            Text(userTypeName)
+                          ]);
+                    }),
                     const SizedBox(
                       height: 16.0,
                     ),

@@ -49,7 +49,6 @@ class SignUpViewModel extends ChangeNotifier {
     } else {
       userType = false;
     }
-    debugPrint(value.toString());
     notifyListeners();
   }
 
