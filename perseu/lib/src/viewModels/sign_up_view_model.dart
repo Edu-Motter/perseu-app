@@ -5,16 +5,16 @@ class SignUpViewModel extends ChangeNotifier {
   bool get isBusy => _busy;
   bool get isNotBusy => !_busy;
 
-  String name = '';
+  String nome = '';
   String email = '';
-  String birthday = '';
-  String password = '';
-  String confirmPassword = '';
+  String nascimento = '';
+  String senha = '';
+  String confirmaSenha = '';
   bool userType = true;
 
-  String get getName => name;
+  String get getName => nome;
   set setName(value) {
-    name = value;
+    nome = value;
     notifyListeners();
   }
 
@@ -24,21 +24,21 @@ class SignUpViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  String get getBirthday => birthday;
+  String get getBirthday => nascimento;
   set setBirthday(value) {
-    birthday = value;
+    nascimento = value;
     notifyListeners();
   }
 
-  String get getPassword => password;
+  String get getPassword => senha;
   set setPassword(value) {
-    password = value;
+    senha = value;
     notifyListeners();
   }
 
-  String get getConfirmPassword => confirmPassword;
+  String get getConfirmPassword => confirmaSenha;
   set setConfirmPassword(value) {
-    confirmPassword = value;
+    confirmaSenha = value;
     notifyListeners();
   }
 
