@@ -6,7 +6,7 @@ import 'package:perseu/src/screens/sign_up_screen.dart';
 class Routes {
   static const String login = "/login";
   static const String athleteHome = "/athlete-home";
-  static const String signUp = "/signUp";
+  static const String signUp = "/sign-up";
 
   static Map<String, WidgetBuilder> map = {
     login: (context) => LoginScreen(),
