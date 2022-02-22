@@ -26,10 +26,6 @@ class LoginScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: const Text('Login'),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new),
-            onPressed: () => {},
-          ),
           bottom: const LoadingLinear(),
         ),
         body: ListView(
