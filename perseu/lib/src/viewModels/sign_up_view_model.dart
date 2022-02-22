@@ -10,7 +10,7 @@ class SignUpViewModel extends ChangeNotifier {
   String nascimento = '';
   String senha = '';
   String confirmaSenha = '';
-  bool userType = true;
+  bool tipoUsuario = true;
 
   String get getName => nome;
   set setName(value) {
@@ -42,12 +42,12 @@ class SignUpViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool get getUserType => userType;
+  bool get getUserType => tipoUsuario;
   set setUserType(value) {
     if (value) {
-      userType = true;
+      tipoUsuario = true;
     } else {
-      userType = false;
+      tipoUsuario = false;
     }
     notifyListeners();
   }

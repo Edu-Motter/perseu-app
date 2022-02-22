@@ -138,7 +138,7 @@ class SignUpScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Switch(
-                                value: signUpController.userType,
+                                value: signUpController.tipoUsuario,
                                 onChanged: (value) {
                                   signUpController.setUserType = value;
                                   userTypeName = value ? 'Atleta' : 'Treinador';
