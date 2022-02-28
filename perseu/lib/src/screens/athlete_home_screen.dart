@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 
 class AthleteHomeScreen extends StatelessWidget {
@@ -33,7 +31,48 @@ class AthleteHomeScreen extends StatelessWidget {
                     onPressed: null,
                     child: const Text('Visualizar treino de hoje',
                         style: TextStyle(fontSize: 16))),
-                const SizedBox(height: 8)
+                const SizedBox(height: 32),
+                ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.white),
+                        side: MaterialStateProperty.all(const BorderSide(
+                            color: Colors.teal,
+                            width: 1.0,
+                            style: BorderStyle.solid)),
+                        foregroundColor: MaterialStateProperty.all(themeColor),
+                        overlayColor: MaterialStateProperty.all(themeColor)),
+                    onPressed: null,
+                    child: const Text('Visualizar conversas',
+                        style: TextStyle(fontSize: 16))),
+                const SizedBox(height: 8),
+                ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.white),
+                        side: MaterialStateProperty.all(const BorderSide(
+                            color: Colors.teal,
+                            width: 1.0,
+                            style: BorderStyle.solid)),
+                        foregroundColor: MaterialStateProperty.all(themeColor),
+                        overlayColor: MaterialStateProperty.all(themeColor)),
+                    onPressed: null,
+                    child: const Text('Visualizar calendário',
+                        style: TextStyle(fontSize: 16))),
+                const SizedBox(height: 8),
+                ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.white),
+                        side: MaterialStateProperty.all(const BorderSide(
+                            color: Colors.teal,
+                            width: 1.0,
+                            style: BorderStyle.solid)),
+                        foregroundColor: MaterialStateProperty.all(themeColor),
+                        overlayColor: MaterialStateProperty.all(themeColor)),
+                    onPressed: null,
+                    child: const Text('Gerenciar perfil',
+                        style: TextStyle(fontSize: 16))),
               ],
             ),
           ),
