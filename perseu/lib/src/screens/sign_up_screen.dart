@@ -4,6 +4,7 @@ import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/viewModels/sign_up_view_model.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class SignUpScreen extends StatelessWidget {
   static const Key nameInputKey = Key('nameInput');
   static const Key birthdayInputKey = Key('birthdayInput');

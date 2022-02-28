@@ -10,6 +10,7 @@ class LoginScreen extends StatelessWidget {
   static const Key usernameInputKey = Key('emailInput');
   static const Key passwordInputKey = Key('passwordInput');
   static const Key submitButtonKey = Key('submitButton');
+  static const userType = 'coach';
 
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -88,8 +89,10 @@ class LoginScreen extends StatelessWidget {
                                     if (_formKey.currentState!.validate()) {
                                       Navigator.of(context)
                                           .popUntil((route) => route.isFirst);
-                                      Navigator.of(context)
-                                          .pushNamed(Routes.athleteHome);
+                                      Navigator.of(context).pushNamed(
+                                          userType == 'athlete'
+                                              ? Routes.athleteHome
+                                              : Routes.coachHome);
                                       //loginModel.login();
                                     }
                                   },
