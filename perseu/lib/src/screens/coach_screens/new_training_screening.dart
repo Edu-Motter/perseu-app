@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:perseu/src/components/expansion_list.dart';
+import 'package:perseu/src/components/training_list.dart';
 
 class NewTrainingScreen extends StatelessWidget {
   const NewTrainingScreen({Key? key}) : super(key: key);

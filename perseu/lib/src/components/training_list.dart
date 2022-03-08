@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:perseu/src/viewModels/training_list_view_model.dart';
 
 class ExpansionList extends StatefulWidget {
   const ExpansionList({Key? key}) : super(key: key);
@@ -8,7 +9,7 @@ class ExpansionList extends StatefulWidget {
 }
 
 class _ExpansionListState extends State<ExpansionList> {
-  final List<Item> _data = generateItems(10);
+  final List<TrainingCard> _data = generateItems(10);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class _ExpansionListState extends State<ExpansionList> {
           _data[index].isExpanded = !isExpanded;
         });
       },
-      children: _data.map<ExpansionPanel>((Item item) {
+      children: _data.map<ExpansionPanel>((TrainingCard item) {
         return ExpansionPanel(
           headerBuilder: (BuildContext context, bool isExpanded) {
             return ListTile(
@@ -42,20 +43,9 @@ class _ExpansionListState extends State<ExpansionList> {
   }
 }
 
-class Item {
-  String expandedValue;
-  String headerValue;
-  bool isExpanded;
-
-  Item(
-      {required this.expandedValue,
-      required this.headerValue,
-      this.isExpanded = false});
-}
-
-List<Item> generateItems(int numberOfItems) {
+List<TrainingCard> generateItems(int numberOfItems) {
   return List.generate(numberOfItems, (index) {
-    return Item(
+    return TrainingCard(
       headerValue: 'Sessão #$index',
       expandedValue: 'Exercicios $index',
       isExpanded: false,
