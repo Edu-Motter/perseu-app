@@ -22,7 +22,8 @@ class NewTrainingScreen extends StatelessWidget {
           children: [
             SpeedDialChild(
               child: const Icon(Icons.add),
-              onTap: () => print('FIRST CHILD'),
+              onTap: () =>
+                  Navigator.of(context).pushReplacementNamed(Routes.newSession),
               label: 'Adicionar sessão',
               labelStyle: const TextStyle(fontWeight: FontWeight.w500),
             ),
