@@ -3,8 +3,9 @@ class TrainingCard {
   String headerValue;
   bool isExpanded;
 
-  TrainingCard(
-      {required this.expandedValue,
-      required this.headerValue,
-      this.isExpanded = false});
+  TrainingCard({
+    required this.expandedValue,
+    required this.headerValue,
+    this.isExpanded = false,
+  });
 }

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/components/training_list.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:perseu/src/app/routes.dart';
 
 class NewTrainingScreen extends StatelessWidget {
   const NewTrainingScreen({Key? key}) : super(key: key);
@@ -13,16 +14,9 @@ class NewTrainingScreen extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Novo treino'),
         ),
-        // floatingActionButton: FloatingActionButton(
-        //   child: const Icon(Icons.menu),
-        //   onPressed: () {},
-        // ),
         floatingActionButton: SpeedDial(
           animatedIcon: AnimatedIcons.menu_close,
           animatedIconTheme: const IconThemeData(size: 22.0),
-          // child: const Icon(Icons.add),
-          onOpen: () => print('OPENING DIAL'),
-          onClose: () => print('DIAL CLOSED'),
           visible: true,
           curve: Curves.bounceIn,
           children: [
@@ -34,7 +28,8 @@ class NewTrainingScreen extends StatelessWidget {
             ),
             SpeedDialChild(
               child: const Icon(Icons.forward),
-              onTap: () => print('SECOND CHILD'),
+              onTap: () =>
+                  Navigator.of(context).pushReplacementNamed(Routes.newSession),
               label: 'Atribuir treino',
               labelStyle: const TextStyle(fontWeight: FontWeight.w500),
             ),
