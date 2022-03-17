@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:perseu/src/app/routes.dart';
+import 'package:perseu/src/models/user_model.dart';
 import 'package:perseu/src/viewModels/login_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -86,6 +87,8 @@ class LoginScreen extends StatelessWidget {
                             onPressed: loginModel.isBusy
                                 ? null
                                 : () async {
+                                    final valor2 = LoginViewModel();
+                                    valor2.login();
                                     if (_formKey.currentState!.validate()) {
                                       Navigator.of(context)
                                           .popUntil((route) => route.isFirst);

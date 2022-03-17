@@ -6,8 +6,8 @@ import 'package:perseu/src/services/http_client_perseu.dart';
 class LoginViewModel extends ChangeNotifier {
   static const gif = 'assets/gifs/fitness.gif';
 
-  String username = '';
-  String password = '';
+  String username = 'atleta@gmail.com';
+  String password = '123';
 
   bool _busy = false;
 
@@ -38,6 +38,7 @@ class LoginViewModel extends ChangeNotifier {
       UserModel userModel =
           await httpClientPerseu.loginRequest(username, password);
       debugPrint('Welcome: ${userModel.name}');
+      print(userModel);
     } catch (e) {
       debugPrint(e.toString());
     }
