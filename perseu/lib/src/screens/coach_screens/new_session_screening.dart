@@ -20,32 +20,37 @@ class _NewSessionState extends State<NewSessionScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: SpeedDial(
-        animatedIcon: AnimatedIcons.menu_close,
-        animatedIconTheme: const IconThemeData(size: 22.0),
-        visible: true,
-        curve: Curves.bounceIn,
-        children: [
-          SpeedDialChild(
-            child: const Icon(Icons.add),
-            onTap: () => setState(() {
-              _phoneWidgets.add(Phone(
-                fieldName: 'Exercícios',
-              ));
-            }),
-            label: 'Adicionar sessão',
-            labelStyle: const TextStyle(fontWeight: FontWeight.w500),
-          ),
-        ],
-      ),
-      body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
-          child: Column(
-            children: List.generate(_phoneWidgets.length, (i) {
-              return _phoneWidgets[i];
-            }),
-          )),
-    );
+        appBar: AppBar(
+          title: const Text('Nova sessão'),
+        ),
+        floatingActionButton: SpeedDial(
+          animatedIcon: AnimatedIcons.menu_close,
+          animatedIconTheme: const IconThemeData(size: 22.0),
+          visible: true,
+          curve: Curves.bounceIn,
+          children: [
+            SpeedDialChild(
+              child: const Icon(Icons.add),
+              onTap: () => setState(() {
+                _phoneWidgets.add(Phone(
+                  fieldName: 'Exercícios',
+                ));
+              }),
+              label: 'Adicionar sessão',
+              labelStyle: const TextStyle(fontWeight: FontWeight.w500),
+            ),
+          ],
+        ),
+        body: ListView(children: [
+          const Text('Nome do exercício'),
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
+              child: Column(
+                children: List.generate(_phoneWidgets.length, (i) {
+                  return _phoneWidgets[i];
+                }),
+              )),
+        ]));
   }
 }
 
