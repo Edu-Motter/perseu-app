@@ -38,7 +38,6 @@ class LoginViewModel extends ChangeNotifier {
       UserModel userModel =
           await httpClientPerseu.loginRequest(username, password);
       debugPrint('Welcome: ${userModel.name}');
-      print(userModel);
     } catch (e) {
       debugPrint(e.toString());
     }

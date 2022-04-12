@@ -10,7 +10,8 @@ void initializeLocator() {
   locator.registerLazySingleton<Dio>(() {
     final dio = Dio();
     dio.options
-      ..baseUrl = 'http://192.168.1.188:8080' //'http://0.0.0.0:8080/'
+      ..baseUrl =
+          'https://670c-2804-14c-87c0-8514-4315-a559-f5b0-141f.ngrok.io/' //'http://0.0.0.0:8080/'
       ..connectTimeout = 5000
       ..receiveTimeout = 5000
       ..validateStatus = (int? status) {

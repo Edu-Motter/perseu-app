@@ -9,7 +9,6 @@ class HttpClientPerseu {
   Future<UserModel> loginRequest(String username, String password) async {
     Response response = await dio.post('/auth/login',
         queryParameters: {'email': username, 'password': password});
-    print(response);
     debugPrint(response.statusCode.toString());
 
     if (response.data == null || response.data == 'Not allow') {
