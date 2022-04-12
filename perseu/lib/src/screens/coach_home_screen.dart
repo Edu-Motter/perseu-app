@@ -61,7 +61,8 @@ class CoachHomeScreen extends StatelessWidget {
                             style: BorderStyle.solid)),
                         foregroundColor: MaterialStateProperty.all(themeColor),
                         overlayColor: MaterialStateProperty.all(themeColor)),
-                    onPressed: null,
+                    onPressed: () =>
+                        Navigator.of(context).pushNamed(Routes.manageInvites),
                     child: const Text('Gerenciar solicitações',
                         style: TextStyle(fontSize: 16))),
                 const SizedBox(height: 8),
