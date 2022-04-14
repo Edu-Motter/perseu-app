@@ -36,7 +36,7 @@ class _NewSessionState extends State<NewSessionScreen>
                   fieldName: 'Exercícios',
                 ));
               }),
-              label: 'Adicionar sessão',
+              label: 'Adicionar exercício',
               labelStyle: const TextStyle(fontWeight: FontWeight.w500),
             ),
           ],
