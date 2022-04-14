@@ -43,7 +43,7 @@ class _NewSessionState extends State<NewSessionScreen>
             ),
           ],
         ),
-        body: ListView(children: [
+        body: ListView(padding: const EdgeInsets.all(16.0), children: [
           TextFormField(
             decoration: const InputDecoration(
               labelText: 'Nome da sessão',
@@ -58,6 +58,10 @@ class _NewSessionState extends State<NewSessionScreen>
                   return _phoneWidgets[i];
                 }),
               )),
+          const ElevatedButton(
+              onPressed: null,
+              child: Text('Salvar sessão',
+                  style: TextStyle(fontSize: 16)))
         ]));
   }
 }
