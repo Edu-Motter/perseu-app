@@ -19,28 +19,28 @@ class AthleteHomeScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CustomButton(
+                MenuButton(
                   title: 'Visualizar treino de hoje',
                   onPressed: () {
                     null;
                   },
                 ),
                 const SizedBox(height: 32),
-                CustomButton(
+                MenuButton(
                   title: 'Visualizar conversas',
                   onPressed: () {
                     null;
                   },
                 ),
                 const SizedBox(height: 8),
-                CustomButton(
+                MenuButton(
                   title: 'Visualizar calendário',
                   onPressed: () {
                     null;
                   },
                 ),
                 const SizedBox(height: 8),
-                CustomButton(
+                MenuButton(
                   title: 'Gerenciar perfil',
                   onPressed: () {
                     null;

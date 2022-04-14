@@ -21,35 +21,35 @@ class CoachHomeScreen extends StatelessWidget {
                 const Text('Equipe Teste', style: TextStyle(fontSize: 32)),
                 const Text('33 atletas', style: TextStyle(fontSize: 20)),
                 const SizedBox(height: 16),
-                CustomButton(
+                MenuButton(
                   title: 'Novo treino',
                   onPressed: () {
                     Navigator.of(context).pushNamed(Routes.newTraining);
                   },
                 ),
                 const SizedBox(height: 8),
-                CustomButton(
+                MenuButton(
                   title: 'Gerenciar grupos',
                   onPressed: () {
                     null;
                   },
                 ),
                 const SizedBox(height: 8),
-                CustomButton(
+                MenuButton(
                   title: 'Gerenciar solicitações',
                   onPressed: () {
                     Navigator.of(context).pushNamed(Routes.manageInvites);
                   },
                 ),
                 const SizedBox(height: 8),
-                CustomButton(
+                MenuButton(
                   title: 'Gerenciar relatórios',
                   onPressed: () {
                     null;
                   },
                 ),
                 const SizedBox(height: 8),
-                CustomButton(
+                MenuButton(
                   title: 'Gerenciar perfil',
                   onPressed: () {
                     null;
