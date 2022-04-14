@@ -32,9 +32,11 @@ class _NewSessionState extends State<NewSessionScreen>
             SpeedDialChild(
               child: const Icon(Icons.add),
               onTap: () => setState(() {
-                _phoneWidgets.add(Phone(
-                  fieldName: 'Exercícios',
-                ));
+                _phoneWidgets.add(
+                  Phone(
+                    fieldName: 'Exercício',
+                  ),
+                );
               }),
               label: 'Adicionar exercício',
               labelStyle: const TextStyle(fontWeight: FontWeight.w500),
@@ -42,7 +44,13 @@ class _NewSessionState extends State<NewSessionScreen>
           ],
         ),
         body: ListView(children: [
-          const Text('Nome do exercício'),
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Nome da sessão',
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+            ),
+          ),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
               child: Column(
