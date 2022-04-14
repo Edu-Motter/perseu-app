@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:perseu/src/components/buttons/menu_button.dart';
 
 class AthleteHomeScreen extends StatelessWidget {
   const AthleteHomeScreen({Key? key}) : super(key: key);
@@ -18,61 +19,33 @@ class AthleteHomeScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.white),
-                        side: MaterialStateProperty.all(const BorderSide(
-                            color: Colors.teal,
-                            width: 1.0,
-                            style: BorderStyle.solid)),
-                        foregroundColor: MaterialStateProperty.all(themeColor),
-                        overlayColor: MaterialStateProperty.all(themeColor)),
-                    onPressed: null,
-                    child: const Text('Visualizar treino de hoje',
-                        style: TextStyle(fontSize: 16))),
+                CustomButton(
+                  title: 'Visualizar treino de hoje',
+                  onPressed: () {
+                    null;
+                  },
+                ),
                 const SizedBox(height: 32),
-                ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.white),
-                        side: MaterialStateProperty.all(const BorderSide(
-                            color: Colors.teal,
-                            width: 1.0,
-                            style: BorderStyle.solid)),
-                        foregroundColor: MaterialStateProperty.all(themeColor),
-                        overlayColor: MaterialStateProperty.all(themeColor)),
-                    onPressed: null,
-                    child: const Text('Visualizar conversas',
-                        style: TextStyle(fontSize: 16))),
+                CustomButton(
+                  title: 'Visualizar conversas',
+                  onPressed: () {
+                    null;
+                  },
+                ),
                 const SizedBox(height: 8),
-                ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.white),
-                        side: MaterialStateProperty.all(const BorderSide(
-                            color: Colors.teal,
-                            width: 1.0,
-                            style: BorderStyle.solid)),
-                        foregroundColor: MaterialStateProperty.all(themeColor),
-                        overlayColor: MaterialStateProperty.all(themeColor)),
-                    onPressed: null,
-                    child: const Text('Visualizar calendário',
-                        style: TextStyle(fontSize: 16))),
+                CustomButton(
+                  title: 'Visualizar calendário',
+                  onPressed: () {
+                    null;
+                  },
+                ),
                 const SizedBox(height: 8),
-                ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.white),
-                        side: MaterialStateProperty.all(const BorderSide(
-                            color: Colors.teal,
-                            width: 1.0,
-                            style: BorderStyle.solid)),
-                        foregroundColor: MaterialStateProperty.all(themeColor),
-                        overlayColor: MaterialStateProperty.all(themeColor)),
-                    onPressed: null,
-                    child: const Text('Gerenciar perfil',
-                        style: TextStyle(fontSize: 16))),
+                CustomButton(
+                  title: 'Gerenciar perfil',
+                  onPressed: () {
+                    null;
+                  },
+                ),
               ],
             ),
           ),

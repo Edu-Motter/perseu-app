@@ -92,7 +92,7 @@ class LoginScreen extends StatelessWidget {
                                       Navigator.of(context)
                                           .popUntil((route) => route.isFirst);
                                       Navigator.of(context).pushNamed(
-                                          userType == 'athlete'
+                                          userType != 'athlete'
                                               ? Routes.athleteHome
                                               : Routes.coachHome);
                                       //loginModel.login();
