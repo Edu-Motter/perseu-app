@@ -1,7 +1,5 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
-import 'package:perseu/src/components/training_list.dart';
+import 'package:perseu/src/components/manage_invites/manage_invites_list.dart';
 
 class ManageInvitesScreen extends StatelessWidget {
   const ManageInvitesScreen({Key? key}) : super(key: key);
@@ -27,7 +25,7 @@ class ManageInvitesScreen extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [TrainingSessionList()],
+              children: const [ManageInvitesList()],
             ),
           ),
         ]));
