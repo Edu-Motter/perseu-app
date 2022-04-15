@@ -6,8 +6,6 @@ class AthleteHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color themeColor = Colors.teal;
-
     return Scaffold(
         appBar: AppBar(
           title: const Text('Olá, usuário!'),

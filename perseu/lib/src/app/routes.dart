@@ -6,6 +6,8 @@ import 'package:perseu/src/screens/athlete_home_screen.dart';
 import 'package:perseu/src/screens/coach_home_screen.dart';
 import 'package:perseu/src/screens/coach_screens/new_training_screening.dart';
 import 'package:perseu/src/screens/coach_screens/manage_invites_screen.dart';
+import 'package:perseu/src/screens/without_team_screens/athlete_enter_team_screen.dart';
+import 'package:perseu/src/screens/without_team_screens/coach_creates_team_screen.dart';
 
 class Routes {
   static const String login = "/login";
@@ -15,6 +17,8 @@ class Routes {
   static const String newTraining = "/new-training";
   static const String newSession = "/new-session";
   static const String manageInvites = "/manage-invites";
+  static const String athleteEnterTeam = "/athlete-enter-team";
+  static const String coachCreatesTeam = "coach-creates-team";
 
   static Map<String, WidgetBuilder> map = {
     login: (context) => LoginScreen(),
@@ -24,5 +28,7 @@ class Routes {
     newTraining: (context) => const NewTrainingScreen(),
     newSession: (context) => const NewSessionScreen(),
     manageInvites: (context) => const ManageInvitesScreen(),
+    athleteEnterTeam: (context) => const AthleteEnterTeam(),
+    coachCreatesTeam: (context) => const CoachCreatesTeam()
   };
 }

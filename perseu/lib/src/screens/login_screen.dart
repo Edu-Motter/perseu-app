@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:perseu/src/app/routes.dart';
@@ -11,6 +13,7 @@ class LoginScreen extends StatelessWidget {
   static const Key passwordInputKey = Key('passwordInput');
   static const Key submitButtonKey = Key('submitButton');
   static const userType = 'coach';
+  static const teamId = '14';
 
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -91,11 +94,14 @@ class LoginScreen extends StatelessWidget {
                                     if (_formKey.currentState!.validate()) {
                                       Navigator.of(context)
                                           .popUntil((route) => route.isFirst);
-                                      Navigator.of(context).pushNamed(
-                                          userType == 'athlete'
-                                              ? Routes.athleteHome
-                                              : Routes.coachHome);
-                                      //loginModel.login();
+                                      Navigator.of(context)
+                                          .pushNamed(userType != 'athlete'
+                                              ? teamId == null
+                                                  ? Routes.athleteHome
+                                                  : Routes.athleteEnterTeam
+                                              : teamId == null
+                                                  ? Routes.coachHome
+                                                  : Routes.coachCreatesTeam);
                                     }
                                   },
                             child: const Text('Entrar',
@@ -121,27 +127,9 @@ class LoginScreen extends StatelessWidget {
                                 child: const Text(
                                   'Não possuo conta ainda',
                                   style: TextStyle(fontSize: 16),
-                                )
-                                // style: ButtonStyle(
-                                //     textStyle: MaterialStateProperty.all(
-                                //         const TextStyle())),
-                                // onPressed: loginModel.isBusy
-                                //     ? null
-                                //     : () async {
-                                //         Navigator.of(context)
-                                //             .popUntil((route) => route.isFirst);
-                                //         Navigator.of(context)
-                                //             .pushNamed(Routes.signUp);
-                                //       },
-                                // child: ),
-                                ),
+                                )),
                           ),
                         ),
-                        // const SizedBox(height: 20),
-                        // Text(
-                        //     'Valor do campo usuário: ${loginModel.getUsername}'),
-                        // const SizedBox(height: 20),
-                        // Text('Valor do campo senha: ${loginModel.getPassword}')
                       ],
                     );
                   })),
