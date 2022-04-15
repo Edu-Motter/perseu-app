@@ -27,7 +27,7 @@ class ManageInvitesScreen extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [ExpansionList()],
+              children: const [TrainingSessionList()],
             ),
           ),
         ]));

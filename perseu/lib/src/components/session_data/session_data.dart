@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-abstract class ListItem {
+abstract class ExerciseItem {
   Widget buildTitle(BuildContext context);
 
   Widget buildSubtitle(BuildContext context);
 }
 
-class MessageItem implements ListItem {
+class Exercise implements ExerciseItem {
   final String exercise;
   final String description;
 
-  MessageItem(this.exercise, this.description);
+  Exercise(this.exercise, this.description);
 
   @override
   Widget buildTitle(BuildContext context) => Text(exercise);

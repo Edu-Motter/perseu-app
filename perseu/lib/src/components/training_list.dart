@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:perseu/src/components/session_data/session_data.dart';
 import 'package:perseu/src/viewModels/training_list_view_model.dart';
 
-class ExpansionList extends StatefulWidget {
-  const ExpansionList({Key? key}) : super(key: key);
+class TrainingSessionList extends StatefulWidget {
+  const TrainingSessionList({Key? key}) : super(key: key);
 
   @override
-  _ExpansionListState createState() => _ExpansionListState();
+  TrainingSessionListState createState() => TrainingSessionListState();
 }
 
-class _ExpansionListState extends State<ExpansionList> {
+class TrainingSessionListState extends State<TrainingSessionList> {
   final List<TrainingCard> _data = generateItems(3);
-  final List<ListItem> items = generateExercises(2);
+  final List<ExerciseItem> items = generateExercises(2);
 
   @override
   Widget build(BuildContext context) {
@@ -77,9 +77,9 @@ List<TrainingCard> generateItems(int numberOfItems) {
   });
 }
 
-List<ListItem> generateExercises(int numberOfItems) {
-  return List<ListItem>.generate(
+List<ExerciseItem> generateExercises(int numberOfItems) {
+  return List<ExerciseItem>.generate(
     3,
-    (i) => MessageItem('Exercício $i', 'Descrição do exercício'),
+    (i) => Exercise('Exercício $i', 'Descrição do exercício'),
   );
 }
