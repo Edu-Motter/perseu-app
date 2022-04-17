@@ -10,7 +10,11 @@ class ManageInvitesScreen extends StatefulWidget {
 }
 
 class ManageInvitesScreenState extends State<ManageInvitesScreen> {
-  final solicitations = SolicitationsModel(id: 1, name: 'Carlitos');
+  final List<SolicitationsModel> solicitations = [
+    SolicitationsModel(id: 1, name: 'Carlitos'),
+    SolicitationsModel(id: 2, name: 'Edu'),
+    SolicitationsModel(id: 3, name: 'João')
+  ];
 
   @override
   Widget build(BuildContext context) {
