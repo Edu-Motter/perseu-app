@@ -1,7 +1,5 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
-import 'package:perseu/src/components/training_list.dart';
+import 'package:perseu/src/components/training_list/training_list.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:perseu/src/app/routes.dart';
 
