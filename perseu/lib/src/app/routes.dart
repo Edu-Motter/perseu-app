@@ -10,14 +10,14 @@ import 'package:perseu/src/screens/without_team_screens/athlete_enter_team_scree
 import 'package:perseu/src/screens/without_team_screens/coach_creates_team_screen.dart';
 
 class Routes {
-  static const String login = "/login";
-  static const String signUp = "/sign-up";
-  static const String athleteHome = "/athlete-home";
-  static const String coachHome = "/coach-home";
-  static const String newTraining = "/new-training";
-  static const String newSession = "/new-session";
-  static const String manageInvites = "/manage-invites";
-  static const String athleteEnterTeam = "/athlete-enter-team";
+  static const String login = "login";
+  static const String signUp = "sign-up";
+  static const String athleteHome = "athlete-home";
+  static const String coachHome = "coach-home";
+  static const String newTraining = "new-training";
+  static const String newSession = "new-session";
+  static const String manageInvites = "manage-invites";
+  static const String athleteEnterTeam = "athlete-enter-team";
   static const String coachCreatesTeam = "coach-creates-team";
 
   static Map<String, WidgetBuilder> map = {
