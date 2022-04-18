@@ -13,6 +13,36 @@ class ManageInvitesList extends StatefulWidget {
 class ManageInvitesListState extends State<ManageInvitesList> {
   late final List<SolicitationsModel> solicitations = widget.solicitations;
 
+  List<ListTile> generateList(
+      int numberOfItems, List<SolicitationsModel> solicitations) {
+    return List.generate(numberOfItems, (index) {
+      return ListTile(
+        title: Text(solicitations[index].name),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+                onPressed: () {
+                  setState(() {
+                    solicitations.removeWhere((currentItem) =>
+                        solicitations[index].id == currentItem.id);
+                  });
+                },
+                icon: const Icon(Icons.clear)),
+            IconButton(
+                onPressed: () {
+                  setState(() {
+                    solicitations.removeWhere((currentItem) =>
+                        solicitations[index].id == currentItem.id);
+                  });
+                },
+                icon: const Icon(Icons.check)),
+          ],
+        ),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -20,20 +50,4 @@ class ManageInvitesListState extends State<ManageInvitesList> {
       children: generateList(solicitations.length, solicitations),
     );
   }
-}
-
-List<ListTile> generateList(
-    int numberOfItems, List<SolicitationsModel> solicitations) {
-  return List.generate(numberOfItems, (index) {
-    return ListTile(
-      title: Text(solicitations[index].name),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.clear)),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.check)),
-        ],
-      ),
-    );
-  });
 }
