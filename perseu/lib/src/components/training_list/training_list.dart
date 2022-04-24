@@ -18,12 +18,6 @@ class TrainingSessionListState extends State<TrainingSessionList> {
   late final TrainingModel training = widget.training;
   late final List<SessionCard> _data = generateItems(training.sessions);
 
-  final List<ExerciseItem> items = generateExercises([
-    ExerciseModel(id: 1, name: 'exercício top', description: 'descrição top'),
-    ExerciseModel(
-        id: 1, name: 'exercício top 2', description: 'mais cansado nessa')
-  ]);
-
   @override
   Widget build(BuildContext context) {
     return ExpansionPanelList(
@@ -46,7 +40,6 @@ class TrainingSessionListState extends State<TrainingSessionList> {
                 ListView.builder(
                   itemCount: item.exercises.length,
                   itemBuilder: (context, index) {
-                    final listTile = items[index];
                     final meuvalor = item.exercises[index];
                     final ex = Exercise(meuvalor.name, meuvalor.description);
 
