@@ -16,7 +16,7 @@ class TrainingSessionList extends StatefulWidget {
 
 class TrainingSessionListState extends State<TrainingSessionList> {
   late final TrainingModel training = widget.training;
-  late final List<TrainingCard> _data = generateItems(training.sessions);
+  late final List<SessionCard> _data = generateItems(training.sessions);
 
   final List<ExerciseItem> items = generateExercises([
     ExerciseModel(id: 1, name: 'exercício top', description: 'descrição top'),
@@ -32,7 +32,7 @@ class TrainingSessionListState extends State<TrainingSessionList> {
           _data[index].isExpanded = !isExpanded;
         });
       },
-      children: _data.map<ExpansionPanel>((TrainingCard item) {
+      children: _data.map<ExpansionPanel>((SessionCard item) {
         return ExpansionPanel(
           headerBuilder: (BuildContext context, bool isExpanded) {
             return ListTile(
@@ -80,9 +80,9 @@ class TrainingSessionListState extends State<TrainingSessionList> {
   }
 }
 
-List<TrainingCard> generateItems(List<SessionModel> sessions) {
+List<SessionCard> generateItems(List<SessionModel> sessions) {
   return List.generate(sessions.length, (index) {
-    return TrainingCard(
+    return SessionCard(
       headerValue: sessions[index].name,
       isExpanded: false,
       exercises: sessions[index].exercises,
