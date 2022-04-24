@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:perseu/src/components/session_data/session_data.dart';
 import 'package:perseu/src/models/exercise_model.dart';
 import 'package:perseu/src/models/sessions_model.dart';
+import 'package:perseu/src/models/training_model.dart';
 import 'package:perseu/src/viewModels/training_list_view_model.dart';
 
 class TrainingSessionList extends StatefulWidget {
-  const TrainingSessionList({Key? key}) : super(key: key);
+  const TrainingSessionList({Key? key, required this.training})
+      : super(key: key);
+  final TrainingModel training;
 
   @override
   TrainingSessionListState createState() => TrainingSessionListState();
 }
 
 class TrainingSessionListState extends State<TrainingSessionList> {
-  SessionModel session = SessionModel(id: 1, name: 'nome sesão', exercises: [
-    ExerciseModel(id: 1, name: 'exercício top', description: 'descrição top'),
-    ExerciseModel(
-        id: 1, name: 'exercício top 2', description: 'mais cansado nessa')
-  ]);
-  final List<TrainingCard> _data = generateItems(3);
+  late final TrainingModel training = widget.training;
+  late final List<TrainingCard> _data = generateItems(training.sessions);
+
   final List<ExerciseItem> items = generateExercises([
     ExerciseModel(id: 1, name: 'exercício top', description: 'descrição top'),
     ExerciseModel(
@@ -26,6 +26,7 @@ class TrainingSessionListState extends State<TrainingSessionList> {
 
   @override
   Widget build(BuildContext context) {
+    print(training.sessions[0].exercises[0].description);
     return ExpansionPanelList(
       expansionCallback: (int index, bool isExpanded) {
         setState(() {
@@ -78,10 +79,10 @@ class TrainingSessionListState extends State<TrainingSessionList> {
   }
 }
 
-List<TrainingCard> generateItems(int numberOfItems) {
-  return List.generate(numberOfItems, (index) {
+List<TrainingCard> generateItems(List<SessionModel> sessions) {
+  return List.generate(sessions.length, (index) {
     return TrainingCard(
-      headerValue: 'Sessão #$index',
+      headerValue: sessions[index].name,
       expandedValue: 'Exercicios $index',
       isExpanded: false,
     );
