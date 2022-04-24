@@ -26,7 +26,6 @@ class TrainingSessionListState extends State<TrainingSessionList> {
 
   @override
   Widget build(BuildContext context) {
-    print(training.sessions[0].exercises[0].description);
     return ExpansionPanelList(
       expansionCallback: (int index, bool isExpanded) {
         setState(() {
@@ -45,13 +44,15 @@ class TrainingSessionListState extends State<TrainingSessionList> {
               shrinkWrap: true,
               children: [
                 ListView.builder(
-                  itemCount: items.length,
+                  itemCount: item.exercises.length,
                   itemBuilder: (context, index) {
-                    final item = items[index];
+                    final listTile = items[index];
+                    final meuvalor = item.exercises[index];
+                    final ex = Exercise(meuvalor.name, meuvalor.description);
 
                     return ListTile(
-                      title: item.buildTitle(context),
-                      subtitle: item.buildSubtitle(context),
+                      title: ex.buildTitle(context),
+                      subtitle: ex.buildSubtitle(context),
                     );
                   },
                   scrollDirection: Axis.vertical,
@@ -84,6 +85,7 @@ List<TrainingCard> generateItems(List<SessionModel> sessions) {
     return TrainingCard(
       headerValue: sessions[index].name,
       isExpanded: false,
+      exercises: sessions[index].exercises,
     );
   });
 }

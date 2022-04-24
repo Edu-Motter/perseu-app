@@ -26,7 +26,7 @@ class NewTrainingScreen extends StatelessWidget {
         ExerciseModel(
             id: 1, name: 'exercício top', description: 'descrição top'),
         ExerciseModel(
-            id: 1, name: 'exercício top 2', description: 'mais cansado nessa')
+            id: 1, name: 'exercício já acabou', description: 'mds n acaba')
       ])
     ]);
     return Scaffold(
