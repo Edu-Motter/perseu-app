@@ -1,11 +1,13 @@
-class TrainingCard {
-  String expandedValue;
+import 'package:perseu/src/models/exercise_model.dart';
+
+class SessionCard {
   String headerValue;
   bool isExpanded;
+  List<ExerciseModel> exercises;
 
-  TrainingCard({
-    required this.expandedValue,
+  SessionCard({
     required this.headerValue,
+    required this.exercises,
     this.isExpanded = false,
   });
 }

@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/components/session_data/session_data.dart';
+import 'package:perseu/src/models/exercise_model.dart';
+import 'package:perseu/src/models/sessions_model.dart';
+import 'package:perseu/src/models/training_model.dart';
 import 'package:perseu/src/viewModels/training_list_view_model.dart';
 
 class TrainingSessionList extends StatefulWidget {
-  const TrainingSessionList({Key? key}) : super(key: key);
+  const TrainingSessionList({Key? key, required this.training})
+      : super(key: key);
+  final TrainingModel training;
 
   @override
   TrainingSessionListState createState() => TrainingSessionListState();
 }
 
 class TrainingSessionListState extends State<TrainingSessionList> {
-  final List<TrainingCard> _data = generateItems(3);
-  final List<ExerciseItem> items = generateExercises(2);
+  late final TrainingModel training = widget.training;
+  late final List<SessionCard> _data = generateItems(training.sessions);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +26,7 @@ class TrainingSessionListState extends State<TrainingSessionList> {
           _data[index].isExpanded = !isExpanded;
         });
       },
-      children: _data.map<ExpansionPanel>((TrainingCard item) {
+      children: _data.map<ExpansionPanel>((SessionCard item) {
         return ExpansionPanel(
           headerBuilder: (BuildContext context, bool isExpanded) {
             return ListTile(
@@ -33,13 +38,14 @@ class TrainingSessionListState extends State<TrainingSessionList> {
               shrinkWrap: true,
               children: [
                 ListView.builder(
-                  itemCount: items.length,
+                  itemCount: item.exercises.length,
                   itemBuilder: (context, index) {
-                    final item = items[index];
+                    final exerciseIndex = item.exercises[index];
+                    final ex = Exercise(exerciseIndex.name, exerciseIndex.description);
 
                     return ListTile(
-                      title: item.buildTitle(context),
-                      subtitle: item.buildSubtitle(context),
+                      title: ex.buildTitle(context),
+                      subtitle: ex.buildSubtitle(context),
                     );
                   },
                   scrollDirection: Axis.vertical,
@@ -67,19 +73,19 @@ class TrainingSessionListState extends State<TrainingSessionList> {
   }
 }
 
-List<TrainingCard> generateItems(int numberOfItems) {
-  return List.generate(numberOfItems, (index) {
-    return TrainingCard(
-      headerValue: 'Sessão #$index',
-      expandedValue: 'Exercicios $index',
+List<SessionCard> generateItems(List<SessionModel> sessions) {
+  return List.generate(sessions.length, (index) {
+    return SessionCard(
+      headerValue: sessions[index].name,
       isExpanded: false,
+      exercises: sessions[index].exercises,
     );
   });
 }
 
-List<ExerciseItem> generateExercises(int numberOfItems) {
+List<ExerciseItem> generateExercises(List<ExerciseModel> exerciseList) {
   return List<ExerciseItem>.generate(
-    3,
-    (i) => Exercise('Exercício $i', 'Descrição do exercício'),
+    exerciseList.length,
+    (i) => Exercise(exerciseList[i].name, exerciseList[i].description),
   );
 }
