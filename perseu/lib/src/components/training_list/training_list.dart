@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/components/session_data/session_data.dart';
+import 'package:perseu/src/models/exercise_model.dart';
+import 'package:perseu/src/models/sessions_model.dart';
 import 'package:perseu/src/viewModels/training_list_view_model.dart';
 
 class TrainingSessionList extends StatefulWidget {
@@ -10,8 +12,17 @@ class TrainingSessionList extends StatefulWidget {
 }
 
 class TrainingSessionListState extends State<TrainingSessionList> {
+  SessionModel session = SessionModel(id: 1, name: 'nome sesão', exercises: [
+    ExerciseModel(id: 1, name: 'exercício top', description: 'descrição top'),
+    ExerciseModel(
+        id: 1, name: 'exercício top 2', description: 'mais cansado nessa')
+  ]);
   final List<TrainingCard> _data = generateItems(3);
-  final List<ExerciseItem> items = generateExercises(2);
+  final List<ExerciseItem> items = generateExercises([
+    ExerciseModel(id: 1, name: 'exercício top', description: 'descrição top'),
+    ExerciseModel(
+        id: 1, name: 'exercício top 2', description: 'mais cansado nessa')
+  ]);
 
   @override
   Widget build(BuildContext context) {
@@ -77,9 +88,9 @@ List<TrainingCard> generateItems(int numberOfItems) {
   });
 }
 
-List<ExerciseItem> generateExercises(int numberOfItems) {
+List<ExerciseItem> generateExercises(List<ExerciseModel> exerciseList) {
   return List<ExerciseItem>.generate(
-    3,
-    (i) => Exercise('Exercício $i', 'Descrição do exercício'),
+    exerciseList.length,
+    (i) => Exercise(exerciseList[i].name, exerciseList[i].description),
   );
 }
