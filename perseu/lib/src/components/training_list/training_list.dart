@@ -83,7 +83,6 @@ List<TrainingCard> generateItems(List<SessionModel> sessions) {
   return List.generate(sessions.length, (index) {
     return TrainingCard(
       headerValue: sessions[index].name,
-      expandedValue: 'Exercicios $index',
       isExpanded: false,
     );
   });
