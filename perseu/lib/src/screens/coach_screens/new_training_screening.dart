@@ -14,19 +14,29 @@ class NewTrainingScreen extends StatelessWidget {
     TrainingModel training = TrainingModel(id: 1, name: 'nomeee', sessions: [
       SessionModel(
         id: 1,
-        name: 'nome sesão',
+        name: 'Aquecimento',
         exercises: [
           ExerciseModel(
-              id: 1, name: 'exercício top', description: 'descrição top'),
+              id: 1,
+              name: 'Alongamento leve',
+              description:
+                  'Alongar articulações das pernas e braços por 10 segundos'),
           ExerciseModel(
-              id: 1, name: 'exercício top 2', description: 'mais cansado nessa')
+              id: 1,
+              name: 'Corrida',
+              description: 'Trote na pista, de 8 a 10 minutos')
         ],
       ),
-      SessionModel(id: 1, name: 'nome sesão 2', exercises: [
+      SessionModel(id: 1, name: 'Exercício pernas', exercises: [
         ExerciseModel(
-            id: 1, name: 'exercício top', description: 'descrição top'),
+            id: 1,
+            name: 'Leg press',
+            description: 'Fazer leg press 45 com 140kg, 3x10'),
         ExerciseModel(
-            id: 1, name: 'exercício já acabou', description: 'mds n acaba')
+            id: 1,
+            name: 'Salto em degrau',
+            description:
+                'Realizar salto em degraus grandes, subida e descida 3x')
       ])
     ]);
     return Scaffold(

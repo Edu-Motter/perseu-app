@@ -40,8 +40,8 @@ class TrainingSessionListState extends State<TrainingSessionList> {
                 ListView.builder(
                   itemCount: item.exercises.length,
                   itemBuilder: (context, index) {
-                    final meuvalor = item.exercises[index];
-                    final ex = Exercise(meuvalor.name, meuvalor.description);
+                    final exerciseIndex = item.exercises[index];
+                    final ex = Exercise(exerciseIndex.name, exerciseIndex.description);
 
                     return ListTile(
                       title: ex.buildTitle(context),
