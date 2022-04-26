@@ -58,9 +58,11 @@ class _NewSessionState extends State<NewSessionScreen>
                   return _phoneWidgets[i];
                 }),
               )),
-          const ElevatedButton(
-              onPressed: null,
-              child: Text('Salvar sessão',
+          ElevatedButton(
+              onPressed: (){
+                Navigator.of(context).pop(_phoneWidgets);
+              },
+              child: const Text('Salvar sessão',
                   style: TextStyle(fontSize: 16)))
         ]));
   }
@@ -76,7 +78,7 @@ class Phone extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 8.0),
+      padding: const EdgeInsets.all(4.0),
       child: TextFormField(
         keyboardType: TextInputType.phone,
         decoration: InputDecoration(

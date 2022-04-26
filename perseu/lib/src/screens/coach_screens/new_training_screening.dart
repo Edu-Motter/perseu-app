@@ -52,14 +52,14 @@ class NewTrainingScreen extends StatelessWidget {
             SpeedDialChild(
               child: const Icon(Icons.add),
               onTap: () =>
-                  Navigator.of(context).pushReplacementNamed(Routes.newSession),
+                  Navigator.of(context).pushNamed(Routes.newSession),
               label: 'Adicionar sessão',
               labelStyle: const TextStyle(fontWeight: FontWeight.w500),
             ),
             SpeedDialChild(
               child: const Icon(Icons.forward),
               onTap: () =>
-                  Navigator.of(context).pushReplacementNamed(Routes.newSession),
+                  Navigator.of(context).pushNamed(Routes.newSession),
               label: 'Atribuir treino',
               labelStyle: const TextStyle(fontWeight: FontWeight.w500),
             ),
