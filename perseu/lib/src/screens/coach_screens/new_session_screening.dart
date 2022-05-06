@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:perseu/src/models/exercise_model.dart';
+import 'package:perseu/src/models/sessions_model.dart';
 
 class NewSessionScreen extends StatefulWidget {
   const NewSessionScreen({Key? key}) : super(key: key);
@@ -11,6 +13,7 @@ class NewSessionScreen extends StatefulWidget {
 class _NewSessionState extends State<NewSessionScreen>
     with SingleTickerProviderStateMixin {
   final List<Widget> _phoneWidgets = [];
+  final SessionModel sessionModel = SessionModel(id: 1, name: 'New', exercises: []) ;
 
   @override
   void initState() {
@@ -37,6 +40,8 @@ class _NewSessionState extends State<NewSessionScreen>
                     fieldName: 'Exercício',
                   ),
                 );
+                ExerciseModel ex = ExerciseModel(id: 1, name: 'Exercicio', description: 'teste');
+                sessionModel.exercises.add(ex);
               }),
               label: 'Adicionar exercício',
               labelStyle: const TextStyle(fontWeight: FontWeight.w500),
@@ -60,7 +65,7 @@ class _NewSessionState extends State<NewSessionScreen>
               )),
           ElevatedButton(
               onPressed: (){
-                Navigator.of(context).pop(_phoneWidgets);
+                Navigator.of(context).pop(sessionModel);
               },
               child: const Text('Salvar sessão',
                   style: TextStyle(fontSize: 16)))

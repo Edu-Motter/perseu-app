@@ -26,4 +26,9 @@ class SessionModel {
   }
 
   String toJson() => json.encode(toMap());
+
+  @override
+  String toString() {
+    return 'SessionModel{id: $id, name: $name, exercises: $exercises}';
+  }
 }
