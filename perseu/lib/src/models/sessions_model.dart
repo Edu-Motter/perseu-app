@@ -4,7 +4,7 @@ import 'package:perseu/src/models/exercise_model.dart';
 
 class SessionModel {
   final double id;
-  final String name;
+  String name;
   final List<ExerciseModel> exercises;
 
   SessionModel({required this.id, required this.name, required this.exercises});

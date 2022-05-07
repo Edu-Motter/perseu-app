@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/models/exercise_model.dart';
 import 'package:perseu/src/models/sessions_model.dart';
 
@@ -10,13 +11,15 @@ class NewSessionScreen extends StatefulWidget {
   _NewSessionState createState() => _NewSessionState();
 }
 
-class _NewSessionState extends State<NewSessionScreen>
-    with SingleTickerProviderStateMixin {
+class _NewSessionState extends State<NewSessionScreen> {
+  final TextEditingController _sessionNameController = TextEditingController();
+
   final List<Widget> _phoneWidgets = [];
-  final SessionModel sessionModel = SessionModel(id: 1, name: 'New', exercises: []) ;
+  late SessionModel sessionModel;
 
   @override
   void initState() {
+    sessionModel = SessionModel(id: 0, name: '', exercises: []);
     super.initState();
   }
 
@@ -34,26 +37,23 @@ class _NewSessionState extends State<NewSessionScreen>
           children: [
             SpeedDialChild(
               child: const Icon(Icons.add),
-              onTap: () => setState(() {
-                _phoneWidgets.add(
-                  Phone(
-                    fieldName: 'Exercício',
-                  ),
-                );
-                ExerciseModel ex = ExerciseModel(id: 1, name: 'Exercicio', description: 'teste');
-                sessionModel.exercises.add(ex);
-              }),
+              onTap: () {
+                Navigator.of(context).pushNamed(Routes.newExercice).then((exerciseFuture) {
+                  ExerciseModel exerciseModel = exerciseFuture as ExerciseModel;
+                  sessionModel.exercises.add(exerciseModel);
+                });
+              },
               label: 'Adicionar exercício',
               labelStyle: const TextStyle(fontWeight: FontWeight.w500),
             ),
           ],
         ),
         body: ListView(padding: const EdgeInsets.all(16.0), children: [
-          TextFormField(
+          TextField(
+            controller: _sessionNameController,
             decoration: const InputDecoration(
               labelText: 'Nome da sessão',
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+              contentPadding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
             ),
           ),
           Padding(
@@ -64,11 +64,14 @@ class _NewSessionState extends State<NewSessionScreen>
                 }),
               )),
           ElevatedButton(
-              onPressed: (){
-                Navigator.of(context).pop(sessionModel);
+              onPressed: () {
+                String sessionName = _sessionNameController.text;
+                if (sessionName.isNotEmpty) {
+                  sessionModel.name = sessionName;
+                  Navigator.of(context).pop(sessionModel);
+                }
               },
-              child: const Text('Salvar sessão',
-                  style: TextStyle(fontSize: 16)))
+              child: const Text('Salvar sessão', style: TextStyle(fontSize: 16)))
         ]));
   }
 }
@@ -87,8 +90,7 @@ class Phone extends StatelessWidget {
       child: TextFormField(
         keyboardType: TextInputType.phone,
         decoration: InputDecoration(
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
           enabledBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(10.0),
@@ -102,10 +104,7 @@ class Phone extends StatelessWidget {
             size: 20.0,
           ),
           labelText: fieldName,
-          labelStyle: const TextStyle(
-              fontSize: 15.0,
-              height: 1.5,
-              color: Color.fromRGBO(61, 61, 61, 1)),
+          labelStyle: const TextStyle(fontSize: 15.0, height: 1.5, color: Color.fromRGBO(61, 61, 61, 1)),
           fillColor: const Color(0xffD2E8E6),
         ),
         maxLines: 1,

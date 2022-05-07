@@ -22,114 +22,36 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
         name: 'Aquecimento',
         exercises: [
           ExerciseModel(
-              id: 1,
-              name: 'Alongamento leve',
-              description:
-                  'Alongar articulações das pernas e braços por 10 segundos'),
-          ExerciseModel(
-              id: 1,
-              name: 'Corrida',
-              description: 'Trote na pista, de 8 a 10 minutos')
+              id: 1, name: 'Alongamento leve', description: 'Alongar articulações das pernas e braços por 10 segundos'),
+          ExerciseModel(id: 1, name: 'Corrida', description: 'Trote na pista, de 8 a 10 minutos')
         ],
       ),
       SessionModel(id: 1, name: 'Exercício pernas', exercises: [
+        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
+        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
+        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
+        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
+        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
+        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
+        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
+        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
+        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
+        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
+        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
+        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
+        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
+        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
+        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
+        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
+        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
+        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
+        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
+        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
+        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
+        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
+        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
         ExerciseModel(
-            id: 1,
-            name: 'Leg press',
-            description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(
-            id: 1,
-            name: 'Leg press',
-            description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(
-            id: 1,
-            name: 'Leg press',
-            description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(
-            id: 1,
-            name: 'Leg press',
-            description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(
-            id: 1,
-            name: 'Leg press',
-            description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(
-            id: 1,
-            name: 'Leg press',
-            description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(
-            id: 1,
-            name: 'Leg press',
-            description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(
-            id: 1,
-            name: 'Leg press',
-            description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(
-            id: 1,
-            name: 'Leg press',
-            description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(
-            id: 1,
-            name: 'Leg press',
-            description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(
-            id: 1,
-            name: 'Leg press',
-            description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(
-            id: 1,
-            name: 'Leg press',
-            description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(
-            id: 1,
-            name: 'Leg press',
-            description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(
-            id: 1,
-            name: 'Leg press',
-            description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(
-            id: 1,
-            name: 'Leg press',
-            description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(
-            id: 1,
-            name: 'Leg press',
-            description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(
-            id: 1,
-            name: 'Leg press',
-            description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(
-            id: 1,
-            name: 'Leg press',
-            description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(
-            id: 1,
-            name: 'Leg press',
-            description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(
-            id: 1,
-            name: 'Leg press',
-            description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(
-            id: 1,
-            name: 'Leg press',
-            description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(
-            id: 1,
-            name: 'Leg press',
-            description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(
-            id: 1,
-            name: 'Leg press',
-            description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(
-            id: 1,
-            name: 'Salto em degrau',
-            description:
-                'Realizar salto em degraus grandes, subida e descida 3x')
+            id: 1, name: 'Salto em degrau', description: 'Realizar salto em degraus grandes, subida e descida 3x')
       ])
     ]);
 
@@ -151,9 +73,7 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
           SpeedDialChild(
             child: const Icon(Icons.add),
             onTap: () {
-              Navigator.of(context)
-                  .pushNamed(Routes.newSession)
-                  .then((sessionFuture) {
+              Navigator.of(context).pushNamed(Routes.newSession).then((sessionFuture) {
                 SessionModel session = sessionFuture as SessionModel;
                 debugPrint(session.toString());
                 setState(() {
@@ -181,12 +101,9 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
           SessionModel session = training.sessions[index];
           return Card(
               child: ExpansionTile(
-            expandedCrossAxisAlignment: CrossAxisAlignment.start,
+            expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
             title: Text(session.name),
-            children: [
-              for (ExerciseModel e in session.exercises)
-                ExerciseCard(exerciseModel: e)
-            ],
+            children: [for (ExerciseModel e in session.exercises) ExerciseCard(exerciseModel: e)],
           ));
         },
       ),
