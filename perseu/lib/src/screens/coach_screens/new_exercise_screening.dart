@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:perseu/src/models/exercise_model.dart';
-import 'package:perseu/src/models/sessions_model.dart';
 
 class NewExerciseScreen extends StatefulWidget {
   const NewExerciseScreen({Key? key}) : super(key: key);
@@ -13,9 +12,6 @@ class NewExerciseScreen extends StatefulWidget {
 class _NewExerciseState extends State<NewExerciseScreen> {
   final TextEditingController _exerciseNameController = TextEditingController();
   final TextEditingController _exerciseDescriptionController = TextEditingController();
-
-  @override
-  void initState() {}
 
   @override
   Widget build(BuildContext context) {

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:perseu/src/app/routes.dart';
+import 'package:perseu/src/models/checkbox_type.dart';
 import 'package:perseu/src/models/exercise_model.dart';
 import 'package:perseu/src/models/sessions_model.dart';
+import 'package:perseu/src/screens/checkbox_item.dart';
 
 class NewSessionScreen extends StatefulWidget {
   const NewSessionScreen({Key? key}) : super(key: key);
@@ -17,9 +19,15 @@ class _NewSessionState extends State<NewSessionScreen> {
   final List<Widget> _phoneWidgets = [];
   late SessionModel sessionModel;
 
+  late bool checkboxValue;
+
+  late final List<CheckboxItem> checkboxes;
+
   @override
   void initState() {
     sessionModel = SessionModel(id: 0, name: '', exercises: []);
+    checkboxes = _generateCheckboxes();
+    checkboxValue = false;
     super.initState();
   }
 
@@ -56,6 +64,26 @@ class _NewSessionState extends State<NewSessionScreen> {
               contentPadding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
             ),
           ),
+          Container(
+            color: Colors.green,
+            child: SizedBox(
+              width: 200,
+              height: 500,
+              child: ListView.builder(
+                  itemCount: checkboxes.length,
+                  itemBuilder: (context, index) {
+                    CheckboxItem checkboxType = checkboxes[index];
+                    return CheckboxListTile(
+                        title: Text(checkboxType.checkboxType.name),
+                        value: checkboxType.value,
+                        onChanged: (value) {
+                          setState(() {
+                            checkboxType.value = value ?? false;
+                          });
+                        });
+                  }),
+            ),
+          ),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
               child: Column(
@@ -73,6 +101,15 @@ class _NewSessionState extends State<NewSessionScreen> {
               },
               child: const Text('Salvar sessão', style: TextStyle(fontSize: 16)))
         ]));
+  }
+
+  List<CheckboxItem> _generateCheckboxes() {
+    final List<CheckboxItem> checkboxes = [];
+    for (CheckboxType type in CheckboxType.values) {
+      CheckboxItem(checkboxType: type, value: false);
+    }
+
+    return checkboxes;
   }
 }
 
