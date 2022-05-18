@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 class ExerciseModel {
-  final double id;
+  final String id;
   final String name;
   final String description;
 
@@ -15,12 +15,12 @@ class ExerciseModel {
     return {
       'id': id,
       'name': name,
+      'description' : description
     };
   }
 
   factory ExerciseModel.fromMap(Map<String, dynamic> map) {
-    return ExerciseModel(
-        id: map['id'], name: map['name'], description: map['description']);
+    return ExerciseModel(id: map['id'], name: map['name'], description: map['description']);
   }
 
   String toJson() => json.encode(toMap());

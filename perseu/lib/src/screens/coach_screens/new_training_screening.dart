@@ -21,37 +21,13 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
         id: 1,
         name: 'Aquecimento',
         exercises: [
-          ExerciseModel(
-              id: 1, name: 'Alongamento leve', description: 'Alongar articulações das pernas e braços por 10 segundos'),
-          ExerciseModel(id: 1, name: 'Corrida', description: 'Trote na pista, de 8 a 10 minutos')
+          ExerciseModel(id: '1', name: 'Alongamento leve', description: 'Alongar articulações das pernas e braços por 10 segundos'),
+          ExerciseModel(id: '1', name: 'Corrida', description: 'Trote na pista, de 8 a 10 minutos')
         ],
       ),
       SessionModel(id: 1, name: 'Exercício pernas', exercises: [
-        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(id: 1, name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(
-            id: 1, name: 'Salto em degrau', description: 'Realizar salto em degraus grandes, subida e descida 3x')
+        ExerciseModel(id: '1', name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
+        ExerciseModel(id: '1', name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
       ])
     ]);
 
@@ -131,7 +107,7 @@ class ExerciseCard extends StatelessWidget {
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 8),
-            Text(exerciseModel.description)
+            Text(exerciseModel.description),
           ],
         ),
       ),
