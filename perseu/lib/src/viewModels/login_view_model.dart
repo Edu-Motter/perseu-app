@@ -1,9 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:perseu/src/app/locator.dart';
+import 'package:perseu/src/models/requests/login_request.dart';
 import 'package:perseu/src/models/user_model.dart';
 import 'package:perseu/src/services/http_client_perseu.dart';
 
-class LoginViewModel extends ChangeNotifier {
+import '../services/foundation.dart';
+import '../states/foundation.dart';
+
+class LoginViewModel extends AppViewModel {
   static const gif = 'assets/gifs/fitness.gif';
 
   String username = 'atleta@gmail.com';
@@ -25,24 +29,15 @@ class LoginViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool get isBusy => _busy;
-
-  bool get isNotBusy => !_busy;
-
-  void login() async {
-    _busy = true;
-    notifyListeners();
-
-    debugPrint('Loging in..');
-    try {
-      UserModel userModel =
-          await httpClientPerseu.loginRequest(username, password);
-      debugPrint('Welcome: ${userModel.name}');
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-
-    _busy = false;
-    notifyListeners();
+  Future<Result<LoginRequest>> login() async {
+    return tryExec(() async {
+      final result = await httpClientPerseu.loginRequestRefactor(username, password);
+      if(result.success){
+        session.setAuthTokenAndUser(result.data!.token.token, result.data!.user);
+        return Result.success(data: result.data);
+      } else {
+        return const Result.error(message: 'Erro ao fazer login');
+      }
+    });
   }
 }

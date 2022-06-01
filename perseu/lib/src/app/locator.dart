@@ -2,7 +2,17 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:perseu/src/screens/athlete_drawer/athlete_drawer_viewmodel.dart';
+import 'package:perseu/src/screens/athlete_request/athlete_request_screen.dart';
+import 'package:perseu/src/screens/athlete_request/athlete_request_viewmodel.dart';
+import 'package:perseu/src/screens/new_team/new_team_viewmodel.dart';
+import 'package:perseu/src/screens/profile_screen/profile_viewmodel.dart';
 import 'package:perseu/src/services/http_client_perseu.dart';
+import 'package:perseu/src/viewModels/login_view_model.dart';
+
+import '../screens/change_password/change_password_viewmodel.dart';
+import '../states/session.dart';
+import '../viewModels/bootstrap_view_model.dart';
 
 final GetIt locator = GetIt.I;
 
@@ -11,7 +21,7 @@ void initializeLocator() {
     final dio = Dio();
     dio.options
       ..baseUrl =
-          'https://670c-2804-14c-87c0-8514-4315-a559-f5b0-141f.ngrok.io/' //'http://0.0.0.0:8080/'
+          'http://10.0.2.2:3333/' //'http://0.0.0.0:8080/'
       ..connectTimeout = 5000
       ..receiveTimeout = 5000
       ..validateStatus = (int? status) {
@@ -33,4 +43,16 @@ void initializeLocator() {
       return HttpClientPerseu();
     }
   });
+  //Global states:
+  locator.registerSingleton<Session>(PersistentSession());
+
+  //Local states:
+  locator.registerFactory<BootstrapViewModel>(() => BootstrapViewModel());
+  locator.registerFactory<LoginViewModel>(() => LoginViewModel());
+  locator.registerFactory<AthleteDrawerViewModel>(() => AthleteDrawerViewModel());
+  locator.registerFactory<ProfileViewModel>(() => ProfileViewModel());
+  locator.registerFactory<ChangePasswordViewModel>(() => ChangePasswordViewModel());
+  locator.registerFactory<NewTeamViewModel>(() => NewTeamViewModel());
+  locator.registerFactory<AthleteRequestViewModel>(() => AthleteRequestViewModel());
+
 }

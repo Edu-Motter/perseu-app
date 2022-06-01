@@ -1,16 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/components/buttons/menu_button.dart';
+import 'package:perseu/src/screens/athlete_drawer/athlete_drawer.dart';
 
 class CoachHomeScreen extends StatelessWidget {
-  const CoachHomeScreen({Key? key}) : super(key: key);
+  CoachHomeScreen({Key? key}) : super(key: key);
+
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: scaffoldKey,
+        drawer: const AthleteDrawer(),
         appBar: AppBar(
           title: const Text('Dashboard'),
           automaticallyImplyLeading: false,
+          leading: IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              scaffoldKey.currentState?.openDrawer();
+            },
+          ),
         ),
         body: ListView(children: [
           Padding(
@@ -29,9 +40,9 @@ class CoachHomeScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 MenuButton(
-                  title: 'Gerenciar grupos',
+                  title: 'Nova equipe',
                   onPressed: () {
-                    null;
+                    Navigator.of(context).pushNamed(Routes.newTeam);
                   },
                 ),
                 const SizedBox(height: 8),
