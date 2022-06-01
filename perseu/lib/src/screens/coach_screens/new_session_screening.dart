@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:perseu/src/app/routes.dart';
+import 'package:perseu/src/models/exercise_model.dart';
+import 'package:perseu/src/models/sessions_model.dart';
+import 'package:perseu/src/screens/coach_screens/new_exercise_screening.dart';
 
 class NewSessionScreen extends StatefulWidget {
   const NewSessionScreen({Key? key}) : super(key: key);
@@ -8,12 +12,13 @@ class NewSessionScreen extends StatefulWidget {
   _NewSessionState createState() => _NewSessionState();
 }
 
-class _NewSessionState extends State<NewSessionScreen>
-    with SingleTickerProviderStateMixin {
-  final List<Widget> _phoneWidgets = [];
+class _NewSessionState extends State<NewSessionScreen> {
+  final TextEditingController _sessionNameController = TextEditingController();
+  late SessionModel sessionModel;
 
   @override
   void initState() {
+    sessionModel = SessionModel(id: 0, name: '', exercises: []);
     super.initState();
   }
 
@@ -30,81 +35,91 @@ class _NewSessionState extends State<NewSessionScreen>
           curve: Curves.bounceIn,
           children: [
             SpeedDialChild(
+              child: const Icon(Icons.save),
+              onTap: () {
+                String sessionName = _sessionNameController.text;
+                if (sessionName.isNotEmpty) {
+                  sessionModel.name = sessionName;
+                  Navigator.of(context).pop(sessionModel);
+                }
+              },
+              label: 'Salvar sessão',
+              labelStyle: const TextStyle(fontWeight: FontWeight.w500),
+            ),
+            SpeedDialChild(
               child: const Icon(Icons.add),
-              onTap: () => setState(() {
-                _phoneWidgets.add(
-                  Phone(
-                    fieldName: 'Exercício',
-                  ),
-                );
-              }),
+              onTap: () {
+                Navigator.of(context)
+                    .pushNamed(Routes.newExercice)
+                    .then((exerciseFuture) {
+                  ExerciseModel exerciseModel = exerciseFuture as ExerciseModel;
+                  setState(() {
+                    sessionModel.exercises.add(exerciseModel);
+                  });
+                });
+              },
               label: 'Adicionar exercício',
               labelStyle: const TextStyle(fontWeight: FontWeight.w500),
             ),
           ],
         ),
-        body: ListView(padding: const EdgeInsets.all(16.0), children: [
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Nome da sessão',
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+        body: Column(
+          children: [
+            Container(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: _sessionNameController,
+                      decoration: const InputDecoration(labelText: 'Nome da sessão'),
+                    ),
+                    const Divider(),
+                  ],
+                ),
+              ),
             ),
-          ),
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
-              child: Column(
-                children: List.generate(_phoneWidgets.length, (i) {
-                  return _phoneWidgets[i];
-                }),
-              )),
-          ElevatedButton(
-              onPressed: (){
-                Navigator.of(context).pop(_phoneWidgets);
-              },
-              child: const Text('Salvar sessão',
-                  style: TextStyle(fontSize: 16)))
-        ]));
-  }
-}
-
-//https://www.youtube.com/watch?v=HMqye4R-4c4&t=119s
-
-// ignore: must_be_immutable
-class Phone extends StatelessWidget {
-  String fieldName;
-  Phone({Key? key, this.fieldName = ''}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: TextFormField(
-        keyboardType: TextInputType.phone,
-        decoration: InputDecoration(
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
-          enabledBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(10.0),
-            ),
-            borderSide: BorderSide(color: Colors.white, width: 0.1),
-          ),
-          filled: true,
-          icon: const Icon(
-            Icons.fitness_center_sharp,
-            color: Colors.black,
-            size: 20.0,
-          ),
-          labelText: fieldName,
-          labelStyle: const TextStyle(
-              fontSize: 15.0,
-              height: 1.5,
-              color: Color.fromRGBO(61, 61, 61, 1)),
-          fillColor: const Color(0xffD2E8E6),
-        ),
-        maxLines: 1,
-      ),
-    );
+            Flexible(
+              child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: sessionModel.exercises.length,
+                  itemBuilder: (context, index) {
+                    ExerciseModel exercise = sessionModel.exercises[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 4.0, vertical: 2.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.teal, width: 2),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: ListTile(
+                          trailing: const Icon(Icons.edit),
+                          tileColor: Colors.teal[100],
+                          title: Text(exercise.name),
+                          subtitle: Text(exercise.description),
+                          onTap: () {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(
+                                    builder: (_) => NewExerciseScreen(
+                                        exerciseModel: exercise)))
+                                .then((exerciseFuture) {
+                              ExerciseModel exerciseModel =
+                                  exerciseFuture as ExerciseModel;
+                              setState(() {
+                                sessionModel.exercises.removeWhere((e) => e.id == exerciseModel.id);
+                                sessionModel.exercises.add(exerciseModel);
+                              });
+                            });
+                          },
+                        ),
+                      ),
+                    );
+                  }),
+            )
+          ],
+        ));
   }
 }

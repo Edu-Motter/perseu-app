@@ -29,7 +29,7 @@ class PerseuApp extends StatelessWidget {
         ),
         debugShowCheckedModeBanner: false,
         title: 'Perseu',
-        initialRoute: Routes.login,
+        initialRoute: Routes.bootstrap,
         routes: Routes.map,
       ),
     );

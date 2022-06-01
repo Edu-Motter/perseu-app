@@ -1,21 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/components/buttons/menu_button.dart';
 
+import '../app/routes.dart';
+import 'athlete_drawer/athlete_drawer.dart';
+
+
 class AthleteHomeScreen extends StatelessWidget {
-  const AthleteHomeScreen({Key? key}) : super(key: key);
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  AthleteHomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
+        key: scaffoldKey,
+        drawer: const AthleteDrawer(),
         appBar: AppBar(
           title: const Text('Olá, usuário!'),
           automaticallyImplyLeading: false,
+          leading: IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              scaffoldKey.currentState?.openDrawer();
+            },
+          ),
         ),
-        body: ListView(children: [
-          Padding(
+        body: SingleChildScrollView(
+          child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 MenuButton(
                   title: 'Visualizar treino de hoje',
@@ -27,14 +40,15 @@ class AthleteHomeScreen extends StatelessWidget {
                 MenuButton(
                   title: 'Visualizar conversas',
                   onPressed: () {
-                    null;
+                    Navigator.of(context)
+                        .pushReplacementNamed(Routes.bootstrap);
                   },
                 ),
                 const SizedBox(height: 8),
                 MenuButton(
-                  title: 'Visualizar calendário',
+                  title: 'Visualizar ingresso equipe',
                   onPressed: () {
-                    null;
+                    Navigator.of(context).pushNamed(Routes.athleteRequest);
                   },
                 ),
                 const SizedBox(height: 8),
@@ -43,10 +57,10 @@ class AthleteHomeScreen extends StatelessWidget {
                   onPressed: () {
                     null;
                   },
-                ),
+                )
               ],
             ),
           ),
-        ]));
+        ));
   }
 }
