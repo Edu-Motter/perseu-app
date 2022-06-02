@@ -1,8 +1,5 @@
-
 import 'package:flutter/material.dart';
 import 'package:perseu/src/states/foundation.dart';
-
-import '../services/foundation.dart';
 
 enum LoadSessionResult {
   successAthlete, successCoach, failure

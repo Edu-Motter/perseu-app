@@ -6,7 +6,7 @@ import 'athlete_drawer/athlete_drawer.dart';
 
 
 class AthleteHomeScreen extends StatelessWidget {
-  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   AthleteHomeScreen({Key? key}) : super(key: key);
 
   @override

@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:perseu/src/screens/new_team/new_team_viewmodel.dart';
-import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/locator.dart';
-import '../../services/foundation.dart';
 import 'athlete_request_viewmodel.dart';
 
 class AthleteRequestScreen extends StatefulWidget {

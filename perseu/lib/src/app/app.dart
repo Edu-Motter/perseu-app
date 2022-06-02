@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/viewModels/login_view_model.dart';
-import 'package:perseu/src/viewModels/sign_up_view_model.dart';
 import 'package:provider/provider.dart';
 
 class PerseuApp extends StatelessWidget {
@@ -14,9 +13,6 @@ class PerseuApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => LoginViewModel(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => SignUpViewModel(),
-        )
       ],
       child: MaterialApp(
         theme: ThemeData(

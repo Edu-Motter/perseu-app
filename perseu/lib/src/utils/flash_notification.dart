@@ -5,6 +5,7 @@ import 'package:flutter/scheduler.dart';
 class FlashNotification extends StatelessWidget {
   final WidgetBuilder builder;
 
+  // ignore: use_key_in_widget_constructors
   const FlashNotification(this.builder);
 
   FlashNotification.column(List<Widget> children): this((context) {
@@ -75,7 +76,7 @@ class _SelfRemovableOverlayEntryState extends State<_SelfRemovableOverlayEntry> 
 
   @override
   void dispose() {
-    if (_timer != null && _timer.isActive) {
+    if (_timer.isActive) {
       _timer.cancel();
     }
     super.dispose();

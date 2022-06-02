@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:perseu/src/models/requests/user_request.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/user_model.dart';
-
 class Session extends ChangeNotifier {
   String? _authToken;
   UserRequest? _user;

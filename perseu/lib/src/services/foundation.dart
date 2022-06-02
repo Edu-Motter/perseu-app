@@ -80,13 +80,13 @@ class ApiHelper {
   }
 
   Result<T> Function(dynamic) defaultErrorProcessor<T>(
-      String fallbackMessage, ErrorProcessor errorProcessor) {
+      String fallbackMessage, ErrorProcessor? errorProcessor) {
     String message = fallbackMessage;
     return (dynamic error) {
       if (error is DioError) {
         final DioError dioError = error;
         if (dioError.type == DioErrorType.response && errorProcessor != null) {
-          final String processorMessage =
+          final String? processorMessage =
               errorProcessor.process(dioError.response);
           if (processorMessage != null) {
             message = processorMessage;

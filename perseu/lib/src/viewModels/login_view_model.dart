@@ -1,7 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/models/requests/login_request.dart';
-import 'package:perseu/src/models/user_model.dart';
 import 'package:perseu/src/services/http_client_perseu.dart';
 
 import '../services/foundation.dart';
@@ -10,10 +8,8 @@ import '../states/foundation.dart';
 class LoginViewModel extends AppViewModel {
   static const gif = 'assets/gifs/fitness.gif';
 
-  String username = 'atleta@gmail.com';
-  String password = '123';
-
-  bool _busy = false;
+  String username = '';
+  String password = '';
 
   final httpClientPerseu = locator<HttpClientPerseu>();
 

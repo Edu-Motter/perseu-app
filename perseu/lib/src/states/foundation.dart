@@ -32,7 +32,7 @@ class BaseViewModel extends ChangeNotifier {
     return value;
   }
 
-  void _setBusyForModelOrObject(bool value, {required Object busyObject}) {
+  void _setBusyForModelOrObject(bool value, {required Object? busyObject}) {
     if (busyObject != null) {
       setBusyForObject(busyObject.hashCode, value);
     } else {

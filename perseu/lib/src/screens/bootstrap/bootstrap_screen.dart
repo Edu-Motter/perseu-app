@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:perseu/src/screens/bootstrap/bootstrap_viewmodel.dart';
 import 'package:perseu/src/utils/trigger.dart';
-import 'package:perseu/src/viewModels/bootstrap_view_model.dart';
 import 'package:provider/provider.dart';
 
-import '../app/locator.dart';
-import '../app/routes.dart';
-import '../services/foundation.dart';
+import '../../app/locator.dart';
+import '../../app/routes.dart';
 
 class BootstrapScreen extends StatelessWidget {
   const BootstrapScreen({Key? key}) : super(key: key);

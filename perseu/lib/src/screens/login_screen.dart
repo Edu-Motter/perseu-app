@@ -8,7 +8,6 @@ import 'package:perseu/src/viewModels/login_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../app/locator.dart';
-import '../models/user_model.dart';
 import '../utils/ui.dart';
 
 class LoginScreen extends StatelessWidget {

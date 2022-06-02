@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:perseu/src/app/routes.dart';
-import 'package:perseu/src/viewModels/sign_up_view_model.dart';
+import 'package:perseu/src/screens/sign_up/sign_up_viewmodel.dart';
+import 'package:perseu/src/utils/formatters.dart';
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
@@ -28,15 +29,14 @@ class SignUpScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cadastro'),
-        leading:
-            Consumer<SignUpViewModel>(builder: (_, signUpController, child) {
+        leading: Consumer<SignUpViewModel>(builder: (_, model, child) {
           return IconButton(
               icon: Icon(
                 Icons.arrow_back,
-                color: signUpController.isBusy ? Colors.black : Colors.white,
+                color: model.isBusy ? Colors.black : Colors.white,
               ),
               onPressed: () {
-                if (signUpController.isBusy) return;
+                if (model.isBusy) return;
                 Navigator.of(context).pushReplacementNamed(Routes.login);
               });
         }),
@@ -68,12 +68,12 @@ class SignUpScreen extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: Form(
               child: Consumer<SignUpViewModel>(
-                builder: (_, signUpController, child) {
+                builder: (_, model, child) {
                   return Column(children: [
                     TextFormField(
                       key: SignUpScreen.nameInputKey,
                       controller: _nameController,
-                      onChanged: (value) => signUpController.setName = value,
+                      onChanged: (value) => model.name = value,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Nome:',
@@ -85,7 +85,7 @@ class SignUpScreen extends StatelessWidget {
                     TextFormField(
                       key: SignUpScreen.emailInputKey,
                       controller: _emailController,
-                      onChanged: (value) => signUpController.setEmail = value,
+                      onChanged: (value) => model.email = value,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'E-mail:',
@@ -95,23 +95,25 @@ class SignUpScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     TextFormField(
-                      key: SignUpScreen.birthdayInputKey,
-                      controller: _birthdayController,
-                      onChanged: (value) =>
-                          signUpController.setBirthday = value,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Data de nascimento:',
-                      ),
-                      validator: RequiredValidator(
-                          errorText: 'O usuário precisa ser informado'),
-                    ),
+                        key: SignUpScreen.birthdayInputKey,
+                        controller: _birthdayController,
+                        onChanged: (value) => model.birthday = value,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Data de nascimento:',
+                        ),
+                        inputFormatters: [Formatters.date()],
+                        validator: MultiValidator([
+                          RequiredValidator(
+                              errorText: 'O usuário precisa ser informado'),
+                          DateValidator('dd/MM/yyyy',
+                              errorText: 'A data precisa ser válida')
+                        ])),
                     const SizedBox(height: 8),
                     TextFormField(
                       key: SignUpScreen.passwordInputKey,
                       controller: _passwordController,
-                      onChanged: (value) =>
-                          signUpController.setPassword = value,
+                      onChanged: (value) => model.password = value,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Senha',
@@ -123,8 +125,7 @@ class SignUpScreen extends StatelessWidget {
                     TextFormField(
                       key: SignUpScreen.confirmPasswordInputKey,
                       controller: _confirmPasswordController,
-                      onChanged: (value) =>
-                          signUpController.setConfirmPassword = value,
+                      onChanged: (value) => model.confirmPassword = value,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Confirmação da senha:',
@@ -133,27 +134,11 @@ class SignUpScreen extends StatelessWidget {
                           errorText: 'O usuário precisa ser informado'),
                     ),
                     const SizedBox(height: 8),
-                    Consumer<SignUpViewModel>(
-                        builder: (context, signUpController, child) {
-                      return Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Switch(
-                                value: signUpController.tipoUsuario,
-                                onChanged: (value) {
-                                  signUpController.setUserType = value;
-                                  userTypeName = value ? 'Atleta' : 'Treinador';
-                                }),
-                            Text(userTypeName)
-                          ]);
-                    }),
                     const SizedBox(
                       height: 16.0,
                     ),
                     ElevatedButton(
-                        onPressed: signUpController.isNotBusy
-                            ? signUpController.signUp
-                            : null,
+                        onPressed: model.isBusy ? null : model.signUp,
                         child: child),
                   ]);
                 },

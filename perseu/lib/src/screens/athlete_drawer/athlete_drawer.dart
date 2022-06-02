@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/models/requests/user_request.dart';

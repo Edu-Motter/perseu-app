@@ -2,7 +2,6 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:perseu/src/utils/flash_notification.dart' as flash;
 
-import '../app/locator.dart';
 import '../app/routes.dart';
 import '../services/foundation.dart';
 
@@ -119,7 +118,7 @@ class _SimpleDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: title == null ? null : Text(title),
+      title: Text(title),
       content: Text(message),
       actions: buildActions(context),
     );
