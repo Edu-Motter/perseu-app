@@ -75,6 +75,7 @@ class ApiHelper {
         return onError(e);
       }
     } catch (e) {
+      debugPrint(e.toString());
       return onError(e);
     }
   }

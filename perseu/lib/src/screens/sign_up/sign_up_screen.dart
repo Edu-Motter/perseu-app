@@ -3,9 +3,11 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/screens/sign_up/sign_up_viewmodel.dart';
 import 'package:perseu/src/utils/formatters.dart';
+import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/locator.dart';
+import '../../services/foundation.dart';
 
 // ignore: must_be_immutable
 class SignUpScreen extends StatelessWidget {
@@ -90,7 +92,8 @@ class SignUpScreen extends StatelessWidget {
                               border: OutlineInputBorder(),
                               hintText: 'Nome:',
                             ),
-                            validator: RequiredValidator(errorText: 'O Nome precisa ser informado'),
+                            validator: RequiredValidator(
+                                errorText: 'O Nome precisa ser informado'),
                           ),
                           const SizedBox(height: 8),
                           TextFormField(
@@ -102,8 +105,10 @@ class SignUpScreen extends StatelessWidget {
                               hintText: 'E-mail:',
                             ),
                             validator: MultiValidator([
-                              RequiredValidator(errorText: 'O E-mail precisa ser informado'),
-                              EmailValidator(errorText: 'O E-mail precisa ser válido')
+                              RequiredValidator(
+                                  errorText: 'O E-mail precisa ser informado'),
+                              EmailValidator(
+                                  errorText: 'O E-mail precisa ser válido')
                             ]),
                           ),
                           const SizedBox(height: 8),
@@ -117,8 +122,11 @@ class SignUpScreen extends StatelessWidget {
                               ),
                               inputFormatters: [Formatters.date()],
                               validator: MultiValidator([
-                                RequiredValidator(errorText: 'O usuário precisa ser informado'),
-                                DateValidator('dd/MM/yyyy', errorText: 'A data precisa ser válida')
+                                RequiredValidator(
+                                    errorText:
+                                        'O usuário precisa ser informado'),
+                                DateValidator('dd/MM/yyyy',
+                                    errorText: 'A data precisa ser válida')
                               ])),
                           const SizedBox(height: 8),
                           TextFormField(
@@ -129,7 +137,9 @@ class SignUpScreen extends StatelessWidget {
                               border: OutlineInputBorder(),
                               hintText: 'Senha',
                             ),
-                            validator: RequiredValidator(errorText: 'A senha precisa ser informada'),
+                            obscureText: true,
+                            validator: RequiredValidator(
+                                errorText: 'A senha precisa ser informada'),
                           ),
                           const SizedBox(height: 8),
                           TextFormField(
@@ -140,7 +150,10 @@ class SignUpScreen extends StatelessWidget {
                               border: OutlineInputBorder(),
                               hintText: 'Confirmação da senha:',
                             ),
-                            validator: RequiredValidator(errorText: 'A confirmação de senha precisa ser informada'),
+                            obscureText: true,
+                            validator: RequiredValidator(
+                                errorText:
+                                    'A confirmação de senha precisa ser informada'),
                           ),
                           const SizedBox(height: 8),
                           DropdownButtonFormField(
@@ -163,7 +176,8 @@ class SignUpScreen extends StatelessWidget {
                                 border: OutlineInputBorder(),
                                 hintText: 'CREF:',
                               ),
-                              validator: RequiredValidator(errorText: 'O CREF precisa ser informado'),
+                              validator: RequiredValidator(
+                                  errorText: 'O CREF precisa ser informado'),
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -179,7 +193,8 @@ class SignUpScreen extends StatelessWidget {
                                 border: OutlineInputBorder(),
                                 hintText: 'Altura: 0.00 m',
                               ),
-                              validator: RequiredValidator(errorText: 'A Altura precisa ser informada'),
+                              validator: RequiredValidator(
+                                  errorText: 'A Altura precisa ser informada'),
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -188,18 +203,25 @@ class SignUpScreen extends StatelessWidget {
                             child: TextFormField(
                               key: SignUpScreen.weightInputKey,
                               controller: _weightController,
-                              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      decimal: true),
                               onChanged: (value) => model.weight = value,
                               inputFormatters: [Formatters.weight()],
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 hintText: 'Peso: 000 Kg',
                               ),
-                              validator: RequiredValidator(errorText: 'O Peso precisa ser informado'),
+                              validator: RequiredValidator(
+                                  errorText: 'O Peso precisa ser informado'),
                             ),
                           ),
                           const SizedBox(height: 8),
-                          ElevatedButton(onPressed: model.isBusy ? null : () => _handleSignUp(model), child: child),
+                          ElevatedButton(
+                              onPressed: model.isBusy
+                                  ? null
+                                  : () => _handleSignUp(context, model),
+                              child: child),
                         ]);
                       },
                       child: const Text('Criar conta'),
@@ -214,9 +236,15 @@ class SignUpScreen extends StatelessWidget {
     );
   }
 
-  _handleSignUp(SignUpViewModel model) {
+  _handleSignUp(BuildContext context, SignUpViewModel model) async {
     if (_formKey.currentState!.validate()) {
-      model.signUp();
+      Result result = await model.signUp();
+      if (result.success) {
+        UIHelper.showSuccessWithRoute(context, result,
+            () => Navigator.of(context).pushReplacementNamed(Routes.login));
+      } else {
+        UIHelper.showError(context, result);
+      }
     }
   }
 
