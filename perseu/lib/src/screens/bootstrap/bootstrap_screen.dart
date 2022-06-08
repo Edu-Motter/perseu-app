@@ -49,7 +49,7 @@ class BootstrapScreen extends StatelessWidget {
   void _loadSession(BootstrapViewModel model, BuildContext context) async {
     LoadSessionResult result = await model.loadSession();
     if(LoadSessionResult.successAthlete == result){
-      Navigator.of(context).pushReplacementNamed(Routes.athleteHome);
+      Navigator.of(context).pushReplacementNamed(Routes.coachHome);
     } else if (LoadSessionResult.successCoach == result) {
       Navigator.of(context).pushReplacementNamed(Routes.coachHome);
     } else {

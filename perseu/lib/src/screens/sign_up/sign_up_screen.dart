@@ -47,7 +47,7 @@ class SignUpScreen extends StatelessWidget {
               leading: IconButton(
                   icon: Icon(
                     Icons.arrow_back,
-                    color: model.isBusy ? Colors.black : Colors.white,
+                    color: model.isBusy ? Colors.grey : Colors.white,
                   ),
                   onPressed: () {
                     if (model.isBusy) return;
