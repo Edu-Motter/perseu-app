@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/models/requests/login_request.dart';
+import 'package:perseu/src/models/requests/sign_up_request.dart';
 import 'package:perseu/src/models/user_model.dart';
 
 import 'foundation.dart';
@@ -43,5 +44,16 @@ class HttpClientPerseu with ApiHelper {
         },
         onError: (response) => const Result.error(
             message: 'Falha ao realizar cadastro de equipe'));
+  }
+
+  Future<Result<LoginRequest>> signUp(SignUpRequest signUpRequest) async {
+    String body = signUpRequest.toJson();
+    return process(
+        dio.post('/auth/register', data: body),
+        onSuccess: (response) {
+          return const Result.success();
+        },
+        onError: (response) =>
+          const Result.error(message: 'Falha ao realizar cadastro'));
   }
 }

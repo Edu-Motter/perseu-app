@@ -82,6 +82,7 @@ class _NewSessionState extends State<NewSessionScreen> {
             ),
             Flexible(
               child: ListView.builder(
+                  padding: const EdgeInsets.only(bottom: 56),
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   itemCount: sessionModel.exercises.length,

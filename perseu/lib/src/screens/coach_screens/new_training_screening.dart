@@ -21,13 +21,26 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
         id: 1,
         name: 'Aquecimento',
         exercises: [
-          ExerciseModel(id: '1', name: 'Alongamento leve', description: 'Alongar articulações das pernas e braços por 10 segundos'),
-          ExerciseModel(id: '1', name: 'Corrida', description: 'Trote na pista, de 8 a 10 minutos')
+          ExerciseModel(
+              id: '1',
+              name: 'Alongamento leve',
+              description:
+                  'Alongar articulações das pernas e braços por 10 segundos'),
+          ExerciseModel(
+              id: '1',
+              name: 'Corrida',
+              description: 'Trote na pista, de 8 a 10 minutos')
         ],
       ),
       SessionModel(id: 1, name: 'Exercício pernas', exercises: [
-        ExerciseModel(id: '1', name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(id: '1', name: 'Leg press', description: 'Fazer leg press 45 com 140kg, 3x10'),
+        ExerciseModel(
+            id: '1',
+            name: 'Leg press',
+            description: 'Fazer leg press 45 com 140kg, 3x10'),
+        ExerciseModel(
+            id: '1',
+            name: 'Leg press',
+            description: 'Fazer leg press 45 com 140kg, 3x10'),
       ])
     ]);
 
@@ -49,9 +62,10 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
           SpeedDialChild(
             child: const Icon(Icons.add),
             onTap: () {
-              Navigator.of(context).pushNamed(Routes.newSession).then((sessionFuture) {
+              Navigator.of(context)
+                  .pushNamed(Routes.newSession)
+                  .then((sessionFuture) {
                 SessionModel session = sessionFuture as SessionModel;
-                debugPrint(session.toString());
                 setState(() {
                   training.sessions.add(session);
                 });
@@ -77,9 +91,29 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
           SessionModel session = training.sessions[index];
           return Card(
               child: ExpansionTile(
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      setState(() {
+                        training.sessions.removeAt(index);
+                      });
+                    },
+                    icon: const Icon(Icons.delete, size: 20,)),
+                IconButton(onPressed: () {}, icon: const Icon(Icons.edit, size: 20,)),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(Icons.keyboard_arrow_down),
+                )
+              ],
+            ),
             expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
             title: Text(session.name),
-            children: [for (ExerciseModel e in session.exercises) ExerciseCard(exerciseModel: e)],
+            children: [
+              for (ExerciseModel e in session.exercises)
+                ExerciseCard(exerciseModel: e)
+            ],
           ));
         },
       ),
