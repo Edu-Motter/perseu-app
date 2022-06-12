@@ -46,6 +46,16 @@ class HttpClientPerseu with ApiHelper {
             message: 'Falha ao realizar cadastro de equipe'));
   }
 
+  Future<Result<String>> createRequest(String requestCode, int athleteId) async {
+    return process(
+        dio.post('/api/criar-requisicao-equipe', data: {'codigo': requestCode, 'atleta': athleteId}),
+        onSuccess: (response) {
+          return Result.success(data: response.data['status']);
+        },
+        onError: (response) => const Result.error(
+            message: 'Falha ao realizar cadastro de equipe'));
+  }
+
   Future<Result<LoginRequest>> signUp(SignUpRequest signUpRequest) async {
     String body = signUpRequest.toJson();
     return process(

@@ -1,13 +1,18 @@
 // ignore_for_file: unnecessary_null_comparison
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:perseu/src/app/routes.dart';
+import 'package:perseu/src/models/requests/login_request.dart';
+import 'package:perseu/src/models/requests/status_login.dart';
 import 'package:perseu/src/viewModels/login_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../app/locator.dart';
+import '../services/foundation.dart';
 import '../utils/ui.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -138,16 +143,33 @@ class LoginScreen extends StatelessWidget {
     if (_formKey.currentState!.validate()) {
       final result = await loginModel.login();
       if (result.success) {
-        //Do more login things:
-        //UserModel user = result.data!;
-        if ('Atleta' == result.data!.user.name) {
-          Navigator.pushReplacementNamed(context, Routes.athleteHome);
-        } else {
-          Navigator.pushReplacementNamed(context, Routes.coachHome);
-        }
+        LoginRequest login = result.data!;
+        _handleUserNavigation(context, login.user.status);
       } else {
         UIHelper.showError(context, result);
       }
+    }
+  }
+
+  _handleUserNavigation(BuildContext context, StatusLogin statusLogin){
+    switch (statusLogin) {
+      case StatusLogin.athleteWithTeam:
+        Navigator.pushReplacementNamed(context, Routes.athleteHome);
+        break;
+      case StatusLogin.athleteWithoutTeam:
+        Navigator.pushReplacementNamed(context, Routes.athleteRequest);
+        break;
+      case StatusLogin.athleteWithPendingTeam:
+        Navigator.pushReplacementNamed(context, Routes.athletePendingRequest);
+        break;
+      case StatusLogin.coachWithTeam:
+        Navigator.pushReplacementNamed(context, Routes.coachHome);
+        break;
+      case StatusLogin.coachWithoutTeam:
+        Navigator.pushReplacementNamed(context, Routes.newTeam);
+        break;
+      default:
+        UIHelper.showError(context, const Result.error(message: 'Rota não encontrada'));
     }
   }
 }

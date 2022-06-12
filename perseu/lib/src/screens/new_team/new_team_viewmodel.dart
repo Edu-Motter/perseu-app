@@ -13,7 +13,7 @@ class NewTeamViewModel extends AppViewModel {
 
   Future<Result> createTeam(){
     return tryExec(() async {
-      final result = await httpClientPerseu.createTeam(teamName!, session.user!.id);
+      final result = await httpClientPerseu.createTeam(teamName!, session.user!.coach!.id);
       if(result.success){
         return Result.success(message: 'Equipe ${result.data} criada com sucesso');
       } else {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/screens/new_team/new_team_viewmodel.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,7 @@ class NewTeamScreen extends StatefulWidget {
 
 class _NewTeamScreenState extends State<NewTeamScreen> {
   final TextEditingController _teamNameController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,10 @@ class _NewTeamScreenState extends State<NewTeamScreen> {
             inAsyncCall: model.isBusy,
             child: Scaffold(
               appBar: AppBar(
+                leading: IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () =>
+                        Navigator.pushReplacementNamed(context, Routes.login)),
                 title: const Text('Criando Equipe'),
               ),
               body: Container(
@@ -38,7 +44,8 @@ class _NewTeamScreenState extends State<NewTeamScreen> {
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       children: [
-                        Image.asset('assets/images/fitness-1.png', width: 180.0),
+                        Image.asset('assets/images/fitness-1.png',
+                            width: 180.0),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 16.0),
                           child: Text(
@@ -50,6 +57,7 @@ class _NewTeamScreenState extends State<NewTeamScreen> {
                           ),
                         ),
                         Form(
+                          key: _formKey,
                           child: TextFormField(
                             controller: _teamNameController,
                             onChanged: (value) => model.teamName = value,
@@ -65,12 +73,18 @@ class _NewTeamScreenState extends State<NewTeamScreen> {
                         const SizedBox(height: 16),
                         ElevatedButton(
                             onPressed: () async {
-                              final Result result = await model.createTeam();
-                              if (result.success) {
-                                UIHelper.showSuccessWithRoute(context, result,
-                                    () => Navigator.of(context).pop());
-                              } else {
-                                UIHelper.showError(context, result);
+                              if (_formKey.currentState!.validate()) {
+                                final Result result = await model.createTeam();
+                                if (result.success) {
+                                  UIHelper.showSuccessWithRoute(
+                                      context,
+                                      result,
+                                      () => Navigator.of(context)
+                                          .pushReplacementNamed(
+                                              Routes.coachHome));
+                                } else {
+                                  UIHelper.showError(context, result);
+                                }
                               }
                             },
                             child: const Text('Cadastrar'))
