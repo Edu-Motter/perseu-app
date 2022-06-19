@@ -6,7 +6,10 @@ import 'package:perseu/src/models/sessions_model.dart';
 import 'package:perseu/src/screens/coach_screens/new_exercise_screening.dart';
 
 class NewSessionScreen extends StatefulWidget {
-  const NewSessionScreen({Key? key}) : super(key: key);
+  const NewSessionScreen({Key? key, this.sessionModel}) : super(key: key);
+  final SessionModel? sessionModel;
+
+  get hasSession => sessionModel != null ? true : false;
 
   @override
   _NewSessionState createState() => _NewSessionState();
@@ -18,7 +21,15 @@ class _NewSessionState extends State<NewSessionScreen> {
 
   @override
   void initState() {
-    sessionModel = SessionModel(id: 0, name: '', exercises: []);
+    if (widget.hasSession) {
+      _sessionNameController.text = widget.sessionModel!.name;
+      sessionModel = SessionModel(
+          id: widget.sessionModel!.id,
+          name: widget.sessionModel!.name,
+          exercises: widget.sessionModel!.exercises);
+    } else {
+      sessionModel = SessionModel(id: 1, name: '', exercises: []);
+    }
     super.initState();
   }
 
@@ -73,7 +84,8 @@ class _NewSessionState extends State<NewSessionScreen> {
                   children: [
                     TextField(
                       controller: _sessionNameController,
-                      decoration: const InputDecoration(labelText: 'Nome da sessão'),
+                      decoration:
+                          const InputDecoration(labelText: 'Nome da sessão'),
                     ),
                     const Divider(),
                   ],
@@ -110,7 +122,8 @@ class _NewSessionState extends State<NewSessionScreen> {
                               ExerciseModel exerciseModel =
                                   exerciseFuture as ExerciseModel;
                               setState(() {
-                                sessionModel.exercises.removeWhere((e) => e.id == exerciseModel.id);
+                                sessionModel.exercises.removeWhere(
+                                    (e) => e.id == exerciseModel.id);
                                 sessionModel.exercises.add(exerciseModel);
                               });
                             });
