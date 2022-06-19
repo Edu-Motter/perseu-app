@@ -111,25 +111,39 @@ class _NewSessionState extends State<NewSessionScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: ListTile(
-                          trailing: const Icon(Icons.edit),
                           tileColor: Colors.teal[100],
                           title: Text(exercise.name),
                           subtitle: Text(exercise.description),
-                          onTap: () {
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(
-                                    builder: (_) => NewExerciseScreen(
-                                        exerciseModel: exercise)))
-                                .then((exerciseFuture) {
-                              ExerciseModel exerciseModel =
-                                  exerciseFuture as ExerciseModel;
-                              setState(() {
-                                sessionModel.exercises.removeWhere(
-                                    (e) => e.id == exerciseModel.id);
-                                sessionModel.exercises.add(exerciseModel);
-                              });
-                            });
-                          },
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.edit),
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .push(MaterialPageRoute(
+                                          builder: (_) => NewExerciseScreen(
+                                              exerciseModel: exercise)))
+                                      .then((exerciseFuture) {
+                                    ExerciseModel exerciseModel =
+                                        exerciseFuture as ExerciseModel;
+                                    setState(() {
+                                      sessionModel.exercises.removeWhere(
+                                          (e) => e.id == exerciseModel.id);
+                                      sessionModel.exercises.add(exerciseModel);
+                                    });
+                                  });
+                                },
+                              ),
+                              IconButton(
+                                  icon: const Icon(Icons.delete),
+                                  onPressed: () {
+                                    setState(() {
+                                      sessionModel.exercises.removeAt(index);
+                                    });
+                                  }),
+                            ],
+                          ),
                         ),
                       ),
                     );
