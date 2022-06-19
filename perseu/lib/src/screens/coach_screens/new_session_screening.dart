@@ -37,7 +37,9 @@ class _NewSessionState extends State<NewSessionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Nova sessão'),
+          title: widget.hasSession
+              ? const Text('Editando sessão')
+              : const Text('Nova sessão'),
         ),
         floatingActionButton: SpeedDial(
           animatedIcon: AnimatedIcons.menu_close,
