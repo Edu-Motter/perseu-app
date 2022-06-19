@@ -130,7 +130,7 @@ class _NewSessionState extends State<NewSessionScreen> {
                                     setState(() {
                                       sessionModel.exercises.removeWhere(
                                           (e) => e.id == exerciseModel.id);
-                                      sessionModel.exercises.add(exerciseModel);
+                                      sessionModel.exercises.insert(index, exerciseModel);
                                     });
                                   });
                                 },

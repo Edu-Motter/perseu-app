@@ -117,7 +117,7 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
                         setState(() {
                           training.sessions
                               .removeWhere((e) => e.id == sessionModel.id);
-                          training.sessions.add(sessionModel);
+                          training.sessions.insert(index, sessionModel);
                         });
                       });
                     },
