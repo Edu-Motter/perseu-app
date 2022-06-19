@@ -51,6 +51,8 @@ class PersistentSession extends Session {
         var prop = props[userKey];
         if(prop != null){
           Map<String, dynamic> test = json.decode(prop);
+          if(test['treinador'] != null) test['treinador'] = json.decode(test['treinador']);
+          if(test['atleta'] != null) test['atleta'] = json.decode(test['atleta']);
           var userRequest = UserRequest.fromMap(test);
           super.setAuthTokenAndUser(props[authTokenKey],userRequest);
           debugPrint('Returning true');

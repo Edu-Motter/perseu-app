@@ -10,6 +10,7 @@ import 'package:perseu/src/screens/sign_up/sign_up_viewmodel.dart';
 import 'package:perseu/src/services/http_client_perseu.dart';
 import 'package:perseu/src/viewModels/login_view_model.dart';
 
+import '../screens/athlete_pending_request/athlete_pending_request_viewmodel.dart';
 import '../screens/bootstrap/bootstrap_viewmodel.dart';
 import '../screens/change_password/change_password_viewmodel.dart';
 import '../states/session.dart';
@@ -55,4 +56,5 @@ void initializeLocator() {
   locator.registerFactory<NewTeamViewModel>(() => NewTeamViewModel());
   locator.registerFactory<AthleteRequestViewModel>(() => AthleteRequestViewModel());
   locator.registerFactory<SignUpViewModel>(() => SignUpViewModel());
+  locator.registerFactory<AthletePendingRequestViewModel>(() => AthletePendingRequestViewModel());
 }

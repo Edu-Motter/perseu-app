@@ -1,5 +1,8 @@
-
 import 'dart:convert';
+
+import 'package:perseu/src/models/requests/athlete_request.dart';
+import 'package:perseu/src/models/requests/coach_request.dart';
+import 'package:perseu/src/models/requests/status_login.dart';
 
 class UserRequest {
   final int id;
@@ -7,10 +10,11 @@ class UserRequest {
   final String email;
   final String cpf;
   final String bornOn;
+  final StatusLogin status;
   final String createdAt;
   final String updatedAt;
-  final String? manager;
-  final String? athlete;
+  final CoachRequest? coach;
+  final AthleteRequest? athlete;
 
   UserRequest({
     required this.id,
@@ -18,9 +22,10 @@ class UserRequest {
     required this.email,
     required this.cpf,
     required this.bornOn,
+    required this.status,
     required this.createdAt,
     required this.updatedAt,
-    required this.manager,
+    required this.coach,
     required this.athlete
   });
 
@@ -31,9 +36,10 @@ class UserRequest {
       'email' : email,
       'cpf' : cpf,
       'data_nascimento' : bornOn,
+      'status' : status.toJson,
       'created_at' : createdAt,
       'updated_at' : updatedAt,
-      'treinador' : manager,
+      'treinador' : coach,
       'atleta' : athlete
     };
   }
@@ -45,10 +51,11 @@ class UserRequest {
         email: map['email'],
         cpf: map['cpf'],
         bornOn: map['data_nascimento'],
+        status: StatusLoginString.getStatusLogin(map['status']),
         createdAt: map['created_at'],
         updatedAt: map['updated_at'],
-        manager: map['treinador'],
-        athlete: map['atleta']
+        coach: map['treinador'] != null ? CoachRequest.fromMap(map['treinador']) : null,
+        athlete: map['atleta'] != null ? AthleteRequest.fromMap(map['atleta']) : null,
     );
   }
 
