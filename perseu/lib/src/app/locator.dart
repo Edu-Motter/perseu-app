@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:perseu/src/screens/athlete_drawer/athlete_drawer_viewmodel.dart';
 import 'package:perseu/src/screens/athlete_request/athlete_request_viewmodel.dart';
+import 'package:perseu/src/screens/change_team_name/change_team_name_viewmodel.dart';
 import 'package:perseu/src/screens/new_team/new_team_viewmodel.dart';
 import 'package:perseu/src/screens/profile_screen/profile_viewmodel.dart';
 import 'package:perseu/src/screens/sign_up/sign_up_viewmodel.dart';
@@ -56,5 +57,6 @@ void initializeLocator() {
   locator.registerFactory<NewTeamViewModel>(() => NewTeamViewModel());
   locator.registerFactory<AthleteRequestViewModel>(() => AthleteRequestViewModel());
   locator.registerFactory<SignUpViewModel>(() => SignUpViewModel());
+  locator.registerFactory<ChangeTeamNameViewModel>(() => ChangeTeamNameViewModel());
   locator.registerFactory<AthletePendingRequestViewModel>(() => AthletePendingRequestViewModel());
 }
