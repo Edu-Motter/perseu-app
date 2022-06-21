@@ -38,6 +38,18 @@ class UIHelper {
     ).show(context);
   }
 
+  static void showSuccessThenExecute(BuildContext context, Result result, Function execute) {
+    assert(result.success);
+    Flushbar(
+        icon: const Icon(Icons.check_circle_outline, color: Colors.green),
+        message: result.message ?? 'Comando executado com sucesso',
+        duration: _errorDuration
+    ).show(context).then((_) async {
+      await Future.delayed(const Duration(milliseconds: 1500));
+      execute();
+    });
+  }
+
   static void showSuccessWithRoute(BuildContext context, Result result, Function route) async {
     assert(result.success);
     Flushbar(
