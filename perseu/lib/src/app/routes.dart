@@ -10,7 +10,6 @@ import 'package:perseu/src/screens/sign_up/sign_up_screen.dart';
 import 'package:perseu/src/screens/athlete_home_screen.dart';
 import 'package:perseu/src/screens/coach_home_screen.dart';
 import 'package:perseu/src/screens/coach_screens/new_training_screening.dart';
-import 'package:perseu/src/screens/coach_manage_requests/manage_invites_screen.dart';
 import 'package:perseu/src/screens/without_team_screens/athlete_enter_team_screen.dart';
 import 'package:perseu/src/screens/without_team_screens/coach_creates_team_screen.dart';
 
@@ -46,7 +45,6 @@ class Routes {
     newTraining: (context) => const NewTrainingScreen(),
     newSession: (context) => const NewSessionScreen(),
     newExercice: (context) => const NewExerciseScreen(),
-    manageInvites: (context) => const CoachManageRequestsScreen(),
     athleteEnterTeam: (context) => const AthleteEnterTeam(),
     coachCreatesTeam: (context) => const CoachCreatesTeam(),
     profile: (context) => const ProfileScreen(),
