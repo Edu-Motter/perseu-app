@@ -4,6 +4,7 @@ import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/models/exercise_model.dart';
 import 'package:perseu/src/models/sessions_model.dart';
 import 'package:perseu/src/models/training_model.dart';
+import 'package:perseu/src/screens/coach_screens/new_session_screening.dart';
 
 class NewTrainingScreen extends StatefulWidget {
   const NewTrainingScreen({Key? key}) : super(key: key);
@@ -18,11 +19,11 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
   void initState() {
     training = TrainingModel(id: 1, name: 'nomeee', sessions: [
       SessionModel(
-        id: 1,
+        id: 0,
         name: 'Aquecimento',
         exercises: [
           ExerciseModel(
-              id: '1',
+              id: '0',
               name: 'Alongamento leve',
               description:
                   'Alongar articulações das pernas e braços por 10 segundos'),
@@ -34,7 +35,7 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
       ),
       SessionModel(id: 1, name: 'Exercício pernas', exercises: [
         ExerciseModel(
-            id: '1',
+            id: '0',
             name: 'Leg press',
             description: 'Fazer leg press 45 com 140kg, 3x10'),
         ExerciseModel(
@@ -100,8 +101,30 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
                         training.sessions.removeAt(index);
                       });
                     },
-                    icon: const Icon(Icons.delete, size: 20,)),
-                IconButton(onPressed: () {}, icon: const Icon(Icons.edit, size: 20,)),
+                    icon: const Icon(
+                      Icons.delete,
+                      size: 20,
+                    )),
+                IconButton(
+                    onPressed: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(
+                              builder: (_) =>
+                                  NewSessionScreen(sessionModel: session)))
+                          .then((sessionFuture) {
+                        SessionModel sessionModel =
+                            sessionFuture as SessionModel;
+                        setState(() {
+                          training.sessions
+                              .removeWhere((e) => e.id == sessionModel.id);
+                          training.sessions.insert(index, sessionModel);
+                        });
+                      });
+                    },
+                    icon: const Icon(
+                      Icons.edit,
+                      size: 20,
+                    )),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Icon(Icons.keyboard_arrow_down),

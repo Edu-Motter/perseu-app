@@ -21,12 +21,13 @@ class _NewExerciseState extends State<NewExerciseScreen> {
 
   @override
   void initState() {
-    if(widget.hasExercise){
+    if (widget.hasExercise) {
       _exerciseDescriptionController.text = widget.exerciseModel!.description;
       _exerciseNameController.text = widget.exerciseModel!.name;
     }
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,6 +61,8 @@ class _NewExerciseState extends State<NewExerciseScreen> {
           ),
           TextField(
             controller: _exerciseDescriptionController,
+            keyboardType: TextInputType.multiline,
+            maxLines: null,
             decoration: const InputDecoration(
               labelText: 'Descrição do Exercício',
             ),
@@ -72,7 +75,9 @@ class _NewExerciseState extends State<NewExerciseScreen> {
                     _exerciseDescriptionController.text;
                 if (exerciseName.isNotEmpty && exerciseDescription.isNotEmpty) {
                   ExerciseModel exerciseModel = ExerciseModel(
-                      id: widget.hasExercise ? widget.exerciseModel!.id : const Uuid().v4(),
+                      id: widget.hasExercise
+                          ? widget.exerciseModel!.id
+                          : const Uuid().v4(),
                       name: exerciseName,
                       description: exerciseDescription);
                   Navigator.of(context).pop(exerciseModel);

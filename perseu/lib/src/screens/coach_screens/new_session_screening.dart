@@ -6,7 +6,10 @@ import 'package:perseu/src/models/sessions_model.dart';
 import 'package:perseu/src/screens/coach_screens/new_exercise_screening.dart';
 
 class NewSessionScreen extends StatefulWidget {
-  const NewSessionScreen({Key? key}) : super(key: key);
+  const NewSessionScreen({Key? key, this.sessionModel}) : super(key: key);
+  final SessionModel? sessionModel;
+
+  get hasSession => sessionModel != null ? true : false;
 
   @override
   _NewSessionState createState() => _NewSessionState();
@@ -18,7 +21,15 @@ class _NewSessionState extends State<NewSessionScreen> {
 
   @override
   void initState() {
-    sessionModel = SessionModel(id: 0, name: '', exercises: []);
+    if (widget.hasSession) {
+      _sessionNameController.text = widget.sessionModel!.name;
+      sessionModel = SessionModel(
+          id: widget.sessionModel!.id,
+          name: widget.sessionModel!.name,
+          exercises: widget.sessionModel!.exercises);
+    } else {
+      sessionModel = SessionModel(id: 1, name: '', exercises: []);
+    }
     super.initState();
   }
 
@@ -26,7 +37,9 @@ class _NewSessionState extends State<NewSessionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Nova sessão'),
+          title: widget.hasSession
+              ? const Text('Editando sessão')
+              : const Text('Nova sessão'),
         ),
         floatingActionButton: SpeedDial(
           animatedIcon: AnimatedIcons.menu_close,
@@ -73,7 +86,8 @@ class _NewSessionState extends State<NewSessionScreen> {
                   children: [
                     TextField(
                       controller: _sessionNameController,
-                      decoration: const InputDecoration(labelText: 'Nome da sessão'),
+                      decoration:
+                          const InputDecoration(labelText: 'Nome da sessão'),
                     ),
                     const Divider(),
                   ],
@@ -97,24 +111,39 @@ class _NewSessionState extends State<NewSessionScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: ListTile(
-                          trailing: const Icon(Icons.edit),
                           tileColor: Colors.teal[100],
                           title: Text(exercise.name),
                           subtitle: Text(exercise.description),
-                          onTap: () {
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(
-                                    builder: (_) => NewExerciseScreen(
-                                        exerciseModel: exercise)))
-                                .then((exerciseFuture) {
-                              ExerciseModel exerciseModel =
-                                  exerciseFuture as ExerciseModel;
-                              setState(() {
-                                sessionModel.exercises.removeWhere((e) => e.id == exerciseModel.id);
-                                sessionModel.exercises.add(exerciseModel);
-                              });
-                            });
-                          },
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.edit),
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .push(MaterialPageRoute(
+                                          builder: (_) => NewExerciseScreen(
+                                              exerciseModel: exercise)))
+                                      .then((exerciseFuture) {
+                                    ExerciseModel exerciseModel =
+                                        exerciseFuture as ExerciseModel;
+                                    setState(() {
+                                      sessionModel.exercises.removeWhere(
+                                          (e) => e.id == exerciseModel.id);
+                                      sessionModel.exercises.insert(index, exerciseModel);
+                                    });
+                                  });
+                                },
+                              ),
+                              IconButton(
+                                  icon: const Icon(Icons.delete),
+                                  onPressed: () {
+                                    setState(() {
+                                      sessionModel.exercises.removeAt(index);
+                                    });
+                                  }),
+                            ],
+                          ),
                         ),
                       ),
                     );
