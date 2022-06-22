@@ -59,5 +59,4 @@ void initializeLocator() {
   locator.registerFactory<SignUpViewModel>(() => SignUpViewModel());
   locator.registerFactory<AthletePendingRequestViewModel>(() => AthletePendingRequestViewModel());
   locator.registerFactory<CoachManageRequestsViewModel>(() => CoachManageRequestsViewModel());
-  locator.registerFactory<AthletePendingRequestViewModel>(() => AthletePendingRequestViewModel());
 }
