@@ -4,6 +4,7 @@ import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/screens/sign_up/sign_up_viewmodel.dart';
 import 'package:perseu/src/utils/formatters.dart';
 import 'package:perseu/src/utils/ui.dart';
+import 'package:perseu/src/utils/validators.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/locator.dart';
@@ -14,6 +15,7 @@ class SignUpScreen extends StatelessWidget {
   static const Key nameInputKey = Key('nameInput');
   static const Key birthdayInputKey = Key('birthdayInput');
   static const Key emailInputKey = Key('emailInput');
+  static const Key cpfInputKey = Key('cpfInput');
   static const Key passwordInputKey = Key('passwordInput');
   static const Key confirmPasswordInputKey = Key('confirmPasswordInput');
   static const Key profileInputKey = Key('profileInput');
@@ -24,6 +26,7 @@ class SignUpScreen extends StatelessWidget {
   final _nameController = TextEditingController();
   final _birthdayController = TextEditingController();
   final _emailController = TextEditingController();
+  final _cpfController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final _crefController = TextEditingController();
@@ -109,6 +112,23 @@ class SignUpScreen extends StatelessWidget {
                                   errorText: 'O E-mail precisa ser informado'),
                               EmailValidator(
                                   errorText: 'O E-mail precisa ser válido')
+                            ]),
+                          ),
+                          const SizedBox(height: 8),
+                          TextFormField(
+                            key: SignUpScreen.cpfInputKey,
+                            controller: _cpfController,
+                            onChanged: (value) => model.cpf = value,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: 'CPF:',
+                            ),
+                            inputFormatters: [Formatters.cpf()],
+                            validator: MultiValidator([
+                              RequiredValidator(
+                                  errorText: 'O CPF precisa ser informado'),
+                              CpfValidator(
+                                  errorText: 'O CPF precisa ser válido')
                             ]),
                           ),
                           const SizedBox(height: 8),
