@@ -56,7 +56,7 @@ class SignUpViewModel extends AppViewModel {
       if (result.success) {
         return const Result.success(message: 'Conta criada com sucesso');
       } else {
-        return const Result.error(message: 'Erro ao fazer login');
+        return Result.error(message: result.message);
       }
     });
   }

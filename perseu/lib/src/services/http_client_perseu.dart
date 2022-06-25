@@ -27,6 +27,7 @@ class HttpClientPerseu with ApiHelper {
     return process(
         dio.post('/auth/login',
             queryParameters: {'email': username, 'password': password}),
+        authErrors: true,
         onSuccess: (response) {
           final loginRequest =
               LoginRequest.fromMap(response.data as Map<String, dynamic>);
@@ -57,7 +58,7 @@ class HttpClientPerseu with ApiHelper {
   }
 
   Future<Result<LoginRequest>> signUp(SignUpRequest signUpRequest) async {
-    String body = signUpRequest.toJson();
+    FormData body = FormData.fromMap(signUpRequest.toMap());
     return process(
         dio.post('/auth/register', data: body),
         onSuccess: (response) {
