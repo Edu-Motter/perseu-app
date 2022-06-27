@@ -7,6 +7,12 @@ class ProfileViewModel extends AppViewModel {
   String? email;
   String? birthday;
   String? cpf;
+  String? cref;
+  String? weight;
+  String? height;
+
+  bool get isAthlete => session.user!.athlete != null;
+  bool get isCoach => session.user!.coach != null;
 
   Future<Result> save() async {
     await Future.delayed(const Duration(seconds: 10));
