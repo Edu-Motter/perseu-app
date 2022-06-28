@@ -162,7 +162,8 @@ class SignUpScreen extends StatelessWidget {
                             obscureText: true,
                             validator: MultiValidator([
                               RequiredValidator(
-                                  errorText: 'A senha precisa ser informada')
+                                  errorText: 'A senha precisa ser informada'),
+                              MinLengthValidator(4, errorText: 'A senha precisa ser no mínimo 4 caracteres')
                             ]),
                           ),
                           const SizedBox(height: 8),
@@ -177,8 +178,8 @@ class SignUpScreen extends StatelessWidget {
                             obscureText: true,
                             validator: MultiValidator([
                               RequiredValidator(
-                                  errorText:
-                                      'A confirmação de senha precisa ser informada')
+                                  errorText: 'Você precisa confirmar sua senha'),
+                              MinLengthValidator(4, errorText: 'A senha precisa ser no mínimo 4 caracteres')
                             ]),
                           ),
                           const SizedBox(height: 8),
@@ -263,18 +264,20 @@ class SignUpScreen extends StatelessWidget {
   }
 
   _handleSignUp(BuildContext context, SignUpViewModel model) async {
-    if (_formKey.currentState!.validate() && _passwordsValidation(model)) {
-      Result result = await model.signUp();
-      if (result.success) {
-        UIHelper.showSuccessWithRoute(context, result,
-            () => Navigator.of(context).pushReplacementNamed(Routes.login));
+    if (_formKey.currentState!.validate()) {
+      if(_passwordsValidation(model)){
+        Result result = await model.signUp();
+        if (result.success) {
+          UIHelper.showSuccessWithRoute(context, result,
+                  () => Navigator.of(context).pushReplacementNamed(Routes.login));
+        } else {
+          UIHelper.showError(context, result);
+        }
       } else {
-        UIHelper.showError(context, result);
+        showDialog(
+            context: context,
+            builder: (context) => const PasswordsNotMatchDialog());
       }
-    } else {
-      showDialog(
-          context: context,
-          builder: (context) => const PasswordsNotMatchDialog());
     }
   }
 

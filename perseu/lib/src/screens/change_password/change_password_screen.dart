@@ -50,8 +50,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                             hintText: 'Informe sua senha atual',
                             labelText: 'Senha atual',
                           ),
-                          validator: RequiredValidator(
-                              errorText: 'A senha atual precisa ser informada'),
+                          validator: MultiValidator([
+                            RequiredValidator(
+                                errorText: 'A senha atual precisa ser informada'),
+                            MinLengthValidator(4, errorText: 'A senha precisa ter no mínimo 4 caracteres')
+                          ]),
                         ),
                         const SizedBox(height: 16),
                         TextFormField(
@@ -63,8 +66,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                             hintText: 'Informe sua nova senha',
                             labelText: 'Nova senha',
                           ),
-                          validator: RequiredValidator(
-                              errorText: 'A nova senha precisa ser informada'),
+                          validator: MultiValidator([
+                            RequiredValidator(
+                                errorText: 'A nova senha precisa ser informada'),
+                            MinLengthValidator(4, errorText: 'A senha precisa ter no mínimo 4 caracteres')
+                          ]),
                         ),
                         const SizedBox(height: 16),
                         TextFormField(
@@ -77,8 +83,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                             hintText: 'Confirme sua nova nova senha',
                             labelText: 'Confirme nova senha',
                           ),
-                          validator: RequiredValidator(
-                              errorText: 'Precisa confirmar sua nova senha'),
+                          validator: MultiValidator([
+                            RequiredValidator(
+                                errorText: 'Você precisa confirmar a senha'),
+                            MinLengthValidator(4, errorText: 'A senha precisa ter no mínimo 4 caracteres')
+                          ]),
                         ),
                         const SizedBox(height: 16),
                         ElevatedButton(
@@ -98,7 +107,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   _handleSave(ChangePasswordViewModel model) {
     if (_formKey.currentState!.validate() && _passwordsValidation(model)) {
       UIHelper.showSuccess(
-          context, const Result.success(message: 'Sucesso ao altera senha'));
+          context, const Result.success(message: 'Sucesso ao alterar senha'));
     } else {
       showDialog(
           context: context,
