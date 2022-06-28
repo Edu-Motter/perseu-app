@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:perseu/src/components/dialogs/PasswordsNotMatchDialog.dart';
 import 'package:perseu/src/screens/change_password/change_password_viewmodel.dart';
+import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/locator.dart';
+import '../../services/foundation.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({Key? key}) : super(key: key);
@@ -17,6 +20,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   final TextEditingController _newPasswordController = TextEditingController();
   final TextEditingController _confirmNewPasswordController =
       TextEditingController();
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,52 +37,56 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 scrollDirection: Axis.vertical,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        controller: _passwordController,
-                        onChanged: (value) => model.password = value,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Informe sua senha atual',
-                          labelText: 'Senha atual',
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          controller: _passwordController,
+                          onChanged: (value) => model.password = value,
+                          obscureText: true,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Informe sua senha atual',
+                            labelText: 'Senha atual',
+                          ),
+                          validator: RequiredValidator(
+                              errorText: 'A senha atual precisa ser informada'),
                         ),
-                        validator: RequiredValidator(
-                            errorText: 'A senha atual precisa ser informada'),
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _newPasswordController,
-                        onChanged: (value) => model.newPassword = value,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Informe sua nova senha',
-                          labelText: 'Nova senha',
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          controller: _newPasswordController,
+                          onChanged: (value) => model.newPassword = value,
+                          obscureText: true,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Informe sua nova senha',
+                            labelText: 'Nova senha',
+                          ),
+                          validator: RequiredValidator(
+                              errorText: 'A nova senha precisa ser informada'),
                         ),
-                        validator: RequiredValidator(
-                            errorText: 'A nova senha precisa ser informada'),
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _confirmNewPasswordController,
-                        onChanged: (value) => model.confirmNewPassword = value,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Confirme sua nova nova senha',
-                          labelText: 'Confirme nova senha',
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          controller: _confirmNewPasswordController,
+                          onChanged: (value) =>
+                              model.confirmNewPassword = value,
+                          obscureText: true,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Confirme sua nova nova senha',
+                            labelText: 'Confirme nova senha',
+                          ),
+                          validator: RequiredValidator(
+                              errorText: 'Precisa confirmar sua nova senha'),
                         ),
-                        validator: RequiredValidator(
-                            errorText: 'Precisa confirmar sua nova senha'),
-                      ),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                          onPressed:
-                              model.isBusy ? null : () => _handleSave(model),
-                          child: const Text('Salvar'))
-                    ],
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                            onPressed:
+                                model.isBusy ? null : () => _handleSave(model),
+                            child: const Text('Salvar'))
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -86,5 +95,21 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         ));
   }
 
-  _handleSave(ChangePasswordViewModel model) {}
+  _handleSave(ChangePasswordViewModel model) {
+    if (_formKey.currentState!.validate() && _passwordsValidation(model)) {
+      UIHelper.showSuccess(
+          context, const Result.success(message: 'Sucesso ao altera senha'));
+    } else {
+      showDialog(
+          context: context,
+          builder: (context) => const PasswordsNotMatchDialog(
+                message:
+                    'Verifique suas novas senhas, pois elas não são iguais',
+              ));
+    }
+  }
+
+  bool _passwordsValidation(ChangePasswordViewModel model) {
+    return model.newPassword == model.confirmNewPassword;
+  }
 }

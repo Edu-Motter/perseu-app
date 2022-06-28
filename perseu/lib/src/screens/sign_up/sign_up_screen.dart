@@ -8,6 +8,7 @@ import 'package:perseu/src/utils/validators.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/locator.dart';
+import '../../components/dialogs/PasswordsNotMatchDialog.dart';
 import '../../services/foundation.dart';
 
 // ignore: must_be_immutable
@@ -36,6 +37,7 @@ class SignUpScreen extends StatelessWidget {
   final List<String> _userTypes = ['Atleta', 'Treinador'];
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   SignUpScreen({Key? key}) : super(key: key);
 
   @override
@@ -158,8 +160,10 @@ class SignUpScreen extends StatelessWidget {
                               hintText: 'Senha',
                             ),
                             obscureText: true,
-                            validator: RequiredValidator(
-                                errorText: 'A senha precisa ser informada'),
+                            validator: MultiValidator([
+                              RequiredValidator(
+                                  errorText: 'A senha precisa ser informada')
+                            ]),
                           ),
                           const SizedBox(height: 8),
                           TextFormField(
@@ -171,9 +175,11 @@ class SignUpScreen extends StatelessWidget {
                               hintText: 'Confirmação da senha:',
                             ),
                             obscureText: true,
-                            validator: RequiredValidator(
-                                errorText:
-                                    'A confirmação de senha precisa ser informada'),
+                            validator: MultiValidator([
+                              RequiredValidator(
+                                  errorText:
+                                      'A confirmação de senha precisa ser informada')
+                            ]),
                           ),
                           const SizedBox(height: 8),
                           DropdownButtonFormField(
@@ -257,7 +263,7 @@ class SignUpScreen extends StatelessWidget {
   }
 
   _handleSignUp(BuildContext context, SignUpViewModel model) async {
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate() && _passwordsValidation(model)) {
       Result result = await model.signUp();
       if (result.success) {
         UIHelper.showSuccessWithRoute(context, result,
@@ -265,7 +271,15 @@ class SignUpScreen extends StatelessWidget {
       } else {
         UIHelper.showError(context, result);
       }
+    } else {
+      showDialog(
+          context: context,
+          builder: (context) => const PasswordsNotMatchDialog());
     }
+  }
+
+  bool _passwordsValidation(SignUpViewModel model) {
+    return model.password == model.confirmPassword;
   }
 
   List<DropdownMenuItem<String>> getDropDownMenuItems() {
