@@ -30,10 +30,10 @@ class _AthleteRequestScreenState extends State<AthleteRequestScreen> {
             inAsyncCall: model.isBusy,
             child: Scaffold(
               appBar: AppBar(
-                  leading: IconButton(
-                      icon: const Icon(Icons.arrow_back),
-                      onPressed: () =>
-                          Navigator.pushReplacementNamed(context, Routes.login)),
+                leading: IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () =>
+                        Navigator.pushReplacementNamed(context, Routes.login)),
                 title: const Text('Ingressando na Equipe'),
               ),
               body: Container(
@@ -49,7 +49,7 @@ class _AthleteRequestScreenState extends State<AthleteRequestScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 16.0),
                           child: Text(
-                            'Bem vindo ao Perseu, atleta ${model.session.user?.name}'
+                            'Bem vindo ao Perseu, ${model.session.user?.name}'
                             ', para iniciar informe o código da equipe: ',
                             textAlign: TextAlign.center,
                             style: const TextStyle(
@@ -73,16 +73,7 @@ class _AthleteRequestScreenState extends State<AthleteRequestScreen> {
                         const SizedBox(height: 16),
                         ElevatedButton(
                             onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
-                                final Result result =
-                                    await model.createRequest();
-                                if (result.success) {
-                                  UIHelper.showSuccessWithRoute(context, result,
-                                      () => Navigator.of(context).pop());
-                                } else {
-                                  UIHelper.showError(context, result);
-                                }
-                              }
+                              await handleSend(model, context);
                             },
                             child: const Text('Enviar'))
                       ],
@@ -95,5 +86,21 @@ class _AthleteRequestScreenState extends State<AthleteRequestScreen> {
         },
       ),
     );
+  }
+
+  Future<void> handleSend(
+      AthleteRequestViewModel model, BuildContext context) async {
+    if (_formKey.currentState!.validate()) {
+      final Result result = await model.createRequest();
+      if (result.success) {
+        UIHelper.showSuccessWithRoute(
+            context,
+            result,
+            () => Navigator.of(context)
+                .pushReplacementNamed('athlete-pending-request'));
+      } else {
+        UIHelper.showError(context, result);
+      }
+    }
   }
 }
