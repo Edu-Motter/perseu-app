@@ -61,6 +61,13 @@ class CoachHomeScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 MenuButton(
+                  title: 'Alterar nome equipe',
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(Routes.changeTeamName);
+                  },
+                ),
+                const SizedBox(height: 8),
+                MenuButton(
                   title: 'Gerenciar perfil',
                   onPressed: () {
                     null;
