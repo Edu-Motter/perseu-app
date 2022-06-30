@@ -1,3 +1,4 @@
+import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:perseu/src/models/requests/sign_up_request.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/services/http_client_perseu.dart';
@@ -15,6 +16,7 @@ class SignUpViewModel extends AppViewModel {
 
   String name = '';
   String email = '';
+  String cpf = '';
   String birthday = '';
   String password = '';
   String confirmPassword = '';
@@ -32,10 +34,12 @@ class SignUpViewModel extends AppViewModel {
   }
 
   Future<Result<void>> signUp() async {
+    String unmaskedCpf = CPFValidator.strip(cpf);
+
     SignUpRequest signUpRequest = SignUpRequest(
         name: name,
         email: email,
-        cpf: '111.111.111-11',
+        cpf: unmaskedCpf,
         birthday: birthday,
         password: password,
         userType: userType.toLowerCase());
@@ -52,7 +56,7 @@ class SignUpViewModel extends AppViewModel {
       if (result.success) {
         return const Result.success(message: 'Conta criada com sucesso');
       } else {
-        return const Result.error(message: 'Erro ao fazer login');
+        return Result.error(message: result.message);
       }
     });
   }

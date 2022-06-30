@@ -1,7 +1,3 @@
-// ignore_for_file: unnecessary_null_comparison
-
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';

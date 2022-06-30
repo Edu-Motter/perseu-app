@@ -63,7 +63,7 @@ class _NewSessionState extends State<NewSessionScreen> {
               child: const Icon(Icons.add),
               onTap: () {
                 Navigator.of(context)
-                    .pushNamed(Routes.newExercice)
+                    .pushNamed(Routes.newExercise)
                     .then((exerciseFuture) {
                   ExerciseModel exerciseModel = exerciseFuture as ExerciseModel;
                   setState(() {

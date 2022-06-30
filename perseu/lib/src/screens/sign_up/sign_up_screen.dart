@@ -4,9 +4,11 @@ import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/screens/sign_up/sign_up_viewmodel.dart';
 import 'package:perseu/src/utils/formatters.dart';
 import 'package:perseu/src/utils/ui.dart';
+import 'package:perseu/src/utils/validators.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/locator.dart';
+import '../../components/dialogs/PasswordsNotMatchDialog.dart';
 import '../../services/foundation.dart';
 
 // ignore: must_be_immutable
@@ -14,6 +16,7 @@ class SignUpScreen extends StatelessWidget {
   static const Key nameInputKey = Key('nameInput');
   static const Key birthdayInputKey = Key('birthdayInput');
   static const Key emailInputKey = Key('emailInput');
+  static const Key cpfInputKey = Key('cpfInput');
   static const Key passwordInputKey = Key('passwordInput');
   static const Key confirmPasswordInputKey = Key('confirmPasswordInput');
   static const Key profileInputKey = Key('profileInput');
@@ -24,6 +27,7 @@ class SignUpScreen extends StatelessWidget {
   final _nameController = TextEditingController();
   final _birthdayController = TextEditingController();
   final _emailController = TextEditingController();
+  final _cpfController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final _crefController = TextEditingController();
@@ -33,6 +37,7 @@ class SignUpScreen extends StatelessWidget {
   final List<String> _userTypes = ['Atleta', 'Treinador'];
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   SignUpScreen({Key? key}) : super(key: key);
 
   @override
@@ -113,6 +118,23 @@ class SignUpScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 8),
                           TextFormField(
+                            key: SignUpScreen.cpfInputKey,
+                            controller: _cpfController,
+                            onChanged: (value) => model.cpf = value,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: 'CPF:',
+                            ),
+                            inputFormatters: [Formatters.cpf()],
+                            validator: MultiValidator([
+                              RequiredValidator(
+                                  errorText: 'O CPF precisa ser informado'),
+                              CpfValidator(
+                                  errorText: 'O CPF precisa ser válido')
+                            ]),
+                          ),
+                          const SizedBox(height: 8),
+                          TextFormField(
                               key: SignUpScreen.birthdayInputKey,
                               controller: _birthdayController,
                               onChanged: (value) => model.birthday = value,
@@ -138,8 +160,11 @@ class SignUpScreen extends StatelessWidget {
                               hintText: 'Senha',
                             ),
                             obscureText: true,
-                            validator: RequiredValidator(
-                                errorText: 'A senha precisa ser informada'),
+                            validator: MultiValidator([
+                              RequiredValidator(
+                                  errorText: 'A senha precisa ser informada'),
+                              MinLengthValidator(4, errorText: 'A senha precisa ser no mínimo 4 caracteres')
+                            ]),
                           ),
                           const SizedBox(height: 8),
                           TextFormField(
@@ -151,9 +176,11 @@ class SignUpScreen extends StatelessWidget {
                               hintText: 'Confirmação da senha:',
                             ),
                             obscureText: true,
-                            validator: RequiredValidator(
-                                errorText:
-                                    'A confirmação de senha precisa ser informada'),
+                            validator: MultiValidator([
+                              RequiredValidator(
+                                  errorText: 'Você precisa confirmar sua senha'),
+                              MinLengthValidator(4, errorText: 'A senha precisa ser no mínimo 4 caracteres')
+                            ]),
                           ),
                           const SizedBox(height: 8),
                           DropdownButtonFormField(
@@ -238,14 +265,24 @@ class SignUpScreen extends StatelessWidget {
 
   _handleSignUp(BuildContext context, SignUpViewModel model) async {
     if (_formKey.currentState!.validate()) {
-      Result result = await model.signUp();
-      if (result.success) {
-        UIHelper.showSuccessWithRoute(context, result,
-            () => Navigator.of(context).pushReplacementNamed(Routes.login));
+      if(_passwordsValidation(model)){
+        Result result = await model.signUp();
+        if (result.success) {
+          UIHelper.showSuccessWithRoute(context, result,
+                  () => Navigator.of(context).pushReplacementNamed(Routes.login));
+        } else {
+          UIHelper.showError(context, result);
+        }
       } else {
-        UIHelper.showError(context, result);
+        showDialog(
+            context: context,
+            builder: (context) => const PasswordsNotMatchDialog());
       }
     }
+  }
+
+  bool _passwordsValidation(SignUpViewModel model) {
+    return model.password == model.confirmPassword;
   }
 
   List<DropdownMenuItem<String>> getDropDownMenuItems() {
