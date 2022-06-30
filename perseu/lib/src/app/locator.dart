@@ -6,6 +6,7 @@ import 'package:perseu/src/screens/athlete_drawer/athlete_drawer_viewmodel.dart'
 import 'package:perseu/src/screens/athlete_request/athlete_request_viewmodel.dart';
 import 'package:perseu/src/screens/change_team_name/change_team_name_viewmodel.dart';
 import 'package:perseu/src/screens/new_team/new_team_viewmodel.dart';
+import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_viewmodel.dart';
 import 'package:perseu/src/screens/profile_screen/profile_viewmodel.dart';
 import 'package:perseu/src/screens/sign_up/sign_up_viewmodel.dart';
 import 'package:perseu/src/services/http_client_perseu.dart';
@@ -59,4 +60,5 @@ void initializeLocator() {
   locator.registerFactory<SignUpViewModel>(() => SignUpViewModel());
   locator.registerFactory<ChangeTeamNameViewModel>(() => ChangeTeamNameViewModel());
   locator.registerFactory<AthletePendingRequestViewModel>(() => AthletePendingRequestViewModel());
+  locator.registerFactory<CoachManageRequestsViewModel>(() => CoachManageRequestsViewModel());
 }

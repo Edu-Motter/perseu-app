@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:perseu/src/app/locator.dart';
+import 'package:perseu/src/models/requests/invite_request.dart';
 import 'package:perseu/src/models/requests/login_request.dart';
 import 'package:perseu/src/models/requests/sign_up_request.dart';
 import 'package:perseu/src/models/user_model.dart';
@@ -76,5 +77,37 @@ class HttpClientPerseu with ApiHelper {
         },
         onError: (response) =>
           const Result.error(message: 'Falha ao realizar cadastro'));
+  }
+
+  Future<Result<List<InviteRequest>>> getRequests() async {
+    await Future.delayed(const Duration(seconds: 5));
+    return process(
+        dio.get('/api/buscar-requisicoes-pendentes-equipe/7'),
+        onSuccess: (response) {
+          var data = response.data as List;
+           return Result.success(data: data.map((i) => InviteRequest.fromMap(i)).toList());
+        },
+        onError: (response) =>
+          const Result.error(message: 'Falha ao buscar solicitações pendentes'));
+  }
+
+  Future<Result<void>> acceptRequest(int requestId) async {
+    return process(
+        dio.put('/api/alteraStatusRequisicao/$requestId', data: {'status' : 'Aceito'}),
+        onSuccess: (response) {
+          return const Result.success(message: 'Aceito com sucesso');
+        },
+        onError: (response) =>
+          const Result.error(message: 'Falha ao aceitar solicitação'));
+  }
+
+  Future<Result<void>> refuseRequest(int requestId) async {
+    return process(
+        dio.put('/api/alteraStatusRequisicao/$requestId', data: {'status' : 'Recusado'}),
+        onSuccess: (response) {
+          return const Result.success(message: 'Recusado com sucesso');
+        },
+        onError: (response) =>
+        const Result.error(message: 'Falha ao aceitar solicitação'));
   }
 }
