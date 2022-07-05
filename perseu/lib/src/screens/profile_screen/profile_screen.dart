@@ -189,7 +189,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
                                   labelText: 'Peso:',
-                                  hintText: 'Peso: 000 Kg',
+                                  hintText: 'Peso: 00 Kg',
                                 ),
                                 validator: RequiredValidator(
                                     errorText: 'O Peso precisa ser informado'),

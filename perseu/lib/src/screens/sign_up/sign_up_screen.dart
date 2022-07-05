@@ -237,7 +237,7 @@ class SignUpScreen extends StatelessWidget {
                               inputFormatters: [Formatters.weight()],
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
-                                hintText: 'Peso: 000 Kg',
+                                hintText: 'Peso: 00 Kg',
                               ),
                               validator: RequiredValidator(
                                   errorText: 'O Peso precisa ser informado'),
