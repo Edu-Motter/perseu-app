@@ -79,10 +79,10 @@ class HttpClientPerseu with ApiHelper {
           const Result.error(message: 'Falha ao realizar cadastro'));
   }
 
-  Future<Result<List<InviteRequest>>> getRequests() async {
+  Future<Result<List<InviteRequest>>> getRequests(int teamId) async {
     await Future.delayed(const Duration(seconds: 5));
     return process(
-        dio.get('/api/buscar-requisicoes-pendentes-equipe/7'),
+        dio.get('/api/buscar-requisicoes-pendentes-equipe/$teamId'),
         onSuccess: (response) {
           var data = response.data as List;
            return Result.success(data: data.map((i) => InviteRequest.fromMap(i)).toList());

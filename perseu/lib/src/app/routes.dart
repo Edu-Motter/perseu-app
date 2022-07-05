@@ -16,6 +16,7 @@ import 'package:perseu/src/screens/without_team_screens/coach_creates_team_scree
 import '../screens/athlete_pending_request/athlete_pending_request_screen.dart';
 import '../screens/athlete_request/athlete_request_screen.dart';
 import '../screens/bootstrap/bootstrap_screen.dart';
+import '../screens/coach_manage_requests/manage_invites_screen.dart';
 
 class Routes {
   static const String bootstrap = "bootstrap";
@@ -47,6 +48,7 @@ class Routes {
     newExercise: (context) => const NewExerciseScreen(),
     athleteEnterTeam: (context) => const AthleteEnterTeam(),
     coachCreatesTeam: (context) => const CoachCreatesTeam(),
+    manageInvites: (context) => const CoachManageRequestsScreen(),
     profile: (context) => const ProfileScreen(),
     changePassword: (context) => const ChangePasswordScreen(),
     newTeam: (context) => const NewTeamScreen(),

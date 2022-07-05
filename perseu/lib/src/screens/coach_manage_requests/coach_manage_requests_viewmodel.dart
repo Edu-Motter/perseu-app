@@ -9,8 +9,8 @@ class CoachManageRequestsViewModel extends AppViewModel {
 
   HttpClientPerseu httpClientPerseu = locator<HttpClientPerseu>();
 
-  Future<Result<List<InviteRequest>>> getRequests(){
-    return httpClientPerseu.getRequests();
+  Future<Result<List<InviteRequest>>> getRequests(int teamId){
+    return httpClientPerseu.getRequests(teamId);
   }
 
   Future<Result> acceptRequest(int requestId){

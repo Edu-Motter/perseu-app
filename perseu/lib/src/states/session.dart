@@ -8,7 +8,6 @@ class Session extends ChangeNotifier {
   String? _authToken;
   UserRequest? _user;
 
-
   String? get authToken => _authToken;
   UserRequest? get user => _user;
   bool get authenticated => _user != null;
@@ -49,13 +48,19 @@ class PersistentSession extends Session {
       final props = await _read([authTokenKey, userKey]);
       if (props[authTokenKey] != null && props[userKey] != null) {
         var prop = props[userKey];
-        if(prop != null){
+        if (prop != null) {
           Map<String, dynamic> test = json.decode(prop);
-          if(test['treinador'] != null) test['treinador'] = json.decode(test['treinador']);
-          if(test['atleta'] != null) test['atleta'] = json.decode(test['atleta']);
+          if (test['treinador'] != '') {
+            debugPrint('treinador');
+            test['treinador'] = json.decode(test['treinador']);
+          }
+          if (test['atleta'] != '') {
+            debugPrint('atleta');
+            test['atleta'] = json.decode(test['atleta']);
+          }
           var userRequest = UserRequest.fromMap(test);
-          super.setAuthTokenAndUser(props[authTokenKey],userRequest);
-          debugPrint('Returning true');
+          super.setAuthTokenAndUser(props[authTokenKey], userRequest);
+          debugPrint('Returning success');
           return true;
         }
       }
@@ -68,8 +73,7 @@ class PersistentSession extends Session {
   @override
   void setAuthTokenAndUser(String? authToken, UserRequest? user) {
     super.setAuthTokenAndUser(authToken, user);
-    _write(
-        {authTokenKey: authToken, userKey: user?.toJson()});
+    _write({authTokenKey: authToken, userKey: user?.toJson()});
   }
 
   Future<void> _write(Map<String, String?> props) async {

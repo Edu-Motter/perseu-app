@@ -30,6 +30,8 @@ class UserRequest {
   });
 
   Map<String, dynamic> toMap() {
+    String coachString = coach != null ? coach!.toJson() : '';
+    String athleteString = athlete != null ? athlete!.toJson() : '';
     return {
       'id' : id,
       'nome' : name,
@@ -39,8 +41,8 @@ class UserRequest {
       'status' : status.toJson,
       'created_at' : createdAt,
       'updated_at' : updatedAt,
-      'treinador' : coach,
-      'atleta' : athlete
+      'treinador' : coachString,
+      'atleta' : athleteString
     };
   }
 
@@ -54,8 +56,8 @@ class UserRequest {
         status: StatusLoginString.getStatusLogin(map['status']),
         createdAt: map['created_at'],
         updatedAt: map['updated_at'],
-        coach: map['treinador'] != null ? CoachRequest.fromMap(map['treinador']) : null,
-        athlete: map['atleta'] != null ? AthleteRequest.fromMap(map['atleta']) : null,
+        coach: map['treinador'] != '' ? CoachRequest.fromMap(map['treinador']) : null,
+        athlete: map['atleta'] != '' ? AthleteRequest.fromMap(map['atleta']) : null,
     );
   }
 

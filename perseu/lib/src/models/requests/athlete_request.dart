@@ -1,32 +1,43 @@
 import 'dart:convert';
 
+import 'package:perseu/src/models/requests/team_request.dart';
+
 class AthleteRequest {
   final int id;
   final int userId;
   final String weight;
   final String height;
+  final TeamRequest? team;
 
   AthleteRequest(
       {required this.id,
       required this.userId,
       required this.weight,
-      required this.height});
+      required this.height,
+      required this.team});
 
   Map<String, dynamic> toMap() {
+    String teamString = team != null ? team!.toJson() : '';
     return {
       'id': id,
       'user_id': userId,
       'peso': weight,
       'altura': height,
+      'equipe' : teamString
     };
   }
 
   factory AthleteRequest.fromMap(Map<String, dynamic> map) {
+    if (map['equipe'] != '') {
+      map['equipe'] = json.decode(map['equipe']);
+    }
     return AthleteRequest(
         id: map['id'],
         userId: map['user_id'],
         weight: map['peso'],
-        height: map['altura']);
+        height: map['altura'],
+        team: map['equipe'] != null ? TeamRequest.fromMap(map['equipe']) : null
+    );
   }
 
   String toJson() => json.encode(toMap());
