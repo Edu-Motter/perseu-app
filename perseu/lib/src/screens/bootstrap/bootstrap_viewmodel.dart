@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:perseu/src/models/requests/status_login.dart';
 import 'package:perseu/src/states/foundation.dart';
 

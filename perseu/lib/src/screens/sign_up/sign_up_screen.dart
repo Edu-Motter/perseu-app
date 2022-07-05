@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/screens/sign_up/sign_up_viewmodel.dart';
 import 'package:perseu/src/utils/formatters.dart';
@@ -8,7 +7,7 @@ import 'package:perseu/src/utils/validators.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/locator.dart';
-import '../../components/dialogs/PasswordsNotMatchDialog.dart';
+import 'package:perseu/src/components/dialogs/passwords_not_match_dialog.dart';
 import '../../services/foundation.dart';
 
 // ignore: must_be_immutable

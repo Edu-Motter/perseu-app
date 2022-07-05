@@ -242,8 +242,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     if (_emailController.text != model.session.user!.email) return true;
 
-    if (_cpfController.text != Formatters.cpfFormatter(model.session.user!.cpf))
+    if (_cpfController.text != Formatters.cpfFormatter(model.session.user!.cpf)) {
       return true;
+    }
 
     if (_birthdayController.text != model.session.user!.bornOn) return true;
 
