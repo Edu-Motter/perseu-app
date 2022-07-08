@@ -4,6 +4,7 @@ import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/models/requests/invite_request.dart';
 import 'package:perseu/src/models/requests/login_request.dart';
 import 'package:perseu/src/models/requests/sign_up_request.dart';
+import 'package:perseu/src/models/requests/user_request.dart';
 import 'package:perseu/src/models/user_model.dart';
 
 import 'foundation.dart';
@@ -109,5 +110,17 @@ class HttpClientPerseu with ApiHelper {
         },
         onError: (response) =>
         const Result.error(message: 'Falha ao aceitar solicitação'));
+  }
+
+  Future<Result<void>> checkEmail(String email) async {
+    return process(
+        dio.get('/api/verificar-email', queryParameters: {'email' : email}),
+        onSuccess: (response) {
+          return const Result.success(message: 'E-mail disponível');
+        },
+        onError: (response) {
+          return const Result.error(message: 'E-mail já existente');
+        }
+    );
   }
 }
