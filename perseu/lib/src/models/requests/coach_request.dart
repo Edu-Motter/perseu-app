@@ -21,7 +21,7 @@ class CoachRequest {
 
   factory CoachRequest.fromMap(Map<String, dynamic> map) {
     if (map['equipe'] != '') {
-      map['equipe'] = json.decode(map['equipe']);
+      map['equipe'] = map['equipe'] is String ? json.decode(map['equipe']) : map['equipe'];
     }
     return CoachRequest(
         id: map['id'],
