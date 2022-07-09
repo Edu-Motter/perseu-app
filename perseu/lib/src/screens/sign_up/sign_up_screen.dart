@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/routes.dart';
+import 'package:perseu/src/components/dialogs/email_already_exists_dialog.dart';
 import 'package:perseu/src/screens/sign_up/sign_up_viewmodel.dart';
 import 'package:perseu/src/utils/formatters.dart';
 import 'package:perseu/src/utils/ui.dart';
@@ -265,23 +266,36 @@ class SignUpScreen extends StatelessWidget {
   _handleSignUp(BuildContext context, SignUpViewModel model) async {
     if (_formKey.currentState!.validate()) {
       if(_passwordsValidation(model)){
-        Result result = await model.signUp();
-        if (result.success) {
-          UIHelper.showSuccessWithRoute(context, result,
-                  () => Navigator.of(context).pushReplacementNamed(Routes.login));
-        } else {
-          UIHelper.showError(context, result);
-        }
-      } else {
         showDialog(
             context: context,
             builder: (context) => const PasswordsNotMatchDialog());
+        return;
+      }
+
+      if(await _emailValidation(model)){
+        showDialog(
+            context: context,
+            builder: (context) => const EmailAlreadyExists());
+        return;
+      }
+
+      Result result = await model.signUp();
+      if (result.success) {
+        UIHelper.showSuccessWithRoute(context, result,
+                () => Navigator.of(context).pushReplacementNamed(Routes.login));
+      } else {
+        UIHelper.showError(context, result);
       }
     }
   }
 
+  Future<bool> _emailValidation(SignUpViewModel model) async {
+     final result = await model.checkEmail(model.email);
+     return !result.success;
+  }
+
   bool _passwordsValidation(SignUpViewModel model) {
-    return model.password == model.confirmPassword;
+    return model.password != model.confirmPassword;
   }
 
   List<DropdownMenuItem<String>> getDropDownMenuItems() {

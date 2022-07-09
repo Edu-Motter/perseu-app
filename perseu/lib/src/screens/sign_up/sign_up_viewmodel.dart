@@ -59,5 +59,17 @@ class SignUpViewModel extends AppViewModel {
         return Result.error(message: result.message);
       }
     });
+
+  }
+
+  Future<Result<void>> checkEmail(String email){
+    return tryExec(() async {
+      final result = await httpClientPerseu.checkEmail(email);
+      if (result.success) {
+        return result;
+      } else {
+        return Result.error(message: result.message);
+      }
+    });
   }
 }
