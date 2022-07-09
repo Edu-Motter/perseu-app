@@ -6,6 +6,7 @@ import 'package:perseu/src/models/requests/login_request.dart';
 import 'package:perseu/src/models/requests/sign_up_request.dart';
 import 'package:perseu/src/models/user_model.dart';
 
+import '../models/requests/user_request.dart';
 import 'foundation.dart';
 
 class HttpClientPerseu with ApiHelper {
@@ -36,6 +37,19 @@ class HttpClientPerseu with ApiHelper {
         },
         onError: (response) =>
             const Result.error(message: 'Falha ao realizar login'));
+  }
+
+  Future<Result<UserRequest>> getUser(String email) async {
+    return process(
+        dio.get('/api/verficarDadosUsuario', queryParameters: {'email' : email}),
+        onSuccess: (response) {
+          final user = UserRequest.fromMap(response.data as Map<String, dynamic>);
+          return Result.success(data: user);
+        },
+        onError: (response) {
+          return const Result.error(message: 'E-mail já existente');
+        }
+    );
   }
 
   Future<Result<String>> createTeam(String teamName, int coachId) async {
