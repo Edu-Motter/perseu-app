@@ -16,6 +16,20 @@ class AthleteRequest {
       required this.height,
       required this.team});
 
+  AthleteRequest copyWith(
+      {int? id,
+      int? userId,
+      String? weight,
+      String? height,
+      TeamRequest? team}) {
+    return AthleteRequest(
+        id: id ?? this.id,
+        userId: userId ?? this.userId,
+        weight: weight ?? this.weight,
+        height: height ?? this.height,
+        team: team ?? this.team);
+  }
+
   Map<String, dynamic> toMap() {
     String teamString = team != null ? team!.toJson() : '';
     return {
@@ -23,21 +37,22 @@ class AthleteRequest {
       'user_id': userId,
       'peso': weight,
       'altura': height,
-      'equipe' : teamString
+      'equipe': teamString
     };
   }
 
   factory AthleteRequest.fromMap(Map<String, dynamic> map) {
     if (map['equipe'] != '') {
-      map['equipe'] = map['equipe'] is String ? json.decode(map['equipe']) : map['equipe'];
+      map['equipe'] =
+          map['equipe'] is String ? json.decode(map['equipe']) : map['equipe'];
     }
     return AthleteRequest(
         id: map['id'],
         userId: map['user_id'],
         weight: map['peso'],
         height: map['altura'],
-        team: map['equipe'] != null ? TeamRequest.fromMap(map['equipe']) : null
-    );
+        team:
+            map['equipe'] != null ? TeamRequest.fromMap(map['equipe']) : null);
   }
 
   String toJson() => json.encode(toMap());

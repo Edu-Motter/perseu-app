@@ -28,6 +28,30 @@ class UserRequest {
       required this.coach,
       required this.athlete});
 
+  UserRequest copyWith(
+      {int? id,
+      String? name,
+      String? email,
+      String? cpf,
+      String? bornOn,
+      StatusLogin? status,
+      String? createdAt,
+      String? updatedAt,
+      AthleteRequest? athlete,
+      CoachRequest? coach}) {
+    return UserRequest(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        email: email ?? this.email,
+        cpf: cpf ?? this.cpf,
+        bornOn: bornOn ?? this.bornOn,
+        status: status ?? this.status,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        coach: coach ?? this.coach,
+        athlete: athlete ?? this.athlete);
+  }
+
   Map<String, dynamic> toMap() {
     String coachString = coach != null ? coach!.toJson() : '';
     String athleteString = athlete != null ? athlete!.toJson() : '';
