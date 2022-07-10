@@ -137,4 +137,14 @@ class HttpClientPerseu with ApiHelper {
         }
     );
   }
+
+  Future<Result<void>> updateUser(UserRequest updatedUser) async {
+    return process(
+        dio.put('/api/alteraStatusRequisicao/$updatedUser', data: updatedUser.toJson()),
+        onSuccess: (response) {
+          return const Result.success(message: 'Recusado com sucesso');
+        },
+        onError: (response) =>
+        const Result.error(message: 'Falha ao aceitar solicitação'));
+  }
 }
