@@ -77,7 +77,7 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
           ),
           SpeedDialChild(
             child: const Icon(Icons.forward),
-            onTap: () => Navigator.of(context).pushNamed(Routes.newSession),
+            onTap: () => Navigator.of(context).pushNamed(Routes.assignTraining),
             label: 'Atribuir treino',
             labelStyle: const TextStyle(fontWeight: FontWeight.w500),
           ),
