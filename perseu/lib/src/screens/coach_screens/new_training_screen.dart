@@ -5,6 +5,7 @@ import 'package:perseu/src/models/exercise_model.dart';
 import 'package:perseu/src/models/sessions_model.dart';
 import 'package:perseu/src/models/training_model.dart';
 import 'package:perseu/src/screens/coach_screens/new_session_screen.dart';
+import '../coach_assign_training/assign_training_screen.dart';
 
 class NewTrainingScreen extends StatefulWidget {
   const NewTrainingScreen({Key? key}) : super(key: key);
@@ -17,7 +18,7 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
   late TrainingModel training;
   @override
   void initState() {
-    training = TrainingModel(id: 1, name: 'nomeee', sessions: [
+    training = TrainingModel(id: 1, name: 'treino forte', sessions: [
       SessionModel(
         id: 0,
         name: 'Aquecimento',
@@ -77,7 +78,8 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
           ),
           SpeedDialChild(
             child: const Icon(Icons.forward),
-            onTap: () => Navigator.of(context).pushNamed(Routes.assignTraining),
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => AssignTrainingScreen(training: training))),
             label: 'Atribuir treino',
             labelStyle: const TextStyle(fontWeight: FontWeight.w500),
           ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/screens/change_password/change_password_screen.dart';
 import 'package:perseu/src/screens/change_team_name/change_team_name_screen.dart';
-import 'package:perseu/src/screens/coach_assign_training/assign_training_screen.dart';
 import 'package:perseu/src/screens/coach_screens/new_exercise_screen.dart';
 import 'package:perseu/src/screens/coach_screens/new_session_screen.dart';
 import 'package:perseu/src/screens/login_screen.dart';
@@ -57,6 +56,5 @@ class Routes {
     changeTeamName: (context) => const ChangeTeamNameScreen(),
     athleteRequest: (context) => const AthleteRequestScreen(),
     athletePendingRequest: (context) => const AthletePendingRequestScreen(),
-    assignTraining: (context) => const AssignTrainingScreen()
   };
 }
