@@ -3,7 +3,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/models/exercise_model.dart';
 import 'package:perseu/src/models/sessions_model.dart';
-import 'package:perseu/src/screens/coach_screens/new_exercise_screening.dart';
+import 'package:perseu/src/screens/coach_screens/new_exercise_screen.dart';
 
 class NewSessionScreen extends StatefulWidget {
   const NewSessionScreen({Key? key, this.sessionModel}) : super(key: key);

@@ -4,7 +4,7 @@ import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/models/exercise_model.dart';
 import 'package:perseu/src/models/sessions_model.dart';
 import 'package:perseu/src/models/training_model.dart';
-import 'package:perseu/src/screens/coach_screens/new_session_screening.dart';
+import 'package:perseu/src/screens/coach_screens/new_session_screen.dart';
 
 class NewTrainingScreen extends StatefulWidget {
   const NewTrainingScreen({Key? key}) : super(key: key);
