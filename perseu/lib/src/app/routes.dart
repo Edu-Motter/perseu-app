@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/screens/change_password/change_password_screen.dart';
 import 'package:perseu/src/screens/change_team_name/change_team_name_screen.dart';
+import 'package:perseu/src/screens/coach_assign_training/assign_training_screen.dart';
 import 'package:perseu/src/screens/coach_screens/new_exercise_screening.dart';
 import 'package:perseu/src/screens/coach_screens/new_session_screening.dart';
 import 'package:perseu/src/screens/login_screen.dart';
@@ -36,6 +37,7 @@ class Routes {
   static const String athleteRequest = "athlete-request";
   static const String athletePendingRequest = "athlete-pending-request";
   static const String changeTeamName = "change-team-name";
+  static const String assignTraining = "assign-training";
 
   static Map<String, WidgetBuilder> map = {
     bootstrap: (context) => const BootstrapScreen(),
@@ -54,6 +56,7 @@ class Routes {
     newTeam: (context) => const NewTeamScreen(),
     changeTeamName: (context) => const ChangeTeamNameScreen(),
     athleteRequest: (context) => const AthleteRequestScreen(),
-    athletePendingRequest: (context) => const AthletePendingRequestScreen()
+    athletePendingRequest: (context) => const AthletePendingRequestScreen(),
+    assignTraining: (context) => const AssignTrainingScreen()
   };
 }
