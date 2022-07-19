@@ -78,8 +78,13 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
           ),
           SpeedDialChild(
             child: const Icon(Icons.forward),
-            onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (_) => AssignTrainingScreen(training: training))),
+            onTap: () => {
+              if (training.sessions.isNotEmpty)
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => AssignTrainingScreen(training: training)))
+              else
+                debugPrint('Não há sessões para serem atribuidas')
+            },
             label: 'Atribuir treino',
             labelStyle: const TextStyle(fontWeight: FontWeight.w500),
           ),

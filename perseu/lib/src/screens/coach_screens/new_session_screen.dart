@@ -51,7 +51,8 @@ class _NewSessionState extends State<NewSessionScreen> {
               child: const Icon(Icons.save),
               onTap: () {
                 String sessionName = _sessionNameController.text;
-                if (sessionName.isNotEmpty) {
+                if (sessionName.isNotEmpty &&
+                    sessionModel.exercises.isNotEmpty) {
                   sessionModel.name = sessionName;
                   Navigator.of(context).pop(sessionModel);
                 }
@@ -130,7 +131,8 @@ class _NewSessionState extends State<NewSessionScreen> {
                                     setState(() {
                                       sessionModel.exercises.removeWhere(
                                           (e) => e.id == exerciseModel.id);
-                                      sessionModel.exercises.insert(index, exerciseModel);
+                                      sessionModel.exercises
+                                          .insert(index, exerciseModel);
                                     });
                                   });
                                 },
