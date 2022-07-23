@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/screens/change_password/change_password_screen.dart';
 import 'package:perseu/src/screens/change_team_name/change_team_name_screen.dart';
-import 'package:perseu/src/screens/coach_assign_training/assign_training_screen.dart';
-import 'package:perseu/src/screens/coach_screens/new_exercise_screening.dart';
-import 'package:perseu/src/screens/coach_screens/new_session_screening.dart';
+import 'package:perseu/src/screens/coach_screens/new_exercise_screen.dart';
+import 'package:perseu/src/screens/coach_screens/new_session_screen.dart';
 import 'package:perseu/src/screens/login_screen.dart';
 import 'package:perseu/src/screens/new_team/new_team_screen.dart';
 import 'package:perseu/src/screens/profile_screen/profile_screen.dart';
 import 'package:perseu/src/screens/sign_up/sign_up_screen.dart';
 import 'package:perseu/src/screens/athlete_home_screen.dart';
 import 'package:perseu/src/screens/coach_home_screen.dart';
-import 'package:perseu/src/screens/coach_screens/new_training_screening.dart';
+import 'package:perseu/src/screens/coach_screens/new_training_screen.dart';
 import 'package:perseu/src/screens/without_team_screens/athlete_enter_team_screen.dart';
 import 'package:perseu/src/screens/without_team_screens/coach_creates_team_screen.dart';
 
@@ -57,6 +56,5 @@ class Routes {
     changeTeamName: (context) => const ChangeTeamNameScreen(),
     athleteRequest: (context) => const AthleteRequestScreen(),
     athletePendingRequest: (context) => const AthletePendingRequestScreen(),
-    assignTraining: (context) => const AssignTrainingScreen()
   };
 }

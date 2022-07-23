@@ -3,7 +3,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/models/exercise_model.dart';
 import 'package:perseu/src/models/sessions_model.dart';
-import 'package:perseu/src/screens/coach_screens/new_exercise_screening.dart';
+import 'package:perseu/src/screens/coach_screens/new_exercise_screen.dart';
 
 class NewSessionScreen extends StatefulWidget {
   const NewSessionScreen({Key? key, this.sessionModel}) : super(key: key);
@@ -51,7 +51,8 @@ class _NewSessionState extends State<NewSessionScreen> {
               child: const Icon(Icons.save),
               onTap: () {
                 String sessionName = _sessionNameController.text;
-                if (sessionName.isNotEmpty) {
+                if (sessionName.isNotEmpty &&
+                    sessionModel.exercises.isNotEmpty) {
                   sessionModel.name = sessionName;
                   Navigator.of(context).pop(sessionModel);
                 }
@@ -130,7 +131,8 @@ class _NewSessionState extends State<NewSessionScreen> {
                                     setState(() {
                                       sessionModel.exercises.removeWhere(
                                           (e) => e.id == exerciseModel.id);
-                                      sessionModel.exercises.insert(index, exerciseModel);
+                                      sessionModel.exercises
+                                          .insert(index, exerciseModel);
                                     });
                                   });
                                 },

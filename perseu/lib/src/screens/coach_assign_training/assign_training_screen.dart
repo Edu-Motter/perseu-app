@@ -1,24 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:perseu/src/models/training_model.dart';
 
 import 'assign_training_viewmodel.dart';
 
 class AssignTrainingScreen extends StatefulWidget {
-  const AssignTrainingScreen({Key? key}) : super(key: key);
+  const AssignTrainingScreen({Key? key, required this.training})
+      : super(key: key);
+  final TrainingModel training;
+
   @override
   _AssignTrainingState createState() => _AssignTrainingState();
 }
 
 class _AssignTrainingState extends State<AssignTrainingScreen> {
-  late AssignTrainingModel assignTrainingModel;
+  late AthletesToAssignTrainingModel athletesToAssignTrainingModel;
+  late TrainingModel training;
   @override
   void initState() {
+    training = widget.training;
     super.initState();
   }
 
-  List<AssignTrainingModel> athletesToAssign = [
-    AssignTrainingModel(athleteName: "Rafael", athleteId: 0, assigned: false),
-    AssignTrainingModel(athleteName: "José", athleteId: 1, assigned: false),
-    AssignTrainingModel(athleteName: "Bianca", athleteId: 2, assigned: false),
+  List<AthletesToAssignTrainingModel> athletesToAssign = [
+    AthletesToAssignTrainingModel(
+        athleteName: "Rafael", athleteId: 0, assigned: false),
+    AthletesToAssignTrainingModel(
+        athleteName: "José", athleteId: 1, assigned: false),
+    AthletesToAssignTrainingModel(
+        athleteName: "Bianca", athleteId: 2, assigned: false),
   ];
 
   final bool checkboxState = false;
@@ -48,7 +57,22 @@ class _AssignTrainingState extends State<AssignTrainingScreen> {
           const SizedBox(
             height: 16,
           ),
-          ElevatedButton(onPressed: () {}, child: const Text('Atribuir'))
+          ElevatedButton(
+              onPressed: () {
+                if (athletesToAssign.any((element) => element.assigned)) {
+                  AssignTrainingModel assignTrainingModel = AssignTrainingModel(
+                      training: training,
+                      athletes: athletesToAssign
+                          .where((AthletesToAssignTrainingModel athlete) =>
+                              athlete.assigned)
+                          .toList());
+                  debugPrint(assignTrainingModel.athletes[0].athleteName);
+                  debugPrint(assignTrainingModel.training.name);
+                } else {
+                  debugPrint('Selecione ao menos um atleta');
+                }
+              },
+              child: const Text('Atribuir'))
         ]));
   }
 }
