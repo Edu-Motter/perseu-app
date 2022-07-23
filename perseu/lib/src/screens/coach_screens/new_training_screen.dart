@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:perseu/src/app/routes.dart';
+import 'package:perseu/src/components/exercise_card/exercise_card.dart';
 import 'package:perseu/src/models/exercise_model.dart';
 import 'package:perseu/src/models/sessions_model.dart';
 import 'package:perseu/src/models/training_model.dart';
@@ -146,34 +147,6 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
             ],
           ));
         },
-      ),
-    );
-  }
-}
-
-class ExerciseCard extends StatelessWidget {
-  final ExerciseModel exerciseModel;
-
-  const ExerciseCard({Key? key, required this.exerciseModel}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        color: Colors.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              exerciseModel.name,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(height: 8),
-            Text(exerciseModel.description),
-          ],
-        ),
       ),
     );
   }

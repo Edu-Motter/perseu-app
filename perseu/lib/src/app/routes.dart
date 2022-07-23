@@ -17,6 +17,7 @@ import '../screens/athlete_pending_request/athlete_pending_request_screen.dart';
 import '../screens/athlete_request/athlete_request_screen.dart';
 import '../screens/bootstrap/bootstrap_screen.dart';
 import '../screens/coach_manage_requests/manage_invites_screen.dart';
+import '../screens/user_view_training/user_view_training_screen.dart';
 
 class Routes {
   static const String bootstrap = "bootstrap";
@@ -36,7 +37,7 @@ class Routes {
   static const String athleteRequest = "athlete-request";
   static const String athletePendingRequest = "athlete-pending-request";
   static const String changeTeamName = "change-team-name";
-  static const String assignTraining = "assign-training";
+  static const String userViewTraining = "user-view-training";
 
   static Map<String, WidgetBuilder> map = {
     bootstrap: (context) => const BootstrapScreen(),
@@ -56,5 +57,6 @@ class Routes {
     changeTeamName: (context) => const ChangeTeamNameScreen(),
     athleteRequest: (context) => const AthleteRequestScreen(),
     athletePendingRequest: (context) => const AthletePendingRequestScreen(),
+    userViewTraining: (context) => const UserViewTrainingScreen(),
   };
 }

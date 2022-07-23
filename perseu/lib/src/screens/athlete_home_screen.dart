@@ -31,7 +31,7 @@ class AthleteHomeScreen extends StatelessWidget {
                 MenuButton(
                   title: 'Visualizar treino de hoje',
                   onPressed: () {
-                    null;
+                    Navigator.of(context).pushNamed(Routes.userViewTraining);
                   },
                 ),
                 const SizedBox(height: 32),
