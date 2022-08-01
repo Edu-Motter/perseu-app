@@ -5,6 +5,7 @@ import 'package:perseu/src/models/requests/invite_request.dart';
 import 'package:perseu/src/models/requests/login_request.dart';
 import 'package:perseu/src/models/requests/sign_up_request.dart';
 import 'package:perseu/src/models/requests/user_request.dart';
+import 'package:perseu/src/models/requests/user_update_request.dart';
 import 'package:perseu/src/models/user_model.dart';
 
 import '../models/requests/user_request.dart';
@@ -138,13 +139,19 @@ class HttpClientPerseu with ApiHelper {
     );
   }
 
-  Future<Result<void>> updateUser(UserRequest updatedUser) async {
+  Future<Result<UserRequest>> updateUser(UserUpdateRequest userUpdate) async {
     return process(
-        dio.put('/api/alteraStatusRequisicao/$updatedUser', data: updatedUser.toJson()),
+        dio.put('/api/alterarDadosUsuario/${userUpdate.id}',
+            data: userUpdate.toJson()),
         onSuccess: (response) {
-          return const Result.success(message: 'Recusado com sucesso');
+          final UserRequest data =
+              UserRequest.fromMap(response.data as Map<String, dynamic>);
+
+          return Result.success(
+              message: 'Editado com sucesso', data: data);
         },
         onError: (response) =>
-        const Result.error(message: 'Falha ao aceitar solicitação'));
+            const Result.error(message: 'Falha ao aceitar solicitação'));
   }
 }
+
