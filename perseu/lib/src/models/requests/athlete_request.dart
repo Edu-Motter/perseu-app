@@ -5,8 +5,8 @@ import 'package:perseu/src/models/requests/team_request.dart';
 class AthleteRequest {
   final int id;
   final int userId;
-  final String weight;
-  final String height;
+  int weight;
+  double height;
   final TeamRequest? team;
 
   AthleteRequest(
@@ -19,8 +19,8 @@ class AthleteRequest {
   AthleteRequest copyWith(
       {int? id,
       int? userId,
-      String? weight,
-      String? height,
+      int? weight,
+      double? height,
       TeamRequest? team}) {
     return AthleteRequest(
         id: id ?? this.id,
@@ -49,8 +49,8 @@ class AthleteRequest {
     return AthleteRequest(
         id: map['id'],
         userId: map['user_id'],
-        weight: map['peso'],
-        height: map['altura'],
+        weight: map['peso'] ?? 0,
+        height: map['altura'] ?? 0,
         team:
             map['equipe'] != null ? TeamRequest.fromMap(map['equipe']) : null);
   }

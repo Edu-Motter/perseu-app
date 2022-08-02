@@ -52,8 +52,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
 
     if (session.user!.athlete != null) {
-      _weightController.text = session.user!.athlete!.weight;
-      _heightController.text = session.user!.athlete!.height;
+      _weightController.text = session.user!.athlete!.weight.toString();
+      _heightController.text = session.user!.athlete!.height.toString();
     }
 
     super.initState();

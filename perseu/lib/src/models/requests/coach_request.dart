@@ -5,7 +5,7 @@ import 'package:perseu/src/models/requests/team_request.dart';
 class CoachRequest {
   final int id;
   final int userId;
-  final String cref;
+  String cref;
   final TeamRequest? team;
 
   CoachRequest(
@@ -41,4 +41,9 @@ class CoachRequest {
   }
 
   String toJson() => json.encode(toMap());
+
+  @override
+  String toString() {
+    return 'CoachRequest{id: $id, userId: $userId, cref: $cref, team: $team}';
+  }
 }

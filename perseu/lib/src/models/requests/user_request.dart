@@ -76,7 +76,7 @@ class UserRequest {
       email: map['email'],
       cpf: map['cpf'],
       bornOn: map['data_nascimento'],
-      status: StatusLoginString.getStatusLogin(map['status']),
+      status: map['status'] != null ? StatusLoginString.getStatusLogin(map['status']) : StatusLogin.unknown,
       createdAt: map['created_at'],
       updatedAt: map['updated_at'],
       coach: (map['treinador'] != '' && map['treinador'] != null)
@@ -89,4 +89,9 @@ class UserRequest {
   }
 
   String toJson() => json.encode(toMap());
+
+  @override
+  String toString() {
+    return 'UserRequest{id: $id, name: $name, email: $email, cpf: $cpf, bornOn: $bornOn, status: $status, createdAt: $createdAt, updatedAt: $updatedAt, coach: $coach, athlete: $athlete}';
+  }
 }
