@@ -26,7 +26,7 @@ class AssignTrainingViewModel extends AppViewModel {
     List<double> athletesIds = athletes.where((athlete) => athlete.assigned)
         .map((athlete) => athlete.athleteId)
         .toList();
-    final trainingRequest = AssignTrainingRequest(athletesIds, training);
+    final trainingRequest = AssignTrainingRequest(athletesIds, training, session.user!.id);
 
     await httpClientPerseu.assignTraining(trainingRequest);
   }
