@@ -6,7 +6,6 @@ import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/locator.dart';
-import '../../services/foundation.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({Key? key}) : super(key: key);
@@ -52,8 +51,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           ),
                           validator: MultiValidator([
                             RequiredValidator(
-                                errorText: 'A senha atual precisa ser informada'),
-                            MinLengthValidator(4, errorText: 'A senha precisa ter no mínimo 4 caracteres')
+                                errorText:
+                                    'A senha atual precisa ser informada'),
+                            MinLengthValidator(4,
+                                errorText:
+                                    'A senha precisa ter no mínimo 4 caracteres')
                           ]),
                         ),
                         const SizedBox(height: 16),
@@ -68,8 +70,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           ),
                           validator: MultiValidator([
                             RequiredValidator(
-                                errorText: 'A nova senha precisa ser informada'),
-                            MinLengthValidator(4, errorText: 'A senha precisa ter no mínimo 4 caracteres')
+                                errorText:
+                                    'A nova senha precisa ser informada'),
+                            MinLengthValidator(4,
+                                errorText:
+                                    'A senha precisa ter no mínimo 4 caracteres')
                           ]),
                         ),
                         const SizedBox(height: 16),
@@ -86,13 +91,16 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           validator: MultiValidator([
                             RequiredValidator(
                                 errorText: 'Você precisa confirmar a senha'),
-                            MinLengthValidator(4, errorText: 'A senha precisa ter no mínimo 4 caracteres')
+                            MinLengthValidator(4,
+                                errorText:
+                                    'A senha precisa ter no mínimo 4 caracteres')
                           ]),
                         ),
                         const SizedBox(height: 16),
                         ElevatedButton(
-                            onPressed:
-                                model.isBusy ? null : () => _handleSave(model),
+                            onPressed: model.isBusy
+                                ? null
+                                : () => _handleSave(model, context),
                             child: const Text('Salvar'))
                       ],
                     ),
@@ -104,10 +112,15 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         ));
   }
 
-  _handleSave(ChangePasswordViewModel model) {
+  _handleSave(ChangePasswordViewModel model, BuildContext context) async {
     if (_formKey.currentState!.validate() && _passwordsValidation(model)) {
-      UIHelper.showSuccess(
-          context, const Result.success(message: 'Sucesso ao alterar senha'));
+      final result = await model.changePassword();
+      if(result.success) {
+        Navigator.of(context).pop();
+        UIHelper.showSuccess(context, result);
+        return;
+      }
+      UIHelper.showError(context, result);
     } else {
       showDialog(
           context: context,
