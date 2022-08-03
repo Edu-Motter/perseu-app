@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:perseu/src/models/requests/user_request.dart';
 import 'package:perseu/src/models/requests/user_update_request.dart';
 import 'package:perseu/src/services/http_client_perseu.dart';
 import 'package:perseu/src/states/foundation.dart';
