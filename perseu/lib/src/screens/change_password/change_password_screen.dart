@@ -115,8 +115,12 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   _handleSave(ChangePasswordViewModel model, BuildContext context) async {
     if (_formKey.currentState!.validate() && _passwordsValidation(model)) {
       final result = await model.changePassword();
-      Navigator.of(context).pop();
-      UIHelper.showSuccess(context, result);
+      if(result.success) {
+        Navigator.of(context).pop();
+        UIHelper.showSuccess(context, result);
+        return;
+      }
+      UIHelper.showError(context, result);
     } else {
       showDialog(
           context: context,

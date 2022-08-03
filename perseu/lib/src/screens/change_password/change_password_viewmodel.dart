@@ -14,7 +14,7 @@ class ChangePasswordViewModel extends AppViewModel {
 
   Future<Result> changePassword(){
     return tryExec(() async {
-      final result = await httpClientPerseu.changePassword(newPassword!, session.user!.id);
+      final result = await httpClientPerseu.changePassword(newPassword!, password!, session.user!.id);
       if(result.success){
         return const Result.success(message: 'Sucesso ao alterar a senha!');
       } else {

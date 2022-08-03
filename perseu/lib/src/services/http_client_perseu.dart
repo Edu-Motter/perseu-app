@@ -73,15 +73,19 @@ class HttpClientPerseu with ApiHelper {
             message: 'Falha ao realizar cadastro de equipe'));
   }
 
-  Future<Result<void>> changePassword(String password, int userId) async {
+  Future<Result<void>> changePassword(
+      String newPassword, String oldPassword, int userId) async {
     return process(
-        dio.put('/api/alterarSenha',
-            data: {'user_id': userId, 'password': password}),
+        dio.put('/api/alterarSenha', data: {
+          'user_id': userId,
+          'newPassword': newPassword,
+          'oldPassword': oldPassword
+        }),
         onSuccess: (response) {
           return const Result.success();
         },
-        onError: (response) => const Result.error(
-            message: 'Falha ao alterar senha'));
+        onError: (response) =>
+        const Result.error(message: 'Falha ao alterar senha'));
   }
 
   Future<Result<void>> changeTeamName(String teamName, teamId){
