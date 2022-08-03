@@ -4,7 +4,7 @@ import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/models/requests/invite_request.dart';
 import 'package:perseu/src/models/requests/login_request.dart';
 import 'package:perseu/src/models/requests/sign_up_request.dart';
-import 'package:perseu/src/models/requests/training_request.dart';
+import 'package:perseu/src/models/requests/assign_training.dart';
 import 'package:perseu/src/models/requests/user_request.dart';
 import 'package:perseu/src/models/requests/user_update_request.dart';
 import 'package:perseu/src/models/user_model.dart';
@@ -88,10 +88,10 @@ class HttpClientPerseu with ApiHelper {
           return const Result.success();
         },
         onError: (response) =>
-        const Result.error(message: 'Falha ao alterar senha'));
+            const Result.error(message: 'Falha ao alterar senha'));
   }
 
-  Future<Result<void>> changeTeamName(String teamName, teamId){
+  Future<Result<void>> changeTeamName(String teamName, teamId) {
     return process(
         dio.put('/api/alterar-dados-equipe/$teamId', data: {'nome': teamName}),
         onSuccess: (response) {
@@ -169,17 +169,12 @@ class HttpClientPerseu with ApiHelper {
             const Result.error(message: 'Falha ao aceitar solicitação'));
   }
 
-  Future<Result<void>> assignTraining(
-      TrainingRequest assignTraining) async {
-    return process(
-        dio.post('/api/criar-treino',
-            data: assignTraining.toJson()),
+  Future<Result> assignTraining(AssignTrainingRequest assignTraining) async {
+    return process(dio.post('/api/criar-treino', data: assignTraining.toJson()),
         onSuccess: (response) {
-          // ignore: void_checks
-          return Result.success(
-              message: 'Editado com sucesso', data: response.data);
+          return const Result.success(message: 'Treino atribuído com sucesso');
         },
         onError: (response) =>
-            const Result.error(message: 'Falha ao aceitar solicitação'));
+            const Result.error(message: 'Falha ao atribuir treino'));
   }
 }

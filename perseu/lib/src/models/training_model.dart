@@ -17,7 +17,7 @@ class TrainingModel {
     return {
       'id': id,
       'name': name,
-      'sessions': sessions,
+      'sessions': sessions.map((e) => e.toMap()).toList(),
     };
   }
 
