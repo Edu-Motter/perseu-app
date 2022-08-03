@@ -13,7 +13,7 @@ class SessionModel {
     return {
       'id': id,
       'name': name,
-      'exercises': exercises,
+      'exercises': exercises.map((e) => e.toMap()).toList(),
     };
   }
 
