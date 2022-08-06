@@ -1,14 +1,12 @@
-import 'package:flutter/cupertino.dart';
-import 'package:perseu/src/models/requests/user_request.dart';
 import 'package:perseu/src/models/requests/user_update_request.dart';
-import 'package:perseu/src/services/http_client_perseu.dart';
 import 'package:perseu/src/states/foundation.dart';
 
 import '../../app/locator.dart';
+import '../../services/clients/client_user.dart';
 import '../../services/foundation.dart';
 
 class ProfileViewModel extends AppViewModel {
-  HttpClientPerseu httpClientPerseu = locator<HttpClientPerseu>();
+  ClientUser clientUser = locator<ClientUser>();
 
   String? name;
   String? email;
@@ -24,9 +22,8 @@ class ProfileViewModel extends AppViewModel {
   Future<Result> save() async {
     return tryExec(() async {
       UserUpdateRequest updatedUser = updateUser();
-      final result = await httpClientPerseu.updateUser(updatedUser);
+      final result = await clientUser.updateUser(updatedUser);
       if (result.success) {
-
         var athlete = session.user!.athlete;
         if (athlete != null) {
           athlete.height = result.data!.athlete!.height;
@@ -34,7 +31,7 @@ class ProfileViewModel extends AppViewModel {
         }
 
         var coach = session.user!.coach;
-        if(coach != null){
+        if (coach != null) {
           coach.cref = result.data!.coach!.cref;
         }
 
