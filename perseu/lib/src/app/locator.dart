@@ -9,7 +9,10 @@ import 'package:perseu/src/screens/new_team/new_team_viewmodel.dart';
 import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_viewmodel.dart';
 import 'package:perseu/src/screens/profile_screen/profile_viewmodel.dart';
 import 'package:perseu/src/screens/sign_up/sign_up_viewmodel.dart';
-import 'package:perseu/src/services/http_client_perseu.dart';
+import 'package:perseu/src/services/clients/client_athlete.dart';
+import 'package:perseu/src/services/clients/client_coach.dart';
+import 'package:perseu/src/services/clients/client_training.dart';
+import 'package:perseu/src/services/clients/client_user.dart';
 import 'package:perseu/src/viewModels/login_view_model.dart';
 
 import '../screens/athlete_pending_request/athlete_pending_request_viewmodel.dart';
@@ -38,14 +41,39 @@ void initializeLocator() {
     return dio;
   });
 
-  locator.registerLazySingleton<HttpClientPerseu>(() {
+  locator.registerLazySingleton<ClientAthlete>(() {
     // ignore: dead_code
     if (false /*mock*/) {
-      //return HttpClientPerseuMock();
+      //
     } else {
-      return HttpClientPerseu();
+      return ClientAthlete();
     }
   });
+  locator.registerLazySingleton<ClientCoach>(() {
+    // ignore: dead_code
+    if (false /*mock*/) {
+      //
+    } else {
+      return ClientCoach();
+    }
+  });
+  locator.registerLazySingleton<ClientUser>(() {
+    // ignore: dead_code
+    if (false /*mock*/) {
+      //
+    } else {
+      return ClientUser();
+    }
+  });
+  locator.registerLazySingleton<ClientTraining>(() {
+    // ignore: dead_code
+    if (false /*mock*/) {
+      //
+    } else {
+      return ClientTraining();
+    }
+  });
+
   //Global states:
   locator.registerSingleton<Session>(PersistentSession());
 

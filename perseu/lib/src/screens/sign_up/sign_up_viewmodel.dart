@@ -1,13 +1,13 @@
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:perseu/src/models/requests/sign_up_request.dart';
+import 'package:perseu/src/services/clients/client_user.dart';
 import 'package:perseu/src/services/foundation.dart';
-import 'package:perseu/src/services/http_client_perseu.dart';
 import 'package:perseu/src/states/foundation.dart';
 
 import '../../app/locator.dart';
 
 class SignUpViewModel extends AppViewModel {
-  HttpClientPerseu httpClientPerseu = locator<HttpClientPerseu>();
+  ClientUser clientUser = locator<ClientUser>();
 
   static const _athlete = 'Atleta';
   static const _coach = 'Treinador';
@@ -52,7 +52,7 @@ class SignUpViewModel extends AppViewModel {
     }
 
     return tryExec(() async {
-      final result = await httpClientPerseu.signUp(signUpRequest);
+      final result = await clientUser.signUp(signUpRequest);
       if (result.success) {
         return const Result.success(message: 'Conta criada com sucesso');
       } else {
@@ -64,7 +64,7 @@ class SignUpViewModel extends AppViewModel {
 
   Future<Result<void>> checkEmail(String email){
     return tryExec(() async {
-      final result = await httpClientPerseu.checkEmail(email);
+      final result = await clientUser.checkEmail(email);
       if (result.success) {
         return result;
       } else {
