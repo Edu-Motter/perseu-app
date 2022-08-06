@@ -1,7 +1,7 @@
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/models/requests/assign_training.dart';
 import 'package:perseu/src/models/training_model.dart';
-import 'package:perseu/src/services/http_client_perseu.dart';
+import 'package:perseu/src/services/clients/client_training.dart';
 import 'package:perseu/src/states/foundation.dart';
 
 class AthletesToAssignTrainingModel {
@@ -16,18 +16,21 @@ class AthletesToAssignTrainingModel {
 }
 
 class AssignTrainingViewModel extends AppViewModel {
-  HttpClientPerseu httpClientPerseu = locator<HttpClientPerseu>();
+  ClientTraining clientTraining = locator<ClientTraining>();
+
   AssignTrainingViewModel({required this.training, required this.athletes});
 
   TrainingModel training;
   List<AthletesToAssignTrainingModel> athletes;
 
   Future<void> assign() async {
-    List<double> athletesIds = athletes.where((athlete) => athlete.assigned)
+    List<double> athletesIds = athletes
+        .where((athlete) => athlete.assigned)
         .map((athlete) => athlete.athleteId)
         .toList();
-    final trainingRequest = AssignTrainingRequest(athletesIds, training, session.user!.id);
+    final trainingRequest =
+        AssignTrainingRequest(athletesIds, training, session.user!.id);
 
-    await httpClientPerseu.assignTraining(trainingRequest);
+    await clientTraining.assignTraining(trainingRequest);
   }
 }

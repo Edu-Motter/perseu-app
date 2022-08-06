@@ -14,6 +14,10 @@ import 'package:perseu/src/screens/sign_up/sign_up_viewmodel.dart';
 import 'package:perseu/src/services/clients/client_athlete.dart';
 import 'package:perseu/src/services/clients/client_coach.dart';
 import 'package:perseu/src/services/clients/client_user.dart';
+import 'package:perseu/src/services/clients/client_athlete.dart';
+import 'package:perseu/src/services/clients/client_coach.dart';
+import 'package:perseu/src/services/clients/client_training.dart';
+import 'package:perseu/src/services/clients/client_user.dart';
 import 'package:perseu/src/viewModels/login_view_model.dart';
 
 import '../screens/athlete_pending_request/athlete_pending_request_viewmodel.dart';
@@ -53,6 +57,23 @@ void initializeLocator() {
   locator.registerLazySingleton<ClientCoach>(() {
     // ignore: dead_code
     if (false /*mock*/) {
+      //return HttpClientPerseuMock();
+    } else {
+      return ClientCoach();
+    }
+  });
+  locator.registerLazySingleton<ClientUser>(() {
+    // ignore: dead_code
+    if (false /*mock*/) {
+      //
+    } else {
+      return ClientUser();
+      return ClientAthlete();
+    }
+  });
+  locator.registerLazySingleton<ClientCoach>(() {
+    // ignore: dead_code
+    if (false /*mock*/) {
       //
     } else {
       return ClientCoach();
@@ -64,6 +85,14 @@ void initializeLocator() {
       //
     } else {
       return ClientUser();
+    }
+  });
+  locator.registerLazySingleton<ClientTraining>(() {
+    // ignore: dead_code
+    if (false /*mock*/) {
+      //
+    } else {
+      return ClientTraining();
     }
   });
 
