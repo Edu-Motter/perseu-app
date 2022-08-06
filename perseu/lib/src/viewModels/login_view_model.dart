@@ -1,6 +1,6 @@
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/models/requests/login_request.dart';
-import 'package:perseu/src/services/http_client_perseu.dart';
+import 'package:perseu/src/services/clients/client_user.dart';
 
 import '../services/foundation.dart';
 import '../states/foundation.dart';
@@ -11,7 +11,7 @@ class LoginViewModel extends AppViewModel {
   String username = '';
   String password = '';
 
-  final httpClientPerseu = locator<HttpClientPerseu>();
+  final clientPerseu = locator<ClientUser>();
 
   String get getUsername => username;
   set setUsername(String value) {
@@ -27,7 +27,7 @@ class LoginViewModel extends AppViewModel {
 
   Future<Result<LoginRequest>> login() async {
     return tryExec(() async {
-      final result = await httpClientPerseu.loginRequestRefactor(username, password);
+      final result = await clientPerseu.loginRequest(username, password);
       if(result.success){
         session.setAuthTokenAndUser(result.data!.token.token, result.data!.user);
         return Result.success(data: result.data);
