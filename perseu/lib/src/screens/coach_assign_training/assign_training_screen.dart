@@ -58,16 +58,15 @@ class _AssignTrainingState extends State<AssignTrainingScreen> {
             height: 16,
           ),
           ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (athletesToAssign.any((element) => element.assigned)) {
-                  AssignTrainingModel assignTrainingModel = AssignTrainingModel(
+                  AssignTrainingViewModel assignTrainingModel = AssignTrainingViewModel(
                       training: training,
                       athletes: athletesToAssign
                           .where((AthletesToAssignTrainingModel athlete) =>
                               athlete.assigned)
                           .toList());
-                  debugPrint(assignTrainingModel.athletes[0].athleteName);
-                  debugPrint(assignTrainingModel.training.name);
+                  await assignTrainingModel.assign();
                 } else {
                   debugPrint('Selecione ao menos um atleta');
                 }

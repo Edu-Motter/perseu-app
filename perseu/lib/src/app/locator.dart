@@ -11,6 +11,7 @@ import 'package:perseu/src/screens/profile_screen/profile_viewmodel.dart';
 import 'package:perseu/src/screens/sign_up/sign_up_viewmodel.dart';
 import 'package:perseu/src/services/clients/client_athlete.dart';
 import 'package:perseu/src/services/clients/client_coach.dart';
+import 'package:perseu/src/services/clients/client_training.dart';
 import 'package:perseu/src/services/clients/client_user.dart';
 import 'package:perseu/src/viewModels/login_view_model.dart';
 
@@ -62,6 +63,14 @@ void initializeLocator() {
       //
     } else {
       return ClientUser();
+    }
+  });
+  locator.registerLazySingleton<ClientTraining>(() {
+    // ignore: dead_code
+    if (false /*mock*/) {
+      //
+    } else {
+      return ClientTraining();
     }
   });
 
