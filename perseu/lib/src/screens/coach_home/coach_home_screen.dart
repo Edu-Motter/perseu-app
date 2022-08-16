@@ -82,7 +82,7 @@ class CoachHomeScreen extends StatelessWidget {
                         MenuButton(
                           title: 'Gerenciar perfil',
                           onPressed: () {
-                            null;
+                            Navigator.of(context).pushNamed(Routes.profile);
                           },
                         ),
                       ],
