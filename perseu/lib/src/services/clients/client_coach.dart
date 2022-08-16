@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/models/requests/invite_request.dart';
+import 'package:perseu/src/models/requests/team_info_request.dart';
 import 'package:perseu/src/services/foundation.dart';
 
 class ClientCoach with ApiHelper {
@@ -33,6 +34,17 @@ class ClientCoach with ApiHelper {
         onSuccess: (response) {
           var data = response.data as List;
           return Result.success(data: data.map((i) => InviteRequest.fromMap(i)).toList());
+        },
+        onError: (response) =>
+        const Result.error(message: 'Falha ao buscar solicitações pendentes'));
+  }
+
+  Future<Result<TeamInfoRequest>> getTeamInfo(int teamId) async {
+    return process(
+        dio.get('/api/buscarEquipe/$teamId'),
+        onSuccess: (response) {
+          TeamInfoRequest teamInfo = TeamInfoRequest.fromMap(response.data);
+          return Result.success(data: teamInfo);
         },
         onError: (response) =>
         const Result.error(message: 'Falha ao buscar solicitações pendentes'));
