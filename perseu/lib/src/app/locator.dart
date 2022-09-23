@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:perseu/src/screens/athlete_drawer/athlete_drawer_viewmodel.dart';
@@ -9,8 +10,10 @@ import 'package:perseu/src/screens/new_team/new_team_viewmodel.dart';
 import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_viewmodel.dart';
 import 'package:perseu/src/screens/profile_screen/profile_viewmodel.dart';
 import 'package:perseu/src/screens/sign_up/sign_up_viewmodel.dart';
+import 'package:perseu/src/screens/team_chat/team_chat_viewmodel.dart';
 import 'package:perseu/src/services/clients/client_athlete.dart';
 import 'package:perseu/src/services/clients/client_coach.dart';
+import 'package:perseu/src/services/clients/client_firebase.dart';
 import 'package:perseu/src/services/clients/client_training.dart';
 import 'package:perseu/src/services/clients/client_user.dart';
 import 'package:perseu/src/viewModels/login_view_model.dart';
@@ -39,6 +42,19 @@ void initializeLocator() {
       };
 
     return dio;
+  });
+
+  locator.registerLazySingleton<FirebaseFirestore>((){
+    return FirebaseFirestore.instance;
+  });
+
+  locator.registerLazySingleton<ClientFirebase>(() {
+    // ignore: dead_code
+    if (false /*mock*/) {
+      //
+    } else {
+      return ClientFirebase();
+    }
   });
 
   locator.registerLazySingleton<ClientAthlete>(() {
@@ -89,4 +105,5 @@ void initializeLocator() {
   locator.registerFactory<ChangeTeamNameViewModel>(() => ChangeTeamNameViewModel());
   locator.registerFactory<AthletePendingRequestViewModel>(() => AthletePendingRequestViewModel());
   locator.registerFactory<CoachManageRequestsViewModel>(() => CoachManageRequestsViewModel());
+  locator.registerFactory<TeamChatViewModel>(() => TeamChatViewModel());
 }
