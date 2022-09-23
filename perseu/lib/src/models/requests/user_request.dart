@@ -16,6 +16,9 @@ class UserRequest {
   final CoachRequest? coach;
   final AthleteRequest? athlete;
 
+  get isAthlete => athlete != null;
+  get isCoach => coach != null;
+
   UserRequest(
       {required this.id,
       required this.name,
