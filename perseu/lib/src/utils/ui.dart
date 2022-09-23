@@ -21,10 +21,10 @@ class UIHelper {
         _showDialog(context, _GenericErrorDialog(message: result.message!));
       } else {
         Flushbar(
-            icon: const Icon(Icons.error_outline, color: Colors.red),
-            message: result.message,
-            duration: _errorDuration
-        ).show(context);
+                icon: const Icon(Icons.error_outline, color: Colors.red),
+                message: result.message,
+                duration: _errorDuration)
+            .show(context);
       }
     }
   }
@@ -32,49 +32,53 @@ class UIHelper {
   static void showSuccess(BuildContext context, Result result) {
     assert(result.success);
     Flushbar(
-        icon: const Icon(Icons.check_circle_outline, color: Colors.green),
-        message: result.message ?? 'Comando executado com sucesso',
-        duration: _errorDuration
-    ).show(context);
+            icon: const Icon(Icons.check_circle_outline, color: Colors.green),
+            message: result.message ?? 'Comando executado com sucesso',
+            duration: _errorDuration)
+        .show(context);
   }
 
-  static void showSuccessThenExecute(BuildContext context, Result result, Function execute) {
+  static void showSuccessThenExecute(
+      BuildContext context, Result result, Function execute) {
     assert(result.success);
     Flushbar(
-        icon: const Icon(Icons.check_circle_outline, color: Colors.green),
-        message: result.message ?? 'Comando executado com sucesso',
-        duration: _errorDuration
-    ).show(context).then((_) async {
+            icon: const Icon(Icons.check_circle_outline, color: Colors.green),
+            message: result.message ?? 'Comando executado com sucesso',
+            duration: _errorDuration)
+        .show(context)
+        .then((_) async {
       await Future.delayed(const Duration(milliseconds: 1500));
       execute();
     });
   }
 
-  static void showSuccessWithRoute(BuildContext context, Result result, Function route) async {
+  static void showSuccessWithRoute(
+      BuildContext context, Result result, Function route) async {
     assert(result.success);
     Flushbar(
-        icon: const Icon(Icons.check_circle_outline, color: Colors.green),
-        message: result.message ?? 'Comando executado com sucesso',
-        duration: _errorDuration
-    ).show(context).then((_) async {
+            icon: const Icon(Icons.check_circle_outline, color: Colors.green),
+            message: result.message ?? 'Comando executado com sucesso',
+            duration: _errorDuration)
+        .show(context)
+        .then((_) async {
       await Future.delayed(const Duration(milliseconds: 1500));
       route();
-    } );
+    });
   }
-
 
   static void showInfo(BuildContext context, String message,
       {IconData icon = Icons.check_circle_outline,
-        Duration duration = const Duration(seconds: 1)}) {
+      Duration duration = const Duration(seconds: 1)}) {
     Flushbar(
-        icon: Icon(icon, color: Colors.white),
-        message: message,
-        duration: duration
-    ).show(context);
+            icon: Icon(icon, color: Colors.white),
+            message: message,
+            duration: duration)
+        .show(context);
   }
 
-  static Future<void> showSimpleDialog(BuildContext context, {required String title, required String message}) {
-    return _showDialog(context, _SimpleDialog(title: title,  message: message));
+  static Future<void> showSimpleDialog(BuildContext context,
+      {required String title, required String message}) {
+    return _showDialog(context, _SimpleDialog(title: title, message: message));
   }
 
   static Future<void> showNotImplementedDialog(BuildContext context) {
@@ -90,14 +94,31 @@ class UIHelper {
   }
 
   static void showFlashNotification(BuildContext context, String message,
-      {IconData icon = Icons.check, Duration duration = const Duration(seconds: 1)}) {
-    flash.showFlashNotification(context,
-        flash.FlashNotification.simple(icon, message), duration: duration);
+      {IconData icon = Icons.check,
+      Duration duration = const Duration(seconds: 1)}) {
+    flash.showFlashNotification(
+        context, flash.FlashNotification.simple(icon, message),
+        duration: duration);
+  }
+
+  static Size textPixelSize(
+    String text, {
+    TextStyle style = const TextStyle(color: Colors.black),
+  }) {
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      textDirection: TextDirection.ltr,
+      textScaleFactor: WidgetsBinding.instance!.window.textScaleFactor,
+    )..layout();
+    return textPainter.size;
   }
 }
 
 class _SessionExpiredDialog extends _SimpleDialog {
-  const _SessionExpiredDialog(): super(title: 'Sessão expirada', message: 'Sua sessão expirou, faça o login novamente');
+  const _SessionExpiredDialog()
+      : super(
+            title: 'Sessão expirada',
+            message: 'Sua sessão expirou, faça o login novamente');
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -105,7 +126,8 @@ class _SessionExpiredDialog extends _SimpleDialog {
       TextButton(
         onPressed: () {
           //locator<Session>().reset();
-          Navigator.of(context).pushNamedAndRemoveUntil(Routes.login, (_) => false);
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(Routes.login, (_) => false);
         },
         child: const Text('OK'),
       ),
@@ -114,11 +136,15 @@ class _SessionExpiredDialog extends _SimpleDialog {
 }
 
 class _GenericErrorDialog extends _SimpleDialog {
-  const _GenericErrorDialog({String message = 'Erro genérico'}): super(title: 'Erro', message: message);
+  const _GenericErrorDialog({String message = 'Erro genérico'})
+      : super(title: 'Erro', message: message);
 }
 
 class _NotImplementedDialog extends _SimpleDialog {
-  const _NotImplementedDialog(): super(title: 'Não implementado', message: 'Funcionalidade não implementada');
+  const _NotImplementedDialog()
+      : super(
+            title: 'Não implementado',
+            message: 'Funcionalidade não implementada');
 }
 
 class _SimpleDialog extends StatelessWidget {
