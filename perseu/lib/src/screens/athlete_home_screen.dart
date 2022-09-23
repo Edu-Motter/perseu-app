@@ -37,7 +37,9 @@ class AthleteHomeScreen extends StatelessWidget {
                 const SizedBox(height: 32),
                 MenuButton(
                   title: 'Visualizar conversas',
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(Routes.teamChat);
+                  },
                 ),
                 const SizedBox(height: 8),
                 MenuButton(
