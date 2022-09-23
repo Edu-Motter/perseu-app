@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "402995173964",
+    "project_id": "perseu-76901",
+    "storage_bucket": "perseu-76901.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:402995173964:android:5151773c6f1d2b9e3a72e9",
+        "android_client_info": {
+          "package_name": "com.example.perseu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "402995173964-o2d6375t1ejh75ifus23shrdd9gc4g0e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwp7GDEQz19lezYYSguRj4iLpnniNbB8g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "402995173964-o2d6375t1ejh75ifus23shrdd9gc4g0e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
