@@ -25,29 +25,34 @@ class _TeamChatScreenState extends State<TeamChatScreen> {
             appBar: AppBar(
               title: Text('${model.teamName} chat'),
               actions: [
-                if (model.user.isCoach) IconButton(
-                    icon: const Icon(Icons.settings),
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Center(
-                                child: Text('Configuração do Chat'),
-                              ),
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const Divider(),
-                                  Row(children: [
-                                    const Text('Habilitar chat para atletas?'),
-                                    Switch(value: true, onChanged: (value){})
-                                  ],),
-                                ],
-                              ),
-                            );
-                          });
-                    }),
+                if (model.user.isCoach)
+                  IconButton(
+                      icon: const Icon(Icons.settings),
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Center(
+                                  child: Text('Configuração do Chat'),
+                                ),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Divider(),
+                                    Row(
+                                      children: [
+                                        const Text(
+                                            'Habilitar chat para atletas?'),
+                                        Switch(
+                                            value: true, onChanged: (value) {})
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              );
+                            });
+                      }),
               ],
             ),
             body: Column(
@@ -152,14 +157,15 @@ class _TeamChatScreenState extends State<TeamChatScreen> {
                         padding: const EdgeInsets.all(5.0),
                         child: InkWell(
                           onTap: () {
-                            if (model.isNotBusy){
+                            if (model.isNotBusy) {
                               model.sendMessage(_controller.text);
                               _controller.clear();
                             }
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                              color: model.isNotBusy ? Colors.teal : Colors.grey,
+                              color:
+                                  model.isNotBusy ? Colors.teal : Colors.grey,
                               borderRadius: const BorderRadius.all(
                                 Radius.circular(25),
                               ),
@@ -202,7 +208,17 @@ class MessageWidget extends StatelessWidget {
     final Color primaryColor =
         isOwner ? Colors.teal : Colors.black87.withOpacity(.75);
     final Color? randomColor = isOwner ? Colors.white : Colors.teal[200];
+
     final nameSize = UIHelper.textPixelSize(userName);
+    BoxDecoration messageBoxDecoration =
+        buildMessageBoxDecoration(primaryColor, nameSize.width);
+
+    final messageSize = UIHelper.textPixelSize(message,
+        style: const TextStyle(color: Colors.white, fontSize: 16));
+
+    const padding = 6.0;
+    final bool closeToNameWidth = (messageSize.width > nameSize.width &&
+        (messageSize.width - padding) < nameSize.width);
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -234,19 +250,7 @@ class MessageWidget extends StatelessWidget {
             children: <Widget>[
               Flexible(
                 child: Container(
-                  decoration: BoxDecoration(
-                    color: primaryColor,
-                    borderRadius: BorderRadius.only(
-                      bottomRight: const Radius.circular(8),
-                      bottomLeft: const Radius.circular(8),
-                      topRight: isOwner
-                          ? const Radius.circular(0)
-                          : const Radius.circular(8),
-                      topLeft: isOwner
-                          ? const Radius.circular(8)
-                          : const Radius.circular(0),
-                    ),
-                  ),
+                  decoration: messageBoxDecoration,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 8.0, horizontal: 8.0),
@@ -256,7 +260,9 @@ class MessageWidget extends StatelessWidget {
                           : CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        SizedBox(width: nameSize.width + 16),
+                        SizedBox(width: nameSize.width),
+                        if(closeToNameWidth)
+                          SizedBox(width: nameSize.width + padding),
                         Text(
                           message,
                           style: const TextStyle(
@@ -270,6 +276,31 @@ class MessageWidget extends StatelessWidget {
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  BoxDecoration buildMessageBoxDecoration(Color color, double nameWidth) {
+    final messageSize = UIHelper.textPixelSize(message,
+        style: const TextStyle(color: Colors.white, fontSize: 16));
+
+    if (nameWidth >= messageSize.width) {
+      return BoxDecoration(
+        color: color,
+        borderRadius: const BorderRadius.only(
+          bottomRight: Radius.circular(8),
+          bottomLeft: Radius.circular(8),
+        ),
+      );
+    }
+
+    return BoxDecoration(
+      color: color,
+      borderRadius: BorderRadius.only(
+        bottomRight: const Radius.circular(8),
+        bottomLeft: const Radius.circular(8),
+        topRight: isOwner ? const Radius.circular(0) : const Radius.circular(8),
+        topLeft: isOwner ? const Radius.circular(8) : const Radius.circular(0),
       ),
     );
   }
