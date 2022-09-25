@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
-import 'package:perseu/src/screens/team_chat/team_chat_viewmodel.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
+import 'package:perseu/src/screens/team_chat/team_chat_viewmodel.dart';
 
 class TeamChatScreen extends StatefulWidget {
   const TeamChatScreen({Key? key}) : super(key: key);

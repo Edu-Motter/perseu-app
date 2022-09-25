@@ -25,30 +25,3 @@ class TeamChatViewModel extends AppViewModel {
     notifyListeners();
   }
 }
-
-class CustomClip extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    // Path path = Path();
-    // path.moveTo(0, 0);
-    // path.lineTo(0, size.height);
-    // path.lineTo(size.width * 0.75, size.height);
-    // path.lineTo(size.width * 0.75, size.height * 0.3);
-    // path.lineTo(size.width, 0);
-
-    Path path = Path();
-    path.moveTo(0, 0);
-    path.lineTo(0, size.height);
-    path.lineTo(size.width - 25, size.height);
-    path.lineTo(size.width - 25, size.height - 25);
-    path.lineTo(size.width, 0);
-    path.close();
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
-    return false;
-  }
-}

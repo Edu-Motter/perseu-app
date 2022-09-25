@@ -85,6 +85,13 @@ class CoachHomeScreen extends StatelessWidget {
                             Navigator.of(context).pushNamed(Routes.profile);
                           },
                         ),
+                        const SizedBox(height: 32),
+                        MenuButton(
+                          title: 'Visualizar conversas',
+                          onPressed: () {
+                            Navigator.of(context).pushNamed(Routes.teamChat);
+                          },
+                        ),
                       ],
                     ),
                   ),

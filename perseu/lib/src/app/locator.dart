@@ -8,14 +8,10 @@ import 'package:perseu/src/screens/athlete_home/athlete_home_viewmodel.dart';
 import 'package:perseu/src/screens/athlete_request/athlete_request_viewmodel.dart';
 import 'package:perseu/src/screens/change_team_name/change_team_name_viewmodel.dart';
 import 'package:perseu/src/screens/coach_home/coach_home_viewmodel.dart';
-import 'package:perseu/src/screens/new_team/new_team_viewmodel.dart';
 import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_viewmodel.dart';
+import 'package:perseu/src/screens/new_team/new_team_viewmodel.dart';
 import 'package:perseu/src/screens/profile_screen/profile_viewmodel.dart';
 import 'package:perseu/src/screens/sign_up/sign_up_viewmodel.dart';
-import 'package:perseu/src/screens/team_chat/team_chat_viewmodel.dart';
-import 'package:perseu/src/services/clients/client_athlete.dart';
-import 'package:perseu/src/services/clients/client_coach.dart';
-import 'package:perseu/src/services/clients/client_user.dart';
 import 'package:perseu/src/services/clients/client_athlete.dart';
 import 'package:perseu/src/services/clients/client_coach.dart';
 import 'package:perseu/src/services/clients/client_firebase.dart';
@@ -26,6 +22,7 @@ import 'package:perseu/src/viewModels/login_view_model.dart';
 import '../screens/athlete_pending_request/athlete_pending_request_viewmodel.dart';
 import '../screens/bootstrap/bootstrap_viewmodel.dart';
 import '../screens/change_password/change_password_viewmodel.dart';
+import '../screens/team_chat/team_chat_viewmodel.dart';
 import '../states/session.dart';
 
 final GetIt locator = GetIt.I;
@@ -74,23 +71,6 @@ void initializeLocator() {
     // ignore: dead_code
     if (false /*mock*/) {
       //return HttpClientPerseuMock();
-    } else {
-      return ClientCoach();
-    }
-  });
-  locator.registerLazySingleton<ClientUser>(() {
-    // ignore: dead_code
-    if (false /*mock*/) {
-      //
-    } else {
-      return ClientUser();
-      return ClientAthlete();
-    }
-  });
-  locator.registerLazySingleton<ClientCoach>(() {
-    // ignore: dead_code
-    if (false /*mock*/) {
-      //
     } else {
       return ClientCoach();
     }

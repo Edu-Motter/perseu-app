@@ -242,7 +242,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     if (_emailController.text != model.session.user!.email) return true;
 
-    if (_cpfController.text != Formatters.cpfFormatter(model.session.user!.cpf)) {
+    if (_cpfController.text !=
+        Formatters.cpfFormatter(model.session.user!.cpf)) {
       return true;
     }
 
@@ -252,12 +253,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _crefController.text != model.session.user!.coach!.cref) return true;
 
     if (model.isAthlete &&
-        _heightController.text != model.session.user!.athlete!.height) {
+        _heightController.text !=
+            model.session.user!.athlete!.height.toString()) {
       return true;
     }
 
     if (model.isAthlete &&
-        _weightController.text != model.session.user!.athlete!.weight) {
+        _weightController.text !=
+            model.session.user!.athlete!.weight.toString()) {
       return true;
     }
 
