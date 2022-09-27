@@ -108,7 +108,7 @@ class UIHelper {
     final TextPainter textPainter = TextPainter(
       text: TextSpan(text: text, style: style),
       textDirection: TextDirection.ltr,
-      textScaleFactor: WidgetsBinding.instance!.window.textScaleFactor,
+      textScaleFactor: WidgetsBinding.instance.window.textScaleFactor,
     )..layout();
     return textPainter.size;
   }
