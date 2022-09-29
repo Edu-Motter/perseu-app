@@ -32,7 +32,7 @@ void initializeLocator() {
     final dio = Dio();
     dio.options
       ..baseUrl =
-          'http://10.0.2.2:3333/' //'http://0.0.0.0:8080/'
+          'http://10.0.2.2:3000/'
       ..connectTimeout = 5000
       ..receiveTimeout = 5000
       ..validateStatus = (int? status) {
