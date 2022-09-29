@@ -19,7 +19,7 @@ class _TriggerState extends State<Trigger> {
   @override
   Widget build(BuildContext context) {
     if (!_triggered) {
-      SchedulerBinding.instance.addPostFrameCallback((_) {
+      SchedulerBinding.instance?.addPostFrameCallback((_) {
         _triggered = true;
         widget.onCreate();
       });

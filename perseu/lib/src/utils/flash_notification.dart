@@ -69,7 +69,7 @@ class _SelfRemovableOverlayEntryState extends State<_SelfRemovableOverlayEntry> 
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((_) => setState(() {
+    SchedulerBinding.instance?.addPostFrameCallback((_) => setState(() {
       _animationState = _AnimationState.fadingIn;
     }));
   }
