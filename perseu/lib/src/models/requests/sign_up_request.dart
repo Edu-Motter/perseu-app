@@ -1,47 +1,88 @@
 import 'dart:convert';
 
-class SignUpRequest {
+class SignUpAthleteRequest {
   final String name;
   final String email;
-  final String cpf;
-  final String birthday;
+  final String document;
+  final DateTime birthdate;
   final String password;
-  final String userType;
+  final int height;
+  final int weight;
 
-  String? height;
-  String? weight;
-  String? cref;
-
-  SignUpRequest(
-      {required this.name,
-      required this.email,
-      required this.cpf,
-      required this.birthday,
-      required this.password,
-      required this.userType});
+  SignUpAthleteRequest({
+    required this.name,
+    required this.email,
+    required this.document,
+    required this.birthdate,
+    required this.password,
+    required this.height,
+    required this.weight,
+  });
 
   Map<String, dynamic> toMap() {
     return {
-      'nome': name,
+      'name': name,
       'email': email,
-      'cpf': cpf,
-      'nascimento': birthday,
-      'senha': password,
-      'tipo_usuario': userType,
-      if (userType == 'atleta') 'peso': weight,
-      if (userType == 'atleta') 'altura': height,
-      if (userType == 'treinador') 'cref': cref,
+      'document': document,
+      'birthdate': birthdate.toIso8601String(),
+      'password': password,
+      'weight': weight,
+      'height': height,
     };
   }
 
-  factory SignUpRequest.fromMap(Map<String, dynamic> map) {
-    return SignUpRequest(
-        name: map['nome'],
-        email: map['email'],
-        cpf: map['cpf'],
-        birthday: map['nascimento'],
-        password: map['senha'],
-        userType: map['tipo_usuario']);
+  factory SignUpAthleteRequest.fromMap(Map<String, dynamic> map) {
+    return SignUpAthleteRequest(
+      name: map['nome'],
+      email: map['email'],
+      document: map['document'],
+      birthdate: map['birthdate'],
+      password: map['password'],
+      height: map['height'],
+      weight: map['weight'],
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+}
+
+class SignUpCoachRequest {
+  final String name;
+  final String email;
+  final String document;
+  final DateTime birthdate;
+  final String password;
+  final String cref;
+
+  SignUpCoachRequest({
+    required this.name,
+    required this.email,
+    required this.password,
+    required this.document,
+    required this.cref,
+    required this.birthdate,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'email': email,
+      'password': password,
+      'document': document,
+      'cref': cref,
+      'birthdate': birthdate.toIso8601String(),
+    };
+  }
+
+  factory SignUpCoachRequest.fromMap(Map<String, dynamic> map) {
+    return SignUpCoachRequest(
+      name: map['nome'],
+      email: map['email'],
+      password: map['password'],
+      document: map['document'],
+      cref: map['cref'],
+      birthdate: map['birthdate'],
+    );
   }
 
   String toJson() => json.encode(toMap());

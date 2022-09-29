@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/routes.dart';
-import 'package:perseu/src/components/dialogs/email_already_exists_dialog.dart';
+import 'package:perseu/src/components/dialogs/passwords_not_match_dialog.dart';
 import 'package:perseu/src/screens/sign_up/sign_up_viewmodel.dart';
 import 'package:perseu/src/utils/formatters.dart';
 import 'package:perseu/src/utils/ui.dart';
@@ -8,7 +8,6 @@ import 'package:perseu/src/utils/validators.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/locator.dart';
-import 'package:perseu/src/components/dialogs/passwords_not_match_dialog.dart';
 import '../../services/foundation.dart';
 
 // ignore: must_be_immutable
@@ -137,7 +136,7 @@ class SignUpScreen extends StatelessWidget {
                           TextFormField(
                               key: SignUpScreen.birthdayInputKey,
                               controller: _birthdayController,
-                              onChanged: (value) => model.birthday = value,
+                              onChanged: (value) => model.birthdate = value,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 hintText: 'Data de nascimento:',
@@ -272,13 +271,6 @@ class SignUpScreen extends StatelessWidget {
         return;
       }
 
-      if(await _emailValidation(model)){
-        showDialog(
-            context: context,
-            builder: (context) => const EmailAlreadyExists());
-        return;
-      }
-
       Result result = await model.signUp();
       if (result.success) {
         UIHelper.showSuccessWithRoute(context, result,
@@ -287,11 +279,6 @@ class SignUpScreen extends StatelessWidget {
         UIHelper.showError(context, result);
       }
     }
-  }
-
-  Future<bool> _emailValidation(SignUpViewModel model) async {
-     final result = await model.checkEmail(model.email);
-     return !result.success;
   }
 
   bool _passwordsValidation(SignUpViewModel model) {

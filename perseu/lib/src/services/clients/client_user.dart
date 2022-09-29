@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/models/requests/login_request.dart';
@@ -9,9 +11,18 @@ import 'package:perseu/src/services/foundation.dart';
 class ClientUser with ApiHelper {
   final dio = locator.get<Dio>();
 
-  Future<Result<LoginRequest>> signUp(SignUpRequest signUpRequest) async {
-    FormData body = FormData.fromMap(signUpRequest.toMap());
-    return process(dio.post('/auth/register', data: body),
+  Future<Result> signUpAthlete(
+      SignUpAthleteRequest signUpAthleteRequest) async {
+    return process(dio.post('/athlete', data: signUpAthleteRequest.toJson()),
+        onSuccess: (response) {
+          return const Result.success();
+        },
+        onError: (response) =>
+            const Result.error(message: 'Falha ao realizar cadastro'));
+  }
+
+  Future<Result> signUpCoach(SignUpCoachRequest signUpCoachRequest) async {
+    return process(dio.post('/coach', data: signUpCoachRequest.toJson()),
         onSuccess: (response) {
           return const Result.success();
         },
@@ -21,9 +32,8 @@ class ClientUser with ApiHelper {
 
   Future<Result<LoginRequest>> loginRequest(
       String username, String password) async {
-    return process(
-        dio.post('/auth/login',
-            queryParameters: {'email': username, 'password': password}),
+    final body = jsonEncode({'email': username, 'password': password});
+    return process(dio.post('/login', data: body),
         authErrors: true,
         onSuccess: (response) {
           final loginRequest =

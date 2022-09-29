@@ -1,8 +1,10 @@
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
+import 'package:intl/intl.dart';
 import 'package:perseu/src/models/requests/sign_up_request.dart';
 import 'package:perseu/src/services/clients/client_user.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/states/foundation.dart';
+import 'package:perseu/src/utils/formatters.dart';
 
 import '../../app/locator.dart';
 
@@ -17,7 +19,7 @@ class SignUpViewModel extends AppViewModel {
   String name = '';
   String email = '';
   String cpf = '';
-  String birthday = '';
+  String birthdate = '';
   String password = '';
   String confirmPassword = '';
   String cref = '';
@@ -35,41 +37,80 @@ class SignUpViewModel extends AppViewModel {
 
   Future<Result<void>> signUp() async {
     String unmaskedCpf = CPFValidator.strip(cpf);
+    String unmaskedHeight = Formatters.height().unmaskText(height);
+    String unmaskedWeight = Formatters.weight().unmaskText(weight);
 
-    SignUpRequest signUpRequest = SignUpRequest(
-        name: name,
-        email: email,
-        cpf: unmaskedCpf,
-        birthday: birthday,
-        password: password,
-        userType: userType.toLowerCase());
+    final format = DateFormat('dd/MM/yyyy');
+    DateTime parsedDate = format.parse(birthdate);
 
-    if(userType == _athlete){
-      signUpRequest.height = height;
-      signUpRequest.weight = weight;
-    } else {
-      signUpRequest.cref = cref;
+    if (_verifyInvalidAge(parsedDate)) {
+      return const Result.error(message: 'Data inválida');
     }
 
-    return tryExec(() async {
-      final result = await clientUser.signUp(signUpRequest);
-      if (result.success) {
-        return const Result.success(message: 'Conta criada com sucesso');
-      } else {
-        return Result.error(message: result.message);
-      }
-    });
-
+    if (isAthlete) {
+      return await registerAthlete(unmaskedCpf, parsedDate, unmaskedHeight, unmaskedWeight);
+    } else {
+      return await registerCoach(unmaskedCpf, parsedDate);
+    }
   }
 
-  Future<Result<void>> checkEmail(String email){
+  Future<Result> registerAthlete(
+    String unmaskedCpf,
+    DateTime parsedDate,
+    String unmaskedHeight,
+    String unmaskedWeight,
+  ) async {
+    SignUpAthleteRequest signUpAthleteRequest = SignUpAthleteRequest(
+      name: name,
+      email: email,
+      document: unmaskedCpf,
+      birthdate: parsedDate,
+      password: password,
+      height: int.parse(unmaskedHeight),
+      weight: int.parse(unmaskedWeight),
+    );
+
     return tryExec(() async {
-      final result = await clientUser.checkEmail(email);
+      final result = await clientUser.signUpAthlete(signUpAthleteRequest);
       if (result.success) {
-        return result;
+        return const Result.success(message: 'Conta Atleta criada com sucesso');
       } else {
         return Result.error(message: result.message);
       }
     });
+  }
+
+  Future<Result> registerCoach(
+    String unmaskedCpf,
+    DateTime parsedDate,
+  ) async {
+    SignUpCoachRequest signUpCoachRequest = SignUpCoachRequest(
+      name: name,
+      email: email,
+      document: unmaskedCpf,
+      birthdate: parsedDate,
+      password: password,
+      cref: cref,
+    );
+
+    return tryExec(() async {
+      final result = await clientUser.signUpCoach(signUpCoachRequest);
+      if (result.success) {
+        return const Result.success(message: 'Conta Treinador criada com sucesso');
+      } else {
+        return Result.error(message: result.message);
+      }
+    });
+  }
+
+  bool _verifyInvalidAge(DateTime dateTime) {
+    const maxYear = 150;
+    const minYear = 12;
+
+    if (dateTime.year > DateTime.now().year - minYear) return true;
+
+    if (dateTime.year < DateTime.now().year - maxYear) return true;
+
+    return false;
   }
 }
