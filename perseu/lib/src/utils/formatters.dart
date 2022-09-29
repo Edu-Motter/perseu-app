@@ -11,7 +11,8 @@ class Formatters {
   }
 
   static MaskTextInputFormatter cpf() {
-    return MaskTextInputFormatter(mask: '###.###.###-##', filter: {"#": RegExp('[0-9]')});
+    return MaskTextInputFormatter(
+        mask: '###.###.###-##', filter: {"#": RegExp('[0-9]')});
   }
 
   static String dateFormatter(String date) {
@@ -19,19 +20,27 @@ class Formatters {
   }
 
   static MaskTextInputFormatter date() {
-    return MaskTextInputFormatter(mask: '##/##/####', filter: {"#": RegExp('[0-9]')});
+    return MaskTextInputFormatter(
+        mask: '##/##/####', filter: {"#": RegExp('[0-9]')});
   }
 
   static MaskTextInputFormatter height() {
-    return MaskTextInputFormatter(mask: '#.## m', filter: {"#": RegExp('[0-9]')});
+    return MaskTextInputFormatter(
+        mask: '#.## m',
+        filter: {"#": RegExp('[0-9]')},
+        type: MaskAutoCompletionType.eager);
   }
 
   static MaskTextInputFormatter weight() {
-    return MaskTextInputFormatter(mask: '### Kg', filter: {"#": RegExp('[0-9]')});
+    return MaskTextInputFormatter(
+        mask: '### Kg',
+        filter: {"#": RegExp('[0-9]')},
+        type: MaskAutoCompletionType.eager);
   }
 
   static MaskTextInputFormatter decimal() {
-    return MaskTextInputFormatter(mask: '##.##', filter: {"#": RegExp('[0-9]')});
+    return MaskTextInputFormatter(
+        mask: '##.##', filter: {"#": RegExp('[0-9]')});
   }
 
   static MaskTextInputFormatter cvv() {
@@ -43,6 +52,7 @@ class Formatters {
   }
 
   static MaskTextInputFormatter phone() {
-    return MaskTextInputFormatter(mask: '(##) #####-####', filter: {"#": RegExp('[0-9]')});
+    return MaskTextInputFormatter(
+        mask: '(##) #####-####', filter: {"#": RegExp('[0-9]')});
   }
 }
