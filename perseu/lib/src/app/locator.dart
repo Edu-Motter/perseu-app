@@ -35,9 +35,6 @@ void initializeLocator() {
           'http://10.0.2.2:3000/'
       ..connectTimeout = 5000
       ..receiveTimeout = 5000
-      ..validateStatus = (int? status) {
-        return status != null && status > 0;
-      }
       ..headers = {
         HttpHeaders.userAgentHeader: 'dio',
         'common-header': 'xx',

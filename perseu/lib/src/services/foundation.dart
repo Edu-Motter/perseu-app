@@ -51,11 +51,10 @@ class ApiHelper {
   Future<Result<T>> process<T>(Future<Response> request,
       {required Result<T> Function(Response) onSuccess,
       required Result<T> Function(dynamic) onError,
-      bool authErrors = true}) async {
+      bool authErrors = false}) async {
     try {
       final Response? response = await request;
       assert(response != null);
-      assert(response!.statusCode! > 199 && response.statusCode! < 300);
       return onSuccess(response!);
     } on DioError catch (e) {
       if (e.type == DioErrorType.connectTimeout ||
@@ -72,6 +71,9 @@ class ApiHelper {
           e.type == DioErrorType.response &&
           e.response?.statusCode == HttpStatus.unauthorized) {
         return const Result.unauthorized(message: 'Sua sessão expirou');
+      } else if (DioErrorType.response == e.type &&
+          e.response?.statusCode == 403) {
+        return Result.error(message: _responseErrorMessage(e));
       } else {
         return onError(e);
       }
@@ -97,6 +99,19 @@ class ApiHelper {
       }
       return Result.error(message: message);
     };
+  }
+
+  String _responseErrorMessage(DioError dioError) {
+    if (dioError.response == null) {
+      return 'Null Response';
+    }
+
+    if (!(dioError.response!.data as Map<String, dynamic>)
+        .containsKey('error')) {
+      return 'Error key not found';
+    }
+
+    return dioError.response!.data['error'];
   }
 }
 
