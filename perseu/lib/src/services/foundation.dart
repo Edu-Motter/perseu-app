@@ -107,11 +107,11 @@ class ApiHelper {
     }
 
     if (!(dioError.response!.data as Map<String, dynamic>)
-        .containsKey('error')) {
+        .containsKey('message')) {
       return 'Error key not found';
     }
 
-    return dioError.response!.data['error'];
+    return dioError.response!.data['message'];
   }
 }
 
