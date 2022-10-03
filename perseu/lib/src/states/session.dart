@@ -58,8 +58,7 @@ class PersistentSession extends Session {
             debugPrint('atleta');
             test['atleta'] = json.decode(test['atleta']);
           }
-          var userRequest = UserRequest.fromMap(test);
-          super.setAuthTokenAndUser(props[authTokenKey], userRequest);
+          super.setAuthTokenAndUser(props[authTokenKey], null);
           debugPrint('Returning success');
           return true;
         }
