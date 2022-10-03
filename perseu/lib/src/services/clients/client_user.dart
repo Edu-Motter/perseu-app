@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:perseu/src/app/locator.dart';
-import 'package:perseu/src/models/requests/login_request.dart';
+import 'package:perseu/src/models/dtos/login_dto.dart';
 import 'package:perseu/src/models/requests/sign_up_request.dart';
 import 'package:perseu/src/models/requests/user_request.dart';
 import 'package:perseu/src/models/requests/user_update_request.dart';
@@ -30,15 +30,14 @@ class ClientUser with ApiHelper {
             const Result.error(message: 'Falha ao realizar cadastro'));
   }
 
-  Future<Result<LoginRequest>> loginRequest(
+  Future<Result<LoginDTO>> loginRequest(
       String username, String password) async {
     final body = jsonEncode({'email': username, 'password': password});
     return process(dio.post('/login', data: body),
         authErrors: true,
         onSuccess: (response) {
-          final loginRequest =
-              LoginRequest.fromMap(response.data as Map<String, dynamic>);
-          return Result.success(data: loginRequest);
+          final login = LoginDTO.fromJson(response.data);
+          return Result.success(data: login);
         },
         onError: (response) =>
             const Result.error(message: 'Falha ao realizar login'));

@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:perseu/src/app/routes.dart';
-import 'package:perseu/src/models/requests/login_request.dart';
-import 'package:perseu/src/models/requests/status_login.dart';
+import 'package:perseu/src/models/dtos/status.dart';
 import 'package:perseu/src/viewModels/login_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -139,29 +138,29 @@ class LoginScreen extends StatelessWidget {
     if (_formKey.currentState!.validate()) {
       final result = await loginModel.login();
       if (result.success) {
-        LoginRequest login = result.data!;
-        _handleUserNavigation(context, login.user.status);
+        final login = result.data!;
+        _handleUserNavigation(context, login.status);
       } else {
         UIHelper.showError(context, result);
       }
     }
   }
 
-  _handleUserNavigation(BuildContext context, StatusLogin statusLogin){
+  _handleUserNavigation(BuildContext context, Status statusLogin){
     switch (statusLogin) {
-      case StatusLogin.athleteWithTeam:
+      case Status.athleteWithTeam:
         Navigator.pushReplacementNamed(context, Routes.athleteHome);
         break;
-      case StatusLogin.athleteWithoutTeam:
+      case Status.athleteWithoutTeam:
         Navigator.pushReplacementNamed(context, Routes.athleteRequest);
         break;
-      case StatusLogin.athleteWithPendingTeam:
+      case Status.athleteWithPendingTeam:
         Navigator.pushReplacementNamed(context, Routes.athletePendingRequest);
         break;
-      case StatusLogin.coachWithTeam:
+      case Status.coachWithTeam:
         Navigator.pushReplacementNamed(context, Routes.coachHome);
         break;
-      case StatusLogin.coachWithoutTeam:
+      case Status.coachWithoutTeam:
         Navigator.pushReplacementNamed(context, Routes.newTeam);
         break;
       default:

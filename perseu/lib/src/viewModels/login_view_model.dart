@@ -1,5 +1,5 @@
 import 'package:perseu/src/app/locator.dart';
-import 'package:perseu/src/models/requests/login_request.dart';
+import 'package:perseu/src/models/dtos/login_dto.dart';
 import 'package:perseu/src/services/clients/client_user.dart';
 
 import '../services/foundation.dart';
@@ -25,11 +25,11 @@ class LoginViewModel extends AppViewModel {
     notifyListeners();
   }
 
-  Future<Result<LoginRequest>> login() async {
+  Future<Result<LoginDTO>> login() async {
     return tryExec(() async {
       final result = await clientPerseu.loginRequest(username, password);
       if(result.success){
-        session.setAuthTokenAndUser(result.data!.token.token, result.data!.user);
+        session.setAuthTokenAndUser(result.data!.token, null);
         return Result.success(data: result.data);
       } else {
         return const Result.error(message: 'Erro ao fazer login');
