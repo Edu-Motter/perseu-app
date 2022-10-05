@@ -25,7 +25,7 @@ class _TeamChatScreenState extends State<TeamChatScreen> {
             appBar: AppBar(
               title: Text('${model.teamName} chat'),
               actions: [
-                if (model.user.isCoach)
+                if (model.userSession.isCoach)
                   IconButton(
                       icon: const Icon(Icons.settings),
                       onPressed: () {
@@ -78,7 +78,8 @@ class _TeamChatScreenState extends State<TeamChatScreen> {
                               return MessageWidget(
                                 userName: chat['userName'],
                                 message: chat['message'],
-                                isOwner: chat['userId'] == model.user.email,
+                                isOwner: chat['userId'] ==
+                                    model.userSession.user.email,
                               );
                             },
                           );
@@ -261,7 +262,7 @@ class MessageWidget extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         SizedBox(width: nameSize.width),
-                        if(closeToNameWidth)
+                        if (closeToNameWidth)
                           SizedBox(width: nameSize.width + padding),
                         Text(
                           message,

@@ -43,12 +43,11 @@ class ClientUser with ApiHelper {
             const Result.error(message: 'Falha ao realizar login'));
   }
 
-  Future<Result<UserRequest>> getUser(String email) async {
-    return process(
-        dio.get('/api/verficarDadosUsuario', queryParameters: {'email': email}),
+  Future<Result<LoginDTO>> getUser(String token) async {
+    return process(dio.post('/login/check', data: {'token': token}),
         onSuccess: (response) {
-      final user = UserRequest.fromMap(response.data as Map<String, dynamic>);
-      return Result.success(data: user);
+      final login = LoginDTO.fromJson(response.data);
+      return Result.success(data: login);
     }, onError: (response) {
       return const Result.error(message: 'E-mail já existente');
     });

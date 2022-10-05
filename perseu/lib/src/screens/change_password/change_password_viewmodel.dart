@@ -16,7 +16,7 @@ class ChangePasswordViewModel extends AppViewModel {
       final result = await clientUser.changePassword(
         newPassword!,
         password!,
-        session.user!.id,
+        session.userSession!.user.id,
       );
       if (result.success) {
         return const Result.success(message: 'Sucesso ao alterar a senha!');

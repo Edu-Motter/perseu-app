@@ -21,7 +21,7 @@ class AthleteHomeScreen extends StatelessWidget {
               key: scaffoldKey,
               drawer: const AthleteDrawer(),
               appBar: AppBar(
-                title: Text('Olá, ${model.userName}!'),
+                title: Text('Olá, ${model.athleteName}!'),
                 automaticallyImplyLeading: false,
                 leading: IconButton(
                   icon: const Icon(Icons.menu),

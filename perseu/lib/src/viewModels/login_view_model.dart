@@ -29,7 +29,7 @@ class LoginViewModel extends AppViewModel {
     return tryExec(() async {
       final result = await clientPerseu.loginRequest(username, password);
       if(result.success){
-        session.setAuthTokenAndUser(result.data!.token, null);
+        session.setAuthTokenAndUser(result.data!.token, result.data!);
         return Result.success(data: result.data);
       } else {
         return const Result.error(message: 'Erro ao fazer login');

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/routes.dart';
-import 'package:perseu/src/models/requests/user_request.dart';
 import 'package:perseu/src/screens/athlete_drawer/athlete_drawer_viewmodel.dart';
 import 'package:perseu/src/states/session.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +15,6 @@ class AthleteDrawer extends StatelessWidget {
       create: (_) => locator<AthleteDrawerViewModel>(),
       child: Consumer<AthleteDrawerViewModel>(
         builder: (context, model, _) {
-          UserRequest user = model.session.user!;
           return Drawer(
             child: ListView(
               children: [
@@ -35,8 +33,8 @@ class AthleteDrawer extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(user.name, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 24, color: Colors.white),),
-                            Text(user.email,  overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 16, color: Colors.white),),
+                            Text(model.userName, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 24, color: Colors.white),),
+                            Text(model.userEmail,  overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 16, color: Colors.white),),
                           ],
                         ))
                       ],

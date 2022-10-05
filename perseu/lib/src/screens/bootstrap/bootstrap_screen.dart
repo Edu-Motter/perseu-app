@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:perseu/src/models/dtos/status.dart';
 import 'package:perseu/src/screens/bootstrap/bootstrap_viewmodel.dart';
 import 'package:perseu/src/utils/trigger.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/locator.dart';
 import '../../app/routes.dart';
-import '../../models/requests/status_login.dart';
 
 class BootstrapScreen extends StatelessWidget {
   const BootstrapScreen({Key? key}) : super(key: key);
@@ -48,25 +48,25 @@ class BootstrapScreen extends StatelessWidget {
   }
 
   void _loadSession(BootstrapViewModel model, BuildContext context) async {
-    StatusLogin result = await model.loadSession();
+    Status result = await model.loadSession();
     _handleUserNavigation(context, result);
   }
 
-  _handleUserNavigation(BuildContext context, StatusLogin statusLogin){
+  _handleUserNavigation(BuildContext context, Status statusLogin){
     switch (statusLogin) {
-      case StatusLogin.athleteWithTeam:
+      case Status.athleteWithTeam:
         Navigator.pushReplacementNamed(context, Routes.athleteHome);
         break;
-      case StatusLogin.athleteWithoutTeam:
+      case Status.athleteWithoutTeam:
         Navigator.pushReplacementNamed(context, Routes.athleteRequest);
         break;
-      case StatusLogin.athleteWithPendingTeam:
+      case Status.athleteWithPendingTeam:
         Navigator.pushReplacementNamed(context, Routes.athletePendingRequest);
         break;
-      case StatusLogin.coachWithTeam:
+      case Status.coachWithTeam:
         Navigator.pushReplacementNamed(context, Routes.coachHome);
         break;
-      case StatusLogin.coachWithoutTeam:
+      case Status.coachWithoutTeam:
         Navigator.pushReplacementNamed(context, Routes.newTeam);
         break;
       default:

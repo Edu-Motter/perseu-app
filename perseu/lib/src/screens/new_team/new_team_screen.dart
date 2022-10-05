@@ -49,7 +49,7 @@ class _NewTeamScreenState extends State<NewTeamScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 16.0),
                           child: Text(
-                            'Bem vindo ao app Perseu, treinador ${model.session.user?.name}'
+                            'Bem vindo ao app Perseu, treinador ${model.coachName}'
                             ', para iniciar informe o nome da sua equipe: ',
                             textAlign: TextAlign.center,
                             style: const TextStyle(

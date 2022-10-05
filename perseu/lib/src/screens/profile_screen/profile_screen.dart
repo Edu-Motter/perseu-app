@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 
 import '../../app/locator.dart';
 import '../../app/routes.dart';
-import '../../states/session.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -41,20 +40,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   void initState() {
-    final session = locator<Session>();
-    _nameController.text = session.user!.name;
-    _emailController.text = session.user!.email;
-    _cpfController.text = Formatters.cpfFormatter(session.user!.cpf);
-    _birthdayController.text = session.user!.bornOn;
-
-    if (session.user!.coach != null) {
-      _crefController.text = session.user!.coach!.cref;
-    }
-
-    if (session.user!.athlete != null) {
-      _weightController.text = session.user!.athlete!.weight.toString();
-      _heightController.text = session.user!.athlete!.height.toString();
-    }
+    // final session = locator<Session>();
+    // _nameController.text = session.userSession!.name;
+    // _emailController.text = session.userSession!.email;
+    // _cpfController.text = Formatters.cpfFormatter(session.userSession!.cpf);
+    // _birthdayController.text = session.userSession!.bornOn;
+    //
+    // if (session.userSession!.coach != null) {
+    //   _crefController.text = session.userSession!.coach!.cref;
+    // }
+    //
+    // if (session.userSession!.athlete != null) {
+    //   _weightController.text = session.userSession!.athlete!.weight.toString();
+    //   _heightController.text = session.userSession!.athlete!.height.toString();
+    // }
 
     super.initState();
   }
@@ -238,31 +237,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   bool _profileHasModification(ProfileViewModel model) {
-    if (_nameController.text != model.session.user!.name) return true;
-
-    if (_emailController.text != model.session.user!.email) return true;
-
-    if (_cpfController.text !=
-        Formatters.cpfFormatter(model.session.user!.cpf)) {
-      return true;
-    }
-
-    if (_birthdayController.text != model.session.user!.bornOn) return true;
-
-    if (model.isCoach &&
-        _crefController.text != model.session.user!.coach!.cref) return true;
-
-    if (model.isAthlete &&
-        _heightController.text !=
-            model.session.user!.athlete!.height.toString()) {
-      return true;
-    }
-
-    if (model.isAthlete &&
-        _weightController.text !=
-            model.session.user!.athlete!.weight.toString()) {
-      return true;
-    }
+  //   if (_nameController.text != model.session.userSession!.name) return true;
+  //
+  //   if (_emailController.text != model.session.userSession!.email) return true;
+  //
+  //   if (_cpfController.text !=
+  //       Formatters.cpfFormatter(model.session.userSession!.cpf)) {
+  //     return true;
+  //   }
+  //
+  //   if (_birthdayController.text != model.session.userSession!.bornOn) return true;
+  //
+  //   if (model.isCoach &&
+  //       _crefController.text != model.session.userSession!.coach!.cref) return true;
+  //
+  //   if (model.isAthlete &&
+  //       _heightController.text !=
+  //           model.session.userSession!.athlete!.height.toString()) {
+  //     return true;
+  //   }
+  //
+  //   if (model.isAthlete &&
+  //       _weightController.text !=
+  //           model.session.userSession!.athlete!.weight.toString()) {
+  //     return true;
+  //   }
 
     return false;
   }

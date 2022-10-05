@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:perseu/src/models/dtos/team_dto.dart';
 import 'package:perseu/src/models/requests/invite_request.dart';
-import 'package:perseu/src/models/requests/team_request.dart';
 import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_viewmodel.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +26,7 @@ class _CoachManageRequestsScreenState extends State<CoachManageRequestsScreen> {
       create: (_) => locator<CoachManageRequestsViewModel>(),
       child: Consumer<CoachManageRequestsViewModel>(
         builder: (__, model, _) {
-          TeamRequest team = model.session.user!.coach!.team!;
+          TeamDTO team = model.team;
           return ModalProgressHUD(
             inAsyncCall: model.isBusy,
             child: Scaffold(
@@ -49,8 +49,9 @@ class _CoachManageRequestsScreenState extends State<CoachManageRequestsScreen> {
                                 style: const TextStyle(
                                     color: Colors.white, fontSize: 16)),
                             const SizedBox(height: 16),
-                            Text('Código de acesso: ${team.code}',
-                                style: const TextStyle(
+                            //TODO: ARRUMAR! -- Buscar as infos do Team para colocar aqui o code
+                            const Text('Código de acesso: #ARRUMAR',
+                                style: TextStyle(
                                     color: Colors.white, fontSize: 16)),
                           ],
                         ),
@@ -63,7 +64,7 @@ class _CoachManageRequestsScreenState extends State<CoachManageRequestsScreen> {
                       padding:
                           const EdgeInsets.only(top: 8, right: 16, left: 16),
                       child: FutureBuilder(
-                        future: model.getRequests(model.session.user!.coach!.team!.id),
+                        future: model.getRequests(model.team.id),
                         builder: (context, snapshot) {
                           if (model.isBusy) {
                             return const Center(child: SizedBox.shrink());

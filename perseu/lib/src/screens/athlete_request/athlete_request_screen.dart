@@ -49,7 +49,7 @@ class _AthleteRequestScreenState extends State<AthleteRequestScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 16.0),
                           child: Text(
-                            'Bem vindo ao Perseu, ${model.session.user?.name}'
+                            'Bem vindo ao Perseu, ${model.athleteName}'
                             ', para iniciar informe o código da equipe: ',
                             textAlign: TextAlign.center,
                             style: const TextStyle(

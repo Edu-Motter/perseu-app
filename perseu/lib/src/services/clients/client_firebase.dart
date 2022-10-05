@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:perseu/src/app/locator.dart';
-import 'package:perseu/src/models/requests/team_request.dart';
-import 'package:perseu/src/models/requests/user_request.dart';
 import 'package:perseu/src/services/foundation.dart';
+import 'package:perseu/src/states/session.dart';
 
 class ClientFirebase {
   final FirebaseFirestore clientFirestore = locator.get<FirebaseFirestore>();
@@ -13,24 +12,21 @@ class ClientFirebase {
     debugPrint('success added user with id: ${doc.id}');
   }
 
-  Future<Result> saveMessage(String message, UserRequest user) async {
-    TeamRequest team;
-    if (user.isCoach) {
-      team = user.coach!.team!;
-    } else {
-      team = user.athlete!.team!;
-    }
+  Future<Result> saveMessage(String message, UserSession session) async {
+    String userName = 'Desconhecido';
+    if(session.isAthlete) userName = session.athlete!.name;
+    if(session.isCoach) userName = session.coach!.name;
 
     try {
       await clientFirestore
           .collection('teams')
-          .doc(team.name)
+          .doc(session.team!.name)
           .collection('chat')
           .add({
-        'userName': user.name,
+        'userName': userName,
         'message': message,
         'date': DateTime.now(),
-        'userId': user.email,
+        'userId': session.user.email,
       });
       return const Result.success();
     } catch (e) {

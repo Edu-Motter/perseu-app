@@ -8,11 +8,13 @@ class AthleteRequestViewModel extends AppViewModel {
   ClientAthlete athleteClient = locator<ClientAthlete>();
   String? requestCode;
 
+  String get athleteName => session.userSession!.athlete!.name;
+
   Future<Result> createRequest() async {
     return tryExec(() async {
       Result result = await athleteClient.createRequest(
         requestCode!,
-        session.user!.athlete!.id,
+        session.userSession!.athlete!.id,
       );
       if (result.success) {
         return Result.success(

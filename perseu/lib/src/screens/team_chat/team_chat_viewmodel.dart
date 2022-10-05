@@ -1,26 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:perseu/src/app/locator.dart';
-import 'package:perseu/src/models/requests/user_request.dart';
 import 'package:perseu/src/services/clients/client_firebase.dart';
 import 'package:perseu/src/states/foundation.dart';
+import 'package:perseu/src/states/session.dart';
 
 class TeamChatViewModel extends AppViewModel {
   ClientFirebase clientFirebase = locator.get<ClientFirebase>();
 
+  UserSession get userSession => session.userSession!;
   bool get isNotBusy => !isBusy;
 
   String get teamName {
-    if (session.user!.isAthlete) {
-      return session.user!.athlete!.team!.name;
+    if (userSession.isWithTeam) {
+      return userSession.team!.name;
     }
-    return session.user!.coach!.team!.name;
+    return 'No team';
   }
 
-  UserRequest get user => session.user!;
-
   void sendMessage(String message) async {
-    tryExec(() => clientFirebase.saveMessage(message, user));
+    tryExec(() => clientFirebase.saveMessage(message, userSession));
     debugPrint('message:' + message);
     notifyListeners();
   }

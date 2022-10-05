@@ -138,8 +138,8 @@ class LoginScreen extends StatelessWidget {
     if (_formKey.currentState!.validate()) {
       final result = await loginModel.login();
       if (result.success) {
-        final login = result.data!;
-        _handleUserNavigation(context, login.status);
+        final loginDto = result.data!;
+        _handleUserNavigation(context, loginDto.status);
       } else {
         UIHelper.showError(context, result);
       }

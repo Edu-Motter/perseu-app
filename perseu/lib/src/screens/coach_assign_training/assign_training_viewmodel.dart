@@ -18,6 +18,8 @@ class AthletesToAssignTrainingModel {
 class AssignTrainingViewModel extends AppViewModel {
   ClientTraining clientTraining = locator<ClientTraining>();
 
+  int get coachId => session.userSession!.user.id;
+
   AssignTrainingViewModel({required this.training, required this.athletes});
 
   TrainingModel training;
@@ -29,7 +31,7 @@ class AssignTrainingViewModel extends AppViewModel {
         .map((athlete) => athlete.athleteId)
         .toList();
     final trainingRequest =
-        AssignTrainingRequest(athletesIds, training, session.user!.id);
+        AssignTrainingRequest(athletesIds, training, coachId);
 
     await clientTraining.assignTraining(trainingRequest);
   }

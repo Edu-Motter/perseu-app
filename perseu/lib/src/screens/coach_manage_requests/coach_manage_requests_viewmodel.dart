@@ -1,3 +1,4 @@
+import 'package:perseu/src/models/dtos/team_dto.dart';
 import 'package:perseu/src/services/clients/client_coach.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/states/foundation.dart';
@@ -6,6 +7,8 @@ import '../../app/locator.dart';
 import '../../models/requests/invite_request.dart';
 
 class CoachManageRequestsViewModel extends AppViewModel {
+
+  TeamDTO get team => session.userSession!.team!;
 
   ClientCoach clientCoach = locator<ClientCoach>();
 
