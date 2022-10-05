@@ -12,7 +12,7 @@ class ClientAthlete with ApiHelper {
           return Result.success(data: response.data['status']);
         },
         onError: (response) => const Result.error(
-            message: 'Falha ao realizar cadastro de equipe'));
+            message: 'Falha ao realizar solicitação para equipe'));
   }
 
 }
