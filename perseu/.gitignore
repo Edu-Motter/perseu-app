@@ -32,6 +32,8 @@
 /build/
 .fvm/flutter_sdk
 /.tool-versions
+*.g.dart
+*.freezed.dart
 
 # Web related
 lib/generated_plugin_registrant.dart
