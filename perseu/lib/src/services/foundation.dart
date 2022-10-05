@@ -63,6 +63,9 @@ class ApiHelper {
           e.type == DioErrorType.other) {
         return const Result.networkError(
             message: 'Falha de conexão, tente novamente');
+      } else if (e.type == DioErrorType.response &&
+          e.response?.statusCode == HttpStatus.unauthorized) {
+        return const Result.error(message: 'Não autorizado, realizar login');
       } else if (authErrors &&
           e.type == DioErrorType.response &&
           e.response?.statusCode == HttpStatus.forbidden) {
