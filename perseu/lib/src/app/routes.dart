@@ -16,7 +16,7 @@ import 'package:perseu/src/screens/without_team_screens/coach_creates_team_scree
 import '../screens/athlete_pending_request/athlete_pending_request_screen.dart';
 import '../screens/athlete_request/athlete_request_screen.dart';
 import '../screens/bootstrap/bootstrap_screen.dart';
-import '../screens/coach_manage_requests/manage_invites_screen.dart';
+import '../screens/coach_manage_requests/coach_manage_requests_screen.dart';
 import '../screens/team_chat/team_chat_screen.dart';
 import '../screens/user_view_training/user_view_training_screen.dart';
 
