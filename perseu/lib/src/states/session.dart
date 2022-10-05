@@ -1,25 +1,32 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:perseu/src/models/requests/user_request.dart';
+import 'package:perseu/src/models/dtos/athlete_dto.dart';
+import 'package:perseu/src/models/dtos/coach_dto.dart';
+import 'package:perseu/src/models/dtos/login_dto.dart';
+import 'package:perseu/src/models/dtos/status.dart';
+import 'package:perseu/src/models/dtos/team_dto.dart';
+import 'package:perseu/src/models/dtos/user_dto.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Session extends ChangeNotifier {
   String? _authToken;
-  UserRequest? _user;
+  UserSession? _userSession;
 
   String? get authToken => _authToken;
-  UserRequest? get user => _user;
-  bool get authenticated => _user != null;
+  UserSession? get userSession => _userSession;
+  bool get authenticated => _userSession != null;
 
-  void setAuthTokenAndUser(String? authToken, UserRequest? user) {
+  void setAuthTokenAndUser(String? authToken, LoginDTO? login) {
+    final userSession = login != null ? UserSession.fromLogin(login) : null;
+
     bool notify = false;
     if (_authToken != authToken) {
       _authToken = authToken;
       notify = true;
     }
-    if (_user != user) {
-      _user = user;
+    if (_userSession != userSession) {
+      _userSession = userSession;
       notify = true;
     }
     if (notify) {
@@ -49,17 +56,11 @@ class PersistentSession extends Session {
       if (props[authTokenKey] != null && props[userKey] != null) {
         var prop = props[userKey];
         if (prop != null) {
-          Map<String, dynamic> test = json.decode(prop);
-          if (test['treinador'] != '') {
-            debugPrint('treinador');
-            test['treinador'] = json.decode(test['treinador']);
-          }
-          if (test['atleta'] != '') {
-            debugPrint('atleta');
-            test['atleta'] = json.decode(test['atleta']);
-          }
-          super.setAuthTokenAndUser(props[authTokenKey], null);
-          debugPrint('Returning success');
+          super.setAuthTokenAndUser(
+            props[authTokenKey],
+            LoginDTO.fromJson(json.decode(props[userKey]!)),
+          );
+          debugPrint('Loaded user session with success');
           return true;
         }
       }
@@ -70,9 +71,9 @@ class PersistentSession extends Session {
   }
 
   @override
-  void setAuthTokenAndUser(String? authToken, UserRequest? user) {
-    super.setAuthTokenAndUser(authToken, user);
-    _write({authTokenKey: authToken, userKey: user?.toJson()});
+  void setAuthTokenAndUser(String? authToken, LoginDTO? login) {
+    super.setAuthTokenAndUser(authToken, login);
+    _write({authTokenKey: authToken, userKey: jsonEncode(login?.toJson())});
   }
 
   Future<void> _write(Map<String, String?> props) async {
@@ -94,4 +95,26 @@ class PersistentSession extends Session {
     } catch (_) {}
     return props;
   }
+}
+
+class UserSession extends ChangeNotifier {
+  Status status;
+  UserDTO user;
+  AthleteDTO? athlete;
+  CoachDTO? coach;
+  TeamDTO? team;
+
+  UserSession(this.status, this.user);
+
+  factory UserSession.fromLogin(LoginDTO login) {
+    final userSession = UserSession(login.status, login.user);
+    userSession.team = login.team;
+    userSession.athlete = login.athlete;
+    userSession.coach = login.coach;
+    return userSession;
+  }
+
+  bool get isAthlete => athlete != null;
+  bool get isCoach => coach != null;
+  bool get isWithTeam => team != null;
 }
