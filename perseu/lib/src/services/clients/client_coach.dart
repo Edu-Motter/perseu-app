@@ -8,11 +8,11 @@ class ClientCoach with ApiHelper {
   final dio = locator.get<Dio>();
 
   Future<Result<String>> createTeam(
-      String teamName, int coachId, String jwt) async {
+      String teamName, int coachId, String authToken) async {
     return process(
         dio.post(
           '/team/$coachId',
-          options: Options(headers: {'Authorization': 'Bearer $jwt'}),
+          options: Options(headers: {'Authorization': 'Bearer $authToken'}),
           data: {'name': teamName},
         ),
         onSuccess: (response) {
