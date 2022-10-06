@@ -68,13 +68,13 @@ class ClientUser with ApiHelper {
   }
 
   Future<Result<void>> changePassword(
-      String newPassword, String oldPassword, int userId) async {
+      String newPassword, String oldPassword, int userId, String jwt) async {
     return process(
-        dio.put('/api/alterarSenha', data: {
-          'user_id': userId,
-          'newPassword': newPassword,
-          'oldPassword': oldPassword
-        }),
+        dio.patch(
+          '/user/$userId/password',
+          data: {'newPassword': newPassword, 'oldPassword': oldPassword},
+          options: Options(headers: {'Authorization': 'Bearer $jwt'}),
+        ),
         onSuccess: (response) {
           return const Result.success();
         },

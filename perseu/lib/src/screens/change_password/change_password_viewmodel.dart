@@ -17,6 +17,7 @@ class ChangePasswordViewModel extends AppViewModel {
         newPassword!,
         password!,
         session.userSession!.user.id,
+        session.authToken!,
       );
       if (result.success) {
         return const Result.success(message: 'Sucesso ao alterar a senha!');
