@@ -32,7 +32,7 @@ class AthletePendingRequestScreen extends StatelessWidget {
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 16.0),
                         child: Text(
-                          'Sua solicitação de ingresso na equipe:  encontra-se'
+                          'Sua solicitação de ingresso na equipe encontra-se'
                           ' pendente ainda. O treinador é responsável por aceitá-la',
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.black, fontSize: 16),

@@ -9,18 +9,19 @@ class AthleteRequestViewModel extends AppViewModel {
   String? requestCode;
 
   String get athleteName => session.userSession!.athlete!.name;
+  String get authToken => session.authToken!;
 
   Future<Result> createRequest() async {
     return tryExec(() async {
       Result result = await athleteClient.createRequest(
         requestCode!,
         session.userSession!.athlete!.id,
+        authToken,
       );
       if (result.success) {
-        return Result.success(
+        return const Result.success(
             message:
-                'Sucesso ao criar pedido de ingresso, '
-                    'atualmente seu pedido está ${result.data}');
+                'Solicitação enviada! Aguarde a resposta do seu treinador.');
       } else {
         return result;
       }
