@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:perseu/src/app/locator.dart';
+import 'package:perseu/src/models/dtos/invite_dto.dart';
 import 'package:perseu/src/models/dtos/team_info_dto.dart';
-import 'package:perseu/src/models/requests/invite_request.dart';
 import 'package:perseu/src/services/foundation.dart';
 
 class ClientCoach with ApiHelper {
@@ -33,20 +33,29 @@ class ClientCoach with ApiHelper {
             const Result.error(message: 'Falha ao alterar nome'));
   }
 
-  Future<Result<List<InviteRequest>>> getRequests(int teamId) async {
+  Future<Result<List<InviteDTO>>> getRequests(
+      int teamId, String authToken) async {
     await Future.delayed(const Duration(seconds: 5));
-    return process(dio.get('/api/buscar-requisicoes-pendentes-equipe/$teamId'),
+    return process(
+        dio.get(
+          '/team/$teamId/request',
+          options: Options(headers: {'Authorization': 'Bearer $authToken'}),
+        ),
         onSuccess: (response) {
-          var data = response.data as List;
+          final data = response.data as List;
           return Result.success(
-              data: data.map((i) => InviteRequest.fromMap(i)).toList());
+              data: data.map((i) => InviteDTO.fromJson(i)).toList());
         },
         onError: (response) => const Result.error(
             message: 'Falha ao buscar solicitações pendentes'));
   }
 
   Future<Result<TeamInfoDTO>> getTeamInfo(int teamId, String authToken) async {
-    return process(dio.get('/team/$teamId', options: Options(headers: {'Authorization': 'Bearer $authToken'}),),
+    return process(
+        dio.get(
+          '/team/$teamId',
+          options: Options(headers: {'Authorization': 'Bearer $authToken'}),
+        ),
         onSuccess: (response) {
           debugPrint(response.data.toString());
           TeamInfoDTO teamInfo = TeamInfoDTO.fromJson(response.data);
@@ -56,10 +65,12 @@ class ClientCoach with ApiHelper {
             const Result.error(message: 'Falha ao buscar informações do time'));
   }
 
-  Future<Result<void>> acceptRequest(int requestId) async {
+  Future<Result<void>> acceptRequest(int athleteId, String authToken) async {
     return process(
-        dio.put('/api/alteraStatusRequisicao/$requestId',
-            data: {'status': 'Aceito'}),
+        dio.patch(
+          '/athlete/$athleteId/request/accept',
+          options: Options(headers: {'Authorization': 'Bearer $authToken'}),
+        ),
         onSuccess: (response) {
           return const Result.success(message: 'Aceito com sucesso');
         },
@@ -67,10 +78,12 @@ class ClientCoach with ApiHelper {
             const Result.error(message: 'Falha ao aceitar solicitação'));
   }
 
-  Future<Result<void>> refuseRequest(int requestId) async {
+  Future<Result<void>> declineRequest(int athleteId, String authToken) async {
     return process(
-        dio.put('/api/alteraStatusRequisicao/$requestId',
-            data: {'status': 'Recusado'}),
+        dio.patch(
+          '/athlete/$athleteId/request/decline',
+          options: Options(headers: {'Authorization': 'Bearer $authToken'}),
+        ),
         onSuccess: (response) {
           return const Result.success(message: 'Recusado com sucesso');
         },

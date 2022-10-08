@@ -41,6 +41,7 @@ class CoachHomeScreen extends StatelessWidget {
                     children: [
                       TeamInfo(
                         futureTeamInfo: model.getTeamInfo(),
+                        style: const TextStyle(color: Colors.black),
                       ),
                       const SizedBox(height: 16),
                       MenuButton(
@@ -108,9 +109,13 @@ class TeamInfo extends StatelessWidget {
   const TeamInfo({
     Key? key,
     required this.futureTeamInfo,
+    required this.style,
+    this.showCode = false,
   }) : super(key: key);
 
   final Future<Result<TeamInfoDTO>> futureTeamInfo;
+  final TextStyle style;
+  final bool showCode;
 
   @override
   Widget build(BuildContext context) {
@@ -135,9 +140,21 @@ class TeamInfo extends StatelessWidget {
                 TeamInfoDTO teamInfo = result.data!;
                 return Column(
                   children: [
-                    Text(teamInfo.name, style: const TextStyle(fontSize: 32)),
-                    Text('${teamInfo.id} atletas',
-                        style: const TextStyle(fontSize: 20)),
+                    Text(
+                      teamInfo.name,
+                      style: style.copyWith(fontSize: 32),
+                    ),
+                    Text(
+                      '${teamInfo.id} atletas',
+                      style: style.copyWith(fontSize: 20),
+                    ),
+                    const SizedBox(height: 16),
+                    if (showCode)
+                      Text(
+                        'Código de acesso: ${teamInfo.code}',
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 16),
+                      ),
                   ],
                 );
               }

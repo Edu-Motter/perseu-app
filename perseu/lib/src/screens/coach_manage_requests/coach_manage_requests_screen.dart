@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:perseu/src/models/dtos/team_dto.dart';
-import 'package:perseu/src/models/requests/invite_request.dart';
+import 'package:perseu/src/models/dtos/invite_dto.dart';
+import 'package:perseu/src/screens/coach_home/coach_home_screen.dart';
 import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_viewmodel.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +26,6 @@ class _CoachManageRequestsScreenState extends State<CoachManageRequestsScreen> {
       create: (_) => locator<CoachManageRequestsViewModel>(),
       child: Consumer<CoachManageRequestsViewModel>(
         builder: (__, model, _) {
-          TeamDTO team = model.team;
           return ModalProgressHUD(
             inAsyncCall: model.isBusy,
             child: Scaffold(
@@ -45,14 +44,11 @@ class _CoachManageRequestsScreenState extends State<CoachManageRequestsScreen> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Equipe ${team.name}',
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 16)),
-                            const SizedBox(height: 16),
-                            //TODO: ARRUMAR! -- Buscar as infos do Team para colocar aqui o code
-                            const Text('Código de acesso: #ARRUMAR',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16)),
+                            TeamInfo(
+                              futureTeamInfo: model.getTeamInfo(),
+                              style: const TextStyle(color: Colors.white),
+                              showCode: true,
+                            ),
                           ],
                         ),
                       ),
@@ -80,8 +76,7 @@ class _CoachManageRequestsScreenState extends State<CoachManageRequestsScreen> {
                             case ConnectionState.done:
                               if (snapshot.hasData) {
                                 Result result = snapshot.data as Result;
-                                List<InviteRequest> inviteRequests =
-                                    result.data;
+                                List<InviteDTO> inviteRequests = result.data;
                                 if (inviteRequests.isNotEmpty) {
                                   return ListView.builder(
                                     scrollDirection: Axis.vertical,
@@ -89,8 +84,9 @@ class _CoachManageRequestsScreenState extends State<CoachManageRequestsScreen> {
                                     itemBuilder: (context, index) {
                                       return Card(
                                         child: ListTile(
-                                          title: Text(
-                                              inviteRequests[index].athlete.name),
+                                          title: Text(inviteRequests[index]
+                                              .athlete
+                                              .name),
                                           trailing: Row(
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
@@ -98,7 +94,7 @@ class _CoachManageRequestsScreenState extends State<CoachManageRequestsScreen> {
                                                   onPressed: () {
                                                     _handleRefuseRequest(
                                                         inviteRequests[index]
-                                                            .id,
+                                                            .athlete.id,
                                                         model,
                                                         context);
                                                   },
@@ -108,7 +104,7 @@ class _CoachManageRequestsScreenState extends State<CoachManageRequestsScreen> {
                                                   onPressed: () {
                                                     _handleAcceptRequest(
                                                         inviteRequests[index]
-                                                            .id,
+                                                            .athlete.id,
                                                         model,
                                                         context);
                                                   },
@@ -142,9 +138,9 @@ class _CoachManageRequestsScreenState extends State<CoachManageRequestsScreen> {
     );
   }
 
-  void _handleAcceptRequest(int requestId, CoachManageRequestsViewModel model,
+  void _handleAcceptRequest(int athleteId, CoachManageRequestsViewModel model,
       BuildContext context) async {
-    Result result = await model.acceptRequest(requestId);
+    Result result = await model.acceptRequest(athleteId);
     if (result.success) {
       UIHelper.showSuccess(_scaffoldKey.currentContext!, result);
     } else {
@@ -152,9 +148,9 @@ class _CoachManageRequestsScreenState extends State<CoachManageRequestsScreen> {
     }
   }
 
-  void _handleRefuseRequest(int requestId, CoachManageRequestsViewModel model,
+  void _handleRefuseRequest(int athleteId, CoachManageRequestsViewModel model,
       BuildContext context) async {
-    Result result = await model.refuseRequest(requestId);
+    Result result = await model.declineRequest(athleteId);
     if (result.success) {
       UIHelper.showFlashNotification(
           _scaffoldKey.currentContext!, result.message!);
