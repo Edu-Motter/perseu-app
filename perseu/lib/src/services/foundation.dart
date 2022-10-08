@@ -48,10 +48,12 @@ class Result<T> {
 }
 
 class ApiHelper {
-  Future<Result<T>> process<T>(Future<Response> request,
-      {required Result<T> Function(Response) onSuccess,
-      required Result<T> Function(dynamic) onError,
-      bool authErrors = false}) async {
+  Future<Result<T>> process<T>(
+    Future<Response> request, {
+    required Result<T> Function(Response) onSuccess,
+    required Result<T> Function(dynamic) onError,
+    bool authErrors = false,
+  }) async {
     try {
       final Response? response = await request;
       assert(response != null);
