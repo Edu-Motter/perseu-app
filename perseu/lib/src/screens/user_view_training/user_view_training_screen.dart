@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:perseu/src/components/exercise_card/exercise_card.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:perseu/src/app/locator.dart';
+import 'package:perseu/src/models/dtos/training_dto.dart';
+// import 'package:perseu/src/components/exercise_card/exercise_card.dart';
 import 'package:perseu/src/models/exercise_model.dart';
 import 'package:perseu/src/models/sessions_model.dart';
 import 'package:perseu/src/models/training_model.dart';
+import 'package:perseu/src/screens/user_view_training/user_view_training_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class UserViewTrainingScreen extends StatefulWidget {
   const UserViewTrainingScreen({Key? key}) : super(key: key);
@@ -46,37 +51,48 @@ class _UserViewTrainingScreenState extends State<UserViewTrainingScreen> {
     super.initState();
   }
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Visualizar treino'),
-      ),
-      body: ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        physics: const BouncingScrollPhysics(),
-        itemCount: training.sessions.length,
-        itemBuilder: (context, index) {
-          SessionModel session = training.sessions[index];
-          return Card(
-              child: ExpansionTile(
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: const [
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Icon(Icons.keyboard_arrow_down),
-                )
-              ],
-            ),
-            expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
-            title: Text(session.name),
-            children: [
-              for (ExerciseModel e in session.exercises)
-                ExerciseCard(exerciseModel: e)
-            ],
-          ));
+    return ChangeNotifierProvider<TrainingViewModel>(
+      create: (_) => locator<TrainingViewModel>(),
+      child: Consumer<TrainingViewModel>(
+        builder: (__, model, _) {
+          // TrainingDTO training = model.training;
+          // print('chegou $training');
+          return ModalProgressHUD(
+            inAsyncCall: model.isBusy,
+            child: Scaffold(
+                key: _scaffoldKey,
+                appBar: AppBar(
+                  title: const Text('Solicitações'),
+                ),
+                body: Column(children: [
+                  const Divider(),
+                  Flexible(
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(top: 8, right: 16, left: 16),
+                      child: FutureBuilder(
+                        future: model.getTraining(10),
+                        builder: (context, snapshot) {
+                          print(model);
+                          if (model.isBusy) {
+                            return const Center(child: Text('sim'));
+                          } else {
+                            print(model.trainingInfo);
+                            return const Center(
+                                child:
+                                    Text('Não existem treinos ainda'));
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                ])),
+          );
         },
       ),
     );
