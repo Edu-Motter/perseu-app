@@ -68,7 +68,7 @@ class _TeamChatScreenState extends State<TeamChatScreen> {
                         .snapshots(),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasData) {
-                        if (snapshot.data!.docs.length > 1) {
+                        if (snapshot.data!.docs.isNotEmpty) {
                           return ListView.builder(
                             itemCount: snapshot.data!.docs.length,
                             physics: const BouncingScrollPhysics(),

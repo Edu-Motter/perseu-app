@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/services/clients/client_firebase.dart';
 import 'package:perseu/src/states/foundation.dart';
@@ -19,8 +17,7 @@ class TeamChatViewModel extends AppViewModel {
   }
 
   void sendMessage(String message) async {
-    tryExec(() => clientFirebase.saveMessage(message, userSession));
-    debugPrint('message:' + message);
+    await tryExec(() => clientFirebase.saveMessage(message, userSession));
     notifyListeners();
   }
 }
