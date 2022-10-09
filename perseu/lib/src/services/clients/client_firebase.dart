@@ -20,7 +20,7 @@ class ClientFirebase {
     try {
       await clientFirestore
           .collection('teams')
-          .doc(session.team!.name)
+          .doc(session.team!.id.toString())
           .collection('chat')
           .add({
         'userName': userName,

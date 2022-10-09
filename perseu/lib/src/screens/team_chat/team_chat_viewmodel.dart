@@ -9,6 +9,8 @@ class TeamChatViewModel extends AppViewModel {
   UserSession get userSession => session.userSession!;
   bool get isNotBusy => !isBusy;
 
+  int get teamId => session.userSession!.team!.id;
+
   String get teamName {
     if (userSession.isWithTeam) {
       return userSession.team!.name;

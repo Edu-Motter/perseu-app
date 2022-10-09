@@ -62,7 +62,7 @@ class _TeamChatScreenState extends State<TeamChatScreen> {
                   child: StreamBuilder(
                     stream: FirebaseFirestore.instance
                         .collection('teams')
-                        .doc(model.teamName)
+                        .doc(model.teamId.toString())
                         .collection('chat')
                         .orderBy('date', descending: true)
                         .snapshots(),
