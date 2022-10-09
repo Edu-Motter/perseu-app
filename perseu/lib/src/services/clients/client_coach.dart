@@ -23,9 +23,16 @@ class ClientCoach with ApiHelper {
             message: 'Falha ao realizar cadastro de equipe'));
   }
 
-  Future<Result<void>> changeTeamName(String teamName, teamId) {
+  Future<Result<void>> changeTeamName(
+      String teamName, int teamId, String authToken) {
     return process(
-        dio.put('/api/alterar-dados-equipe/$teamId', data: {'nome': teamName}),
+        dio.patch(
+          '/team/$teamId',
+          data: {'name': teamName},
+          options: Options(
+            headers: {'Authorization': 'Bearer $authToken'},
+          ),
+        ),
         onSuccess: (response) {
           return const Result.success(message: 'Nome alterado com sucesso');
         },

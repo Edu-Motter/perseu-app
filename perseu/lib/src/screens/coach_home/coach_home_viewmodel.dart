@@ -25,4 +25,6 @@ class CoachHomeViewModel extends AppViewModel {
     }
     return Result.error(message: result.message);
   }
+
+  void refresh() => notifyListeners();
 }

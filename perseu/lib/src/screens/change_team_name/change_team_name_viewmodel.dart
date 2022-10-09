@@ -7,11 +7,15 @@ import '../../services/foundation.dart';
 class ChangeTeamNameViewModel extends AppViewModel {
   ClientCoach clientCoach = locator<ClientCoach>();
 
+  String get authToken => session.authToken!;
+  int get teamId => session.userSession!.team!.id;
+
   String? teamName;
 
   Future<Result> changeTeamName() {
-    return tryExec(() async {
-      return await clientCoach.changeTeamName(teamName!, 7);
-    });
+    return tryExec(
+      () async =>
+          await clientCoach.changeTeamName(teamName!, teamId, authToken),
+    );
   }
 }

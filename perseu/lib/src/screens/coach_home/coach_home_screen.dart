@@ -76,7 +76,8 @@ class CoachHomeScreen extends StatelessWidget {
                         title: 'Alterar nome equipe',
                         onPressed: () {
                           Navigator.of(context)
-                              .pushNamed(Routes.changeTeamName);
+                              .pushNamed(Routes.changeTeamName)
+                              .then((_) => model.refresh());
                         },
                       ),
                       const SizedBox(height: 8),
