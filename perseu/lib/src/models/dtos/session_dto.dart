@@ -12,7 +12,7 @@ class SessionDTO with _$SessionDTO {
     required String name,
     required String createdAt,
     required String updatedAt,
-    List<ExerciseDTO>? exercise,
+    List<ExerciseDTO>? exercises,
   }) = _SessionDTO;
 
   factory SessionDTO.fromJson(Map<String, Object?> json) =>

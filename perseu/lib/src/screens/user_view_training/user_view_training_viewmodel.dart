@@ -7,7 +7,7 @@ import '../../app/locator.dart';
 
 class TrainingViewModel extends AppViewModel {
   String get authToken => session.authToken!;
-  TrainingDTO? trainingInfo;
+  int get athleteId => session.userSession!.athlete!.id;
 
   ClientTraining clientTraining = locator<ClientTraining>();
 

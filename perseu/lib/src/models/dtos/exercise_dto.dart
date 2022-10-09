@@ -8,7 +8,8 @@ part 'exercise_dto.g.dart';
 class ExerciseDTO with _$ExerciseDTO {
   const factory ExerciseDTO({
     required int id,
-    required String email,
+    required String name,
+    required String description,
     required String createdAt,
     required String updatedAt,
   }) = _ExerciseDTO;

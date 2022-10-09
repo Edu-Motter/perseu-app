@@ -6,19 +6,15 @@ import 'package:perseu/src/models/dtos/coach_dto.dart';
 import 'package:perseu/src/models/dtos/login_dto.dart';
 import 'package:perseu/src/models/dtos/status.dart';
 import 'package:perseu/src/models/dtos/team_dto.dart';
-import 'package:perseu/src/models/dtos/training_dto.dart';
 import 'package:perseu/src/models/dtos/user_dto.dart';
-import 'package:perseu/src/models/training_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Session extends ChangeNotifier {
   String? _authToken;
   UserSession? _userSession;
-  TrainingModel? _training;
 
   String? get authToken => _authToken;
   UserSession? get userSession => _userSession;
-  TrainingModel? get training => _training;
   bool get authenticated => _userSession != null;
 
   void setAuthTokenAndUser(String? authToken, LoginDTO? login) {
@@ -107,7 +103,6 @@ class UserSession extends ChangeNotifier {
   AthleteDTO? athlete;
   CoachDTO? coach;
   TeamDTO? team;
-  TrainingDTO? training;
 
   UserSession(this.status, this.user);
 

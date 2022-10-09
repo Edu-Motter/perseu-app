@@ -11,7 +11,7 @@ class TrainingDTO with _$TrainingDTO {
     required int id,
     required String createdAt,
     required String updatedAt,
-    // List<SessionDTO>? session,
+    List<SessionDTO>? sessions,
   }) = _TrainingDTO;
 
   factory TrainingDTO.fromJson(Map<String, Object?> json) =>

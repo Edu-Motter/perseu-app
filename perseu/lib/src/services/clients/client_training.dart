@@ -22,12 +22,9 @@ class ClientTraining with ApiHelper {
         dio.get('/athlete/$athleteId/training',
             options: Options(headers: {'Authorization': 'Bearer $jwt'})),
         onSuccess: (response) {
-      print(response.data);
       TrainingDTO trainingInfo = TrainingDTO.fromJson(response.data);
-      print(trainingInfo);
       return Result.success(data: trainingInfo);
     }, onError: (response) {
-      print('errou');
       return const Result.error(message: 'Falha ao atribuir treino');
     });
   }
