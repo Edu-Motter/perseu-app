@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:perseu/src/models/exercise_model.dart';
 
 class SessionModel {
-  final double id;
+  final int id;
   String name;
   final List<ExerciseModel> exercises;
 

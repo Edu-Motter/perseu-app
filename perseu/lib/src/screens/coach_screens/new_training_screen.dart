@@ -19,29 +19,29 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
   late TrainingModel training;
   @override
   void initState() {
-    training = TrainingModel(id: 1, name: 'treino forte', sessions: [
+    training = TrainingModel(id: 1, sessions: [
       SessionModel(
         id: 0,
         name: 'Aquecimento',
         exercises: [
           ExerciseModel(
-              id: '0',
+              id: 0,
               name: 'Alongamento leve',
               description:
                   'Alongar articulações das pernas e braços por 10 segundos'),
           ExerciseModel(
-              id: '1',
+              id: 1,
               name: 'Corrida',
               description: 'Trote na pista, de 8 a 10 minutos')
         ],
       ),
       SessionModel(id: 1, name: 'Exercício pernas', exercises: [
         ExerciseModel(
-            id: '0',
+            id: 0,
             name: 'Leg press',
             description: 'Fazer leg press 45 com 140kg, 3x10'),
         ExerciseModel(
-            id: '1',
+            id: 1,
             name: 'Leg press',
             description: 'Fazer leg press 45 com 140kg, 3x10'),
       ])

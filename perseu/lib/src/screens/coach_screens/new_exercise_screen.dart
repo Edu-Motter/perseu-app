@@ -77,7 +77,7 @@ class _NewExerciseState extends State<NewExerciseScreen> {
                   ExerciseModel exerciseModel = ExerciseModel(
                       id: widget.hasExercise
                           ? widget.exerciseModel!.id
-                          : const Uuid().v4(),
+                          : 10,
                       name: exerciseName,
                       description: exerciseDescription);
                   Navigator.of(context).pop(exerciseModel);
