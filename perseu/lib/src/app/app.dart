@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/app/routes.dart';
+import 'package:perseu/src/states/session.dart';
 import 'package:perseu/src/viewModels/login_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -12,6 +14,9 @@ class PerseuApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => LoginViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => locator<Session>(),
         ),
       ],
       child: MaterialApp(

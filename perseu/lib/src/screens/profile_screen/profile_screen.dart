@@ -244,7 +244,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (_formKey.currentState == null) return;
     if (_formKey.currentState!.validate()) {
       if (_profileHasModification(model)) {
-        final result = await model.save();
+        final result = await model.updateUser();
         if (result.success) {
           UIHelper.showSuccess(context, result);
         } else {

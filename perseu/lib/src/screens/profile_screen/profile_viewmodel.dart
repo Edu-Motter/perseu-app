@@ -3,12 +3,14 @@ import 'package:perseu/src/models/dtos/updated_athlete_dto.dart';
 import 'package:perseu/src/models/dtos/updated_coach_dto.dart';
 import 'package:perseu/src/services/clients/client_athlete.dart';
 import 'package:perseu/src/services/clients/client_coach.dart';
+import 'package:perseu/src/services/clients/client_user.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/states/foundation.dart';
 import 'package:perseu/src/utils/date_formatters.dart';
 import 'package:perseu/src/utils/formatters.dart';
 
 class ProfileViewModel extends AppViewModel {
+  ClientUser clientUser = locator<ClientUser>();
   ClientAthlete clientAthlete = locator<ClientAthlete>();
   ClientCoach clientCoach = locator<ClientCoach>();
 
@@ -26,7 +28,6 @@ class ProfileViewModel extends AppViewModel {
     final isoInstant = userData['birthdate'] as String;
     return DateFormatters.toDateString(isoInstant);
   }
-
   String get oldDocument =>
       Formatters.cpf().maskText(userData['document'] as String);
   String get oldCref => userData['cref'] as String? ?? '';
@@ -35,7 +36,6 @@ class ProfileViewModel extends AppViewModel {
 
   bool get isAthlete => session.userSession!.isAthlete;
   bool get isCoach => session.userSession!.isCoach;
-
   String get authToken => session.authToken!;
   int get id => isAthlete
       ? session.userSession!.athlete!.id
@@ -72,7 +72,7 @@ class ProfileViewModel extends AppViewModel {
     }
   }
 
-  Future<Result> save() async {
+  Future<Result> updateUser() async {
     return tryExec(() async {
       Result result;
       if (isAthlete) {
@@ -82,13 +82,17 @@ class ProfileViewModel extends AppViewModel {
         result = await clientCoach.updateCoach(updatedCoach(), id, authToken);
       }
 
-      //TODO: atualizar a sessao do usuario
-      // session.setAuthTokenAndUser(session.authToken, user);
-      if (result.success) {
-        return const Result.success(message: 'Atualizado com sucesso');
-      } else {
-        return result;
+      if (result.error) {
+        return const Result.error(message: 'Falha ao atualizar seu usuário');
       }
+
+      final userUpdated = await clientUser.getUser(authToken);
+      if (userUpdated.error) {
+        return const Result.error(message: 'Falha ao recarregar seus dados');
+      }
+
+      session.setAuthTokenAndUser(userUpdated.data!.token, userUpdated.data);
+      return const Result.success(message: 'Usuário atualizado com sucesso');
     });
   }
 

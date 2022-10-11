@@ -17,7 +17,7 @@ class BootstrapViewModel extends AppViewModel {
     if(result){
       final userUpdated = await clientUser.getUser(session.authToken!);
       if(userUpdated.success){
-        session.setAuthTokenAndUser(session.authToken, userUpdated.data);
+        session.setAuthTokenAndUser(userUpdated.data!.token, userUpdated.data);
         return session.userSession!.status;
       }
     }
