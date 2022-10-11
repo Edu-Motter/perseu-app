@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 
 import '../../app/locator.dart';
 
-class AthleteDrawer extends StatelessWidget {
-  const AthleteDrawer({Key? key}) : super(key: key);
+class UserDrawer extends StatelessWidget {
+  const UserDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,24 +19,39 @@ class AthleteDrawer extends StatelessWidget {
             child: ListView(
               children: [
                 DrawerHeader(
-                  decoration: const BoxDecoration(
-                    color: Colors.teal
-                  ),
+                    decoration: const BoxDecoration(color: Colors.teal),
                     child: Row(
                       children: [
                         const Padding(
                           padding: EdgeInsets.all(8.0),
-                          child: Icon(Icons.account_circle, size: 48, color: Colors.white,),
+                          child: Icon(
+                            Icons.account_circle,
+                            size: 48,
+                            color: Colors.white,
+                          ),
                         ),
                         Flexible(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(model.userName, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 24, color: Colors.white),),
-                            Text(model.userEmail,  overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 16, color: Colors.white),),
-                          ],
-                        ))
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Consumer<Session>(builder: (_, session, __) {
+                                return Text(
+                                  model.userName,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                      fontSize: 24, color: Colors.white),
+                                );
+                              }),
+                              Text(
+                                model.userEmail,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                    fontSize: 16, color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        )
                       ],
                     )),
                 ListTile(
@@ -45,7 +60,7 @@ class AthleteDrawer extends StatelessWidget {
                   onTap: () => Navigator.of(context).pushNamed(Routes.profile),
                 ),
                 ListTile(
-                   leading: const Icon(Icons.arrow_back),
+                  leading: const Icon(Icons.arrow_back),
                   title: const Text('Sair'),
                   onTap: () => _handleLogout(context),
                 ),
@@ -57,8 +72,9 @@ class AthleteDrawer extends StatelessWidget {
     );
   }
 
-  void _handleLogout(BuildContext context){
+  void _handleLogout(BuildContext context) {
     locator<Session>().reset();
-    Navigator.of(context).pushNamedAndRemoveUntil(Routes.login, (route) => false);
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil(Routes.login, (route) => false);
   }
 }

@@ -20,7 +20,7 @@ class AthleteHomeScreen extends StatelessWidget {
         builder: (BuildContext context, model, _) {
           return Scaffold(
               key: scaffoldKey,
-              drawer: const AthleteDrawer(),
+              drawer: const UserDrawer(),
               appBar: AppBar(
                 title: Consumer<Session>(builder: (_, session, __) {
                   return Text('Olá, ${model.athleteName}!');
