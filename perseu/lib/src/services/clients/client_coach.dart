@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/models/dtos/invite_dto.dart';
 import 'package:perseu/src/models/dtos/team_info_dto.dart';
+import 'package:perseu/src/models/dtos/updated_coach_dto.dart';
 import 'package:perseu/src/services/foundation.dart';
 
 class ClientCoach with ApiHelper {
@@ -97,4 +98,36 @@ class ClientCoach with ApiHelper {
         onError: (response) =>
             const Result.error(message: 'Falha ao aceitar solicitação'));
   }
+
+  Future<Result> getCoach(int coachId, String authToken) async {
+    return process(
+        dio.get(
+          '/coach/$coachId',
+          options: Options(headers: {'Authorization': 'Bearer $authToken'}),
+        ),
+        onSuccess: (response) {
+          return Result.success(data: response.data);
+        },
+        onError: (response) => const Result.error(
+            message: 'Falha ao buscar informações do treinador'));
+  }
+
+  Future<Result> updateCoach(
+      UpdatedCoachDTO updatedCoach,
+      int coachId,
+      String authToken,
+      ) async {
+    return process(
+        dio.put(
+          '/coach/$coachId',
+          data: updatedCoach.toJson(),
+          options: Options(headers: {'Authorization': 'Bearer $authToken'}),
+        ),
+        onSuccess: (response) {
+          return Result.success(data: response.data);
+        },
+        onError: (response) => const Result.error(
+            message: 'Falha ao atualizar seu perfil'));
+  }
+
 }
