@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/models/dtos/training_dto.dart';
 import 'package:perseu/src/models/requests/assign_training.dart';
-import 'package:perseu/src/models/training_model.dart';
 import 'package:perseu/src/services/foundation.dart';
 
 class ClientTraining with ApiHelper {

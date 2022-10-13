@@ -3,7 +3,7 @@ import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/components/buttons/menu_button.dart';
 import 'package:perseu/src/models/dtos/team_info_dto.dart';
-import 'package:perseu/src/screens/athlete_drawer/athlete_drawer.dart';
+import 'package:perseu/src/screens/athlete_drawer/user_drawer.dart';
 import 'package:perseu/src/screens/coach_home/coach_home_viewmodel.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:provider/provider.dart';

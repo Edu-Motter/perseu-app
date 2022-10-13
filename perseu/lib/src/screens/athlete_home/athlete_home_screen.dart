@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
+import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/components/buttons/menu_button.dart';
+import 'package:perseu/src/screens/athlete_drawer/user_drawer.dart';
 import 'package:perseu/src/screens/athlete_home/athlete_home_viewmodel.dart';
 import 'package:perseu/src/states/session.dart';
 import 'package:provider/provider.dart';
-
-import '../../app/routes.dart';
-import '../athlete_drawer/athlete_drawer.dart';
 
 class AthleteHomeScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();

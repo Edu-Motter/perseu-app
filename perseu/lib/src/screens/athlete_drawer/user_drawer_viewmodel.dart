@@ -1,7 +1,7 @@
 import 'package:perseu/src/states/foundation.dart';
 import 'package:perseu/src/states/session.dart';
 
-class AthleteDrawerViewModel extends AppViewModel {
+class UserDrawerViewModel extends AppViewModel {
   UserSession get userSession => session.userSession!;
 
   String get userName =>

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:perseu/src/models/exercise_model.dart';
-import 'package:uuid/uuid.dart';
 
 class NewExerciseScreen extends StatefulWidget {
   const NewExerciseScreen({Key? key, this.exerciseModel}) : super(key: key);

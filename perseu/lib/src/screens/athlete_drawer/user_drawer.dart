@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/routes.dart';
-import 'package:perseu/src/screens/athlete_drawer/athlete_drawer_viewmodel.dart';
+import 'package:perseu/src/screens/athlete_drawer/user_drawer_viewmodel.dart';
 import 'package:perseu/src/states/session.dart';
 import 'package:provider/provider.dart';
 
@@ -12,8 +12,8 @@ class UserDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => locator<AthleteDrawerViewModel>(),
-      child: Consumer<AthleteDrawerViewModel>(
+      create: (_) => locator<UserDrawerViewModel>(),
+      child: Consumer<UserDrawerViewModel>(
         builder: (context, model, _) {
           return Drawer(
             child: ListView(
@@ -72,9 +72,10 @@ class UserDrawer extends StatelessWidget {
     );
   }
 
-  void _handleLogout(BuildContext context) {
-    locator<Session>().reset();
+  void _handleLogout(BuildContext context) async {
     Navigator.of(context)
         .pushNamedAndRemoveUntil(Routes.login, (route) => false);
+    await Future.delayed(const Duration(milliseconds: 800));
+    locator<Session>().reset();
   }
 }
