@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:perseu/src/models/dtos/athlete_dto.dart';
+import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/models/training_model.dart';
 import 'package:perseu/src/services/foundation.dart';
+import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
-import 'package:perseu/src/app/locator.dart';
 
 import 'assign_training_viewmodel.dart';
 
@@ -45,6 +45,12 @@ class _AssignTrainingState extends State<AssignTrainingScreen> {
             return ModalProgressHUD(
               inAsyncCall: model.isBusy,
               child: Scaffold(
+                  floatingActionButton: FloatingActionButton(
+                    onPressed: () {
+                      _handleAssign(context);
+                    },
+                    child: const Icon(Icons.save),
+                  ),
                   appBar: AppBar(
                     title: const Text('Atribuir treino'),
                   ),
@@ -59,36 +65,27 @@ class _AssignTrainingState extends State<AssignTrainingScreen> {
                                 child: CircularProgressIndicator());
                           case ConnectionState.done:
                             Result result = snapshot.data as Result;
-                            List<AthleteDTO> athletes = result.data;
-                            List<AthletesToAssignTrainingModel>
-                                athletesToAssigns = athletes
-                                    .map((i) => AthletesToAssignTrainingModel(
-                                        athleteName: i.name,
-                                        athleteId: i.id,
-                                        assigned: false))
-                                    .toList();
-                            return ListView(
-                                padding: const EdgeInsets.all(16.0),
-                                children: [
-                                  const Text("Atletas"),
-                                  ListView.builder(
-                                    scrollDirection: Axis.vertical,
-                                    shrinkWrap: true,
-                                    itemCount: athletes.length,
-                                    itemBuilder: (_, int index) {
-                                      return CheckboxListTile(
-                                          title: Text(athletes[index].name),
-                                          value:
-                                              athletesToAssign[index].assigned,
-                                          onChanged: (bool? checkboxState) {
-                                            setState(() {
-                                              athletesToAssign[index].assigned =
-                                                  checkboxState ?? true;
-                                            });
-                                          });
-                                    },
-                                  ),
-                                ]);
+                            if (result.success) {
+                              return ListView(
+                                  padding: const EdgeInsets.all(16.0),
+                                  children: [
+                                    const Text("Atletas"),
+                                    ListView.builder(
+                                      scrollDirection: Axis.vertical,
+                                      shrinkWrap: true,
+                                      itemCount: model.athletes.length,
+                                      itemBuilder: (_, int index) {
+                                        return AthleteCheckboxTile(
+                                          athlete: model.athletes[index],
+                                        );
+                                      },
+                                    ),
+                                  ]);
+                            } else {
+                              return const Center(
+                                child: Text('Mensagem de erro'),
+                              );
+                            }
                         }
                       }
                       // children: [
@@ -160,5 +157,35 @@ class _AssignTrainingState extends State<AssignTrainingScreen> {
     //           },
     //           child: const Text('Atribuir'))
     //     ]));
+  }
+
+  void _handleAssign(BuildContext context) async {
+    final model = Provider.of<AssignTrainingViewModel>(context, listen: false);
+    Result result = await model.assign(training, model.athletes);
+    if (result.success) UIHelper.showSuccess(context, result);
+  }
+}
+
+class AthleteCheckboxTile extends StatefulWidget {
+  const AthleteCheckboxTile({Key? key, required this.athlete})
+      : super(key: key);
+
+  final AthletesToAssignTrainingModel athlete;
+
+  @override
+  State<AthleteCheckboxTile> createState() => _AthleteCheckboxTileState();
+}
+
+class _AthleteCheckboxTileState extends State<AthleteCheckboxTile> {
+  @override
+  Widget build(BuildContext context) {
+    return CheckboxListTile(
+        title: Text(widget.athlete.athleteName),
+        value: widget.athlete.assigned,
+        onChanged: (bool? checkboxState) {
+          setState(() {
+            widget.athlete.assigned = checkboxState ?? true;
+          });
+        });
   }
 }
