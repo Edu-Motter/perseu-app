@@ -1,7 +1,11 @@
 import 'package:perseu/src/app/locator.dart';
+import 'package:perseu/src/models/dtos/athlete_dto.dart';
 import 'package:perseu/src/models/requests/assign_training.dart';
 import 'package:perseu/src/models/training_model.dart';
+import 'package:perseu/src/services/clients/client_athlete.dart';
+import 'package:perseu/src/services/clients/client_team.dart';
 import 'package:perseu/src/services/clients/client_training.dart';
+import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/states/foundation.dart';
 
 class AthletesToAssignTrainingModel {
@@ -11,22 +15,18 @@ class AthletesToAssignTrainingModel {
       this.assigned = false});
 
   String athleteName;
-  double athleteId;
+  int athleteId;
   bool assigned;
 }
 
 class AssignTrainingViewModel extends AppViewModel {
   ClientTraining clientTraining = locator<ClientTraining>();
+  ClientTeam clientTeam = locator<ClientTeam>();
 
   int get coachId => session.userSession!.user.id;
 
-  AssignTrainingViewModel({required this.training, required this.athletes});
-
-  TrainingModel training;
-  List<AthletesToAssignTrainingModel> athletes;
-
-  Future<void> assign() async {
-    List<double> athletesIds = athletes
+  Future<void> assign(TrainingModel training, List<AthletesToAssignTrainingModel> athletes) async {
+    List<int> athletesIds = athletes
         .where((athlete) => athlete.assigned)
         .map((athlete) => athlete.athleteId)
         .toList();
@@ -34,5 +34,13 @@ class AssignTrainingViewModel extends AppViewModel {
         AssignTrainingRequest(athletesIds, training, coachId);
 
     await clientTraining.assignTraining(trainingRequest);
+  }
+
+  Future<Result<List<AthleteDTO>>> getAthletes() async {
+    final result = await clientTeam.getAthletes(1, session.authToken!);
+    if (result.success) {
+      return Result.success(data: result.data);
+    }
+    return Result.error(message: result.message);
   }
 }
