@@ -52,13 +52,6 @@ class CoachHomeScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       MenuButton(
-                        title: 'Nova equipe',
-                        onPressed: () {
-                          Navigator.of(context).pushNamed(Routes.newTeam);
-                        },
-                      ),
-                      const SizedBox(height: 8),
-                      MenuButton(
                         title: 'Gerenciar solicitações',
                         onPressed: () {
                           Navigator.of(context).pushNamed(Routes.manageInvites);
