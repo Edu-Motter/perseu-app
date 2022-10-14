@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
+import 'package:perseu/src/utils/date_formatters.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 import 'package:perseu/src/screens/team_chat/team_chat_viewmodel.dart';
@@ -45,9 +46,11 @@ class _TeamChatScreenState extends State<TeamChatScreen> {
                             reverse: true,
                             itemBuilder: (context, index) {
                               final chat = snapshot.data!.docs[index];
+                              // final  = chat['date'];
                               return MessageWidget(
                                 userName: chat['userName'],
                                 message: chat['message'],
+                                date: (chat['date'] as Timestamp).toDate(),
                                 isOwner: chat['userId'] ==
                                     model.userSession.user.email,
                               );
@@ -166,11 +169,13 @@ class MessageWidget extends StatelessWidget {
   const MessageWidget({
     Key? key,
     required this.message,
+    required this.date,
     required this.userName,
     required this.isOwner,
   }) : super(key: key);
 
   final String message;
+  final DateTime date;
   final bool isOwner;
   final String userName;
 
@@ -224,23 +229,44 @@ class MessageWidget extends StatelessWidget {
                   decoration: messageBoxDecoration,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 8.0),
+                        vertical: 4.0, horizontal: 8.0),
                     child: Column(
-                      crossAxisAlignment: isOwner
-                          ? CrossAxisAlignment.end
-                          : CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        SizedBox(width: nameSize.width),
-                        if (closeToNameWidth)
-                          SizedBox(width: nameSize.width + padding),
-                        Text(
-                          message,
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 16),
+                        Column(
+                          crossAxisAlignment: isOwner
+                              ? CrossAxisAlignment.end
+                              : CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(width: nameSize.width),
+                            if (closeToNameWidth)
+                              SizedBox(width: nameSize.width + padding),
+                            Text(
+                              message,
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 16),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: isOwner
+                              ? CrossAxisAlignment.start
+                              : CrossAxisAlignment.end,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(width: nameSize.width),
+                            SizedBox(width: messageSize.width),
+                            if (closeToNameWidth)
+                              SizedBox(width: nameSize.width + padding),
+                            Text(
+                              DateFormatters.toTime(date),
+                              style: const TextStyle(
+                                  color: Colors.white60, fontSize: 12),
+                            ),
+                          ],
                         ),
                       ],
-                    ),
+                    )
                   ),
                 ),
               ),
