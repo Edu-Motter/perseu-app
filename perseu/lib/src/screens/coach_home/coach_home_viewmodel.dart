@@ -8,6 +8,7 @@ class CoachHomeViewModel extends AppViewModel {
   ClientCoach clientCoach = locator<ClientCoach>();
 
   int get teamId => session.userSession!.team!.id;
+  String get coachName => session.userSession?.coach?.name ?? ' - - ';
 
   TeamInfoDTO? teamInfo;
   String get teamName => teamInfo != null ? teamInfo!.name : 'Carregando..';

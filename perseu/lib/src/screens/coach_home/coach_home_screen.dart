@@ -6,6 +6,7 @@ import 'package:perseu/src/models/dtos/team_info_dto.dart';
 import 'package:perseu/src/screens/athlete_drawer/user_drawer.dart';
 import 'package:perseu/src/screens/coach_home/coach_home_viewmodel.dart';
 import 'package:perseu/src/services/foundation.dart';
+import 'package:perseu/src/states/session.dart';
 import 'package:provider/provider.dart';
 
 class CoachHomeScreen extends StatelessWidget {
@@ -23,7 +24,9 @@ class CoachHomeScreen extends StatelessWidget {
             key: scaffoldKey,
             drawer: const UserDrawer(),
             appBar: AppBar(
-              title: Text('Olá, ${model.userName}'),
+              title: Consumer<Session>(builder: (_, session, __) {
+                return Text('Olá, ${model.coachName}!');
+              }),
               automaticallyImplyLeading: false,
               leading: IconButton(
                 icon: const Icon(Icons.menu),
