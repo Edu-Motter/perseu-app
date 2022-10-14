@@ -24,36 +24,6 @@ class _TeamChatScreenState extends State<TeamChatScreen> {
           return Scaffold(
             appBar: AppBar(
               title: Text('${model.teamName} chat'),
-              actions: [
-                if (model.userSession.isCoach)
-                  IconButton(
-                      icon: const Icon(Icons.settings),
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Center(
-                                  child: Text('Configuração do Chat'),
-                                ),
-                                content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const Divider(),
-                                    Row(
-                                      children: [
-                                        const Text(
-                                            'Habilitar chat para atletas?'),
-                                        Switch(
-                                            value: true, onChanged: (value) {})
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              );
-                            });
-                      }),
-              ],
             ),
             body: Column(
               mainAxisAlignment: MainAxisAlignment.end,
