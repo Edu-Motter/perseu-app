@@ -40,7 +40,6 @@ class _UserViewTrainingScreenState extends State<UserViewTrainingScreen> {
                   title: const Text('Treino atribuído'),
                 ),
                 body: Column(children: [
-                  const Divider(),
                   Flexible(
                     child: Padding(
                       padding:
