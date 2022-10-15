@@ -38,7 +38,7 @@ class LoginScreen extends StatelessWidget {
             child: Scaffold(
                 backgroundColor: Colors.white,
                 appBar: AppBar(
-                  title: const Text('Login'),
+                  title: const Text('Perseu'),
                 ),
                 body: ListView(
                   children: [
@@ -58,7 +58,7 @@ class LoginScreen extends StatelessWidget {
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 8.0),
                                   child: Text(
-                                      'Seja bem vindo, realize seu login:',
+                                      'Olá! Realize seu login:',
                                       style: TextStyle(
                                           color: themeColor,
                                           fontSize: 18,
@@ -71,7 +71,7 @@ class LoginScreen extends StatelessWidget {
                                 onChanged: (value) => loginModel.username = value,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
-                                  hintText: 'Informe seu usuário',
+                                  hintText: 'email',
                                 ),
                                 validator: RequiredValidator(
                                     errorText: 'O usuário precisa ser informado'),
@@ -84,7 +84,7 @@ class LoginScreen extends StatelessWidget {
                                 obscureText: true,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
-                                  hintText: 'Informe sua senha',
+                                  hintText: 'senha',
                                 ),
                                 validator: RequiredValidator(
                                     errorText: 'A senha precisa ser informada'),
