@@ -26,15 +26,6 @@ class _AssignTrainingState extends State<AssignTrainingScreen> {
     super.initState();
   }
 
-  List<AthletesToAssignTrainingModel> athletesToAssign = [
-    AthletesToAssignTrainingModel(
-        athleteName: "Rafael", athleteId: 0, assigned: false),
-    AthletesToAssignTrainingModel(
-        athleteName: "José", athleteId: 1, assigned: false),
-    AthletesToAssignTrainingModel(
-        athleteName: "Bianca", athleteId: 2, assigned: false),
-  ];
-
   final bool checkboxState = false;
   @override
   Widget build(BuildContext context) {
