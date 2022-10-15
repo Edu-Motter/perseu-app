@@ -49,7 +49,7 @@ class _AssignTrainingState extends State<AssignTrainingScreen> {
                     onPressed: () {
                       _handleAssign(context);
                     },
-                    child: const Icon(Icons.save),
+                    child: const Icon(Icons.send),
                   ),
                   appBar: AppBar(
                     title: const Text('Atribuir treino'),
@@ -80,89 +80,32 @@ class _AssignTrainingState extends State<AssignTrainingScreen> {
                                         );
                                       },
                                     ),
+                                    ElevatedButton(
+                                        onPressed: () async {
+                                          _handleAssign(context);
+                                        },
+                                        child: const Text('Atribuir'))
                                   ]);
                             } else {
                               return const Center(
-                                child: Text('Mensagem de erro'),
+                                child: Text('Erro ao carregar atletas'),
                               );
                             }
                         }
-                      }
-                      // children: [
-                      // Expanded(
-                      //   child: ListView.builder(
-                      //     itemCount: athletesToAssign.length,
-                      //     itemBuilder: (context, index) {
-                      //       return CheckboxListTile(
-                      //         title: Text(athletesToAssign[index].athleteName),
-                      //         value: athletesToAssign[index].assigned,
-                      //         onChanged: (bool? value) {
-                      //           setState(() {
-                      //             athletesToAssign[index].assigned = value!;
-                      //           });
-                      //         },
-                      //       );
-                      //     },
-                      //   ),
-                      // ),
-                      // ElevatedButton(
-                      //   onPressed: () {
-                      //     value.assign();
-                      //   },
-                      //   child: const Text('Atribuir'),
-                      // ),
-                      // ],
-                      )),
+                      })),
             );
           },
         ));
-    // return Scaffold(
-    //     appBar: AppBar(
-    //       title: const Text('Atribuir treino'),
-    //     ),
-    //     body: ListView(padding: const EdgeInsets.all(16.0), children: [
-    //       const Text("Atletas"),
-    //       ListView.builder(
-    //         scrollDirection: Axis.vertical,
-    //         shrinkWrap: true,
-    //         itemCount: athletesToAssign.length,
-    //         itemBuilder: (_, int index) {
-    //           return CheckboxListTile(
-    //               title: Text(athletesToAssign[index].athleteName),
-    //               value: athletesToAssign[index].assigned,
-    //               onChanged: (bool? checkboxState) {
-    //                 setState(() {
-    //                   athletesToAssign[index].assigned = checkboxState ?? true;
-    //                 });
-    //               });
-    //         },
-    //       ),
-    //       const SizedBox(
-    //         height: 16,
-    //       ),
-    //       ElevatedButton(
-    //           onPressed: () async {
-    //             if (athletesToAssign.any((element) => element.assigned)) {
-    //               AssignTrainingViewModel assignTrainingModel =
-    //                   AssignTrainingViewModel(
-    //                       training: training,
-    //                       athletes: athletesToAssign
-    //                           .where((AthletesToAssignTrainingModel athlete) =>
-    //                               athlete.assigned)
-    //                           .toList());
-    //               await assignTrainingModel.assign();
-    //             } else {
-    //               debugPrint('Selecione ao menos um atleta');
-    //             }
-    //           },
-    //           child: const Text('Atribuir'))
-    //     ]));
   }
 
   void _handleAssign(BuildContext context) async {
     final model = Provider.of<AssignTrainingViewModel>(context, listen: false);
     Result result = await model.assign(training, model.athletes);
-    if (result.success) UIHelper.showSuccess(context, result);
+    if (result.success) {
+      UIHelper.showSuccess(context, result);
+    } else {
+      UIHelper.showError(context, result);
+    }
   }
 }
 

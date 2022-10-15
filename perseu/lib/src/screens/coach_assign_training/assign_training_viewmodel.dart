@@ -25,13 +25,15 @@ class AssignTrainingViewModel extends AppViewModel {
 
   Future<Result> assign(TrainingModel training,
       List<AthletesToAssignTrainingModel> athletes) async {
-    //TODO: Validar se ele está com pelo menos um atleta selecionado, retornar
-    //Result.error(Deve ter ao menos um atleta selecionado)
-
     List<int> athletesIds = athletes
         .where((athlete) => athlete.assigned)
         .map((athlete) => athlete.athleteId)
         .toList();
+
+    if (athletesIds.isEmpty) {
+      return const Result.error(message: 'Deve ter ao menos um atleta selecionado');
+    }
+
     final trainingRequest =
         AssignTrainingRequest(athletesIds, training);
 
