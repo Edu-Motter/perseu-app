@@ -4,6 +4,8 @@ import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/models/exercise_model.dart';
 import 'package:perseu/src/models/sessions_model.dart';
 import 'package:perseu/src/screens/coach_screens/new_exercise_screen.dart';
+import 'package:perseu/src/services/foundation.dart';
+import 'package:perseu/src/utils/ui.dart';
 
 class NewSessionScreen extends StatefulWidget {
   const NewSessionScreen({Key? key, this.sessionModel}) : super(key: key);
@@ -55,6 +57,11 @@ class _NewSessionState extends State<NewSessionScreen> {
                     sessionModel.exercises.isNotEmpty) {
                   sessionModel.name = sessionName;
                   Navigator.of(context).pop(sessionModel);
+                } else {
+                  UIHelper.showError(
+                    context,
+                    const Result.error(
+                        message: 'Preencha o nome da sessão e crie um exercício'));
                 }
               },
               label: 'Salvar sessão',
