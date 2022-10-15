@@ -7,8 +7,11 @@ import 'package:perseu/src/services/foundation.dart';
 class ClientTraining with ApiHelper {
   final dio = locator.get<Dio>();
 
-  Future<Result> assignTraining(AssignTrainingRequest assignTraining) async {
-    return process(dio.post('/api/criar-treino', data: assignTraining.toJson()),
+  Future<Result> assignTraining(AssignTrainingRequest assignTraining, String jwt) async {
+    return process(
+        dio.post('/training',
+            data: assignTraining.toJson(),
+            options: Options(headers: {'Authorization': 'Bearer $jwt'})),
         onSuccess: (response) {
           return const Result.success(message: 'Treino atribuído com sucesso');
         },

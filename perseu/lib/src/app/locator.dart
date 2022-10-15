@@ -7,6 +7,7 @@ import 'package:perseu/src/screens/athlete_drawer/user_drawer_viewmodel.dart';
 import 'package:perseu/src/screens/athlete_home/athlete_home_viewmodel.dart';
 import 'package:perseu/src/screens/athlete_request/athlete_request_viewmodel.dart';
 import 'package:perseu/src/screens/change_team_name/change_team_name_viewmodel.dart';
+import 'package:perseu/src/screens/coach_assign_training/assign_training_viewmodel.dart';
 import 'package:perseu/src/screens/coach_home/coach_home_viewmodel.dart';
 import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_viewmodel.dart';
 import 'package:perseu/src/screens/new_team/new_team_viewmodel.dart';
@@ -16,6 +17,7 @@ import 'package:perseu/src/screens/user_view_training/user_view_training_viewmod
 import 'package:perseu/src/services/clients/client_athlete.dart';
 import 'package:perseu/src/services/clients/client_coach.dart';
 import 'package:perseu/src/services/clients/client_firebase.dart';
+import 'package:perseu/src/services/clients/client_team.dart';
 import 'package:perseu/src/services/clients/client_training.dart';
 import 'package:perseu/src/services/clients/client_user.dart';
 import 'package:perseu/src/viewModels/login_view_model.dart';
@@ -89,6 +91,14 @@ void initializeLocator() {
       return ClientTraining();
     }
   });
+  locator.registerLazySingleton<ClientTeam>(() {
+    // ignore: dead_code
+    if (false /*mock*/) {
+      //
+    } else {
+      return ClientTeam();
+    }
+  });
 
   //Global states:
   locator.registerSingleton<Session>(PersistentSession());
@@ -109,4 +119,5 @@ void initializeLocator() {
   locator.registerFactory<CoachHomeViewModel>(() => CoachHomeViewModel());
   locator.registerFactory<AthleteHomeViewModel>(() => AthleteHomeViewModel());
   locator.registerFactory<TrainingViewModel>(() => TrainingViewModel());
+  locator.registerFactory<AssignTrainingViewModel>(() => AssignTrainingViewModel());
 }

@@ -6,6 +6,8 @@ import 'package:perseu/src/models/exercise_model.dart';
 import 'package:perseu/src/models/sessions_model.dart';
 import 'package:perseu/src/models/training_model.dart';
 import 'package:perseu/src/screens/coach_screens/new_session_screen.dart';
+import 'package:perseu/src/services/foundation.dart';
+import 'package:perseu/src/utils/ui.dart';
 import '../coach_assign_training/assign_training_screen.dart';
 
 class NewTrainingScreen extends StatefulWidget {
@@ -16,39 +18,10 @@ class NewTrainingScreen extends StatefulWidget {
 }
 
 class _NewTrainingScreenState extends State<NewTrainingScreen> {
-  late TrainingModel training;
-  @override
-  void initState() {
-    training = TrainingModel(id: 1, sessions: [
-      SessionModel(
-        id: 0,
-        name: 'Aquecimento',
-        exercises: [
-          ExerciseModel(
-              id: 0,
-              name: 'Alongamento leve',
-              description:
-                  'Alongar articulações das pernas e braços por 10 segundos'),
-          ExerciseModel(
-              id: 1,
-              name: 'Corrida',
-              description: 'Trote na pista, de 8 a 10 minutos')
-        ],
-      ),
-      SessionModel(id: 1, name: 'Exercício pernas', exercises: [
-        ExerciseModel(
-            id: 0,
-            name: 'Leg press',
-            description: 'Fazer leg press 45 com 140kg, 3x10'),
-        ExerciseModel(
-            id: 1,
-            name: 'Leg press',
-            description: 'Fazer leg press 45 com 140kg, 3x10'),
-      ])
-    ]);
-
-    super.initState();
-  }
+  final TrainingModel training = TrainingModel(
+    id: 0,
+    sessions: <SessionModel>[],
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -84,70 +57,96 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => AssignTrainingScreen(training: training)))
               else
-                debugPrint('Não há sessões para serem atribuidas')
+                UIHelper.showError(
+                    context,
+                    const Result.error(
+                        message: 'Não há sessões para serem atribuidas'))
             },
             label: 'Atribuir treino',
             labelStyle: const TextStyle(fontWeight: FontWeight.w500),
           ),
         ],
       ),
-      body: ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        physics: const BouncingScrollPhysics(),
-        itemCount: training.sessions.length,
-        itemBuilder: (context, index) {
-          SessionModel session = training.sessions[index];
-          return Card(
-              child: ExpansionTile(
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                    onPressed: () {
-                      setState(() {
-                        training.sessions.removeAt(index);
-                      });
-                    },
-                    icon: const Icon(
-                      Icons.delete,
-                      size: 20,
-                    )),
-                IconButton(
-                    onPressed: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(
-                              builder: (_) =>
-                                  NewSessionScreen(sessionModel: session)))
-                          .then((sessionFuture) {
-                        SessionModel sessionModel =
-                            sessionFuture as SessionModel;
-                        setState(() {
-                          training.sessions
-                              .removeWhere((e) => e.id == sessionModel.id);
-                          training.sessions.insert(index, sessionModel);
+      body: training.sessions.isEmpty
+          ? Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Center(
+                      child: Text(
+                          'Crie uma sessão de exercícios em "Adicionar sessão"')),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(Routes.newSession)
+                            .then((sessionFuture) {
+                          SessionModel session = sessionFuture as SessionModel;
+                          setState(() {
+                            training.sessions.add(session);
+                          });
                         });
-                      });
-                    },
-                    icon: const Icon(
-                      Icons.edit,
-                      size: 20,
-                    )),
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Icon(Icons.keyboard_arrow_down),
-                )
-              ],
-            ),
-            expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
-            title: Text(session.name),
-            children: [
-              for (ExerciseModel e in session.exercises)
-                ExerciseCard(exerciseModel: e)
-            ],
-          ));
-        },
-      ),
+                      },
+                      child: const Text('Adicionar sessão'))
+                ],
+              ))
+          : ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              physics: const BouncingScrollPhysics(),
+              itemCount: training.sessions.length,
+              itemBuilder: (context, index) {
+                SessionModel session = training.sessions[index];
+                return Card(
+                    child: ExpansionTile(
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            setState(() {
+                              training.sessions.removeAt(index);
+                            });
+                          },
+                          icon: const Icon(
+                            Icons.delete,
+                            size: 20,
+                          )),
+                      IconButton(
+                          onPressed: () {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(
+                                    builder: (_) => NewSessionScreen(
+                                        sessionModel: session)))
+                                .then((sessionFuture) {
+                              SessionModel sessionModel =
+                                  sessionFuture as SessionModel;
+                              setState(() {
+                                training.sessions.removeWhere(
+                                    (e) => e.id == sessionModel.id);
+                                training.sessions.insert(index, sessionModel);
+                              });
+                            });
+                          },
+                          icon: const Icon(
+                            Icons.edit,
+                            size: 20,
+                          )),
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Icon(Icons.keyboard_arrow_down),
+                      )
+                    ],
+                  ),
+                  expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
+                  title: Text(session.name),
+                  children: [
+                    for (ExerciseModel e in session.exercises)
+                      ExerciseCard(exerciseModel: e)
+                  ],
+                ));
+              }),
     );
   }
 }
