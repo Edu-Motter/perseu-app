@@ -23,8 +23,6 @@ class AssignTrainingViewModel extends AppViewModel {
   ClientTraining clientTraining = locator<ClientTraining>();
   ClientTeam clientTeam = locator<ClientTeam>();
 
-  int get coachId => session.userSession!.user.id;
-
   Future<Result> assign(TrainingModel training,
       List<AthletesToAssignTrainingModel> athletes) async {
     //TODO: Validar se ele está com pelo menos um atleta selecionado, retornar
@@ -35,10 +33,13 @@ class AssignTrainingViewModel extends AppViewModel {
         .map((athlete) => athlete.athleteId)
         .toList();
     final trainingRequest =
-        AssignTrainingRequest(athletesIds, training, coachId);
+        AssignTrainingRequest(athletesIds, training);
 
-    await clientTraining.assignTraining(trainingRequest);
-    return const Result.success(message: 'Treino atribuído com sucesso!');
+    final Result result = await clientTraining.assignTraining(trainingRequest, session.authToken!);
+    if (result.success) {
+      return const Result.success(message: 'Treino atribuído com sucesso!');
+    }
+    return Result.error(message: result.message);
   }
 
   List<AthletesToAssignTrainingModel> athletes = [];
