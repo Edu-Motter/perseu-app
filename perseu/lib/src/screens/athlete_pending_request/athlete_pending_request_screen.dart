@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/screens/athlete_pending_request/athlete_pending_request_viewmodel.dart';
+import 'package:perseu/src/services/foundation.dart';
+import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/locator.dart';
@@ -39,17 +41,13 @@ class AthletePendingRequestScreen extends StatelessWidget {
                         ),
                       ),
                       ElevatedButton(
-                          onPressed: () {
-                            model.checkRequestStatus();
-                          },
+                          onPressed: () => _handleCheckRequest(context, model),
                           child: const Text('Verificar novamente')),
                       const SizedBox(
                         height: 16,
                       ),
                       ElevatedButton(
-                          onPressed: () {
-                            model.cancelRequest();
-                          },
+                          onPressed: () => _handleCancelRequest(context, model),
                           child: const Text('Cancelar solicitação'))
                     ],
                   ),
@@ -58,5 +56,31 @@ class AthletePendingRequestScreen extends StatelessWidget {
             );
           },
         ));
+  }
+
+  _handleCheckRequest(
+    BuildContext context,
+    AthletePendingRequestViewModel model,
+  ) async {
+    final Result result = await model.checkRequestStatus();
+    if (result.success) {
+      UIHelper.showSuccess(context, result);
+    } else {
+      UIHelper.showError(context, result);
+    }
+  }
+
+  _handleCancelRequest(
+    BuildContext context,
+    AthletePendingRequestViewModel model,
+  ) async {
+    final navigator = Navigator.of(context);
+    final Result result = await model.cancelRequest();
+    if (result.success) {
+      navigator.popAndPushNamed(Routes.athleteRequest);
+      UIHelper.showSuccess(context, result);
+    } else {
+      UIHelper.showError(context, result);
+    }
   }
 }
