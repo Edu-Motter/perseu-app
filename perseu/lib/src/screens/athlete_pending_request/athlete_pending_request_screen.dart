@@ -44,7 +44,13 @@ class AthletePendingRequestScreen extends StatelessWidget {
                       ),
                       ElevatedButton(
                           onPressed: () => _handleCancelRequest(context, model),
-                          child: const Text('Cancelar solicitação'))
+                          child: const Text('Cancelar solicitação')),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      ElevatedButton(
+                          onPressed: () => _handleLogout(context, model),
+                          child: const Text('Sair'))
                     ],
                   ),
                 ),
@@ -79,5 +85,11 @@ class AthletePendingRequestScreen extends StatelessWidget {
     } else {
       UIHelper.showError(context, result);
     }
+  }
+
+  _handleLogout(BuildContext context, AthletePendingRequestViewModel model) {
+    model.logout();
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil(Routes.login, (route) => false);
   }
 }

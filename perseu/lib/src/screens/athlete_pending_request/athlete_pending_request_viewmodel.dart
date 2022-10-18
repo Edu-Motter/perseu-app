@@ -50,4 +50,9 @@ class AthletePendingRequestViewModel extends AppViewModel {
         return 'Erro ao processar sua solicitação';
     }
   }
+
+  void logout(){
+    session.setAuthTokenAndUser(null, null);
+    notifyListeners();
+  }
 }
