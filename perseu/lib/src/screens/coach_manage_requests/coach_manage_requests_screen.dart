@@ -55,84 +55,99 @@ class _CoachManageRequestsScreenState extends State<CoachManageRequestsScreen> {
                     ),
                   ),
                   const Divider(),
-                  Flexible(
-                    child: Padding(
-                      padding:
-                          const EdgeInsets.only(top: 8, right: 16, left: 16),
-                      child: FutureBuilder(
-                        future: model.getRequests(model.team.id),
-                        builder: (context, snapshot) {
-                          if (model.isBusy) {
-                            return const Center(child: SizedBox.shrink());
-                          }
-
-                          switch (snapshot.connectionState) {
-                            case ConnectionState.waiting:
-                            case ConnectionState.none:
-                            case ConnectionState.active:
-                              return const Center(
-                                  child: CircularProgressIndicator());
-
-                            case ConnectionState.done:
-                              if (snapshot.hasData) {
-                                Result result = snapshot.data as Result;
-                                List<InviteDTO> inviteRequests = result.data;
-                                if (inviteRequests.isNotEmpty) {
-                                  return ListView.builder(
-                                    scrollDirection: Axis.vertical,
-                                    itemCount: inviteRequests.length,
-                                    itemBuilder: (context, index) {
-                                      return Card(
-                                        child: ListTile(
-                                          title: Text(inviteRequests[index]
-                                              .athlete
-                                              .name),
-                                          trailing: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              IconButton(
-                                                  onPressed: () {
-                                                    _handleRefuseRequest(
-                                                        inviteRequests[index]
-                                                            .athlete.id,
-                                                        model,
-                                                        context);
-                                                  },
-                                                  icon:
-                                                      const Icon(Icons.clear)),
-                                              IconButton(
-                                                  onPressed: () {
-                                                    _handleAcceptRequest(
-                                                        inviteRequests[index]
-                                                            .athlete.id,
-                                                        model,
-                                                        context);
-                                                  },
-                                                  icon:
-                                                      const Icon(Icons.check)),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  );
-                                } else {
-                                  return const Center(
-                                      child: Text(
-                                          'Não existem solicitações pendentes'));
-                                }
-                              } else {
-                                return const DefaultError();
-                              }
-                            default:
-                              return const DefaultError();
-                          }
-                        },
-                      ),
-                    ),
+                  const Flexible(
+                    child: RequestList(),
                   ),
                 ])),
           );
+        },
+      ),
+    );
+  }
+}
+
+class RequestList extends StatefulWidget {
+  const RequestList({Key? key}) : super(key: key);
+
+  @override
+  State<RequestList> createState() => _RequestListState();
+}
+
+class _RequestListState extends State<RequestList> {
+  @override
+  Widget build(BuildContext context) {
+    final model = Provider.of<CoachManageRequestsViewModel>(context, listen: false);
+    return Padding(
+      padding:
+      const EdgeInsets.only(top: 8, right: 16, left: 16),
+      child: FutureBuilder(
+        future: model.getRequests(model.team.id),
+        builder: (context, snapshot) {
+          if (model.isBusy) {
+            return const Center(child: SizedBox.shrink());
+          }
+
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+            case ConnectionState.none:
+            case ConnectionState.active:
+              return const Center(
+                  child: CircularProgressIndicator());
+
+            case ConnectionState.done:
+              if (snapshot.hasData) {
+                Result result = snapshot.data as Result;
+                List<InviteDTO> inviteRequests = result.data;
+                if (inviteRequests.isNotEmpty) {
+                  return ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: inviteRequests.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        child: ListTile(
+                          title: Text(inviteRequests[index]
+                              .athlete
+                              .name),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    _handleRefuseRequest(
+                                        inviteRequests[index]
+                                            .athlete.id,
+                                        model,
+                                        context);
+                                  },
+                                  icon:
+                                  const Icon(Icons.clear)),
+                              IconButton(
+                                  onPressed: () {
+                                    _handleAcceptRequest(
+                                        inviteRequests[index]
+                                            .athlete.id,
+                                        model,
+                                        context);
+                                  },
+                                  icon:
+                                  const Icon(Icons.check)),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return const Center(
+                      child: Text(
+                          'Não existem solicitações pendentes'));
+                }
+              } else {
+                return const DefaultError();
+              }
+            default:
+              return const DefaultError();
+          }
         },
       ),
     );
@@ -142,23 +157,27 @@ class _CoachManageRequestsScreenState extends State<CoachManageRequestsScreen> {
       BuildContext context) async {
     Result result = await model.acceptRequest(athleteId);
     if (result.success) {
-      UIHelper.showSuccess(_scaffoldKey.currentContext!, result);
+      UIHelper.showFlashNotification(context, result.message!);
     } else {
-      UIHelper.showError(_scaffoldKey.currentContext!, result);
+      UIHelper.showError(context, result);
     }
+
+    setState(() {});
   }
 
   void _handleRefuseRequest(int athleteId, CoachManageRequestsViewModel model,
       BuildContext context) async {
     Result result = await model.declineRequest(athleteId);
     if (result.success) {
-      UIHelper.showFlashNotification(
-          _scaffoldKey.currentContext!, result.message!);
+      UIHelper.showFlashNotification(context, result.message!);
     } else {
-      UIHelper.showError(_scaffoldKey.currentContext!, result);
+      UIHelper.showError(context, result);
     }
+
+    setState(() {});
   }
 }
+
 
 class DefaultError extends StatelessWidget {
   const DefaultError({Key? key}) : super(key: key);
