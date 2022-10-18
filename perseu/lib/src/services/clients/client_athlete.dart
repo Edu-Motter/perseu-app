@@ -44,7 +44,7 @@ class ClientAthlete with ApiHelper {
           return Result.success(data: response.data['status']);
         },
         onError: (response) =>
-            const Result.error(message: 'Falha ao cancelar solictiação'));
+            const Result.error(message: 'Falha ao cancelar solicitação'));
   }
 
   Future<Result> getAthlete(int athleteId, String authToken) async {

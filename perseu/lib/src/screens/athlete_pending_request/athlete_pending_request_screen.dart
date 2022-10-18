@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/screens/athlete_pending_request/athlete_pending_request_viewmodel.dart';
+import 'package:perseu/src/services/foundation.dart';
+import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/locator.dart';
@@ -17,11 +19,7 @@ class AthletePendingRequestScreen extends StatelessWidget {
             return Scaffold(
               backgroundColor: Colors.white,
               appBar: AppBar(
-                leading: IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () =>
-                        Navigator.pushReplacementNamed(context, Routes.login)),
-                title: const Text('Solicitação pendente'),
+                title: const Center(child: Text('Solicitação pendente')),
               ),
               body: SingleChildScrollView(
                 child: Padding(
@@ -39,18 +37,20 @@ class AthletePendingRequestScreen extends StatelessWidget {
                         ),
                       ),
                       ElevatedButton(
-                          onPressed: () {
-                            model.checkRequestStatus();
-                          },
+                          onPressed: () => _handleCheckRequest(context, model),
                           child: const Text('Verificar novamente')),
                       const SizedBox(
                         height: 16,
                       ),
                       ElevatedButton(
-                          onPressed: () {
-                            model.cancelRequest();
-                          },
-                          child: const Text('Cancelar solicitação'))
+                          onPressed: () => _handleCancelRequest(context, model),
+                          child: const Text('Cancelar solicitação')),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      ElevatedButton(
+                          onPressed: () => _handleLogout(context, model),
+                          child: const Text('Sair'))
                     ],
                   ),
                 ),
@@ -58,5 +58,38 @@ class AthletePendingRequestScreen extends StatelessWidget {
             );
           },
         ));
+  }
+
+  _handleCheckRequest(
+    BuildContext context,
+    AthletePendingRequestViewModel model,
+  ) async {
+    final Result result = await model.checkRequestStatus();
+    if (result.success) {
+      UIHelper.showSuccess(context, result);
+    } else {
+      UIHelper.showError(context, result);
+    }
+  }
+
+  _handleCancelRequest(
+    BuildContext context,
+    AthletePendingRequestViewModel model,
+  ) async {
+    final navigator = Navigator.of(context);
+    final Result result = await model.cancelRequest();
+    if (result.success) {
+      navigator.pushNamedAndRemoveUntil(
+          Routes.athleteRequest, (route) => false);
+      UIHelper.showSuccess(context, result);
+    } else {
+      UIHelper.showError(context, result);
+    }
+  }
+
+  _handleLogout(BuildContext context, AthletePendingRequestViewModel model) {
+    model.logout();
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil(Routes.login, (route) => false);
   }
 }

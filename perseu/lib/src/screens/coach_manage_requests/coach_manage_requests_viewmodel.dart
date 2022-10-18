@@ -16,16 +16,12 @@ class CoachManageRequestsViewModel extends AppViewModel {
     return await clientCoach.getRequests(teamId, authToken);
   }
 
-  Future<Result> acceptRequest(int athleteId) {
-    return tryExec(
-      () async => await clientCoach.acceptRequest(athleteId, authToken),
-    );
+  Future<Result> acceptRequest(int athleteId) async {
+    return await clientCoach.acceptRequest(athleteId, authToken);
   }
 
-  Future<Result> declineRequest(int athleteId) {
-    return tryExec(
-      () async => await clientCoach.declineRequest(athleteId, authToken),
-    );
+  Future<Result> declineRequest(int athleteId) async {
+    return await clientCoach.declineRequest(athleteId, authToken);
   }
 
   Future<Result<TeamInfoDTO>> getTeamInfo() async {

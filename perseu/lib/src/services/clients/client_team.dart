@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/models/dtos/athlete_dto.dart';
-import 'package:perseu/src/models/dtos/training_dto.dart';
-import 'package:perseu/src/models/requests/assign_training.dart';
 import 'package:perseu/src/services/foundation.dart';
 
 class ClientTeam with ApiHelper {

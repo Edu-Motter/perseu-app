@@ -21,7 +21,7 @@ class AthleteRequestViewModel extends AppViewModel {
       if (result.success) {
         return const Result.success(
             message:
-                'Solicitação enviada! Aguarde a resposta do seu treinador.');
+                'Solicitação enviada! Aguarde a resposta.');
       } else {
         return result;
       }

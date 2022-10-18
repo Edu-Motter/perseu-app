@@ -30,11 +30,7 @@ class _AthleteRequestScreenState extends State<AthleteRequestScreen> {
             inAsyncCall: model.isBusy,
             child: Scaffold(
               appBar: AppBar(
-                leading: IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () =>
-                        Navigator.pushReplacementNamed(context, Routes.login)),
-                title: const Text('Ingressando na Equipe'),
+                title: const Center(child: Text('Ingressando na Equipe')),
               ),
               body: Container(
                 color: Colors.white,
@@ -90,14 +86,13 @@ class _AthleteRequestScreenState extends State<AthleteRequestScreen> {
 
   Future<void> handleSend(
       AthleteRequestViewModel model, BuildContext context) async {
+    final navigator = Navigator.of(context);
     if (_formKey.currentState!.validate()) {
       final Result result = await model.createRequest();
       if (result.success) {
-        UIHelper.showSuccessWithRoute(
-            context,
-            result,
-            () => Navigator.of(context)
-                .pushReplacementNamed('athlete-pending-request'));
+        navigator.pushNamedAndRemoveUntil(
+            Routes.athletePendingRequest, (route) => false);
+        UIHelper.showSuccess(context, result);
       } else {
         UIHelper.showError(context, result);
       }
