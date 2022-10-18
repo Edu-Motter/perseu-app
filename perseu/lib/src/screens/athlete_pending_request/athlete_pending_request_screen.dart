@@ -19,11 +19,7 @@ class AthletePendingRequestScreen extends StatelessWidget {
             return Scaffold(
               backgroundColor: Colors.white,
               appBar: AppBar(
-                leading: IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () =>
-                        Navigator.pushReplacementNamed(context, Routes.login)),
-                title: const Text('Solicitação pendente'),
+                title: const Center(child: Text('Solicitação pendente')),
               ),
               body: SingleChildScrollView(
                 child: Padding(
@@ -77,7 +73,8 @@ class AthletePendingRequestScreen extends StatelessWidget {
     final navigator = Navigator.of(context);
     final Result result = await model.cancelRequest();
     if (result.success) {
-      navigator.popAndPushNamed(Routes.athleteRequest);
+      navigator.pushNamedAndRemoveUntil(
+          Routes.athleteRequest, (route) => false);
       UIHelper.showSuccess(context, result);
     } else {
       UIHelper.showError(context, result);
