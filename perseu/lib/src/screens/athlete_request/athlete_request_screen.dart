@@ -60,7 +60,7 @@ class _AthleteRequestScreenState extends State<AthleteRequestScreen> {
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               hintText: 'Informe o código da sua equipe:',
-                              labelText: 'Código:',
+                              labelText: 'Código',
                             ),
                             validator: RequiredValidator(
                                 errorText: 'O código precisa ser informado'),
