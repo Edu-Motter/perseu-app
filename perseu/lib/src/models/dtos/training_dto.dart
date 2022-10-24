@@ -9,6 +9,7 @@ part 'training_dto.g.dart';
 class TrainingDTO with _$TrainingDTO {
   const factory TrainingDTO({
     required int id,
+    required String name,
     required String createdAt,
     required String updatedAt,
     List<SessionDTO>? sessions,

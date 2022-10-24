@@ -56,9 +56,11 @@ class _UserViewTrainingScreenState extends State<UserViewTrainingScreen> {
                                 child: CircularProgressIndicator(),
                               );
                             case ConnectionState.done:
-                              if (snapshot.hasData && snapshot.data!.data != null) {
+                              if (snapshot.hasData &&
+                                  snapshot.data!.data != null) {
                                 final result = snapshot.data!.data!;
                                 final training = TrainingModel(
+                                    name: result.name,
                                     id: result.id,
                                     sessions: result.sessions!
                                         .map((s) => SessionModel(
@@ -68,39 +70,45 @@ class _UserViewTrainingScreenState extends State<UserViewTrainingScreen> {
                                                 .map((e) => ExerciseModel(
                                                     id: e.id,
                                                     name: e.name,
-                                                    description:
-                                                        e.description))
+                                                    description: e.description))
                                                 .toList()))
                                         .toList());
-                                return ListView.builder(
-                                  scrollDirection: Axis.vertical,
-                                  shrinkWrap: true,
-                                  physics: const BouncingScrollPhysics(),
-                                  itemCount: training.sessions.length,
-                                  itemBuilder: (context, index) {
-                                    return Card(
-                                        child: ExpansionTile(
-                                      trailing: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: const [
-                                          Padding(
-                                            padding: EdgeInsets.all(8.0),
-                                            child:
-                                                Icon(Icons.keyboard_arrow_down),
-                                          )
-                                        ],
-                                      ),
-                                      expandedCrossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
-                                      title: Text(training.sessions[index].name),
-                                      children: [
-                                        for (ExerciseModel e
-                                            in training
-                                            .sessions[index].exercises)
-                                          ExerciseCard(exerciseModel: e)
-                                      ],
-                                    ));
-                                  },
+                                return Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(training.name),
+                                    ListView.builder(
+                                      scrollDirection: Axis.vertical,
+                                      shrinkWrap: true,
+                                      physics: const BouncingScrollPhysics(),
+                                      itemCount: training.sessions.length,
+                                      itemBuilder: (context, index) {
+                                        return Card(
+                                          child: ExpansionTile(
+                                            trailing: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: const [
+                                                Padding(
+                                                  padding: EdgeInsets.all(8.0),
+                                                  child: Icon(Icons
+                                                      .keyboard_arrow_down),
+                                                )
+                                              ],
+                                            ),
+                                            expandedCrossAxisAlignment:
+                                                CrossAxisAlignment.stretch,
+                                            title: Text(
+                                                training.sessions[index].name),
+                                            children: [
+                                              for (ExerciseModel e in training
+                                                  .sessions[index].exercises)
+                                                ExerciseCard(exerciseModel: e)
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ],
                                 );
                                 // return Text(snapshot.data!.data!.createdAt);
                               } else {

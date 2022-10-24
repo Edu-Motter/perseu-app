@@ -10,6 +10,7 @@ class AssignTrainingRequest {
 
   Map<String, dynamic> toMap() {
     return {
+      'name': training.name,
       'athletes': athletesIds,
       'sessions': training.sessions.map((s) => s.toMap()).toList(),
     };

@@ -11,7 +11,10 @@ import 'package:perseu/src/utils/ui.dart';
 import '../coach_assign_training/assign_training_screen.dart';
 
 class NewTrainingScreen extends StatefulWidget {
-  const NewTrainingScreen({Key? key}) : super(key: key);
+  const NewTrainingScreen({Key? key, required this.trainingName})
+      : super(key: key);
+
+  final String trainingName;
 
   @override
   State<NewTrainingScreen> createState() => _NewTrainingScreenState();
@@ -19,15 +22,22 @@ class NewTrainingScreen extends StatefulWidget {
 
 class _NewTrainingScreenState extends State<NewTrainingScreen> {
   final TrainingModel training = TrainingModel(
+    name: '',
     id: 0,
     sessions: <SessionModel>[],
   );
 
   @override
+  void initState() {
+    training.name = widget.trainingName;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Novo treino'),
+        title: Text('Novo treino - ${widget.trainingName}'),
       ),
       floatingActionButton: SpeedDial(
         animatedIcon: AnimatedIcons.menu_close,
@@ -71,24 +81,29 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
           ? Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Center(
-                      child: Text(
-                          'Crie uma sessão de exercícios em "Adicionar sessão"')),
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context)
-                            .pushNamed(Routes.newSession)
-                            .then((sessionFuture) {
-                          SessionModel session = sessionFuture as SessionModel;
-                          setState(() {
-                            training.sessions.add(session);
+                  const Text(
+                      'Crie uma sessão de exercícios em "Adicionar sessão"'),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                    child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushNamed(Routes.newSession)
+                              .then((sessionFuture) {
+                            SessionModel session =
+                                sessionFuture as SessionModel;
+                            setState(() {
+                              training.sessions.add(session);
+                            });
                           });
-                        });
-                      },
-                      child: const Text('Adicionar sessão'))
+                        },
+                        child: const Text('Adicionar sessão')),
+                  )
                 ],
               ))
           : ListView.builder(
@@ -99,53 +114,54 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
               itemBuilder: (context, index) {
                 SessionModel session = training.sessions[index];
                 return Card(
-                    child: ExpansionTile(
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            setState(() {
-                              training.sessions.removeAt(index);
-                            });
-                          },
-                          icon: const Icon(
-                            Icons.delete,
-                            size: 20,
-                          )),
-                      IconButton(
-                          onPressed: () {
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(
-                                    builder: (_) => NewSessionScreen(
-                                        sessionModel: session)))
-                                .then((sessionFuture) {
-                              SessionModel sessionModel =
-                                  sessionFuture as SessionModel;
+                  child: ExpansionTile(
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                            onPressed: () {
                               setState(() {
-                                training.sessions.removeWhere(
-                                    (e) => e.id == sessionModel.id);
-                                training.sessions.insert(index, sessionModel);
+                                training.sessions.removeAt(index);
                               });
-                            });
-                          },
-                          icon: const Icon(
-                            Icons.edit,
-                            size: 20,
-                          )),
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Icon(Icons.keyboard_arrow_down),
-                      )
+                            },
+                            icon: const Icon(
+                              Icons.delete,
+                              size: 20,
+                            )),
+                        IconButton(
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                      builder: (_) => NewSessionScreen(
+                                          sessionModel: session)))
+                                  .then((sessionFuture) {
+                                SessionModel sessionModel =
+                                    sessionFuture as SessionModel;
+                                setState(() {
+                                  training.sessions.removeWhere(
+                                      (e) => e.id == sessionModel.id);
+                                  training.sessions.insert(index, sessionModel);
+                                });
+                              });
+                            },
+                            icon: const Icon(
+                              Icons.edit,
+                              size: 20,
+                            )),
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Icon(Icons.keyboard_arrow_down),
+                        )
+                      ],
+                    ),
+                    expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
+                    title: Text(session.name),
+                    children: [
+                      for (ExerciseModel e in session.exercises)
+                        ExerciseCard(exerciseModel: e)
                     ],
                   ),
-                  expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
-                  title: Text(session.name),
-                  children: [
-                    for (ExerciseModel e in session.exercises)
-                      ExerciseCard(exerciseModel: e)
-                  ],
-                ));
+                );
               }),
     );
   }
