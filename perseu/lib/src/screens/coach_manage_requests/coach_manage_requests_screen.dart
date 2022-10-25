@@ -3,6 +3,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:perseu/src/models/dtos/invite_dto.dart';
 import 'package:perseu/src/screens/coach_home/coach_home_screen.dart';
 import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_viewmodel.dart';
+import 'package:perseu/src/screens/widgets/athlete_information_dialog.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
@@ -76,10 +77,10 @@ class RequestList extends StatefulWidget {
 class _RequestListState extends State<RequestList> {
   @override
   Widget build(BuildContext context) {
-    final model = Provider.of<CoachManageRequestsViewModel>(context, listen: false);
+    final model =
+        Provider.of<CoachManageRequestsViewModel>(context, listen: false);
     return Padding(
-      padding:
-      const EdgeInsets.only(top: 8, right: 16, left: 16),
+      padding: const EdgeInsets.only(top: 8, right: 16, left: 16),
       child: FutureBuilder(
         future: model.getRequests(model.team.id),
         builder: (context, snapshot) {
@@ -91,8 +92,7 @@ class _RequestListState extends State<RequestList> {
             case ConnectionState.waiting:
             case ConnectionState.none:
             case ConnectionState.active:
-              return const Center(
-                  child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
 
             case ConnectionState.done:
               if (snapshot.hasData) {
@@ -105,32 +105,36 @@ class _RequestListState extends State<RequestList> {
                     itemBuilder: (context, index) {
                       return Card(
                         child: ListTile(
-                          title: Text(inviteRequests[index]
-                              .athlete
-                              .name),
+                          onLongPress: () => _handleInformationDialog(
+                            context,
+                            inviteRequests[index].athlete.id,
+                          ),
+                          title: Text(inviteRequests[index].athlete.name),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               IconButton(
+                                  onPressed: () => _handleInformationDialog(
+                                        context,
+                                        inviteRequests[index].athlete.id,
+                                      ),
+                                  icon: const Icon(Icons.info_outlined)),
+                              IconButton(
                                   onPressed: () {
                                     _handleRefuseRequest(
-                                        inviteRequests[index]
-                                            .athlete.id,
+                                        inviteRequests[index].athlete.id,
                                         model,
                                         context);
                                   },
-                                  icon:
-                                  const Icon(Icons.clear)),
+                                  icon: const Icon(Icons.clear)),
                               IconButton(
                                   onPressed: () {
                                     _handleAcceptRequest(
-                                        inviteRequests[index]
-                                            .athlete.id,
+                                        inviteRequests[index].athlete.id,
                                         model,
                                         context);
                                   },
-                                  icon:
-                                  const Icon(Icons.check)),
+                                  icon: const Icon(Icons.check)),
                             ],
                           ),
                         ),
@@ -139,8 +143,7 @@ class _RequestListState extends State<RequestList> {
                   );
                 } else {
                   return const Center(
-                      child: Text(
-                          'Não existem solicitações pendentes'));
+                      child: Text('Não existem solicitações pendentes'));
                 }
               } else {
                 return const DefaultError();
@@ -149,6 +152,15 @@ class _RequestListState extends State<RequestList> {
               return const DefaultError();
           }
         },
+      ),
+    );
+  }
+
+  void _handleInformationDialog(BuildContext context, int athleteId) {
+    showDialog(
+      context: context,
+      builder: (context) => AthleteInformationDialog(
+        athleteId: athleteId,
       ),
     );
   }
@@ -177,7 +189,6 @@ class _RequestListState extends State<RequestList> {
     setState(() {});
   }
 }
-
 
 class DefaultError extends StatelessWidget {
   const DefaultError({Key? key}) : super(key: key);

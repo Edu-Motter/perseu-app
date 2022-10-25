@@ -43,7 +43,6 @@ class ClientCoach with ApiHelper {
 
   Future<Result<List<InviteDTO>>> getRequests(
       int teamId, String authToken) async {
-    await Future.delayed(const Duration(seconds: 5));
     return process(
         dio.get(
           '/team/$teamId/request',
