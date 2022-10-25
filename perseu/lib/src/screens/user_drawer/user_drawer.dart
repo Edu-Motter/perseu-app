@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/routes.dart';
-import 'package:perseu/src/screens/athlete_drawer/user_drawer_viewmodel.dart';
+import 'package:perseu/src/screens/user_drawer/user_drawer_viewmodel.dart';
 import 'package:perseu/src/states/session.dart';
 import 'package:provider/provider.dart';
 

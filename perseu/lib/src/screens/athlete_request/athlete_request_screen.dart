@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:perseu/src/screens/user_drawer/user_drawer.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/locator.dart';
@@ -19,6 +20,7 @@ class AthleteRequestScreen extends StatefulWidget {
 class _AthleteRequestScreenState extends State<AthleteRequestScreen> {
   final TextEditingController _requestCodeController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +31,18 @@ class _AthleteRequestScreenState extends State<AthleteRequestScreen> {
           return ModalProgressHUD(
             inAsyncCall: model.isBusy,
             child: Scaffold(
+              key: scaffoldKey,
+              drawer: const UserDrawer(),
               appBar: AppBar(
-                title: const Center(child: Text('Ingressando na Equipe')),
+                title: const Text('Ingressando na Equipe'),
+                leading: IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () {
+                    if(scaffoldKey.currentState != null){
+                      scaffoldKey.currentState!.openDrawer();
+                    }
+                  },
+                ),
               ),
               body: Container(
                 color: Colors.white,

@@ -57,7 +57,7 @@ class Routes {
     newTeam: (context) => const NewTeamScreen(),
     changeTeamName: (context) => const ChangeTeamNameScreen(),
     athleteRequest: (context) => const AthleteRequestScreen(),
-    athletePendingRequest: (context) => const AthletePendingRequestScreen(),
+    athletePendingRequest: (context) => AthletePendingRequestScreen(),
     userViewTraining: (context) => const UserViewTrainingScreen(),
     teamChat : (context) => const TeamChatScreen()
   };

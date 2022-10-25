@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/screens/athlete_pending_request/athlete_pending_request_viewmodel.dart';
+import 'package:perseu/src/screens/user_drawer/user_drawer.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
@@ -8,7 +9,9 @@ import '../../app/locator.dart';
 import '../../app/routes.dart';
 
 class AthletePendingRequestScreen extends StatelessWidget {
-  const AthletePendingRequestScreen({Key? key}) : super(key: key);
+  AthletePendingRequestScreen({Key? key}) : super(key: key);
+
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +20,17 @@ class AthletePendingRequestScreen extends StatelessWidget {
         child: Consumer<AthletePendingRequestViewModel>(
           builder: (context, model, child) {
             return Scaffold(
+              key: scaffoldKey,
               backgroundColor: Colors.white,
+              drawer: const UserDrawer(),
               appBar: AppBar(
-                title: const Center(child: Text('Solicitação pendente')),
+                title: const Text('Solicitação pendente'),
+                leading: IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () {
+                    scaffoldKey.currentState?.openDrawer();
+                  },
+                ),
               ),
               body: SingleChildScrollView(
                 child: Padding(
@@ -48,9 +59,6 @@ class AthletePendingRequestScreen extends StatelessWidget {
                       const SizedBox(
                         height: 16,
                       ),
-                      ElevatedButton(
-                          onPressed: () => _handleLogout(context, model),
-                          child: const Text('Sair'))
                     ],
                   ),
                 ),
@@ -85,11 +93,5 @@ class AthletePendingRequestScreen extends StatelessWidget {
     } else {
       UIHelper.showError(context, result);
     }
-  }
-
-  _handleLogout(BuildContext context, AthletePendingRequestViewModel model) {
-    model.logout();
-    Navigator.of(context)
-        .pushNamedAndRemoveUntil(Routes.login, (route) => false);
   }
 }

@@ -3,6 +3,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/screens/new_team/new_team_viewmodel.dart';
+import 'package:perseu/src/screens/user_drawer/user_drawer.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +20,7 @@ class NewTeamScreen extends StatefulWidget {
 class _NewTeamScreenState extends State<NewTeamScreen> {
   final TextEditingController _teamNameController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +31,17 @@ class _NewTeamScreenState extends State<NewTeamScreen> {
           return ModalProgressHUD(
             inAsyncCall: model.isBusy,
             child: Scaffold(
+              key: scaffoldKey,
+              drawer: const UserDrawer(),
               appBar: AppBar(
-                leading: IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () =>
-                        Navigator.pushReplacementNamed(context, Routes.login)),
                 title: const Text('Criando Equipe'),
+                automaticallyImplyLeading: false,
+                leading: IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () {
+                    scaffoldKey.currentState?.openDrawer();
+                  },
+                ),
               ),
               body: Container(
                 color: Colors.white,

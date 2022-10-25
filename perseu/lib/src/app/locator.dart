@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:perseu/src/screens/athlete_drawer/user_drawer_viewmodel.dart';
+import 'package:perseu/src/screens/user_drawer/user_drawer_viewmodel.dart';
 import 'package:perseu/src/screens/athlete_home/athlete_home_viewmodel.dart';
 import 'package:perseu/src/screens/athlete_request/athlete_request_viewmodel.dart';
 import 'package:perseu/src/screens/change_team_name/change_team_name_viewmodel.dart';
