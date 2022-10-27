@@ -10,8 +10,7 @@ import 'package:provider/provider.dart';
 import '../../app/locator.dart';
 import '../../services/foundation.dart';
 
-// ignore: must_be_immutable
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   static const Key nameInputKey = Key('nameInput');
   static const Key birthdayInputKey = Key('birthdayInput');
   static const Key emailInputKey = Key('emailInput');
@@ -23,21 +22,34 @@ class SignUpScreen extends StatelessWidget {
   static const Key heightInputKey = Key('heightInput');
   static const Key weightInputKey = Key('weightInput');
 
+  const SignUpScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
   final _nameController = TextEditingController();
+
   final _birthdayController = TextEditingController();
+
   final _emailController = TextEditingController();
+
   final _cpfController = TextEditingController();
+
   final _passwordController = TextEditingController();
+
   final _confirmPasswordController = TextEditingController();
+
   final _crefController = TextEditingController();
+
   final _heightController = TextEditingController();
+
   final _weightController = TextEditingController();
 
   final List<String> _userTypes = ['Atleta', 'Treinador'];
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  SignUpScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +174,9 @@ class SignUpScreen extends StatelessWidget {
                             validator: MultiValidator([
                               RequiredValidator(
                                   errorText: 'A senha precisa ser informada'),
-                              MinLengthValidator(4, errorText: 'A senha precisa ser no mínimo 4 caracteres')
+                              MinLengthValidator(4,
+                                  errorText:
+                                      'A senha precisa ser no mínimo 4 caracteres')
                             ]),
                           ),
                           const SizedBox(height: 8),
@@ -177,8 +191,11 @@ class SignUpScreen extends StatelessWidget {
                             obscureText: true,
                             validator: MultiValidator([
                               RequiredValidator(
-                                  errorText: 'Você precisa confirmar sua senha'),
-                              MinLengthValidator(4, errorText: 'A senha precisa ser no mínimo 4 caracteres')
+                                  errorText:
+                                      'Você precisa confirmar sua senha'),
+                              MinLengthValidator(4,
+                                  errorText:
+                                      'A senha precisa ser no mínimo 4 caracteres')
                             ]),
                           ),
                           const SizedBox(height: 8),
@@ -229,11 +246,8 @@ class SignUpScreen extends StatelessWidget {
                             child: TextFormField(
                               key: SignUpScreen.weightInputKey,
                               controller: _weightController,
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                      decimal: true),
-                              onChanged: (value) => model.weight = value,
-                              inputFormatters: [Formatters.weight()],
+                              keyboardType: TextInputType.number,
+                              onChanged: (value) => _formatWeight(value, model),
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 hintText: 'Peso: 00 Kg',
@@ -264,7 +278,7 @@ class SignUpScreen extends StatelessWidget {
 
   _handleSignUp(BuildContext context, SignUpViewModel model) async {
     if (_formKey.currentState!.validate()) {
-      if(_passwordsValidation(model)){
+      if (_passwordsValidation(model)) {
         showDialog(
             context: context,
             builder: (context) => const PasswordsNotMatchDialog());
@@ -274,7 +288,7 @@ class SignUpScreen extends StatelessWidget {
       Result result = await model.signUp();
       if (result.success) {
         UIHelper.showSuccessWithRoute(context, result,
-                () => Navigator.of(context).pushReplacementNamed(Routes.login));
+            () => Navigator.of(context).pushReplacementNamed(Routes.login));
       } else {
         UIHelper.showError(context, result);
       }
@@ -291,5 +305,41 @@ class SignUpScreen extends StatelessWidget {
       items.add(DropdownMenuItem(value: type, child: Text('Conta $type')));
     }
     return items;
+  }
+
+
+  _formatWeight(String value, SignUpViewModel model){
+    if (value.length > 6){
+      _weightController.text = value.substring(0,6);
+      return;
+    }
+
+    String numberValue = '';
+    if(value.length > 5){
+      numberValue = value.replaceAll(' Kg', '');
+    }
+
+    if (value.length < model.weight.length && value.length > 2) {
+      setState(() {
+        _weightController.text = '';
+      });
+    }
+
+    if (value.length == 2) {
+      setState(() {
+        _weightController.text = '$value Kg';
+      });
+    }
+
+    if (numberValue.length == 3) {
+      setState(() {
+        _weightController.text = '$numberValue Kg';
+      });
+    }
+
+    model.weight = value;
+    _weightController.selection =
+        TextSelection.fromPosition(TextPosition(
+            offset: _weightController.text.length));
   }
 }

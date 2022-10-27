@@ -29,6 +29,13 @@ class Formatters {
         type: MaskAutoCompletionType.eager);
   }
 
+  static MaskTextInputFormatter weightSmall() {
+    return MaskTextInputFormatter(
+        mask: '## Kg',
+        filter: {"#": RegExp('[0-9]')},
+        type: MaskAutoCompletionType.eager);
+  }
+
   static MaskTextInputFormatter decimal() {
     return MaskTextInputFormatter(
         mask: '##.##', filter: {"#": RegExp('[0-9]')});
