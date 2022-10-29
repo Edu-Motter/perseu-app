@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:perseu/src/screens/trainings_by_team/trainings_by_team_viewmodel.dart';
 import 'package:perseu/src/screens/user_drawer/user_drawer_viewmodel.dart';
 import 'package:perseu/src/screens/athlete_home/athlete_home_viewmodel.dart';
 import 'package:perseu/src/screens/athlete_request/athlete_request_viewmodel.dart';
@@ -122,4 +123,5 @@ void initializeLocator() {
   locator.registerFactory<TrainingViewModel>(() => TrainingViewModel());
   locator.registerFactory<AssignTrainingViewModel>(() => AssignTrainingViewModel());
   locator.registerFactory<AthleteInformationViewModel>(() => AthleteInformationViewModel());
+  locator.registerFactory<TrainingsByTeamViewModel>(() => TrainingsByTeamViewModel());
 }

@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/models/dtos/invite_dto.dart';
 import 'package:perseu/src/models/dtos/team_info_dto.dart';
+import 'package:perseu/src/models/dtos/training_by_team_dto.dart';
 import 'package:perseu/src/models/dtos/updated_coach_dto.dart';
 import 'package:perseu/src/services/foundation.dart';
 
@@ -112,10 +113,10 @@ class ClientCoach with ApiHelper {
   }
 
   Future<Result> updateCoach(
-      UpdatedCoachDTO updatedCoach,
-      int coachId,
-      String authToken,
-      ) async {
+    UpdatedCoachDTO updatedCoach,
+    int coachId,
+    String authToken,
+  ) async {
     return process(
         dio.put(
           '/coach/$coachId',
@@ -125,8 +126,25 @@ class ClientCoach with ApiHelper {
         onSuccess: (response) {
           return Result.success(data: response.data);
         },
-        onError: (response) => const Result.error(
-            message: 'Falha ao atualizar seu perfil'));
+        onError: (response) =>
+            const Result.error(message: 'Falha ao atualizar seu perfil'));
   }
 
+  Future<Result<List<TrainingByTeamDTO>>> getTrainings(
+    String authToken,
+    int teamId,
+  ) {
+    return process(
+        dio.get(
+          '/team/$teamId/training',
+          options: Options(headers: {'Authorization': 'Bearer $authToken'}),
+        ),
+        onSuccess: (response) {
+          final data = response.data as List;
+          return Result.success(
+              data: data.map((e) => TrainingByTeamDTO.fromJson(e)).toList());
+        },
+        onError: (response) =>
+            const Result.error(message: 'Falha ao buscar treinos'));
+  }
 }

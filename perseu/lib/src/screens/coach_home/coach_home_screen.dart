@@ -65,10 +65,9 @@ class CoachHomeScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       MenuButton(
-                        title: 'Gerenciar relatórios',
-                        onPressed: () {
-                          null;
-                        },
+                        title: 'Lista de treinos',
+                        onPressed: () => Navigator.of(context)
+                            .pushNamed(Routes.trainingsByTeam),
                       ),
                       const SizedBox(height: 8),
                       MenuButton(
