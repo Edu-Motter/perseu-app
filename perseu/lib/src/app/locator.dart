@@ -15,6 +15,7 @@ import 'package:perseu/src/screens/new_team/new_team_viewmodel.dart';
 import 'package:perseu/src/screens/profile_screen/profile_viewmodel.dart';
 import 'package:perseu/src/screens/sign_up/sign_up_viewmodel.dart';
 import 'package:perseu/src/screens/user_view_training/user_view_training_viewmodel.dart';
+import 'package:perseu/src/screens/users_to_chat/users_to_chat_viewmodel.dart';
 import 'package:perseu/src/screens/widgets/athlete_information_dialog.dart';
 import 'package:perseu/src/services/clients/client_athlete.dart';
 import 'package:perseu/src/services/clients/client_coach.dart';
@@ -118,6 +119,7 @@ void initializeLocator() {
   locator.registerFactory<AthletePendingRequestViewModel>(() => AthletePendingRequestViewModel());
   locator.registerFactory<CoachManageRequestsViewModel>(() => CoachManageRequestsViewModel());
   locator.registerFactory<TeamChatViewModel>(() => TeamChatViewModel());
+  locator.registerFactory<UsersToChatViewModel>(() => UsersToChatViewModel());
   locator.registerFactory<CoachHomeViewModel>(() => CoachHomeViewModel());
   locator.registerFactory<AthleteHomeViewModel>(() => AthleteHomeViewModel());
   locator.registerFactory<TrainingViewModel>(() => TrainingViewModel());

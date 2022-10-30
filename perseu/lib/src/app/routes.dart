@@ -10,6 +10,7 @@ import 'package:perseu/src/screens/new_team/new_team_screen.dart';
 import 'package:perseu/src/screens/profile_screen/profile_screen.dart';
 import 'package:perseu/src/screens/sign_up/sign_up_screen.dart';
 import 'package:perseu/src/screens/trainings_by_team/trainings_by_team_screen.dart';
+import 'package:perseu/src/screens/users_to_chat/users_to_chat_screen.dart';
 import 'package:perseu/src/screens/without_team_screens/athlete_enter_team_screen.dart';
 import 'package:perseu/src/screens/without_team_screens/coach_creates_team_screen.dart';
 
@@ -40,6 +41,7 @@ class Routes {
   static const String changeTeamName = 'change-team-name';
   static const String userViewTraining = 'user-view-training';
   static const String teamChat = 'team-chat';
+  static const String usersToChat = 'users-to-chat';
   static const String trainingsByTeam = 'trainingsByTeam';
 
   static Map<String, WidgetBuilder> map = {
@@ -62,6 +64,7 @@ class Routes {
     athletePendingRequest: (context) => AthletePendingRequestScreen(),
     userViewTraining: (context) => const UserViewTrainingScreen(),
     teamChat : (context) => const TeamChatScreen(),
+    usersToChat : (context) => const UsersToChatScreen(),
     trainingsByTeam : (context) => const TrainingsByTeamScreen(),
     // trainingDetails : (context) => const TrainingDetailsScreen(),
   };

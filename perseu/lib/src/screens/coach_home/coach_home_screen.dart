@@ -89,7 +89,7 @@ class CoachHomeScreen extends StatelessWidget {
                       MenuButton(
                         title: 'Visualizar conversas',
                         onPressed: () {
-                          Navigator.of(context).pushNamed(Routes.teamChat);
+                          Navigator.of(context).pushNamed(Routes.usersToChat);
                         },
                       ),
                     ],
