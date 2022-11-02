@@ -1,7 +1,6 @@
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/models/dtos/athlete_dto.dart';
 import 'package:perseu/src/models/dtos/training_dto.dart';
-import 'package:perseu/src/models/requests/assign_training.dart';
 import 'package:perseu/src/screens/coach_assign_training/athletes_assign_training_viewmodel.dart';
 import 'package:perseu/src/services/clients/client_team.dart';
 import 'package:perseu/src/services/clients/client_training.dart';
@@ -44,15 +43,13 @@ class AssignTrainingViewModel extends AppViewModel {
           message: 'Deve ter ao menos um atleta selecionado');
     }
 
-    final trainingRequest = AssignTrainingRequest.dto(training, athletesIds);
-
     final Result result = await clientTraining.assignTraining(
-      trainingRequest,
-      teamId,
+      athletesIds,
+      training.id,
       authToken,
     );
     if (result.success) {
-      return const Result.success(message: 'Treino atribuído com sucesso!');
+      return Result.success(message: result.message);
     }
     return Result.error(message: result.message);
   }

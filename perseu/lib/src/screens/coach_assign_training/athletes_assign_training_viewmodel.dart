@@ -40,7 +40,7 @@ class AthletesAssignTrainingViewModel extends AppViewModel {
 
     final trainingRequest = AssignTrainingRequest.model(training, athletesIds);
 
-    final Result result = await clientTraining.assignTraining(
+    final Result result = await clientTraining.assignAndCreateTraining(
       trainingRequest,
       teamId,
       authToken,

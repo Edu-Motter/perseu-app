@@ -57,7 +57,7 @@ class ApiHelper {
     try {
       final Response? response = await request;
       assert(response != null);
-      return onSuccess(response!);
+      return onSuccess  (response!);
     } on DioError catch (e) {
       if (e.type == DioErrorType.connectTimeout ||
           e.type == DioErrorType.receiveTimeout ||
