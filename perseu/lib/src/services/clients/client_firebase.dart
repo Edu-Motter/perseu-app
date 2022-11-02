@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/states/session.dart';
@@ -7,15 +6,10 @@ import 'package:perseu/src/states/session.dart';
 class ClientFirebase {
   final FirebaseFirestore clientFirestore = locator.get<FirebaseFirestore>();
 
-  void addUser(Map<String, dynamic> user) async {
-    final doc = await clientFirestore.collection('users').add(user);
-    debugPrint('success added user with id: ${doc.id}');
-  }
-
   Future<Result> saveMessage(String message, UserSession session) async {
     String userName = 'Desconhecido';
-    if(session.isAthlete) userName = session.athlete!.name;
-    if(session.isCoach) userName = session.coach!.name;
+    if (session.isAthlete) userName = session.athlete!.name;
+    if (session.isCoach) userName = session.coach!.name;
 
     try {
       await clientFirestore
@@ -28,6 +22,44 @@ class ClientFirebase {
         'date': DateTime.now(),
         'userId': session.user.email,
       });
+      return const Result.success();
+    } catch (e) {
+      return Result.error(message: e.toString());
+    }
+  }
+
+  Future<Result> saveMessageUserToUser({
+    required String message,
+    required String userName,
+    required int friendId,
+    required UserSession userSession,
+
+  }) async {
+    final messageData = {
+      'userName': userName,
+      'message': message,
+      'date': DateTime.now(),
+      'userEmail': userSession.user.email,
+      'userId': userSession.user.id,
+    };
+
+    try {
+      //Saves on user's collection
+      await clientFirestore
+          .collection('users')
+          .doc(userSession.user.id.toString())
+          .collection('chats')
+          .doc(friendId.toString())
+          .collection('messages')
+          .add(messageData);
+      //Saves on friend's collection
+      await clientFirestore
+          .collection('users')
+          .doc(friendId.toString())
+          .collection('chats')
+          .doc(userSession.user.id.toString())
+          .collection('messages')
+          .add(messageData);
       return const Result.success();
     } catch (e) {
       return Result.error(message: e.toString());

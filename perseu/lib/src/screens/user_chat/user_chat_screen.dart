@@ -1,30 +1,39 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
+import 'package:perseu/src/screens/user_chat/user_chat_viewmodel.dart';
+import 'package:perseu/src/screens/widgets/center_error.dart';
+import 'package:perseu/src/screens/widgets/center_loading.dart';
 import 'package:perseu/src/utils/date_formatters.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
-import 'package:perseu/src/screens/team_chat/team_chat_viewmodel.dart';
 
-class TeamChatScreen extends StatefulWidget {
-  const TeamChatScreen({Key? key}) : super(key: key);
+class UsersChatScreen extends StatefulWidget {
+  const UsersChatScreen({
+    Key? key,
+    required this.friendId,
+    required this.friendName,
+  }) : super(key: key);
+
+  final int friendId;
+  final String friendName;
 
   @override
-  State<TeamChatScreen> createState() => _TeamChatScreenState();
+  State<UsersChatScreen> createState() => _TeamChatScreenState();
 }
 
-class _TeamChatScreenState extends State<TeamChatScreen> {
+class _TeamChatScreenState extends State<UsersChatScreen> {
   final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => locator<TeamChatViewModel>(),
-      child: Consumer<TeamChatViewModel>(
+      create: (_) => locator<UserChatViewModel>(),
+      child: Consumer<UserChatViewModel>(
         builder: (context, model, child) {
           return Scaffold(
             appBar: AppBar(
-              title: Text('${model.teamName} chat'),
+              title: Text(widget.friendName),
             ),
             body: Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -32,9 +41,11 @@ class _TeamChatScreenState extends State<TeamChatScreen> {
                 Expanded(
                   child: StreamBuilder(
                     stream: FirebaseFirestore.instance
-                        .collection('teams')
-                        .doc(model.teamId.toString())
-                        .collection('chat')
+                        .collection('users')
+                        .doc(model.userId.toString())
+                        .collection('chats')
+                        .doc(widget.friendId.toString())
+                        .collection('messages')
                         .orderBy('date', descending: true)
                         .snapshots(),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -51,8 +62,7 @@ class _TeamChatScreenState extends State<TeamChatScreen> {
                                 userName: chat['userName'],
                                 message: chat['message'],
                                 date: (chat['date'] as Timestamp).toDate(),
-                                isOwner: chat['userId'] ==
-                                    model.userSession.user.email,
+                                isOwner: chat['userId'] == model.userId,
                               );
                             },
                           );
@@ -81,13 +91,9 @@ class _TeamChatScreenState extends State<TeamChatScreen> {
                         }
                       } else if (snapshot.connectionState ==
                           ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
+                        return const CircularLoading();
                       } else {
-                        return const Center(
-                          child: Text('Erro interno'),
-                        );
+                        return const CenterError(message: 'Erro desconhecido');
                       }
                     },
                   ),
@@ -132,8 +138,9 @@ class _TeamChatScreenState extends State<TeamChatScreen> {
                         child: InkWell(
                           onTap: () {
                             if (model.isNotBusy) {
-                              if(_controller.text.isEmpty) return;
-                              model.sendMessage(_controller.text);
+                              if (_controller.text.isEmpty) return;
+                              model.sendMessage(
+                                  _controller.text, widget.friendId);
                               _controller.clear();
                             }
                           },
@@ -229,46 +236,45 @@ class MessageWidget extends StatelessWidget {
                 child: Container(
                   decoration: messageBoxDecoration,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 4.0, horizontal: 8.0),
-                    child: Column(
-                      children: [
-                        Column(
-                          crossAxisAlignment: isOwner
-                              ? CrossAxisAlignment.end
-                              : CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SizedBox(width: nameSize.width),
-                            if (closeToNameWidth)
-                              SizedBox(width: nameSize.width + padding),
-                            Text(
-                              message,
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 16),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: isOwner
-                              ? CrossAxisAlignment.start
-                              : CrossAxisAlignment.end,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SizedBox(width: nameSize.width),
-                            SizedBox(width: messageSize.width),
-                            if (closeToNameWidth)
-                              SizedBox(width: nameSize.width + padding),
-                            Text(
-                              DateFormatters.toTime(date),
-                              style: const TextStyle(
-                                  color: Colors.white60, fontSize: 12),
-                            ),
-                          ],
-                        ),
-                      ],
-                    )
-                  ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 4.0, horizontal: 8.0),
+                      child: Column(
+                        children: [
+                          Column(
+                            crossAxisAlignment: isOwner
+                                ? CrossAxisAlignment.end
+                                : CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(width: nameSize.width),
+                              if (closeToNameWidth)
+                                SizedBox(width: nameSize.width + padding),
+                              Text(
+                                message,
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: isOwner
+                                ? CrossAxisAlignment.start
+                                : CrossAxisAlignment.end,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(width: nameSize.width),
+                              SizedBox(width: messageSize.width),
+                              if (closeToNameWidth)
+                                SizedBox(width: nameSize.width + padding),
+                              Text(
+                                DateFormatters.toTime(date),
+                                style: const TextStyle(
+                                    color: Colors.white60, fontSize: 12),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )),
                 ),
               ),
             ],

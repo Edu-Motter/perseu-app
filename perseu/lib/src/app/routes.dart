@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:perseu/src/screens/athlete_home/athlete_home_screen.dart';
 import 'package:perseu/src/screens/change_password/change_password_screen.dart';
 import 'package:perseu/src/screens/change_team_name/change_team_name_screen.dart';
+import 'package:perseu/src/screens/chats/chats_screen.dart';
 import 'package:perseu/src/screens/coach_home/coach_home_screen.dart';
 import 'package:perseu/src/screens/coach_screens/new_exercise_screen.dart';
 import 'package:perseu/src/screens/coach_screens/new_session_screen.dart';
@@ -40,6 +41,7 @@ class Routes {
   static const String athletePendingRequest = 'athlete-pending-request';
   static const String changeTeamName = 'change-team-name';
   static const String userViewTraining = 'user-view-training';
+  static const String chats = 'chats';
   static const String teamChat = 'team-chat';
   static const String usersToChat = 'users-to-chat';
   static const String trainingsByTeam = 'trainingsByTeam';
@@ -63,6 +65,7 @@ class Routes {
     athleteRequest: (context) => const AthleteRequestScreen(),
     athletePendingRequest: (context) => AthletePendingRequestScreen(),
     userViewTraining: (context) => const UserViewTrainingScreen(),
+    chats : (context) => const ChatsScreen(),
     teamChat : (context) => const TeamChatScreen(),
     usersToChat : (context) => const UsersToChatScreen(),
     trainingsByTeam : (context) => const TrainingsByTeamScreen(),
