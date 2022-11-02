@@ -1,8 +1,6 @@
 import 'dart:convert';
 
-import 'package:perseu/src/models/dtos/session_dto.dart';
 import 'package:perseu/src/models/dtos/training_dto.dart';
-import 'package:perseu/src/models/sessions_model.dart';
 import 'package:perseu/src/models/training_model.dart';
 
 class AssignTrainingRequest {
