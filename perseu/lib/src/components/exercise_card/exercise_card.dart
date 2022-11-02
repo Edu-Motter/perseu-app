@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../models/exercise_model.dart';
-
 class ExerciseCard extends StatelessWidget {
   const ExerciseCard({
     Key? key,
