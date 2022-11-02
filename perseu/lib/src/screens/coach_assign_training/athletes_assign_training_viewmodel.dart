@@ -19,7 +19,7 @@ class AthletesToAssignTrainingModel {
   bool assigned;
 }
 
-class AssignTrainingViewModel extends AppViewModel {
+class AthletesAssignTrainingViewModel extends AppViewModel {
   ClientTraining clientTraining = locator<ClientTraining>();
   ClientTeam clientTeam = locator<ClientTeam>();
 
@@ -38,7 +38,7 @@ class AssignTrainingViewModel extends AppViewModel {
           message: 'Deve ter ao menos um atleta selecionado');
     }
 
-    final trainingRequest = AssignTrainingRequest(athletesIds, training);
+    final trainingRequest = AssignTrainingRequest.model(training, athletesIds);
 
     final Result result = await clientTraining.assignTraining(
       trainingRequest,

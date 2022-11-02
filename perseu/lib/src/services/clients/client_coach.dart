@@ -4,6 +4,7 @@ import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/models/dtos/invite_dto.dart';
 import 'package:perseu/src/models/dtos/team_info_dto.dart';
 import 'package:perseu/src/models/dtos/training_by_team_dto.dart';
+import 'package:perseu/src/models/dtos/training_dto.dart';
 import 'package:perseu/src/models/dtos/updated_coach_dto.dart';
 import 'package:perseu/src/services/foundation.dart';
 
@@ -144,6 +145,21 @@ class ClientCoach with ApiHelper {
           return Result.success(
               data: data.map((e) => TrainingByTeamDTO.fromJson(e)).toList());
         },
+        onError: (response) =>
+            const Result.error(message: 'Falha ao buscar treinos'));
+  }
+
+  Future<Result<TrainingDTO>> getTraining(
+    String authToken,
+    int trainingId,
+  ) {
+    return process(
+        dio.get(
+          '/training/$trainingId',
+          options: Options(headers: {'Authorization': 'Bearer $authToken'}),
+        ),
+        onSuccess: (response) =>
+            Result.success(data: TrainingDTO.fromJson(response.data)),
         onError: (response) =>
             const Result.error(message: 'Falha ao buscar treinos'));
   }

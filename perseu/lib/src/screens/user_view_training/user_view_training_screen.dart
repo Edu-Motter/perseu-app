@@ -102,7 +102,10 @@ class _UserViewTrainingScreenState extends State<UserViewTrainingScreen> {
                                             children: [
                                               for (ExerciseModel e in training
                                                   .sessions[index].exercises)
-                                                ExerciseCard(exerciseModel: e)
+                                                ExerciseCard(
+                                                  name: e.name,
+                                                  description: e.description,
+                                                )
                                             ],
                                           ),
                                         );

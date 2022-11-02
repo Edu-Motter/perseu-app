@@ -3,9 +3,14 @@ import 'package:flutter/material.dart';
 import '../../models/exercise_model.dart';
 
 class ExerciseCard extends StatelessWidget {
-  final ExerciseModel exerciseModel;
+  const ExerciseCard({
+    Key? key,
+    required this.name,
+    required this.description,
+  }) : super(key: key);
 
-  const ExerciseCard({Key? key, required this.exerciseModel}) : super(key: key);
+  final String name;
+  final String description;
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +23,11 @@ class ExerciseCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              exerciseModel.name,
+              name,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 8),
-            Text(exerciseModel.description),
+            Text(description),
           ],
         ),
       ),

@@ -16,10 +16,13 @@ class CenterError extends StatelessWidget {
         decoration: const BoxDecoration(
             color: Colors.teal,
             borderRadius: BorderRadius.all(Radius.circular(16))),
-        child: Text(
-          message,
-          textAlign: TextAlign.center,
-          style: const TextStyle(color: Colors.white, fontSize: 16),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            message,
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.white, fontSize: 16),
+          ),
         ),
       ),
     );

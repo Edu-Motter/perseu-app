@@ -5,10 +5,10 @@ import 'package:perseu/src/components/exercise_card/exercise_card.dart';
 import 'package:perseu/src/models/exercise_model.dart';
 import 'package:perseu/src/models/sessions_model.dart';
 import 'package:perseu/src/models/training_model.dart';
+import 'package:perseu/src/screens/coach_assign_training/athletes_assign_training_screen.dart';
 import 'package:perseu/src/screens/coach_screens/new_session_screen.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/utils/ui.dart';
-import '../coach_assign_training/assign_training_screen.dart';
 
 class NewTrainingScreen extends StatefulWidget {
   const NewTrainingScreen({Key? key, required this.trainingName})
@@ -65,7 +65,7 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
             onTap: () => {
               if (training.sessions.isNotEmpty)
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => AssignTrainingScreen(training: training)))
+                    builder: (_) => AthletesAssignTrainingScreen(training: training)))
               else
                 UIHelper.showError(
                     context,
@@ -158,7 +158,10 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
                     title: Text(session.name),
                     children: [
                       for (ExerciseModel e in session.exercises)
-                        ExerciseCard(exerciseModel: e)
+                        ExerciseCard(
+                          name: e.name,
+                          description: e.description,
+                        )
                     ],
                   ),
                 );

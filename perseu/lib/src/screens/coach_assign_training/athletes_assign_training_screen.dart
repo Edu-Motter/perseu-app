@@ -6,10 +6,10 @@ import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
-import 'assign_training_viewmodel.dart';
+import 'athletes_assign_training_viewmodel.dart';
 
-class AssignTrainingScreen extends StatefulWidget {
-  const AssignTrainingScreen({Key? key, required this.training})
+class AthletesAssignTrainingScreen extends StatefulWidget {
+  const AthletesAssignTrainingScreen({Key? key, required this.training})
       : super(key: key);
   final TrainingModel training;
 
@@ -17,7 +17,7 @@ class AssignTrainingScreen extends StatefulWidget {
   _AssignTrainingState createState() => _AssignTrainingState();
 }
 
-class _AssignTrainingState extends State<AssignTrainingScreen> {
+class _AssignTrainingState extends State<AthletesAssignTrainingScreen> {
   late AthletesToAssignTrainingModel athletesToAssignTrainingModel;
   late TrainingModel training;
   @override
@@ -30,8 +30,8 @@ class _AssignTrainingState extends State<AssignTrainingScreen> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => locator<AssignTrainingViewModel>(),
-        child: Consumer<AssignTrainingViewModel>(
+        create: (_) => locator<AthletesAssignTrainingViewModel>(),
+        child: Consumer<AthletesAssignTrainingViewModel>(
           builder: (context, model, child) {
             return ModalProgressHUD(
               inAsyncCall: model.isBusy,
@@ -90,7 +90,7 @@ class _AssignTrainingState extends State<AssignTrainingScreen> {
   }
 
   void _handleAssign(BuildContext context) async {
-    final model = Provider.of<AssignTrainingViewModel>(context, listen: false);
+    final model = Provider.of<AthletesAssignTrainingViewModel>(context, listen: false);
     Result result = await model.assign(training, model.athletes);
     if (result.success) {
       UIHelper.showSuccess(context, result);

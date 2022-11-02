@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:perseu/src/app/locator.dart';
-import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/models/dtos/training_by_team_dto.dart';
+import 'package:perseu/src/screens/training_details/training_details_screen.dart';
 import 'package:perseu/src/screens/widgets/center_error.dart';
 import 'package:perseu/src/screens/widgets/center_loading.dart';
 import 'package:perseu/src/services/foundation.dart';
@@ -19,38 +18,35 @@ class TrainingsByTeamScreen extends StatelessWidget {
       create: (_) => locator<TrainingsByTeamViewModel>(),
       child: Consumer<TrainingsByTeamViewModel>(
         builder: (__, model, _) {
-          return ModalProgressHUD(
-            inAsyncCall: model.isBusy,
-            child: Scaffold(
-              appBar: AppBar(
-                title: const Text('Lista de treinos'),
-              ),
-              body: FutureBuilder(
-                future: model.getTrainings(),
-                builder: (
-                  context,
-                  AsyncSnapshot<Result<List<TrainingByTeamDTO>>> snapshot,
-                ) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                    case ConnectionState.waiting:
-                    case ConnectionState.active:
-                      return const CircularLoading();
-                    case ConnectionState.done:
-                      if (snapshot.hasData) {
-                        final result = snapshot.data!;
-                        if (result.success && result.data!.isNotEmpty) {
-                          return TrainingsList(trainings: result.data!);
-                        }
-                        if (result.success && result.data!.isEmpty) {
-                          return const CenterError(
-                              message: 'Não possui treinos ainda');
-                        }
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Lista de treinos'),
+            ),
+            body: FutureBuilder(
+              future: model.getTrainings(),
+              builder: (
+                context,
+                AsyncSnapshot<Result<List<TrainingByTeamDTO>>> snapshot,
+              ) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                  case ConnectionState.active:
+                    return const CircularLoading();
+                  case ConnectionState.done:
+                    if (snapshot.hasData) {
+                      final result = snapshot.data!;
+                      if (result.success && result.data!.isNotEmpty) {
+                        return TrainingsList(trainings: result.data!);
                       }
-                      return const CenterError(message: 'Erro desconhecido');
-                  }
-                },
-              ),
+                      if (result.success && result.data!.isEmpty) {
+                        return const CenterError(
+                            message: 'Não possui treinos ainda');
+                      }
+                    }
+                    return const CenterError(message: 'Erro desconhecido');
+                }
+              },
             ),
           );
         },
@@ -113,7 +109,14 @@ class TrainingsList extends StatelessWidget {
                       color: Colors.teal,
                       size: 28,
                     ),
-                    onTap: () => Navigator.pushNamed(context, Routes.teamChat),
+                    onTap: () => Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return TrainingDetailsScreen(
+                          trainingId: training.id,
+                          trainingName: training.name,
+                        );
+                      },
+                    )),
                   ),
                 );
               },

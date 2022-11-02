@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:perseu/src/screens/assign_training/assign_training_viewmodel.dart';
+import 'package:perseu/src/screens/coach_assign_training/athletes_assign_training_viewmodel.dart';
+import 'package:perseu/src/screens/training_details/training_details_viewmodel.dart';
 import 'package:perseu/src/screens/trainings_by_team/trainings_by_team_viewmodel.dart';
 import 'package:perseu/src/screens/user_drawer/user_drawer_viewmodel.dart';
 import 'package:perseu/src/screens/athlete_home/athlete_home_viewmodel.dart';
 import 'package:perseu/src/screens/athlete_request/athlete_request_viewmodel.dart';
 import 'package:perseu/src/screens/change_team_name/change_team_name_viewmodel.dart';
-import 'package:perseu/src/screens/coach_assign_training/assign_training_viewmodel.dart';
 import 'package:perseu/src/screens/coach_home/coach_home_viewmodel.dart';
 import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_viewmodel.dart';
 import 'package:perseu/src/screens/new_team/new_team_viewmodel.dart';
@@ -123,7 +125,9 @@ void initializeLocator() {
   locator.registerFactory<CoachHomeViewModel>(() => CoachHomeViewModel());
   locator.registerFactory<AthleteHomeViewModel>(() => AthleteHomeViewModel());
   locator.registerFactory<TrainingViewModel>(() => TrainingViewModel());
+  locator.registerFactory<AthletesAssignTrainingViewModel>(() => AthletesAssignTrainingViewModel());
   locator.registerFactory<AssignTrainingViewModel>(() => AssignTrainingViewModel());
   locator.registerFactory<AthleteInformationViewModel>(() => AthleteInformationViewModel());
   locator.registerFactory<TrainingsByTeamViewModel>(() => TrainingsByTeamViewModel());
+  locator.registerFactory<TrainingDetailsViewModel>(() => TrainingDetailsViewModel());
 }
