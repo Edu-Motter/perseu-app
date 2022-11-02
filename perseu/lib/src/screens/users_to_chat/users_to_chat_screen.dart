@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
+import 'package:perseu/src/models/dtos/user_chat_dto.dart';
 import 'package:perseu/src/screens/user_chat/user_chat_screen.dart';
 import 'package:perseu/src/screens/widgets/center_error.dart';
 import 'package:perseu/src/screens/widgets/center_loading.dart';
@@ -53,7 +54,7 @@ class _UsersToChatScreenState extends State<UsersToChatScreen> {
             ),
             body: FutureBuilder(
               future: model.getUsers(_searchController.text),
-              builder: (context, AsyncSnapshot<List<UserChat>> snapshot) {
+              builder: (context, AsyncSnapshot<List<UserChatDTO>> snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.none:
                   case ConnectionState.waiting:
@@ -82,14 +83,14 @@ class UsersList extends StatelessWidget {
     required this.users,
   }) : super(key: key);
 
-  final List<UserChat> users;
+  final List<UserChatDTO> users;
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: users.length,
       itemBuilder: (context, index) {
-        final UserChat user = users[index];
+        final UserChatDTO user = users[index];
         return Card(
           child: ListTile(
             title: Text(user.name),
