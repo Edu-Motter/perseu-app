@@ -53,10 +53,23 @@ class ChatsScreen extends StatelessWidget {
                     backgroundColor: Colors.teal,
                   ),
                   title: const Text('Equipe'),
-                  subtitle: const Text(
-                    'Ultima mensangem da equipe',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  subtitle: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('teams')
+                        .doc(model.teamId.toString())
+                        .snapshots(),
+                    builder:
+                        (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                      if (snapshot.hasData) {
+                        final lastMessage = snapshot.data!.get('lastMessage');
+                        return Text(
+                          lastMessage,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        );
+                      }
+                      return const CircularLoading();
+                    },
                   ),
                   onTap: () => Navigator.pushNamed(context, Routes.teamChat),
                 ),
@@ -94,7 +107,7 @@ class ChatsScreen extends StatelessWidget {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   onTap: () {
-                                    if(friendId == null) return;
+                                    if (friendId == null) return;
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(

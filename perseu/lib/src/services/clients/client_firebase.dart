@@ -11,17 +11,22 @@ class ClientFirebase {
     if (session.isAthlete) userName = session.athlete!.name;
     if (session.isCoach) userName = session.coach!.name;
 
+    final teamId = session.team!.id.toString();
+
     try {
       await clientFirestore
           .collection('teams')
-          .doc(session.team!.id.toString())
+          .doc(teamId)
           .collection('chat')
           .add({
         'userName': userName,
         'message': message,
         'date': DateTime.now(),
         'userId': session.user.email,
-      });
+      }).then((_) => FirebaseFirestore.instance
+              .collection('teams')
+              .doc(teamId)
+              .set({'lastMessage': message}));
       return const Result.success();
     } catch (e) {
       return Result.error(message: e.toString());
