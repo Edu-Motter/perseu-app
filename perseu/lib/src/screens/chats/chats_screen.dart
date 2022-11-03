@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/app/routes.dart';
+import 'package:perseu/src/screens/user_chat/user_chat_screen.dart';
+import 'package:perseu/src/screens/widgets/center_loading.dart';
 import 'package:provider/provider.dart';
 
 import 'chats_viewmodel.dart';
@@ -39,10 +42,9 @@ class ChatsScreen extends StatelessWidget {
                     Navigator.pushNamed(context, Routes.usersToChat),
               ),
             ),
-            body: ListView.builder(
-              itemCount: 1,
-              itemBuilder: (context, index) {
-                return ListTile(
+            body: Column(
+              children: [
+                ListTile(
                   leading: const CircleAvatar(
                     child: Text(
                       'T',
@@ -57,8 +59,61 @@ class ChatsScreen extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   onTap: () => Navigator.pushNamed(context, Routes.teamChat),
-                );
-              },
+                ),
+                Expanded(
+                  child: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(model.userId.toString())
+                        .collection('chats')
+                        .snapshots(),
+                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasData) {
+                        if (snapshot.data!.docs.isNotEmpty) {
+                          return ListView.builder(
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              final String friendIdString =
+                                  snapshot.data!.docs[index].id;
+                              final int? friendId =
+                                  int.tryParse(friendIdString);
+                              final String lastMessage =
+                                  snapshot.data!.docs[index]['lastMessage'];
+                              return ListTile(
+                                  leading: const CircleAvatar(
+                                    child: Text(
+                                      'U',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    backgroundColor: Colors.teal,
+                                  ),
+                                  title: Text(friendIdString),
+                                  subtitle: Text(
+                                    lastMessage,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  onTap: () {
+                                    if(friendId == null) return;
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => UsersChatScreen(
+                                          friendId: friendId,
+                                          friendName: friendIdString,
+                                        ),
+                                      ),
+                                    );
+                                  });
+                            },
+                          );
+                        }
+                      }
+                      return const CircularLoading();
+                    },
+                  ),
+                ),
+              ],
             ),
           );
         },

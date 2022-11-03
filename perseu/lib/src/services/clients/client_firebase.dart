@@ -33,7 +33,6 @@ class ClientFirebase {
     required String userName,
     required int friendId,
     required UserSession userSession,
-
   }) async {
     final messageData = {
       'userName': userName,
@@ -51,7 +50,13 @@ class ClientFirebase {
           .collection('chats')
           .doc(friendId.toString())
           .collection('messages')
-          .add(messageData);
+          .add(messageData)
+          .then((_) => clientFirestore
+              .collection('users')
+              .doc(userSession.user.id.toString())
+              .collection('chats')
+              .doc(friendId.toString())
+              .set({'lastMessage': message}));
       //Saves on friend's collection
       await clientFirestore
           .collection('users')
@@ -59,7 +64,13 @@ class ClientFirebase {
           .collection('chats')
           .doc(userSession.user.id.toString())
           .collection('messages')
-          .add(messageData);
+          .add(messageData)
+          .then((_) => clientFirestore
+              .collection('users')
+              .doc(friendId.toString())
+              .collection('chats')
+              .doc(userSession.user.id.toString())
+              .set({'lastMessage': message}));
       return const Result.success();
     } catch (e) {
       return Result.error(message: e.toString());
