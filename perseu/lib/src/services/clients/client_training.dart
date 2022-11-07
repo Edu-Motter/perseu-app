@@ -41,6 +41,23 @@ class ClientTraining with ApiHelper {
             const Result.error(message: 'Falha ao atribuir treino'));
   }
 
+  Future<Result> checkIn(
+    int athleteId,
+    int trainingId,
+    String authToken,
+  ) async {
+    DateTime now = DateTime.now();
+    return process(
+        dio.post('/training/$trainingId/athlete/$athleteId/check-in',
+            data: jsonEncode({'date': now.toIso8601String(), 'effort': 5}),
+            options: Options(headers: {'Authorization': 'Bearer $authToken'})),
+        onSuccess: (response) {
+          return const Result.success(message: 'Sucesso no check-in');
+        },
+        onError: (response) =>
+            const Result.error(message: 'Falha no check-in'));
+  }
+
   Future<Result<TrainingDTO>> getTraining(int athleteId, String jwt) async {
     return process(
         dio.get('/athlete/$athleteId/training',

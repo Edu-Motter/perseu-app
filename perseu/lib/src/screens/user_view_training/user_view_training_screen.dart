@@ -8,6 +8,7 @@ import 'package:perseu/src/models/sessions_model.dart';
 import 'package:perseu/src/models/training_model.dart';
 import 'package:perseu/src/screens/user_view_training/user_view_training_viewmodel.dart';
 import 'package:perseu/src/services/foundation.dart';
+import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
 class UserViewTrainingScreen extends StatefulWidget {
@@ -45,7 +46,7 @@ class _UserViewTrainingScreenState extends State<UserViewTrainingScreen> {
                       padding:
                           const EdgeInsets.only(top: 8, right: 16, left: 16),
                       child: FutureBuilder(
-                        future: model.getTraining(model.athleteId),
+                        future: model.getTraining(),
                         builder: (context,
                             AsyncSnapshot<Result<TrainingDTO>> snapshot) {
                           switch (snapshot.connectionState) {
@@ -77,39 +78,47 @@ class _UserViewTrainingScreenState extends State<UserViewTrainingScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(training.name),
-                                    ListView.builder(
-                                      scrollDirection: Axis.vertical,
-                                      shrinkWrap: true,
-                                      physics: const BouncingScrollPhysics(),
-                                      itemCount: training.sessions.length,
-                                      itemBuilder: (context, index) {
-                                        return Card(
-                                          child: ExpansionTile(
-                                            trailing: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: const [
-                                                Padding(
-                                                  padding: EdgeInsets.all(8.0),
-                                                  child: Icon(Icons
-                                                      .keyboard_arrow_down),
-                                                )
+                                    Expanded(
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.vertical,
+                                        shrinkWrap: true,
+                                        physics: const BouncingScrollPhysics(),
+                                        itemCount: training.sessions.length,
+                                        itemBuilder: (context, index) {
+                                          return Card(
+                                            child: ExpansionTile(
+                                              trailing: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: const [
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsets.all(8.0),
+                                                    child: Icon(Icons
+                                                        .keyboard_arrow_down),
+                                                  )
+                                                ],
+                                              ),
+                                              expandedCrossAxisAlignment:
+                                                  CrossAxisAlignment.stretch,
+                                              title: Text(training
+                                                  .sessions[index].name),
+                                              children: [
+                                                for (ExerciseModel e in training
+                                                    .sessions[index].exercises)
+                                                  ExerciseCard(
+                                                    name: e.name,
+                                                    description: e.description,
+                                                  )
                                               ],
                                             ),
-                                            expandedCrossAxisAlignment:
-                                                CrossAxisAlignment.stretch,
-                                            title: Text(
-                                                training.sessions[index].name),
-                                            children: [
-                                              for (ExerciseModel e in training
-                                                  .sessions[index].exercises)
-                                                ExerciseCard(
-                                                  name: e.name,
-                                                  description: e.description,
-                                                )
-                                            ],
-                                          ),
-                                        );
-                                      },
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    ElevatedButton(
+                                      child: const Text('Check in'),
+                                      onPressed: () => _handleCheckIn(
+                                          context, training.id, model),
                                     ),
                                   ],
                                 );
@@ -129,5 +138,40 @@ class _UserViewTrainingScreenState extends State<UserViewTrainingScreen> {
         },
       ),
     );
+  }
+
+  void _handleCheckIn(
+    BuildContext context,
+    int trainingId,
+    TrainingViewModel model,
+  ) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Row(
+                children: const [
+                  Text('Confirmar Check in'),
+                  SizedBox(width: 16),
+                  Icon(Icons.check, color: Colors.teal),
+                ],
+              ),
+              actions: [
+                TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Não')),
+                TextButton(
+                    onPressed: () async {
+                      final navigator = Navigator.of(context);
+                      final Result result = await model.checkIn(trainingId);
+                      navigator.pop();
+                      if (result.success) {
+                        UIHelper.showSuccess(context, result);
+                      } else {
+                        UIHelper.showError(context, result);
+                      }
+                    },
+                    child: const Text('Sim')),
+              ],
+            ));
   }
 }
