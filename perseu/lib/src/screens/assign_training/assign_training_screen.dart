@@ -20,12 +20,6 @@ class AssignTrainingScreen extends StatefulWidget {
 }
 
 class _AssignTrainingState extends State<AssignTrainingScreen> {
-  @override
-  void initState() {
-    // training = widget.training;
-    super.initState();
-  }
-
   final bool checkboxState = false;
   @override
   Widget build(BuildContext context) {
@@ -36,12 +30,6 @@ class _AssignTrainingState extends State<AssignTrainingScreen> {
             return ModalProgressHUD(
               inAsyncCall: model.isBusy,
               child: Scaffold(
-                  floatingActionButton: FloatingActionButton(
-                    onPressed: () {
-                      _handleAssign(context);
-                    },
-                    child: const Icon(Icons.send),
-                  ),
                   appBar: AppBar(
                     title: const Text('Atribuir treino'),
                   ),
@@ -58,26 +46,35 @@ class _AssignTrainingState extends State<AssignTrainingScreen> {
                             if (snapshot.hasData) {
                               Result result = snapshot.data as Result;
                               if (result.success) {
-                                return ListView(
-                                    padding: const EdgeInsets.all(16.0),
-                                    children: [
-                                      const Text('Atletas'),
-                                      ListView.builder(
-                                        scrollDirection: Axis.vertical,
-                                        shrinkWrap: true,
-                                        itemCount: model.athletes.length,
-                                        itemBuilder: (_, int index) {
-                                          return AthleteCheckboxTile(
-                                            athlete: model.athletes[index],
-                                          );
-                                        },
-                                      ),
-                                      ElevatedButton(
-                                          onPressed: () async {
-                                            _handleAssign(context);
+                                return Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          'Atletas',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: Colors.teal, fontSize: 24),
+                                        ),
+                                        ListView.builder(
+                                          scrollDirection: Axis.vertical,
+                                          shrinkWrap: true,
+                                          itemCount: model.athletes.length,
+                                          itemBuilder: (_, int index) {
+                                            return AthleteCheckboxTile(
+                                              athlete: model.athletes[index],
+                                            );
                                           },
-                                          child: const Text('Atribuir'))
-                                    ]);
+                                        ),
+                                        ElevatedButton(
+                                            onPressed: () async {
+                                              _handleAssign(context);
+                                            },
+                                            child: const Text('Atribuir'))
+                                      ]),
+                                );
                               }
                               return CenterError(
                                   message: result.message ??
