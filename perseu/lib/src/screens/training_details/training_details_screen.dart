@@ -113,9 +113,14 @@ class TrainingView extends StatelessWidget {
     final sessions = training.sessions!;
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(training.name),
+        Text(
+          training.name,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+              color: Colors.teal, fontSize: 24),
+        ),
+        const Divider(),
         ListView.builder(
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
