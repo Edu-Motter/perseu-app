@@ -77,7 +77,13 @@ class _UserViewTrainingScreenState extends State<UserViewTrainingScreen> {
                                 return Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(training.name),
+                                    Text(
+                                      training.name,
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                          color: Colors.teal, fontSize: 24),
+                                    ),
+                                    const Divider(),
                                     Expanded(
                                       child: ListView.builder(
                                         scrollDirection: Axis.vertical,
@@ -120,6 +126,7 @@ class _UserViewTrainingScreenState extends State<UserViewTrainingScreen> {
                                       onPressed: () => _handleCheckIn(
                                           context, training.id, model),
                                     ),
+                                    const SizedBox(height: 16),
                                   ],
                                 );
                                 // return Text(snapshot.data!.data!.createdAt);

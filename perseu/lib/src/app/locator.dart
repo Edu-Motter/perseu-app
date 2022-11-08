@@ -42,7 +42,7 @@ void initializeLocator() {
     final dio = Dio();
     dio.options
       ..baseUrl =
-          'http://10.0.2.2:3000/'
+          'https://b366-2804-7f4-378f-e23d-c17-7980-8fa8-a4f0.sa.ngrok.io'
       ..connectTimeout = 5000
       ..receiveTimeout = 5000
       ..headers = {
