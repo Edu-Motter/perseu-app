@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/components/dialogs/passwords_not_match_dialog.dart';
 import 'package:perseu/src/screens/sign_up/sign_up_viewmodel.dart';
@@ -136,6 +137,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               border: OutlineInputBorder(),
                               hintText: 'CPF:',
                             ),
+                            keyboardType: TextInputType.number,
                             inputFormatters: [Formatters.cpf()],
                             validator: MultiValidator([
                               RequiredValidator(
@@ -153,6 +155,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 border: OutlineInputBorder(),
                                 hintText: 'Data de nascimento:',
                               ),
+                              keyboardType: TextInputType.number,
                               inputFormatters: [Formatters.date()],
                               validator: MultiValidator([
                                 RequiredValidator(
