@@ -1,33 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
-import 'package:perseu/src/models/dtos/training_by_team_dto.dart';
-import 'package:perseu/src/screens/training_details/training_details_screen.dart';
+import 'package:perseu/src/models/dtos/athlete_dto.dart';
+import 'package:perseu/src/screens/athlete_trainings_details/athlete_trainings_details_screen.dart';
 import 'package:perseu/src/screens/widgets/center_error.dart';
 import 'package:perseu/src/screens/widgets/center_loading.dart';
 import 'package:perseu/src/screens/widgets/center_rounded_container.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:provider/provider.dart';
 
-import 'trainings_by_team_viewmodel.dart';
+import 'manage_athletes_viewmodel.dart';
 
-class TrainingsByTeamScreen extends StatelessWidget {
-  const TrainingsByTeamScreen({Key? key}) : super(key: key);
+class ManageAthletesScreen extends StatelessWidget {
+  const ManageAthletesScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<TrainingsByTeamViewModel>(
-      create: (_) => locator<TrainingsByTeamViewModel>(),
-      child: Consumer<TrainingsByTeamViewModel>(
+    return ChangeNotifierProvider<ManageAthletesViewModel>(
+      create: (_) => locator<ManageAthletesViewModel>(),
+      child: Consumer<ManageAthletesViewModel>(
         builder: (__, model, _) {
           return Scaffold(
             appBar: AppBar(
-              title: const Text('Lista de treinos'),
+              title: const Text('Gerenciar Atletas'),
             ),
             body: FutureBuilder(
-              future: model.getTrainings(),
+              future: model.getAthletes(),
               builder: (
                 context,
-                AsyncSnapshot<Result<List<TrainingByTeamDTO>>> snapshot,
+                AsyncSnapshot<Result<List<AthleteDTO>>> snapshot,
               ) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.none:
@@ -38,11 +38,11 @@ class TrainingsByTeamScreen extends StatelessWidget {
                     if (snapshot.hasData) {
                       final result = snapshot.data!;
                       if (result.success && result.data!.isNotEmpty) {
-                        return TrainingsList(trainings: result.data!);
+                        return AthletesList(athletes: result.data!);
                       }
                       if (result.success && result.data!.isEmpty) {
                         return const CenterError(
-                            message: 'Não possui treinos ainda');
+                            message: 'Não possui atletas ainda');
                       }
                     }
                     return const CenterError(message: 'Erro desconhecido');
@@ -56,13 +56,13 @@ class TrainingsByTeamScreen extends StatelessWidget {
   }
 }
 
-class TrainingsList extends StatelessWidget {
-  const TrainingsList({
+class AthletesList extends StatelessWidget {
+  const AthletesList({
     Key? key,
-    required this.trainings,
+    required this.athletes,
   }) : super(key: key);
 
-  final List<TrainingByTeamDTO> trainings;
+  final List<AthleteDTO> athletes;
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +77,7 @@ class TrainingsList extends StatelessWidget {
             ),
             child: CenterRoundedContainer(
               child: Text(
-                'Quantidade de treinos: ${trainings.length}',
+                'Quantidade de atletas: ${athletes.length}',
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 18,
@@ -87,12 +87,12 @@ class TrainingsList extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: trainings.length,
+              itemCount: athletes.length,
               itemBuilder: (context, index) {
-                final TrainingByTeamDTO training = trainings[index];
+                final AthleteDTO athlete = athletes[index];
                 return Card(
                   child: ListTile(
-                    title: Text(training.name),
+                    title: Text(athlete.name),
                     trailing: const Icon(
                       Icons.arrow_forward,
                       color: Colors.teal,
@@ -100,9 +100,9 @@ class TrainingsList extends StatelessWidget {
                     ),
                     onTap: () => Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
-                        return TrainingDetailsScreen(
-                          trainingId: training.id,
-                          trainingName: training.name,
+                        return AthleteTrainingsDetailsScreen(
+                          athleteId: athlete.id,
+                          athleteName: athlete.name,
                         );
                       },
                     )),

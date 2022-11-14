@@ -93,10 +93,10 @@ class ChatsScreen extends StatelessWidget {
                               final String lastMessage =
                                   snapshot.data!.docs[index]['lastMessage'];
                               return ListTile(
-                                  leading: const CircleAvatar(
+                                  leading: CircleAvatar(
                                     child: Text(
-                                      'U',
-                                      style: TextStyle(color: Colors.white),
+                                      getCircleLetters(lastMessage),
+                                      style: const TextStyle(color: Colors.white),
                                     ),
                                     backgroundColor: Colors.teal,
                                   ),
@@ -132,5 +132,20 @@ class ChatsScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  static String getCircleLetters(String name){
+    List<String> names = name.split(' ');
+
+    String firstCharacterFirstName = getFirstCharacter(names.first);
+    String firstCharacterLastName = getFirstCharacter(names.last);
+
+    if(names.length == 1) return firstCharacterFirstName;
+
+    return '$firstCharacterFirstName$firstCharacterLastName';
+  }
+  
+  static String getFirstCharacter(String string){
+    return string.substring(0,1).toUpperCase();
   }
 }

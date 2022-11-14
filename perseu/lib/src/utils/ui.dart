@@ -1,9 +1,13 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:perseu/src/screens/widgets/center_loading.dart';
 import 'package:perseu/src/utils/flash_notification.dart' as flash;
 
 import '../app/routes.dart';
 import '../services/foundation.dart';
+
+
+typedef FutureVoidCallback = Future<void> Function();
 
 class UIHelper {
   // ignore: unused_element
@@ -76,6 +80,25 @@ class UIHelper {
         .show(context);
   }
 
+  static Future<bool?> showBoolDialog({
+    required BuildContext context,
+    required VoidCallback onNoPressed,
+    required FutureVoidCallback onYesPressed,
+    required String title,
+    required String message,
+  }) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => BoolDialog(
+        title: title,
+        message: message,
+        onNoPressed: onNoPressed,
+        onYesPressed: onYesPressed,
+      ),
+    );
+  }
+
   static Future<void> showSimpleDialog(BuildContext context,
       {required String title, required String message}) {
     return _showDialog(context, _SimpleDialog(title: title, message: message));
@@ -111,6 +134,60 @@ class UIHelper {
       textScaleFactor: WidgetsBinding.instance!.window.textScaleFactor,
     )..layout();
     return textPainter.size;
+  }
+}
+
+class BoolDialog extends StatefulWidget {
+  const BoolDialog({
+    Key? key,
+    required this.title,
+    required this.message,
+    required this.onNoPressed,
+    required this.onYesPressed,
+  }) : super(key: key);
+
+  final String title;
+  final String message;
+  final VoidCallback onNoPressed;
+  final FutureVoidCallback onYesPressed;
+
+  @override
+  State<BoolDialog> createState() => _BoolDialogState();
+}
+
+class _BoolDialogState extends State<BoolDialog> {
+  bool busy = false;
+
+  @override
+  Widget build(BuildContext context) {
+    if (busy) {
+      return const AlertDialog(
+        content: SizedBox(
+          height: 60,
+          width: 60,
+          child: CircularLoading(),
+        ),
+      );
+    }
+
+    return AlertDialog(
+      title: Text(widget.title),
+      content: Text(widget.message),
+      actions: [
+        TextButton(
+          onPressed: widget.onNoPressed,
+          child: const Text('Não'),
+        ),
+        TextButton(
+          onPressed: () async {
+            setState(() => busy = true);
+            await widget.onYesPressed();
+            setState(() => busy = false);
+          },
+          child: const Text('Sim'),
+        ),
+      ],
+    );
   }
 }
 

@@ -7,6 +7,7 @@ import 'package:perseu/src/screens/coach_home/coach_home_screen.dart';
 import 'package:perseu/src/screens/coach_screens/new_exercise_screen.dart';
 import 'package:perseu/src/screens/coach_screens/new_session_screen.dart';
 import 'package:perseu/src/screens/login_screen.dart';
+import 'package:perseu/src/screens/manage_athletes/manage_athletes_screen.dart';
 import 'package:perseu/src/screens/new_team/new_team_screen.dart';
 import 'package:perseu/src/screens/profile_screen/profile_screen.dart';
 import 'package:perseu/src/screens/sign_up/sign_up_screen.dart';
@@ -45,6 +46,8 @@ class Routes {
   static const String teamChat = 'team-chat';
   static const String usersToChat = 'users-to-chat';
   static const String trainingsByTeam = 'trainingsByTeam';
+  static const String manageAthletes = 'manage-athletes';
+  static const String trainingToAthlete = 'training-to-athlete';
 
   static Map<String, WidgetBuilder> map = {
     bootstrap: (context) => const BootstrapScreen(),
@@ -69,6 +72,8 @@ class Routes {
     teamChat : (context) => const TeamChatScreen(),
     usersToChat : (context) => const UsersToChatScreen(),
     trainingsByTeam : (context) => const TrainingsByTeamScreen(),
+    manageAthletes : (context) => const ManageAthletesScreen(),
+    // trainingToAthlete : (context) => const TrainingToAthleteScreen(),
     // trainingDetails : (context) => const TrainingDetailsScreen(),
   };
 }

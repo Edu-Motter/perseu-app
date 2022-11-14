@@ -71,6 +71,12 @@ class CoachHomeScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       MenuButton(
+                        title: 'Gerenciar Atletas',
+                        onPressed: () => Navigator.of(context)
+                            .pushNamed(Routes.manageAthletes),
+                      ),
+                      const SizedBox(height: 8),
+                      MenuButton(
                         title: 'Alterar nome equipe',
                         onPressed: () {
                           Navigator.of(context)

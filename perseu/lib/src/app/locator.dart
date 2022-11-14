@@ -6,15 +6,18 @@ import 'package:get_it/get_it.dart';
 import 'package:perseu/src/screens/assign_training/assign_training_viewmodel.dart';
 import 'package:perseu/src/screens/athlete_home/athlete_home_viewmodel.dart';
 import 'package:perseu/src/screens/athlete_request/athlete_request_viewmodel.dart';
+import 'package:perseu/src/screens/athlete_trainings_details/athlete_trainings_details_viewmodel.dart';
 import 'package:perseu/src/screens/change_team_name/change_team_name_viewmodel.dart';
 import 'package:perseu/src/screens/chats/chats_viewmodel.dart';
 import 'package:perseu/src/screens/coach_assign_training/athletes_assign_training_viewmodel.dart';
 import 'package:perseu/src/screens/coach_home/coach_home_viewmodel.dart';
 import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_viewmodel.dart';
+import 'package:perseu/src/screens/manage_athletes/manage_athletes_viewmodel.dart';
 import 'package:perseu/src/screens/new_team/new_team_viewmodel.dart';
 import 'package:perseu/src/screens/profile_screen/profile_viewmodel.dart';
 import 'package:perseu/src/screens/sign_up/sign_up_viewmodel.dart';
 import 'package:perseu/src/screens/training_details/training_details_viewmodel.dart';
+import 'package:perseu/src/screens/training_to_athlete/training_to_athlete_viewmodel.dart';
 import 'package:perseu/src/screens/trainings_by_team/trainings_by_team_viewmodel.dart';
 import 'package:perseu/src/screens/user_chat/user_chat_viewmodel.dart';
 import 'package:perseu/src/screens/user_drawer/user_drawer_viewmodel.dart';
@@ -42,7 +45,7 @@ void initializeLocator() {
     final dio = Dio();
     dio.options
       ..baseUrl =
-          'https://b366-2804-7f4-378f-e23d-c17-7980-8fa8-a4f0.sa.ngrok.io'
+          'http://10.0.2.2:3000/'
       ..connectTimeout = 5000
       ..receiveTimeout = 5000
       ..headers = {
@@ -134,4 +137,7 @@ void initializeLocator() {
   locator.registerFactory<AthleteInformationViewModel>(() => AthleteInformationViewModel());
   locator.registerFactory<TrainingsByTeamViewModel>(() => TrainingsByTeamViewModel());
   locator.registerFactory<TrainingDetailsViewModel>(() => TrainingDetailsViewModel());
+  locator.registerFactory<ManageAthletesViewModel>(() => ManageAthletesViewModel());
+  locator.registerFactory<AthleteTrainingsDetailsViewModel>(() => AthleteTrainingsDetailsViewModel());
+  locator.registerFactory<TrainingToAthleteViewModel>(() => TrainingToAthleteViewModel());
 }
