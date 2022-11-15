@@ -7,8 +7,8 @@ import 'package:perseu/src/models/exercise_model.dart';
 import 'package:perseu/src/models/sessions_model.dart';
 import 'package:perseu/src/models/training_model.dart';
 import 'package:perseu/src/screens/user_view_training/user_view_training_viewmodel.dart';
+import 'package:perseu/src/screens/widgets/checkin_dialog/checkin_dialog.dart';
 import 'package:perseu/src/services/foundation.dart';
-import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
 class UserViewTrainingScreen extends StatefulWidget {
@@ -153,32 +153,10 @@ class _UserViewTrainingScreenState extends State<UserViewTrainingScreen> {
     TrainingViewModel model,
   ) {
     showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Row(
-                children: const [
-                  Text('Confirmar Check in'),
-                  SizedBox(width: 16),
-                  Icon(Icons.check, color: Colors.teal),
-                ],
-              ),
-              actions: [
-                TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Não')),
-                TextButton(
-                    onPressed: () async {
-                      final navigator = Navigator.of(context);
-                      final Result result = await model.checkIn(trainingId);
-                      navigator.pop();
-                      if (result.success) {
-                        UIHelper.showSuccess(context, result);
-                      } else {
-                        UIHelper.showError(context, result);
-                      }
-                    },
-                    child: const Text('Sim')),
-              ],
-            ));
+      context: context,
+      builder: (context) => CheckInDialog(
+        trainingId: trainingId,
+      ),
+    );
   }
 }

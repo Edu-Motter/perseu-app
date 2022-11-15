@@ -44,12 +44,13 @@ class ClientTraining with ApiHelper {
   Future<Result> checkIn(
     int athleteId,
     int trainingId,
+    int effort,
     String authToken,
   ) async {
     DateTime now = DateTime.now();
     return process(
         dio.post('/training/$trainingId/athlete/$athleteId/check-in',
-            data: jsonEncode({'date': now.toIso8601String(), 'effort': 5}),
+            data: jsonEncode({'date': now.toIso8601String(), 'effort': effort}),
             options: Options(headers: {'Authorization': 'Bearer $authToken'})),
         onSuccess: (response) {
           return const Result.success(message: 'Sucesso no check-in');

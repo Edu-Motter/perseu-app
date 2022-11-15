@@ -14,8 +14,4 @@ class TrainingViewModel extends AppViewModel {
   Future<Result<TrainingDTO>> getTraining() {
     return clientTraining.getTraining(athleteId, authToken);
   }
-
-  Future<Result> checkIn(int trainingId) {
-    return clientTraining.checkIn(athleteId, trainingId, authToken);
-  }
 }
