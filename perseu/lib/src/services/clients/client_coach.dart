@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/models/dtos/invite_dto.dart';
-import 'package:perseu/src/models/dtos/team_info_dto.dart';
 import 'package:perseu/src/models/dtos/training_by_team_dto.dart';
 import 'package:perseu/src/models/dtos/training_dto.dart';
 import 'package:perseu/src/models/dtos/updated_coach_dto.dart';
@@ -57,21 +55,6 @@ class ClientCoach with ApiHelper {
         },
         onError: (response) => const Result.error(
             message: 'Falha ao buscar solicitações pendentes'));
-  }
-
-  Future<Result<TeamInfoDTO>> getTeamInfo(int teamId, String authToken) async {
-    return process(
-        dio.get(
-          '/team/$teamId',
-          options: Options(headers: {'Authorization': 'Bearer $authToken'}),
-        ),
-        onSuccess: (response) {
-          debugPrint(response.data.toString());
-          TeamInfoDTO teamInfo = TeamInfoDTO.fromJson(response.data);
-          return Result.success(data: teamInfo);
-        },
-        onError: (response) =>
-            const Result.error(message: 'Falha ao buscar informações do time'));
   }
 
   Future<Result<void>> acceptRequest(int athleteId, String authToken) async {

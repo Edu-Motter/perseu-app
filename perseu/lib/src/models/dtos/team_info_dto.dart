@@ -12,6 +12,7 @@ class TeamInfoDTO with _$TeamInfoDTO {
     required String code,
     required String createdAt,
     required String updatedAt,
+    required int? numberOfAthletes
 
   }) = _TeamInfoDTO;
 

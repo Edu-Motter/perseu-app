@@ -192,7 +192,7 @@ class TeamInfo extends StatelessWidget {
                       style: style.copyWith(fontSize: 32),
                     ),
                     Text(
-                      '${teamInfo.id} atletas',
+                      '${teamInfo.numberOfAthletes} atletas',
                       style: style.copyWith(fontSize: 20),
                     ),
                     const SizedBox(height: 16),

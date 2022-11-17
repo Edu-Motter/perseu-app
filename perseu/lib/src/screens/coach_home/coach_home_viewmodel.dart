@@ -1,11 +1,11 @@
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/models/dtos/team_info_dto.dart';
-import 'package:perseu/src/services/clients/client_coach.dart';
+import 'package:perseu/src/services/clients/client_team.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/states/foundation.dart';
 
 class CoachHomeViewModel extends AppViewModel {
-  ClientCoach clientCoach = locator<ClientCoach>();
+  ClientTeam clientTeam = locator<ClientTeam>();
 
   int get teamId => session.userSession!.team!.id;
   String get coachName => session.userSession?.coach?.name ?? ' - - ';
@@ -20,9 +20,11 @@ class CoachHomeViewModel extends AppViewModel {
       : session.userSession!.athlete!.name;
 
   Future<Result<TeamInfoDTO>> getTeamInfo() async {
-    final result = await clientCoach.getTeamInfo(teamId, session.authToken!);
-    if (result.success) {
-      return Result.success(data: result.data);
+    final result = await clientTeam.getTeamInfo(teamId, session.authToken!);
+    final resultNumberAthletes = await clientTeam.getAthletesCount(teamId, session.authToken!);
+    if (result.success && resultNumberAthletes.success) {
+      final teamInfo = result.data!.copyWith(numberOfAthletes: resultNumberAthletes.data);
+      return Result.success(data: teamInfo);
     }
     return Result.error(message: result.message);
   }

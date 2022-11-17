@@ -3,6 +3,7 @@ import 'package:perseu/src/models/dtos/invite_dto.dart';
 import 'package:perseu/src/models/dtos/team_dto.dart';
 import 'package:perseu/src/models/dtos/team_info_dto.dart';
 import 'package:perseu/src/services/clients/client_coach.dart';
+import 'package:perseu/src/services/clients/client_team.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/states/foundation.dart';
 
@@ -10,6 +11,7 @@ class CoachManageRequestsViewModel extends AppViewModel {
   TeamDTO get team => session.userSession!.team!;
   String get authToken => session.authToken!;
 
+  ClientTeam clientTeam = locator<ClientTeam>();
   ClientCoach clientCoach = locator<ClientCoach>();
 
   Future<Result<List<InviteDTO>>> getRequests(int teamId) async {
@@ -25,9 +27,11 @@ class CoachManageRequestsViewModel extends AppViewModel {
   }
 
   Future<Result<TeamInfoDTO>> getTeamInfo() async {
-    final result = await clientCoach.getTeamInfo(team.id, session.authToken!);
-    if (result.success) {
-      return Result.success(data: result.data);
+    final result = await clientTeam.getTeamInfo(team.id, session.authToken!);
+    final resultNumberAthletes = await clientTeam.getAthletesCount(team.id, session.authToken!);
+    if (result.success && resultNumberAthletes.success) {
+      final teamInfo = result.data!.copyWith(numberOfAthletes: resultNumberAthletes.data);
+      return Result.success(data: teamInfo);
     }
     return Result.error(message: result.message);
   }
