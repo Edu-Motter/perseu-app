@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/services/foundation.dart';
@@ -25,6 +26,7 @@ class CheckInDialog extends StatelessWidget {
               children: [
                 const Text(
                   'Como você se sentiu no treino?',
+                  textAlign: TextAlign.center,
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 8.0),
