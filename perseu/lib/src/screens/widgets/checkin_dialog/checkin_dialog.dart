@@ -25,11 +25,22 @@ class CheckInDialog extends StatelessWidget {
               children: [
                 Row(
                   children: const [
-                    Text('Confirmar Check in'),
-                    SizedBox(width: 16),
-                    Icon(Icons.check, color: Colors.teal),
+                    Text('Feedback e check-in'),
                   ],
                 ),
+                if (!model.enabled)
+                  Column(
+                    children: const [
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        child: Divider(),
+                      ),
+                      Text(
+                        'Como você se sentiu no treino?',
+                        style: TextStyle(fontSize: 16, color: Colors.teal),
+                      )
+                    ],
+                  ),
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 8.0),
                   child: Divider(),
@@ -64,25 +75,12 @@ class CheckInDialog extends StatelessWidget {
                     ),
                   ],
                 ),
-                if (!model.enabled)
-                  Column(
-                    children: const [
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
-                        child: Divider(),
-                      ),
-                      Text(
-                        'Selecione uma opção',
-                        style: TextStyle(fontSize: 16, color: Colors.teal),
-                      )
-                    ],
-                  )
               ],
             ),
             actions: [
               TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('Não')),
+                  child: const Text('Cancelar')),
               TextButton(
                   onPressed: model.enabled
                       ? () async {
@@ -96,7 +94,7 @@ class CheckInDialog extends StatelessWidget {
                           }
                         }
                       : null,
-                  child: const Text('Sim')),
+                  child: const Text('Enviar')),
             ],
           );
         },

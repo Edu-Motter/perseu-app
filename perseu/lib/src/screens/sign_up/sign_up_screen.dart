@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/components/dialogs/passwords_not_match_dialog.dart';
 import 'package:perseu/src/screens/sign_up/sign_up_viewmodel.dart';
