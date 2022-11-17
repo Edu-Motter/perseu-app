@@ -23,24 +23,9 @@ class CheckInDialog extends StatelessWidget {
           return AlertDialog(
             title: Column(
               children: [
-                Row(
-                  children: const [
-                    Text('Feedback e check-in'),
-                  ],
+                const Text(
+                  'Como você se sentiu no treino?',
                 ),
-                if (!model.enabled)
-                  Column(
-                    children: const [
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
-                        child: Divider(),
-                      ),
-                      Text(
-                        'Como você se sentiu no treino?',
-                        style: TextStyle(fontSize: 16, color: Colors.teal),
-                      )
-                    ],
-                  ),
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 8.0),
                   child: Divider(),
@@ -142,7 +127,7 @@ class EmojiButton extends StatelessWidget {
           padding: const EdgeInsets.all(2),
           icon: Text(
             emoji,
-            style: const TextStyle(fontSize: 16, color: Colors.grey),
+            style: const TextStyle(fontSize: 18, color: Colors.grey),
           ),
         ),
       ],
