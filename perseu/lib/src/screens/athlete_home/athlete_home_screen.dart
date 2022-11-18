@@ -34,30 +34,47 @@ class AthleteHomeScreen extends StatelessWidget {
               ),
               body: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      MenuButton(
-                        title: 'Visualizar treino de hoje',
-                        onPressed: () {
-                          Navigator.of(context)
-                              .pushNamed(Routes.userViewTraining);
-                        },
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          MenuButton(
+                            icon: Icons.description,
+                            text: 'Visualizar treino',
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .pushNamed(Routes.userViewTraining);
+                            },
+                          ),
+                          const SizedBox(height: 24),
+                          MenuButton(
+                            icon: Icons.message,
+                            text: 'Visualizar conversas',
+                            onPressed: () =>
+                                Navigator.of(context).pushNamed(Routes.chats),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 32),
-                      MenuButton(
-                        title: 'Visualizar conversas',
-                        onPressed: () {
-                          Navigator.of(context).pushNamed(Routes.chats);
-                        },
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          MenuButton(
+                            icon: Icons.person,
+                            text: 'Gerenciar perfil',
+                            onPressed: () =>
+                                Navigator.of(context).pushNamed(Routes.profile),
+                          ),
+                          const SizedBox(height: 24),
+                          MenuButton(
+                            icon: Icons.cancel,
+                            text: 'Placeholder',
+                            onPressed: (){},
+                          )
+                        ],
                       ),
-                      const SizedBox(height: 8),
-                      MenuButton(
-                        title: 'Gerenciar perfil',
-                        onPressed: () {
-                          Navigator.of(context).pushNamed(Routes.profile);
-                        },
-                      )
                     ],
                   ),
                 ),

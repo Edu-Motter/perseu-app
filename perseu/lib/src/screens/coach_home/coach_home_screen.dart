@@ -39,7 +39,7 @@ class CoachHomeScreen extends StatelessWidget {
             body: ListView(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.only(top: 16.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -47,57 +47,15 @@ class CoachHomeScreen extends StatelessWidget {
                         futureTeamInfo: model.getTeamInfo(),
                         style: const TextStyle(color: Colors.black),
                       ),
-                      const SizedBox(height: 16),
-                      MenuButton(
-                        title: 'Novo treino',
-                        onPressed: () async {
-                          showDialog(
-                              context: context,
-                              builder: (context) => const TrainingNameDialog());
-                        },
-                      ),
                       const SizedBox(height: 8),
-                      MenuButton(
-                        title: 'Gerenciar solicitações',
-                        onPressed: () {
-                          Navigator.of(context).pushNamed(Routes.manageInvites);
-                        },
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: const [
+                          FirstColumnMenuItems(),
+                          SecondColumnMenuItems(),
+                        ],
                       ),
-                      const SizedBox(height: 8),
-                      MenuButton(
-                        title: 'Lista de treinos',
-                        onPressed: () => Navigator.of(context)
-                            .pushNamed(Routes.trainingsByTeam),
-                      ),
-                      const SizedBox(height: 8),
-                      MenuButton(
-                        title: 'Gerenciar Atletas',
-                        onPressed: () => Navigator.of(context)
-                            .pushNamed(Routes.manageAthletes),
-                      ),
-                      const SizedBox(height: 8),
-                      MenuButton(
-                        title: 'Alterar nome equipe',
-                        onPressed: () {
-                          Navigator.of(context)
-                              .pushNamed(Routes.changeTeamName)
-                              .then((_) => model.refresh());
-                        },
-                      ),
-                      const SizedBox(height: 8),
-                      MenuButton(
-                        title: 'Gerenciar perfil',
-                        onPressed: () {
-                          Navigator.of(context).pushNamed(Routes.profile);
-                        },
-                      ),
-                      const SizedBox(height: 32),
-                      MenuButton(
-                        title: 'Visualizar conversas',
-                        onPressed: () {
-                          Navigator.of(context).pushNamed(Routes.chats);
-                        },
-                      ),
+                      const SizedBox(height: 24),
                     ],
                   ),
                 ),
@@ -106,6 +64,88 @@ class CoachHomeScreen extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class FirstColumnMenuItems extends StatelessWidget {
+  const FirstColumnMenuItems({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final model = Provider.of<CoachHomeViewModel>(context, listen: false);
+
+    return Column(
+      children: [
+        MenuButton(
+          text: 'Novo Treino',
+          icon: Icons.description,
+          onPressed: () => showDialog(
+            context: context,
+            builder: (context) => const TrainingNameDialog(),
+          ),
+        ),
+        const SizedBox(height: 24),
+        MenuButton(
+          text: 'Lista de Treinos',
+          icon: Icons.list,
+          onPressed: () =>
+              Navigator.of(context).pushNamed(Routes.trainingsByTeam),
+        ),
+        const SizedBox(height: 24),
+        MenuButton(
+          text: 'Visualizar Conversas',
+          icon: Icons.message,
+          onPressed: () => Navigator.of(context).pushNamed(Routes.chats),
+        ),
+        const SizedBox(height: 24),
+        MenuButton(
+          text: 'Alterar nome equipe',
+          icon: Icons.edit,
+          onPressed: () {
+            Navigator.of(context)
+                .pushNamed(Routes.changeTeamName)
+                .then((_) => model.refresh());
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class SecondColumnMenuItems extends StatelessWidget {
+  const SecondColumnMenuItems({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        MenuButton(
+          text: 'Gerenciar Solicitações',
+          icon: Icons.notifications_sharp,
+          onPressed: () =>
+              Navigator.of(context).pushNamed(Routes.manageInvites),
+        ),
+        const SizedBox(height: 24),
+        MenuButton(
+          text: 'Gerenciar Atletas',
+          icon: Icons.group,
+          onPressed: () =>
+              Navigator.of(context).pushNamed(Routes.manageAthletes),
+        ),
+        const SizedBox(height: 24),
+        MenuButton(
+          text: 'Gerenciar Perfil',
+          icon: Icons.person,
+          onPressed: () => Navigator.of(context).pushNamed(Routes.profile),
+        ),
+        const SizedBox(height: 24),
+        MenuButton(
+          text: 'Placeholder',
+          icon: Icons.cancel_outlined,
+          onPressed: () {},
+        ),
+      ],
     );
   }
 }
