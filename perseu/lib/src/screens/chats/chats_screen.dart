@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/screens/user_chat/user_chat_screen.dart';
-import 'package:perseu/src/screens/widgets/center_loading.dart';
+import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:provider/provider.dart';
 
 import 'chats_viewmodel.dart';

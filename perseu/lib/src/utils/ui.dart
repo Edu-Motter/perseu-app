@@ -1,6 +1,6 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:perseu/src/screens/widgets/center_loading.dart';
+import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/utils/flash_notification.dart' as flash;
 
 import '../app/routes.dart';

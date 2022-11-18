@@ -7,7 +7,7 @@ import 'package:perseu/src/models/exercise_model.dart';
 import 'package:perseu/src/models/sessions_model.dart';
 import 'package:perseu/src/models/training_model.dart';
 import 'package:perseu/src/screens/user_view_training/user_view_training_viewmodel.dart';
-import 'package:perseu/src/screens/widgets/checkin_dialog/checkin_dialog.dart';
+import 'package:perseu/src/components/dialogs/checkin_dialog/checkin_dialog.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:provider/provider.dart';
 

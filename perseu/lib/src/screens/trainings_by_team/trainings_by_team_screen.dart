@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/models/dtos/training_by_team_dto.dart';
 import 'package:perseu/src/screens/training_details/training_details_screen.dart';
-import 'package:perseu/src/screens/widgets/center_error.dart';
-import 'package:perseu/src/screens/widgets/center_loading.dart';
-import 'package:perseu/src/screens/widgets/center_rounded_container.dart';
+import 'package:perseu/src/components/widgets/center_error.dart';
+import 'package:perseu/src/components/widgets/center_loading.dart';
+import 'package:perseu/src/components/widgets/center_rounded_container.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:provider/provider.dart';
 
