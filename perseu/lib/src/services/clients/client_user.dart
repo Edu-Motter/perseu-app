@@ -53,6 +53,21 @@ class ClientUser with ApiHelper {
     });
   }
 
+  Future<Result<String>> getUserName(int userId, String token) async {
+    return process(
+        dio.get(
+          '/user/$userId/name',
+          options: Options(
+            headers: {'Authorization': 'Bearer $token'},
+          ),
+        ), onSuccess: (response) {
+      final name = response.data['name'];
+      return Result.success(data: name);
+    }, onError: (response) {
+      return const Result.error(message: 'Usuário não encontrado');
+    });
+  }
+
   Future<Result<UserRequest>> updateUser(UserUpdateRequest userUpdate) async {
     return process(
         dio.put('/api/alterarDadosUsuario/${userUpdate.id}',

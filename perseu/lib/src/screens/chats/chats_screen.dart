@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/app/routes.dart';
+import 'package:perseu/src/components/widgets/center_error.dart';
 import 'package:perseu/src/screens/user_chat/user_chat_screen.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:provider/provider.dart';
@@ -92,32 +93,48 @@ class ChatsScreen extends StatelessWidget {
                                   int.tryParse(friendIdString);
                               final String lastMessage =
                                   snapshot.data!.docs[index]['lastMessage'];
-                              return ListTile(
-                                  leading: CircleAvatar(
-                                    child: Text(
-                                      getCircleLetters(lastMessage),
-                                      style: const TextStyle(color: Colors.white),
-                                    ),
-                                    backgroundColor: Colors.teal,
-                                  ),
-                                  title: Text(friendIdString),
-                                  subtitle: Text(
-                                    lastMessage,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  onTap: () {
-                                    if (friendId == null) return;
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => UsersChatScreen(
-                                          friendId: friendId,
-                                          friendName: friendIdString,
-                                        ),
-                                      ),
-                                    );
-                                  });
+                              return FutureBuilder(
+                                future: model.getFriendName(friendId!),
+                                builder: (context, AsyncSnapshot<String> snapshot){
+                                  switch(snapshot.connectionState){
+                                    case ConnectionState.none:
+                                    case ConnectionState.waiting:
+                                    case ConnectionState.active:
+                                      return const CircularLoading();
+                                    case ConnectionState.done:
+                                      if (snapshot.hasData){
+                                        String friendName = snapshot.data ?? 'Não encontrado';
+                                        return ListTile(
+                                            leading: CircleAvatar(
+                                              child: Text(
+                                                getCircleLetters(friendName),
+                                                style: const TextStyle(color: Colors.white),
+                                              ),
+                                              backgroundColor: Colors.teal,
+                                            ),
+                                            title: Text(friendName),
+                                            subtitle: Text(
+                                              lastMessage,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => UsersChatScreen(
+                                                    friendId: friendId,
+                                                    friendName: friendIdString,
+                                                  ),
+                                                ),
+                                              );
+                                            });
+                                      } else {
+                                        return const CenterError(message: 'Não encontrado');
+                                      }
+                                  }
+                                },
+                              );
                             },
                           );
                         }
@@ -134,18 +151,18 @@ class ChatsScreen extends StatelessWidget {
     );
   }
 
-  static String getCircleLetters(String name){
+  static String getCircleLetters(String name) {
     List<String> names = name.split(' ');
 
     String firstCharacterFirstName = getFirstCharacter(names.first);
     String firstCharacterLastName = getFirstCharacter(names.last);
 
-    if(names.length == 1) return firstCharacterFirstName;
+    if (names.length == 1) return firstCharacterFirstName;
 
     return '$firstCharacterFirstName$firstCharacterLastName';
   }
-  
-  static String getFirstCharacter(String string){
-    return string.substring(0,1).toUpperCase();
+
+  static String getFirstCharacter(String string) {
+    return string.substring(0, 1).toUpperCase();
   }
 }
