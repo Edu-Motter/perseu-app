@@ -61,7 +61,7 @@ class ClientTraining with ApiHelper {
 
   Future<Result<TrainingDTO>> getTraining(int athleteId, String jwt) async {
     return process(
-        dio.get('/athlete/$athleteId/training',
+        dio.get('/athlete/$athleteId/training/current',
             options: Options(headers: {'Authorization': 'Bearer $jwt'})),
         onSuccess: (response) {
       TrainingDTO trainingInfo = TrainingDTO.fromJson(response.data);
