@@ -4,8 +4,6 @@ import 'package:perseu/src/models/dtos/athlete_info_dto.dart';
 import 'package:perseu/src/screens/training_details/training_details_screen.dart';
 import 'package:perseu/src/screens/training_to_athlete/training_to_athlete_screen.dart';
 import 'package:perseu/src/services/foundation.dart';
-import 'package:perseu/src/utils/date_formatters.dart';
-import 'package:perseu/src/utils/formatters.dart';
 import 'package:provider/provider.dart';
 
 import 'athlete_trainings_details_viewmodel.dart';
@@ -64,13 +62,11 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
                 SliverToBoxAdapter(
                   child: FutureBuilder(
                     future: model.getAthleteInfo(athleteId),
-                    builder: (context,
-                        AsyncSnapshot<Result<AthleteInfoDTO>> snapshot) {
+                    builder: (context, AsyncSnapshot<Result<AthleteInfoDTO>> snapshot) {
                       switch (snapshot.connectionState) {
                         case ConnectionState.done:
                           if (snapshot.hasData) {
-                            return AthleteInformationWithIcons(
-                                athlete: snapshot.data!.data!);
+                            return AthleteInformationWithIcons(athlete: snapshot.data!.data!);
                           } else {
                             return const Center(
                               child: Text('Falha ao carregar dados do usuário'),
