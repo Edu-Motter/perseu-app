@@ -62,7 +62,10 @@ class ChatsScreen extends StatelessWidget {
                     builder:
                         (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                       if (snapshot.hasData) {
-                        final lastMessage = snapshot.data!.get('lastMessage');
+                        String lastMessage = 'Inicie a conversa!';
+                        if(snapshot.data!.exists) {
+                          lastMessage = snapshot.data!.get('lastMessage');
+                        }
                         return Text(
                           lastMessage,
                           maxLines: 1,
@@ -136,6 +139,16 @@ class ChatsScreen extends StatelessWidget {
                                 },
                               );
                             },
+                          );
+                        } else {
+                          return Column(
+                            children: const  [
+                              Divider(),
+                              Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text('Nenhum chat individual encontrado'),
+                              ),
+                            ],
                           );
                         }
                       }
