@@ -70,4 +70,21 @@ class ClientTraining with ApiHelper {
       return const Result.error(message: 'Falha ao atribuir treino');
     });
   }
+
+  Future<Result<String>> deactivateTraining(
+    int athleteId,
+    int trainingId,
+    String authToken,
+  ) async {
+    return process(
+      dio.patch('/training/$trainingId/athlete/$athleteId/deactivate',
+          options: Options(headers: {'Authorization': 'Bearer $authToken'})),
+      onSuccess: (response) {
+        return Result.success(data: response.data['message']);
+      },
+      onError: (response) {
+        return const Result.error(message: 'Falha ao desativar treino');
+      },
+    );
+  }
 }

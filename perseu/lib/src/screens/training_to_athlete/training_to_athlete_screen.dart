@@ -64,7 +64,7 @@ class TrainingToAthleteScreen extends StatelessWidget {
                                   ),
                                   child: CenterRoundedContainer(
                                     child: Text(
-                                      'Escolha o treino para o(a) $athleteName',
+                                      'Escolha o treino para $athleteName',
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
                                         color: Colors.white,
@@ -123,31 +123,32 @@ class TrainingsListToAssign extends StatelessWidget {
         final TrainingByTeamDTO training = trainings[index];
         return Card(
           child: ListTile(
-              title: Text(training.name),
-              trailing: const Icon(
-                Icons.note_add,
-                color: Colors.teal,
-                size: 28,
-              ),
-              onTap: () => UIHelper.showBoolDialog(
-                    context: context,
-                    title: 'Atribuindo Treino',
-                    message:
-                        'Tem certeza que deseja atribuir o treino ${training.name} para o(a) $athleteName?',
-                    onNoPressed: () => Navigator.pop(context),
-                    onYesPressed: () async {
-                      final navigator = Navigator.of(context);
-                      final result =
-                          await model.assignTraining(athleteId, training.id);
-                      if (result.success) {
-                        navigator.pop();
-                        UIHelper.showSuccess(context, result);
-                      } else {
-                        navigator.pop();
-                        UIHelper.showError(context, result);
-                      }
-                    },
-                  )),
+            title: Text(training.name),
+            trailing: const Icon(
+              Icons.note_add,
+              color: Colors.teal,
+              size: 28,
+            ),
+            onTap: () => UIHelper.showBoolDialog(
+              context: context,
+              title: 'Atribuindo Treino',
+              message:
+                  'Tem certeza que deseja atribuir o treino ${training.name} para $athleteName?',
+              onNoPressed: () => Navigator.pop(context),
+              onYesPressed: () async {
+                final navigator = Navigator.of(context);
+                final result =
+                    await model.assignTraining(athleteId, training.id);
+                if (result.success) {
+                  navigator.pop();
+                  UIHelper.showSuccess(context, result);
+                } else {
+                  navigator.pop();
+                  UIHelper.showError(context, result);
+                }
+              },
+            ),
+          ),
         );
       },
     );

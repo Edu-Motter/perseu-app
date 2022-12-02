@@ -1,14 +1,17 @@
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/models/dtos/athlete_info_dto.dart';
+import 'package:perseu/src/models/dtos/athlete_training_dto.dart';
 import 'package:perseu/src/models/dtos/training_dto.dart';
 import 'package:perseu/src/services/clients/client_athlete.dart';
 import 'package:perseu/src/services/clients/client_coach.dart';
+import 'package:perseu/src/services/clients/client_training.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/states/foundation.dart';
 
 class AthleteTrainingsDetailsViewModel extends AppViewModel {
   ClientCoach clientCoach = locator<ClientCoach>();
   ClientAthlete clientAthlete = locator<ClientAthlete>();
+  ClientTraining clientTraining = locator<ClientTraining>();
 
   String get authToken => session.authToken!;
   int get teamId => session.userSession!.team!.id;
@@ -21,9 +24,46 @@ class AthleteTrainingsDetailsViewModel extends AppViewModel {
     return result;
   }
 
+  Future<Result<TrainingDTO>> getCurrentTraining(int athleteId) async {
+    Result<TrainingDTO> result =
+        await clientAthlete.getCurrentTraining(authToken, athleteId);
+    if (result.success) training = result.data;
+    return result;
+  }
+
+  Future<Result<Object?>> getActiveTrainings(
+    int athleteId,
+  ) async {
+    Result<List<AthleteTrainingDTO>> result =
+        await clientAthlete.getActiveTrainings(authToken, athleteId);
+    Result<TrainingDTO> resultCurrent =
+        await clientAthlete.getCurrentTraining(authToken, athleteId);
+
+    if (result.error) return result;
+
+    if (resultCurrent.error) return resultCurrent;
+
+    final activeTrainings = result.data!;
+    final currentTraining = resultCurrent.data!;
+    activeTrainings.removeWhere((e) => e.training.id == currentTraining.id);
+    return Result.success(data: activeTrainings);
+  }
+
+  Future<Result<String>> deactivateTraining(
+    int athleteId,
+    int trainingId,
+  ) async {
+    Result<String> result = await clientTraining.deactivateTraining(
+      athleteId,
+      trainingId,
+      authToken,
+    );
+    return result;
+  }
+
   Future<Result<AthleteInfoDTO>> getAthleteInfo(int athleteId) async {
     final result =
-    await clientAthlete.getAthlete(athleteId, session.authToken!);
+        await clientAthlete.getAthlete(athleteId, session.authToken!);
     if (result.success) {
       return Result.success(data: AthleteInfoDTO.fromJson(result.data));
     }

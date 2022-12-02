@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 enum ResultStatus { success, error }
 
-enum ErrorType { response, unauthorized, forbidden, networkError }
+enum ErrorType { response, unauthorized, forbidden, networkError, notFound }
 
 class Result<T> {
   final ResultStatus status;
@@ -34,6 +34,10 @@ class Result<T> {
   const Result.networkError({this.message})
       : status = ResultStatus.error,
         errorType = ErrorType.networkError,
+        data = null;
+  const Result.notFound({this.message})
+      : status = ResultStatus.error,
+        errorType = ErrorType.notFound,
         data = null;
   const Result._cloneError({@required this.errorType, @required this.message})
       : status = ResultStatus.error,
