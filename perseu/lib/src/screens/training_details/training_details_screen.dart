@@ -7,6 +7,8 @@ import 'package:perseu/src/screens/assign_training/assign_training_screen.dart';
 import 'package:perseu/src/screens/training_details/training_details_viewmodel.dart';
 import 'package:perseu/src/components/widgets/center_error.dart';
 import 'package:perseu/src/services/foundation.dart';
+import 'package:perseu/src/utils/date_formatters.dart';
+import 'package:perseu/src/utils/formatters.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
@@ -15,10 +17,16 @@ class TrainingDetailsScreen extends StatelessWidget {
     Key? key,
     required this.trainingId,
     required this.trainingName,
+    this.showAssignTraining = false,
+    this.dateTimeCheck,
+    this.effort,
   }) : super(key: key);
 
   final int trainingId;
   final String trainingName;
+  final bool showAssignTraining;
+  final String? dateTimeCheck;
+  final int? effort;
 
   @override
   Widget build(BuildContext context) {
@@ -30,28 +38,32 @@ class TrainingDetailsScreen extends StatelessWidget {
             appBar: AppBar(
               title: Text(trainingName),
             ),
-            floatingActionButton: SizedBox(
-              width: 140,
-              child: ElevatedButton(
-                child: Row(
-                  children: const [
-                    Expanded(
-                      child: Text(
-                        'Atribuir treino',
-                        textAlign: TextAlign.center,
+            floatingActionButton: showAssignTraining
+                ? SizedBox(
+                    width: 140,
+                    child: ElevatedButton(
+                      child: Row(
+                        children: const [
+                          Expanded(
+                            child: Text(
+                              'Atribuir treino',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 16,
+                          ),
+                          Icon(Icons.assignment_ind),
+                        ],
                       ),
+                      onPressed: () => _handleAssignTraining(context, model),
                     ),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Icon(Icons.assignment_ind),
-                  ],
-                ),
-                onPressed: () => _handleAssignTraining(context, model),
-              ),
-            ),
+                  )
+                : const SizedBox.shrink(),
             body: Column(
               children: [
+                if (dateTimeCheck != null && effort != null)
+                  CheckDetails(dateTimeCheck: dateTimeCheck!, effort: effort!),
                 Flexible(
                   child: Padding(
                     padding: const EdgeInsets.only(top: 8, right: 16, left: 16),
@@ -103,6 +115,36 @@ class TrainingDetailsScreen extends StatelessWidget {
   }
 }
 
+class CheckDetails extends StatelessWidget {
+  const CheckDetails({
+    Key? key,
+    required this.dateTimeCheck,
+    required this.effort,
+  }) : super(key: key);
+
+  final String dateTimeCheck;
+  final int effort;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const SizedBox(height: 8),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Text(
+            'Realizado: ${DateFormatters.toDateTimeString(dateTimeCheck)} '
+            '| Feedback: ${Formatters.effortFormatter(effort)} ($effort)',
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.teal, fontSize: 16),
+          ),
+        ),
+        const Divider(),
+      ],
+    );
+  }
+}
+
 class TrainingView extends StatelessWidget {
   const TrainingView({Key? key, required this.training}) : super(key: key);
 
@@ -112,46 +154,35 @@ class TrainingView extends StatelessWidget {
   Widget build(BuildContext context) {
     final sessions = training.sessions!;
 
-    return Column(
-      children: [
-        Text(
-          training.name,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-              color: Colors.teal, fontSize: 24),
-        ),
-        const Divider(),
-        ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          physics: const BouncingScrollPhysics(),
-          itemCount: sessions.length,
-          itemBuilder: (context, index) {
-            return Card(
-              child: ExpansionTile(
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Icon(Icons.keyboard_arrow_down),
-                    )
-                  ],
-                ),
-                expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
-                title: Text(sessions[index].name),
-                children: [
-                  for (ExerciseDTO e in sessions[index].exercises!)
-                    ExerciseCard(
-                      name: e.name,
-                      description: e.description,
-                    )
-                ],
-              ),
-            );
-          },
-        ),
-      ],
+    return ListView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      physics: const BouncingScrollPhysics(),
+      itemCount: sessions.length,
+      itemBuilder: (context, index) {
+        return Card(
+          child: ExpansionTile(
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: const [
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(Icons.keyboard_arrow_down),
+                )
+              ],
+            ),
+            expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
+            title: Text(sessions[index].name),
+            children: [
+              for (ExerciseDTO e in sessions[index].exercises!)
+                ExerciseCard(
+                  name: e.name,
+                  description: e.description,
+                )
+            ],
+          ),
+        );
+      },
     );
   }
 }

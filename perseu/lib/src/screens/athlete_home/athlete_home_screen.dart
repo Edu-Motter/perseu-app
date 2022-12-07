@@ -69,9 +69,10 @@ class AthleteHomeScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 24),
                           MenuButton(
-                            icon: Icons.cancel,
-                            text: 'Placeholder',
-                            onPressed: (){},
+                            icon: Icons.check,
+                            text: 'Check-ins',
+                            onPressed: () =>
+                                Navigator.of(context).pushNamed(Routes.athleteChecks),
                           )
                         ],
                       ),

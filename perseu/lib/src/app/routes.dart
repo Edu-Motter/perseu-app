@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:perseu/src/screens/athlete_checks/athlete_checks_screen.dart';
 import 'package:perseu/src/screens/athlete_home/athlete_home_screen.dart';
 import 'package:perseu/src/screens/change_password/change_password_screen.dart';
 import 'package:perseu/src/screens/change_team_name/change_team_name_screen.dart';
@@ -48,6 +49,7 @@ class Routes {
   static const String trainingsByTeam = 'trainingsByTeam';
   static const String manageAthletes = 'manage-athletes';
   static const String trainingToAthlete = 'training-to-athlete';
+  static const String athleteChecks = 'athlete-checks';
 
   static Map<String, WidgetBuilder> map = {
     bootstrap: (context) => const BootstrapScreen(),
@@ -73,6 +75,7 @@ class Routes {
     usersToChat : (context) => const UsersToChatScreen(),
     trainingsByTeam : (context) => const TrainingsByTeamScreen(),
     manageAthletes : (context) => const ManageAthletesScreen(),
+    athleteChecks : (context) => const AthleteChecksScreen(),
     // trainingToAthlete : (context) => const TrainingToAthleteScreen(),
     // trainingDetails : (context) => const TrainingDetailsScreen(),
   };

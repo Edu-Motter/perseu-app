@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:perseu/src/screens/assign_training/assign_training_viewmodel.dart';
+import 'package:perseu/src/screens/athlete_checks/athlete_checks_viewmodel.dart';
 import 'package:perseu/src/screens/athlete_home/athlete_home_viewmodel.dart';
 import 'package:perseu/src/screens/athlete_request/athlete_request_viewmodel.dart';
 import 'package:perseu/src/screens/athlete_trainings_details/athlete_trainings_details_viewmodel.dart';
@@ -41,7 +43,7 @@ import '../states/session.dart';
 
 final GetIt locator = GetIt.I;
 
-void initializeLocator() {
+Future<void> initializeLocator() async {
   locator.registerLazySingleton<Dio>(() {
     final dio = Dio();
     dio.options
@@ -142,4 +144,7 @@ void initializeLocator() {
   locator.registerFactory<AthleteTrainingsDetailsViewModel>(() => AthleteTrainingsDetailsViewModel());
   locator.registerFactory<TrainingToAthleteViewModel>(() => TrainingToAthleteViewModel());
   locator.registerFactory<CheckInDialogViewModel>(() => CheckInDialogViewModel());
+  locator.registerFactory<AthleteChecksViewModel>(() => AthleteChecksViewModel());
+
+  initializeDateFormatting();
 }

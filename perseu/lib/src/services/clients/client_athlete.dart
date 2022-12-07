@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:perseu/src/app/locator.dart';
+import 'package:perseu/src/models/dtos/athlete_check_dto.dart';
 import 'package:perseu/src/models/dtos/athlete_training_dto.dart';
 import 'package:perseu/src/models/dtos/training_dto.dart';
 import 'package:perseu/src/models/dtos/updated_athlete_dto.dart';
@@ -120,6 +121,26 @@ class ClientAthlete with ApiHelper {
       },
       onError: (response) =>
           const Result.error(message: 'Falha ao buscar treinos'),
+    );
+  }
+
+  Future<Result<List<AthleteCheckDTO>>> getAthleteChecks(
+    int athleteId,
+    String authToken,
+  ) {
+    return process(
+      dio.get(
+        '/athlete/$athleteId/check-in',
+        options: Options(headers: {'Authorization': 'Bearer $authToken'}),
+      ),
+      onSuccess: (response) {
+        final athleteChecks = (response.data as List)
+            .map((i) => AthleteCheckDTO.fromJson(i))
+            .toList();
+        return Result.success(data: athleteChecks);
+      },
+      onError: (response) =>
+          const Result.error(message: 'Falha ao buscar check-ins'),
     );
   }
 }

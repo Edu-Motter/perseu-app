@@ -53,4 +53,21 @@ class Formatters {
     return MaskTextInputFormatter(
         mask: '(##) #####-####', filter: {"#": RegExp('[0-9]')});
   }
+
+  static String effortFormatter(int effort) {
+    switch (effort) {
+      case 1:
+        return '😣';
+      case 2:
+        return '🙁';
+      case 3:
+        return '😐';
+      case 4:
+        return '🙂';
+      case 5:
+        return '😃';
+      default:
+        return 'X';
+    }
+  }
 }
