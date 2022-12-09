@@ -103,6 +103,7 @@ class TrainingsList extends StatelessWidget {
                         return TrainingDetailsScreen(
                           trainingId: training.id,
                           trainingName: training.name,
+                          showAssignTraining: true,
                         );
                       },
                     )),
