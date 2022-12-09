@@ -23,7 +23,7 @@ class AthleteChecksScreen extends StatelessWidget {
         builder: (__, model, _) {
           return Scaffold(
             appBar: AppBar(
-              title: const Text('Lista de Check-ins'),
+              title: const Text('Check-ins'),
             ),
             body: FutureBuilder(
               future: model.getAthleteChecks(),
@@ -78,26 +78,17 @@ class AthleteChecksList extends StatefulWidget {
 
 class _AthleteChecksListState extends State<AthleteChecksList> {
   @override
+  void initState() {
+    widget.model.dayChecks = widget.model.loadChecks(DateTime.now());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
       child: Column(
         children: [
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(
-          //     horizontal: 36.0,
-          //     vertical: 18.0,
-          //   ),
-          //   child: CenterRoundedContainer(
-          //     child: Text(
-          //       'Total de check-ins: ${checks.length}',
-          //       style: const TextStyle(
-          //         color: Colors.white,
-          //         fontSize: 18,
-          //       ),
-          //     ),
-          //   ),
-          // ),
           TableCalendar(
             locale: 'pt_BR',
             focusedDay: widget.model.focusedDay,
