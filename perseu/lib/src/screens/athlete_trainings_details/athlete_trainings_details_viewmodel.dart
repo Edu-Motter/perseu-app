@@ -31,6 +31,15 @@ class AthleteTrainingsDetailsViewModel extends AppViewModel {
     return result;
   }
 
+  Future<bool> isJustOneTraining(int athleteId) async {
+    Result<List<AthleteTrainingDTO>> result =
+        await clientAthlete.getActiveTrainings(authToken, athleteId);
+
+    if(result.error) return false;
+
+    return result.data!.length > 1;
+  }
+
   Future<Result<Object?>> getActiveTrainings(
     int athleteId,
   ) async {

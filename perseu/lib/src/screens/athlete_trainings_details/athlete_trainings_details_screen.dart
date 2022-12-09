@@ -88,7 +88,12 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
                     },
                   ),
                 ),
-                const SliverDividerWithText(text: 'Treino atual:'),
+                const SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 6),
+                    child: SliverDividerWithText(text: 'Treino atual:'),
+                  ),
+                ),
                 SliverToBoxAdapter(
                   child: FutureBuilder(
                     future: model.getCurrentTraining(athleteId),
@@ -156,7 +161,30 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
                     },
                   ),
                 ),
-                const SliverDividerWithText(text: 'Treino atual:'),
+                SliverToBoxAdapter(
+                  child: FutureBuilder(
+                    future: model.isJustOneTraining(athleteId),
+                    builder: (context, AsyncSnapshot<bool> snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.none:
+                        case ConnectionState.waiting:
+                        case ConnectionState.active:
+                          return const CircularLoading();
+                        case ConnectionState.done:
+                          if (snapshot.hasData && snapshot.data!) {
+                            return const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 6),
+                              child: SliverDividerWithText(
+                                text: 'Próximos treinos:',
+                              ),
+                            );
+                          } else {
+                            return const SizedBox.shrink();
+                          }
+                      }
+                    },
+                  ),
+                ),
                 activeTrainingsList(context, model),
                 const SliverToBoxAdapter(
                   child: SizedBox(
@@ -261,33 +289,9 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
                     childCount: athleteTrainings.length,
                   ),
                 );
-              } else {
-                if (ErrorType.notFound == result.errorType) {
-                  return SliverToBoxAdapter(
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: [
-                          const Icon(
-                            Icons.error,
-                            color: Colors.teal,
-                            size: 32,
-                          ),
-                          Text(
-                            result.message ?? 'Não encontrado',
-                            style: const TextStyle(
-                              color: Colors.teal,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }
               }
             }
-            return const SliverToBoxAdapter(child: NoFoundTrainingCard());
+            return const SliverToBoxAdapter(child: SizedBox.shrink());
         }
       },
     );
@@ -304,32 +308,30 @@ class SliverDividerWithText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Container(
-            color: Colors.teal,
-            height: 1.5,
-            width: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Text(
-              text,
-              style: const TextStyle(
-                color: Colors.teal,
-                fontWeight: FontWeight.bold,
-              ),
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Container(
+          color: Colors.teal,
+          height: 1.5,
+          width: 20,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Text(
+            text,
+            style: const TextStyle(
+              color: Colors.teal,
+              fontWeight: FontWeight.bold,
             ),
           ),
-          Expanded(
-              child: Container(
-            color: Colors.teal,
-            height: 1.5,
-          )),
-        ],
-      ),
+        ),
+        Expanded(
+            child: Container(
+          color: Colors.teal,
+          height: 1.5,
+        )),
+      ],
     );
   }
 }
