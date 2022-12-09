@@ -95,6 +95,11 @@ class _AthleteChecksListState extends State<AthleteChecksList> {
             lastDay: widget.model.kLastDay,
             firstDay: widget.model.kFirstDay,
             calendarFormat: widget.model.calendarFormat,
+            availableCalendarFormats: const {
+              CalendarFormat.month: 'Mês',
+              CalendarFormat.twoWeeks: '2 semanas',
+              CalendarFormat.week: 'Semana'
+            },
             calendarStyle: CalendarStyle(
               todayDecoration: BoxDecoration(
                 color: Colors.teal.shade200,
