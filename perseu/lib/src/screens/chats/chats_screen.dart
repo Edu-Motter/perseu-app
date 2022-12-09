@@ -127,7 +127,7 @@ class ChatsScreen extends StatelessWidget {
                                                 MaterialPageRoute(
                                                   builder: (context) => UsersChatScreen(
                                                     friendId: friendId,
-                                                    friendName: friendIdString,
+                                                    friendName: friendName,
                                                   ),
                                                 ),
                                               );
