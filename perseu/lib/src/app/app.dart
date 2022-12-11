@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/states/session.dart';
+import 'package:perseu/src/utils/style.dart';
 import 'package:perseu/src/viewModels/login_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -22,8 +23,8 @@ class PerseuApp extends StatelessWidget {
       child: MaterialApp(
         theme: ThemeData(
           visualDensity: VisualDensity.adaptivePlatformDensity,
-          primarySwatch: Colors.teal,
-          primaryColor: Colors.teal,
+          primarySwatch: Style.primaryMaterial,
+          primaryColor: Style.primary,
           elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
                   minimumSize: Size(Size.infinite.width, 48))),
