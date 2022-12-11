@@ -4,6 +4,7 @@ import 'package:perseu/src/components/exercise_card/exercise_card.dart';
 import 'package:perseu/src/models/dtos/exercise_dto.dart';
 import 'package:perseu/src/models/dtos/training_dto.dart';
 import 'package:perseu/src/screens/assign_training/assign_training_screen.dart';
+import 'package:perseu/src/screens/athlete_trainings_details/components/athlete_information_with_icons.dart';
 import 'package:perseu/src/screens/training_details/training_details_viewmodel.dart';
 import 'package:perseu/src/components/widgets/center_error.dart';
 import 'package:perseu/src/services/foundation.dart';
@@ -125,22 +126,66 @@ class CheckDetails extends StatelessWidget {
   final String dateTimeCheck;
   final int effort;
 
+  static const backgroundColor = Colors.white;
+  static const foregroundColor = Colors.teal;
+
+  static const standardStyle = TextStyle(color: foregroundColor, fontSize: 16);
+  static const standardStyleBold = TextStyle(
+      color: foregroundColor, fontSize: 16, fontWeight: FontWeight.bold);
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: 8),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Text(
-            'Realizado: ${DateFormatters.toDateTimeString(dateTimeCheck)} '
-            '| Feedback: ${Formatters.effortFormatter(effort)} ($effort)',
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.teal, fontSize: 16),
+    final formattedDate = DateFormatters.toDateTimeString(dateTimeCheck);
+    final formattedEffort = Formatters.effortFormatter(effort);
+
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Container(
+        decoration: BoxDecoration(
+            color: backgroundColor,
+            border: Border.all(color: foregroundColor, width: 2),
+            borderRadius: const BorderRadius.all(Radius.circular(16))),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.today,
+                    color: foregroundColor,
+                    size: 24,
+                  ),
+                  const SizedBox(width: 8),
+                  const Text(
+                    'Realizado: ',
+                    style: standardStyleBold,
+                  ),
+                  Text(formattedDate, style: standardStyle),
+                ],
+              ),
+              const InfoDivider(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.circle,
+                    color: backgroundColor,
+                    size: 24,
+                  ),
+                  const SizedBox(width: 8),
+                  const Text(
+                    'Feedback: ',
+                    style: standardStyleBold,
+                  ),
+                  Text(formattedEffort, style: standardStyle),
+                ],
+              ),
+            ],
           ),
         ),
-        const Divider(),
-      ],
+      ),
     );
   }
 }
