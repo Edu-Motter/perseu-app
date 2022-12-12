@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:perseu/src/utils/style.dart';
 
 class ExerciseCard extends StatelessWidget {
   const ExerciseCard({
@@ -15,7 +16,7 @@ class ExerciseCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        color: Colors.white,
+        color: Style.background,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,

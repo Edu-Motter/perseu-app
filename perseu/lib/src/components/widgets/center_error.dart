@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:perseu/src/utils/style.dart';
 
 class CenterError extends StatelessWidget {
   const CenterError({
@@ -14,14 +15,14 @@ class CenterError extends StatelessWidget {
     return Center(
       child: Container(
         decoration: const BoxDecoration(
-            color: Colors.teal,
+            color: Style.accent,
             borderRadius: BorderRadius.all(Radius.circular(16))),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
             message,
             textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.white, fontSize: 16),
+            style: const TextStyle(color: Style.background, fontSize: 16),
           ),
         ),
       ),

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:perseu/src/utils/style.dart';
 
 class CenterRoundedContainer extends StatelessWidget {
   const CenterRoundedContainer({
     Key? key,
     required this.child,
-    this.color = Colors.teal,
+    this.color = Style.accent,
   }) : super(key: key);
 
   final Widget child;

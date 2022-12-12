@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/services/foundation.dart';
+import 'package:perseu/src/utils/style.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
@@ -118,7 +119,7 @@ class EmojiButton extends StatelessWidget {
             width: 32,
             height: 32,
             decoration: const BoxDecoration(
-                color: Colors.teal,
+                color: Style.primary,
                 borderRadius: BorderRadius.all(Radius.circular(50))),
           ),
         ),

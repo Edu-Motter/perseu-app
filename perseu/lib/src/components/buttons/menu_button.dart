@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:perseu/src/utils/style.dart';
 
 class MenuButton extends StatelessWidget {
   const MenuButton({
@@ -12,8 +13,8 @@ class MenuButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  static const foregroundColor = Colors.teal;
-  static const backgroundColor = Colors.white;
+  static const foregroundColor = Style.primary;
+  static const backgroundColor = Style.background;
 
   @override
   Widget build(BuildContext context) {
