@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:perseu/src/models/dtos/athlete_info_dto.dart';
 import 'package:perseu/src/utils/date_formatters.dart';
 import 'package:perseu/src/utils/formatters.dart';
+import 'package:perseu/src/utils/style.dart';
 
 class AthleteInformationWithIcons extends StatelessWidget {
   const AthleteInformationWithIcons({
@@ -10,7 +11,7 @@ class AthleteInformationWithIcons extends StatelessWidget {
   }) : super(key: key);
 
   static const backgroundColor = Colors.white;
-  static const foregroundColor = Colors.teal;
+  static const foregroundColor = Style.primary;
 
   static const standardStyle = TextStyle(color: foregroundColor, fontSize: 16);
   static const standardStyleBold = TextStyle(
@@ -39,83 +40,83 @@ class AthleteInformationWithIcons extends StatelessWidget {
           child: Column(
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const Icon(
-                    Icons.person,
+                    Icons.person_outline,
                     color: foregroundColor,
                     size: 24,
                   ),
                   const SizedBox(width: 8),
-                  const Text(
-                    'Nome: ',
-                    style: standardStyleBold,
-                  ),
+                  // const Text(
+                  //   'Nome: ',
+                  //   style: standardStyleBold,
+                  // ),
                   Text(athlete.name, style: standardStyle),
                 ],
               ),
               const InfoDivider(),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const Icon(
-                    Icons.description,
+                    Icons.description_outlined,
                     color: foregroundColor,
                     size: 24,
                   ),
                   const SizedBox(width: 8),
-                  const Text(
-                    'CPF: ',
-                    style: standardStyleBold,
-                  ),
+                  // const Text(
+                  //   'CPF: ',
+                  //   style: standardStyleBold,
+                  // ),
                   Text(formattedCpf, style: standardStyle),
                 ],
               ),
               const InfoDivider(),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const Icon(
-                    Icons.cake,
+                    Icons.cake_outlined,
                     color: foregroundColor,
                     size: 24,
                   ),
                   const SizedBox(width: 8),
-                  const Text(
-                    'Data de nascimento: ',
-                    style: standardStyleBold,
-                  ),
+                  // const Text(
+                  //   'Data de nascimento: ',
+                  //   style: standardStyleBold,
+                  // ),
                   Text(formattedDate, style: standardStyle),
                 ],
               ),
               const InfoDivider(),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const Icon(
-                    Icons.height,
+                    Icons.height_outlined,
                     color: foregroundColor,
                     size: 24,
                   ),
                   const SizedBox(width: 4),
-                  const Text(
-                    'Altura: ',
-                    style: standardStyleBold,
-                  ),
+                  // const Text(
+                  //   'Altura: ',
+                  //   style: standardStyleBold,
+                  // ),
                   Text('$formattedHeight m', style: standardStyle),
                   const SizedBox(
                     width: 16,
                   ),
                   const Icon(
-                    Icons.fitness_center,
+                    Icons.fitness_center_outlined,
                     color: foregroundColor,
                     size: 24,
                   ),
                   const SizedBox(width: 8),
-                  const Text(
-                    'Peso: ',
-                    style: standardStyleBold,
-                  ),
+                  // const Text(
+                  //   'Peso: ',
+                  //   style: standardStyleBold,
+                  // ),
                   Text('$formattedWeight Kg', style: standardStyle),
                 ],
               ),
@@ -133,7 +134,7 @@ class InfoDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Divider(
-      color: Colors.teal,
+      color: Style.primary,
       thickness: 2,
     );
   }

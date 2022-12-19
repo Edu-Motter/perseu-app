@@ -4,6 +4,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/screens/new_team/new_team_viewmodel.dart';
 import 'package:perseu/src/screens/user_drawer/user_drawer.dart';
+import 'package:perseu/src/utils/style.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
@@ -44,7 +45,7 @@ class _NewTeamScreenState extends State<NewTeamScreen> {
                 ),
               ),
               body: Container(
-                color: Colors.white,
+                color: Style.background,
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Padding(

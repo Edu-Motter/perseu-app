@@ -3,11 +3,12 @@ import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/components/buttons/menu_button.dart';
 import 'package:perseu/src/models/dtos/team_info_dto.dart';
+import 'package:perseu/src/screens/new_training/new_training_screen.dart';
 import 'package:perseu/src/screens/user_drawer/user_drawer.dart';
 import 'package:perseu/src/screens/coach_home/coach_home_viewmodel.dart';
-import 'package:perseu/src/screens/coach_screens/new_training_screen.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/states/session.dart';
+import 'package:perseu/src/utils/style.dart';
 import 'package:provider/provider.dart';
 
 class CoachHomeScreen extends StatelessWidget {
@@ -22,6 +23,7 @@ class CoachHomeScreen extends StatelessWidget {
       child: Consumer<CoachHomeViewModel>(
         builder: (BuildContext context, model, _) {
           return Scaffold(
+            backgroundColor: Style.background,
             key: scaffoldKey,
             drawer: const UserDrawer(),
             appBar: AppBar(
@@ -79,7 +81,7 @@ class FirstColumnMenuItems extends StatelessWidget {
       children: [
         MenuButton(
           text: 'Novo Treino',
-          icon: Icons.description,
+          icon: Icons.description_outlined,
           onPressed: () => showDialog(
             context: context,
             builder: (context) => const TrainingNameDialog(),
@@ -95,13 +97,13 @@ class FirstColumnMenuItems extends StatelessWidget {
         const SizedBox(height: 24),
         MenuButton(
           text: 'Visualizar Conversas',
-          icon: Icons.message,
+          icon: Icons.message_outlined,
           onPressed: () => Navigator.of(context).pushNamed(Routes.chats),
         ),
         const SizedBox(height: 24),
         MenuButton(
           text: 'Alterar nome equipe',
-          icon: Icons.edit,
+          icon: Icons.edit_outlined,
           onPressed: () {
             Navigator.of(context)
                 .pushNamed(Routes.changeTeamName)
@@ -122,21 +124,21 @@ class SecondColumnMenuItems extends StatelessWidget {
       children: [
         MenuButton(
           text: 'Gerenciar Solicitações',
-          icon: Icons.notifications_sharp,
+          icon: Icons.notifications_active_outlined,
           onPressed: () =>
               Navigator.of(context).pushNamed(Routes.manageInvites),
         ),
         const SizedBox(height: 24),
         MenuButton(
           text: 'Gerenciar Atletas',
-          icon: Icons.group,
+          icon: Icons.group_outlined,
           onPressed: () =>
               Navigator.of(context).pushNamed(Routes.manageAthletes),
         ),
         const SizedBox(height: 24),
         MenuButton(
           text: 'Gerenciar Perfil',
-          icon: Icons.person,
+          icon: Icons.person_outline,
           onPressed: () => Navigator.of(context).pushNamed(Routes.profile),
         ),
         const SizedBox(height: 24),
@@ -159,23 +161,34 @@ class TrainingNameDialog extends StatefulWidget {
 
 class _TrainingNameDialogState extends State<TrainingNameDialog> {
   final TextEditingController _nameController = TextEditingController();
+  bool get valid => _nameController.text.length > 2;
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Nome do treino'),
+      title: const Text(
+        'Nome do treino',
+        style: TextStyle(color: Style.primary),
+      ),
       content: TextField(
+        style: const TextStyle(color: Style.primary),
         controller: _nameController,
         onChanged: (_) => setState(() {}),
       ),
       actions: [
-        TextButton(
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Style.primary),
+                minimumSize: MaterialStateProperty.all(const Size(0, 32))),
             onPressed: () => Navigator.pop(context),
             child: const Text('Cancelar')),
-        TextButton(
-          onPressed: _nameController.text.length < 2
-              ? null
-              : () {
+        ElevatedButton(
+          style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all(valid ? Style.accent : Colors.grey),
+              minimumSize: MaterialStateProperty.all(const Size(0, 32))),
+          onPressed: valid
+              ? () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -184,8 +197,12 @@ class _TrainingNameDialogState extends State<TrainingNameDialog> {
                       ),
                     ),
                   );
-                },
-          child: const Text('Continuar'),
+                }
+              : null,
+          child: const Text(
+            'Continuar',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
       ],
     );
@@ -233,14 +250,15 @@ class TeamInfo extends StatelessWidget {
                     ),
                     Text(
                       '${teamInfo.numberOfAthletes} atletas',
-                      style: style.copyWith(fontSize: 20),
+                      style:
+                          style.copyWith(fontSize: 20, color: Style.secondary),
                     ),
                     const SizedBox(height: 16),
                     if (showCode)
                       Text(
                         'Código de acesso: ${teamInfo.code}',
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 16),
+                        style: const TextStyle(
+                            color: Style.background, fontSize: 16),
                       ),
                   ],
                 );

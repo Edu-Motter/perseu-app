@@ -7,6 +7,7 @@ import '../states/foundation.dart';
 
 class LoginViewModel extends AppViewModel {
   static const gif = 'assets/gifs/fitness.gif';
+  static const image = 'assets/images/dumbell-accent.png';
 
   String username = '';
   String password = '';

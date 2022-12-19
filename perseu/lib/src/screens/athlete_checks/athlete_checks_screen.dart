@@ -7,6 +7,7 @@ import 'package:perseu/src/screens/training_details/training_details_screen.dart
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/utils/date_formatters.dart';
 import 'package:perseu/src/utils/formatters.dart';
+import 'package:perseu/src/utils/style.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -102,11 +103,15 @@ class _AthleteChecksListState extends State<AthleteChecksList> {
             },
             calendarStyle: CalendarStyle(
               todayDecoration: BoxDecoration(
-                color: Colors.teal.shade200,
+                color: Style.accent.withOpacity(.5),
                 shape: BoxShape.circle,
               ),
               selectedDecoration: const BoxDecoration(
-                color: Colors.teal,
+                color: Style.primary,
+                shape: BoxShape.circle,
+              ),
+              markerDecoration: const BoxDecoration(
+                color: Style.accent,
                 shape: BoxShape.circle,
               ),
             ),
@@ -140,14 +145,14 @@ class _AthleteChecksListState extends State<AthleteChecksList> {
                   child: ListTile(
                     title: Text(
                       '${Formatters.effortFormatter(check.effort)}  '
-                      '${DateFormatters.toDateTimeString(check.date)} | '
+                      '${DateFormatters.toTimeString(check.date)} | '
                       '${check.training.name}',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     trailing: const Icon(
                       Icons.arrow_forward,
-                      color: Colors.teal,
+                      color: Style.primary,
                       size: 28,
                     ),
                     onTap: () => Navigator.push(context, MaterialPageRoute(

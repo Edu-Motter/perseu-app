@@ -14,7 +14,7 @@ class MenuButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   static const foregroundColor = Style.primary;
-  static const backgroundColor = Style.background;
+  static const backgroundColor = Colors.white;
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +26,10 @@ class MenuButton extends StatelessWidget {
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(backgroundColor),
           side: MaterialStateProperty.all(
-              const BorderSide(color: foregroundColor, width: 2)),
+              const BorderSide(color: Colors.white, width: 2)),
           shape: MaterialStateProperty.all(
             const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(16)),
+              borderRadius: BorderRadius.all(Radius.circular(8)),
             ),
           ),
         ),
@@ -40,7 +40,7 @@ class MenuButton extends StatelessWidget {
                 alignment: Alignment.topLeft,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12.0),
-                  child: Icon(icon, color: foregroundColor, size: 32),
+                  child: Icon(icon, color: Style.accent, size: 32),
                 ),
               ),
             ),

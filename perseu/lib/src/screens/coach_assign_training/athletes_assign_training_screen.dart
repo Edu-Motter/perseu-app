@@ -3,6 +3,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/models/training_model.dart';
 import 'package:perseu/src/services/foundation.dart';
+import 'package:perseu/src/utils/style.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
@@ -36,12 +37,6 @@ class _AssignTrainingState extends State<AthletesAssignTrainingScreen> {
             return ModalProgressHUD(
               inAsyncCall: model.isBusy,
               child: Scaffold(
-                  floatingActionButton: FloatingActionButton(
-                    onPressed: () {
-                      _handleAssign(context);
-                    },
-                    child: const Icon(Icons.send),
-                  ),
                   appBar: AppBar(
                     title: const Text('Atribuir treino'),
                   ),
@@ -60,7 +55,15 @@ class _AssignTrainingState extends State<AthletesAssignTrainingScreen> {
                               return ListView(
                                   padding: const EdgeInsets.all(16.0),
                                   children: [
-                                    const Text("Atletas"),
+                                    const Center(
+                                      child: Text(
+                                        'Atletas disponíveis',
+                                        style: TextStyle(
+                                            color: Style.primary,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ),
+                                    ),
                                     ListView.builder(
                                       scrollDirection: Axis.vertical,
                                       shrinkWrap: true,
@@ -70,6 +73,9 @@ class _AssignTrainingState extends State<AthletesAssignTrainingScreen> {
                                           athlete: model.athletes[index],
                                         );
                                       },
+                                    ),
+                                    const SizedBox(
+                                      height: 16,
                                     ),
                                     ElevatedButton(
                                         onPressed: () async {
@@ -90,7 +96,8 @@ class _AssignTrainingState extends State<AthletesAssignTrainingScreen> {
   }
 
   void _handleAssign(BuildContext context) async {
-    final model = Provider.of<AthletesAssignTrainingViewModel>(context, listen: false);
+    final model =
+        Provider.of<AthletesAssignTrainingViewModel>(context, listen: false);
     Result result = await model.assign(training, model.athletes);
     if (result.success) {
       UIHelper.showSuccess(context, result);
@@ -114,7 +121,13 @@ class _AthleteCheckboxTileState extends State<AthleteCheckboxTile> {
   @override
   Widget build(BuildContext context) {
     return CheckboxListTile(
-        title: Text(widget.athlete.athleteName),
+        checkColor: Style.background,
+        activeColor: Style.primary,
+        selectedTileColor: Style.accent,
+        title: Text(
+          widget.athlete.athleteName,
+          style: const TextStyle(color: Style.primary),
+        ),
         value: widget.athlete.assigned,
         onChanged: (bool? checkboxState) {
           setState(() {

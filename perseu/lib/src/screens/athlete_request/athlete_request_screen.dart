@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:perseu/src/screens/user_drawer/user_drawer.dart';
+import 'package:perseu/src/utils/style.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/locator.dart';
@@ -45,7 +46,7 @@ class _AthleteRequestScreenState extends State<AthleteRequestScreen> {
                 ),
               ),
               body: Container(
-                color: Colors.white,
+                color: Style.background,
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Padding(

@@ -16,14 +16,18 @@ class ExerciseCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        color: Style.background,
+        color: Colors.white,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
               name,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Style.secondary,
+              ),
             ),
             const SizedBox(height: 8),
             Text(description),

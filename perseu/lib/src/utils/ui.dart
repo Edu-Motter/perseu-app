@@ -2,6 +2,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/utils/flash_notification.dart' as flash;
+import 'package:perseu/src/utils/style.dart';
 
 import '../app/routes.dart';
 import '../services/foundation.dart';
@@ -74,7 +75,7 @@ class UIHelper {
       {IconData icon = Icons.check_circle_outline,
       Duration duration = const Duration(seconds: 1)}) {
     Flushbar(
-            icon: Icon(icon, color: Colors.white),
+            icon: Icon(icon, color: Style.background),
             message: message,
             duration: duration)
         .show(context);

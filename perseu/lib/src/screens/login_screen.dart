@@ -3,6 +3,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/models/dtos/status.dart';
+import 'package:perseu/src/utils/style.dart';
 import 'package:perseu/src/viewModels/login_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +29,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color themeColor = Colors.teal;
+    Color themeColor = Style.secondary;
     return ChangeNotifierProvider(
       create: (_) => locator<LoginViewModel>(),
       child: Consumer<LoginViewModel>(
@@ -36,15 +37,15 @@ class LoginScreen extends StatelessWidget {
           return ModalProgressHUD(
             inAsyncCall: loginModel.isBusy,
             child: Scaffold(
-                backgroundColor: Colors.white,
+                backgroundColor: Style.background,
                 appBar: AppBar(
                   title: const Text('Perseu'),
                 ),
                 body: ListView(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 94.0),
-                      child: Image.asset(LoginViewModel.gif),
+                      padding: const EdgeInsets.only(top: 24.0),
+                      child: Image.asset(LoginViewModel.image, height: 160,),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -69,9 +70,10 @@ class LoginScreen extends StatelessWidget {
                                 key: LoginScreen.usernameInputKey,
                                 controller: _usernameController,
                                 onChanged: (value) => loginModel.username = value,
+                                style: const TextStyle(color: Style.primary),
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
-                                  hintText: 'email',
+                                  hintText: 'E-mail',
                                 ),
                                 validator: RequiredValidator(
                                     errorText: 'O usuário precisa ser informado'),
@@ -81,10 +83,11 @@ class LoginScreen extends StatelessWidget {
                                 key: LoginScreen.passwordInputKey,
                                 controller: _passwordController,
                                 onChanged: (value) => loginModel.password = value,
+                                style: const TextStyle(color: Style.primary),
                                 obscureText: true,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
-                                  hintText: 'senha',
+                                  hintText: 'Senha',
                                 ),
                                 validator: RequiredValidator(
                                     errorText: 'A senha precisa ser informada'),
@@ -93,7 +96,7 @@ class LoginScreen extends StatelessWidget {
                               ElevatedButton(
                                   style: ButtonStyle(
                                       backgroundColor:
-                                          MaterialStateProperty.all(themeColor)),
+                                          MaterialStateProperty.all(Style.accent)),
                                   onPressed: loginModel.isBusy
                                       ? null
                                       : () {
@@ -116,10 +119,10 @@ class LoginScreen extends StatelessWidget {
                                           border: Border(
                                               bottom: BorderSide(
                                                   width: 2.0,
-                                                  color: Colors.black))),
+                                                  color: Style.secondary))),
                                       child: const Text(
                                         'Não possuo conta ainda',
-                                        style: TextStyle(fontSize: 16),
+                                        style: TextStyle(fontSize: 16, color: Style.secondary),
                                       )),
                                 ),
                               ),

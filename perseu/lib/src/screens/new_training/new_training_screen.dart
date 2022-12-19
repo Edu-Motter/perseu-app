@@ -6,9 +6,11 @@ import 'package:perseu/src/models/exercise_model.dart';
 import 'package:perseu/src/models/sessions_model.dart';
 import 'package:perseu/src/models/training_model.dart';
 import 'package:perseu/src/screens/coach_assign_training/athletes_assign_training_screen.dart';
-import 'package:perseu/src/screens/coach_screens/new_session_screen.dart';
 import 'package:perseu/src/services/foundation.dart';
+import 'package:perseu/src/utils/style.dart';
 import 'package:perseu/src/utils/ui.dart';
+
+import 'new_session_screen.dart';
 
 class NewTrainingScreen extends StatefulWidget {
   const NewTrainingScreen({Key? key, required this.trainingName})
@@ -36,16 +38,21 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Style.background,
       appBar: AppBar(
         title: Text('Novo treino - ${widget.trainingName}'),
       ),
       floatingActionButton: SpeedDial(
+        backgroundColor: Style.primary,
         animatedIcon: AnimatedIcons.menu_close,
         animatedIconTheme: const IconThemeData(size: 22.0),
         visible: true,
         curve: Curves.bounceIn,
         children: [
           SpeedDialChild(
+            backgroundColor: Style.accent,
+            foregroundColor: Colors.white,
+            labelBackgroundColor: Style.accent,
             child: const Icon(Icons.add),
             onTap: () {
               Navigator.of(context)
@@ -58,14 +65,21 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
               });
             },
             label: 'Adicionar sessão',
-            labelStyle: const TextStyle(fontWeight: FontWeight.w500),
+            labelStyle: const TextStyle(
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
+            ),
           ),
           SpeedDialChild(
+            backgroundColor: Style.accent,
+            foregroundColor: Colors.white,
+            labelBackgroundColor: Style.accent,
             child: const Icon(Icons.forward),
             onTap: () => {
               if (training.sessions.isNotEmpty)
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => AthletesAssignTrainingScreen(training: training)))
+                    builder: (_) =>
+                        AthletesAssignTrainingScreen(training: training)))
               else
                 UIHelper.showError(
                     context,
@@ -73,7 +87,10 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
                         message: 'Não há sessões para serem atribuidas'))
             },
             label: 'Atribuir treino',
-            labelStyle: const TextStyle(fontWeight: FontWeight.w500),
+            labelStyle: const TextStyle(
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
+            ),
           ),
         ],
       ),
@@ -113,56 +130,66 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
               itemCount: training.sessions.length,
               itemBuilder: (context, index) {
                 SessionModel session = training.sessions[index];
-                return Card(
-                  child: ExpansionTile(
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              setState(() {
-                                training.sessions.removeAt(index);
-                              });
-                            },
-                            icon: const Icon(
-                              Icons.delete,
-                              size: 20,
-                            )),
-                        IconButton(
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .push(MaterialPageRoute(
-                                      builder: (_) => NewSessionScreen(
-                                          sessionModel: session)))
-                                  .then((sessionFuture) {
-                                SessionModel sessionModel =
-                                    sessionFuture as SessionModel;
+                return Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Card(
+                    color: Colors.white,
+                    child: ExpansionTile(
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                              onPressed: () {
                                 setState(() {
-                                  training.sessions.removeWhere(
-                                      (e) => e.id == sessionModel.id);
-                                  training.sessions.insert(index, sessionModel);
+                                  training.sessions.removeAt(index);
                                 });
-                              });
-                            },
-                            icon: const Icon(
-                              Icons.edit,
-                              size: 20,
-                            )),
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Icon(Icons.keyboard_arrow_down),
-                        )
+                              },
+                              icon: const Icon(
+                                Icons.delete,
+                                size: 20,
+                              )),
+                          IconButton(
+                              onPressed: () {
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute(
+                                        builder: (_) => NewSessionScreen(
+                                            sessionModel: session)))
+                                    .then((sessionFuture) {
+                                  SessionModel sessionModel =
+                                      sessionFuture as SessionModel;
+                                  setState(() {
+                                    training.sessions.removeWhere(
+                                        (e) => e.id == sessionModel.id);
+                                    training.sessions
+                                        .insert(index, sessionModel);
+                                  });
+                                });
+                              },
+                              icon: const Icon(
+                                Icons.edit,
+                                size: 20,
+                              )),
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Icon(Icons.keyboard_arrow_down),
+                          )
+                        ],
+                      ),
+                      expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
+                      title: Text(
+                        session.name,
+                        style: const TextStyle(
+                            fontSize: 18,
+                            color: Style.primary, fontWeight: FontWeight.w500),
+                      ),
+                      children: [
+                        for (ExerciseModel e in session.exercises)
+                          ExerciseCard(
+                            name: e.name,
+                            description: e.description,
+                          )
                       ],
                     ),
-                    expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
-                    title: Text(session.name),
-                    children: [
-                      for (ExerciseModel e in session.exercises)
-                        ExerciseCard(
-                          name: e.name,
-                          description: e.description,
-                        )
-                    ],
                   ),
                 );
               }),

@@ -24,10 +24,12 @@ class PerseuApp extends StatelessWidget {
         theme: ThemeData(
           visualDensity: VisualDensity.adaptivePlatformDensity,
           primarySwatch: Style.primaryMaterial,
-          primaryColor: Style.primary,
+          primaryColor: Style.accent,
           elevatedButtonTheme: ElevatedButtonThemeData(
-              style: ElevatedButton.styleFrom(
-                  minimumSize: Size(Size.infinite.width, 48))),
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Style.accent),
+                  minimumSize: MaterialStateProperty.all(
+                      Size(Size.infinite.width, 48)))),
         ),
         debugShowCheckedModeBanner: false,
         title: 'Perseu',

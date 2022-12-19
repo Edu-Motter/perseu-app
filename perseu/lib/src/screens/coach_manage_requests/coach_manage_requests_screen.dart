@@ -4,6 +4,7 @@ import 'package:perseu/src/models/dtos/invite_dto.dart';
 import 'package:perseu/src/screens/coach_home/coach_home_screen.dart';
 import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_viewmodel.dart';
 import 'package:perseu/src/components/dialogs/athlete_information_dialog.dart';
+import 'package:perseu/src/utils/style.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
@@ -38,7 +39,7 @@ class _CoachManageRequestsScreenState extends State<CoachManageRequestsScreen> {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Card(
-                      color: Colors.teal,
+                      color: Style.primary,
                       elevation: 0.5,
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
@@ -47,7 +48,7 @@ class _CoachManageRequestsScreenState extends State<CoachManageRequestsScreen> {
                           children: [
                             TeamInfo(
                               futureTeamInfo: model.getTeamInfo(),
-                              style: const TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Style.background),
                               showCode: true,
                             ),
                           ],
@@ -55,7 +56,9 @@ class _CoachManageRequestsScreenState extends State<CoachManageRequestsScreen> {
                       ),
                     ),
                   ),
-                  const Divider(),
+                  const Divider(
+                    color: Style.primary,
+                  ),
                   const Flexible(
                     child: RequestList(),
                   ),
@@ -104,21 +107,27 @@ class _RequestListState extends State<RequestList> {
                     itemCount: inviteRequests.length,
                     itemBuilder: (context, index) {
                       return Card(
+                        color: Style.background,
                         child: ListTile(
                           onLongPress: () => _handleInformationDialog(
                             context,
                             inviteRequests[index].athlete.id,
                           ),
-                          title: Text(inviteRequests[index].athlete.name),
+                          title: Text(
+                            inviteRequests[index].athlete.name,
+                            style: const TextStyle(color: Style.primary),
+                          ),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               IconButton(
-                                  onPressed: () => _handleInformationDialog(
-                                        context,
-                                        inviteRequests[index].athlete.id,
-                                      ),
-                                  icon: const Icon(Icons.info_outlined)),
+                                onPressed: () => _handleInformationDialog(
+                                  context,
+                                  inviteRequests[index].athlete.id,
+                                ),
+                                icon: const Icon(Icons.info_outlined),
+                                color: Style.primary,
+                              ),
                               IconButton(
                                   onPressed: () {
                                     _handleRefuseRequest(
@@ -126,7 +135,8 @@ class _RequestListState extends State<RequestList> {
                                         model,
                                         context);
                                   },
-                                  icon: const Icon(Icons.clear)),
+                                  icon: const Icon(Icons.clear),
+                                  color: Style.primary),
                               IconButton(
                                   onPressed: () {
                                     _handleAcceptRequest(
@@ -134,7 +144,8 @@ class _RequestListState extends State<RequestList> {
                                         model,
                                         context);
                                   },
-                                  icon: const Icon(Icons.check)),
+                                  icon: const Icon(Icons.check),
+                                  color: Style.primary),
                             ],
                           ),
                         ),

@@ -10,6 +10,7 @@ import 'package:perseu/src/components/widgets/center_error.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/utils/date_formatters.dart';
 import 'package:perseu/src/utils/formatters.dart';
+import 'package:perseu/src/utils/style.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
@@ -36,6 +37,7 @@ class TrainingDetailsScreen extends StatelessWidget {
       child: Consumer<TrainingDetailsViewModel>(
         builder: (__, model, _) {
           return Scaffold(
+            backgroundColor: Style.background,
             appBar: AppBar(
               title: Text(trainingName),
             ),
@@ -126,8 +128,8 @@ class CheckDetails extends StatelessWidget {
   final String dateTimeCheck;
   final int effort;
 
-  static const backgroundColor = Colors.white;
-  static const foregroundColor = Colors.teal;
+  static const backgroundColor = Style.background;
+  static const foregroundColor = Style.primary;
 
   static const standardStyle = TextStyle(color: foregroundColor, fontSize: 16);
   static const standardStyleBold = TextStyle(
@@ -206,6 +208,7 @@ class TrainingView extends StatelessWidget {
       itemCount: sessions.length,
       itemBuilder: (context, index) {
         return Card(
+          color: Colors.white,
           child: ExpansionTile(
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
@@ -217,7 +220,12 @@ class TrainingView extends StatelessWidget {
               ],
             ),
             expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
-            title: Text(sessions[index].name),
+            title: Text(
+              sessions[index].name,
+              style: const TextStyle(
+                  fontSize: 18,
+                  color: Style.primary, fontWeight: FontWeight.w500),
+            ),
             children: [
               for (ExerciseDTO e in sessions[index].exercises!)
                 ExerciseCard(

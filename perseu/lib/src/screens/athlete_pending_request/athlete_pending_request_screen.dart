@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:perseu/src/screens/athlete_pending_request/athlete_pending_request_viewmodel.dart';
 import 'package:perseu/src/screens/user_drawer/user_drawer.dart';
 import 'package:perseu/src/services/foundation.dart';
+import 'package:perseu/src/utils/style.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
@@ -21,7 +22,7 @@ class AthletePendingRequestScreen extends StatelessWidget {
           builder: (context, model, child) {
             return Scaffold(
               key: scaffoldKey,
-              backgroundColor: Colors.white,
+              backgroundColor: Style.background,
               drawer: const UserDrawer(),
               appBar: AppBar(
                 title: const Text('Solicitação pendente'),

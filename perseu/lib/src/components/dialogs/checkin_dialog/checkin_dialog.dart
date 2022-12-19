@@ -69,19 +69,25 @@ class CheckInDialog extends StatelessWidget {
                   onPressed: () => Navigator.of(context).pop(),
                   child: const Text('Cancelar')),
               TextButton(
-                  onPressed: model.enabled
-                      ? () async {
-                          final navigator = Navigator.of(context);
-                          final Result result = await model.checkIn(trainingId);
-                          navigator.pop();
-                          if (result.success) {
-                            UIHelper.showSuccess(context, result);
-                          } else {
-                            UIHelper.showError(context, result);
-                          }
+                onPressed: model.enabled
+                    ? () async {
+                        final navigator = Navigator.of(context);
+                        final Result result = await model.checkIn(trainingId);
+                        navigator.pop();
+                        if (result.success) {
+                          UIHelper.showSuccess(context, result);
+                        } else {
+                          UIHelper.showError(context, result);
                         }
-                      : null,
-                  child: const Text('Enviar')),
+                      }
+                    : null,
+                child: Text(
+                  'Enviar',
+                  style: TextStyle(
+                    color: model.enabled ? Style.accent : Colors.grey,
+                  ),
+                ),
+              ),
             ],
           );
         },
@@ -119,7 +125,7 @@ class EmojiButton extends StatelessWidget {
             width: 32,
             height: 32,
             decoration: const BoxDecoration(
-                color: Style.primary,
+                color: Style.accent,
                 borderRadius: BorderRadius.all(Radius.circular(50))),
           ),
         ),

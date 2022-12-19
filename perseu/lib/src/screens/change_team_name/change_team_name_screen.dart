@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:perseu/src/utils/style.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +24,7 @@ class _ChangeTeamNameScreenState extends State<ChangeTeamNameScreen> {
       child: Consumer<ChangeTeamNameViewModel>(
         builder: (context, model, _) {
           return Scaffold(
+            backgroundColor: Style.background,
             appBar: AppBar(title: const Text('Alterando Nome da Equipe')),
             body: Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
@@ -34,6 +36,8 @@ class _ChangeTeamNameScreenState extends State<ChangeTeamNameScreen> {
                       controller: _controller,
                       onChanged: (value) => model.teamName = value,
                       decoration: const InputDecoration(
+                        fillColor: Colors.white,
+                        filled: true,
                         border: OutlineInputBorder(),
                         hintText: 'Informe o novo nome:',
                         labelText: 'Novo nome:',

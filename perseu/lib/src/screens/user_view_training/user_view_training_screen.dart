@@ -9,6 +9,7 @@ import 'package:perseu/src/models/training_model.dart';
 import 'package:perseu/src/screens/user_view_training/user_view_training_viewmodel.dart';
 import 'package:perseu/src/components/dialogs/checkin_dialog/checkin_dialog.dart';
 import 'package:perseu/src/services/foundation.dart';
+import 'package:perseu/src/utils/style.dart';
 import 'package:provider/provider.dart';
 
 class UserViewTrainingScreen extends StatefulWidget {
@@ -81,7 +82,7 @@ class _UserViewTrainingScreenState extends State<UserViewTrainingScreen> {
                                       training.name,
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
-                                          color: Colors.teal, fontSize: 24),
+                                          color: Style.primary, fontSize: 24),
                                     ),
                                     const Divider(),
                                     Expanded(
@@ -92,6 +93,7 @@ class _UserViewTrainingScreenState extends State<UserViewTrainingScreen> {
                                         itemCount: training.sessions.length,
                                         itemBuilder: (context, index) {
                                           return Card(
+                                            color: Style.background,
                                             child: ExpansionTile(
                                               trailing: Row(
                                                 mainAxisSize: MainAxisSize.min,
@@ -106,8 +108,14 @@ class _UserViewTrainingScreenState extends State<UserViewTrainingScreen> {
                                               ),
                                               expandedCrossAxisAlignment:
                                                   CrossAxisAlignment.stretch,
-                                              title: Text(training
-                                                  .sessions[index].name),
+                                              title: Text(
+                                                training.sessions[index].name,
+                                                style: const TextStyle(
+                                                    fontSize: 18,
+                                                    color: Style.accent,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
                                               children: [
                                                 for (ExerciseModel e in training
                                                     .sessions[index].exercises)

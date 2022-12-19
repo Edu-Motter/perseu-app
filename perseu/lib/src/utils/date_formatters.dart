@@ -25,6 +25,13 @@ class DateFormatters {
     return dateFormatter.format(parsedDate);
   }
 
+  static String toTimeString(String inputIsoInstant) {
+    final DateFormat isoInstantFormatter = DateFormat(isoInstant);
+    final DateFormat timeFormatter = DateFormat(time);
+    final DateTime parsedDate = isoInstantFormatter.parse(inputIsoInstant);
+    return timeFormatter.format(parsedDate);
+  }
+
   static String toIsoInstant(String inputDate) {
     final DateFormat dateFormatter = DateFormat(date);
     final DateFormat isoInstantFormatter = DateFormat(isoInstant);

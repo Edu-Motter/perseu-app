@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
-import 'package:perseu/src/models/dtos/athlete_dto.dart';
-import 'package:perseu/src/screens/athlete_trainings_details/athlete_trainings_details_screen.dart';
 import 'package:perseu/src/components/widgets/center_error.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
-import 'package:perseu/src/components/widgets/center_rounded_container.dart';
+import 'package:perseu/src/models/dtos/athlete_dto.dart';
+import 'package:perseu/src/screens/athlete_trainings_details/athlete_trainings_details_screen.dart';
 import 'package:perseu/src/services/foundation.dart';
+import 'package:perseu/src/utils/style.dart';
 import 'package:provider/provider.dart';
 
 import 'manage_athletes_viewmodel.dart';
@@ -20,6 +20,7 @@ class ManageAthletesScreen extends StatelessWidget {
       child: Consumer<ManageAthletesViewModel>(
         builder: (__, model, _) {
           return Scaffold(
+            backgroundColor: Style.background,
             appBar: AppBar(
               title: const Text('Gerenciar Atletas'),
             ),
@@ -71,19 +72,19 @@ class AthletesList extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 36.0,
-              vertical: 18.0,
-            ),
-            child: CenterRoundedContainer(
-              child: Text(
-                'Quantidade de atletas: ${athletes.length}',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                ),
+            padding: const EdgeInsets.only(bottom: 8, top: 21),
+            child: Text(
+              'Quantidade de atletas: ${athletes.length}',
+              style: const TextStyle(
+                color: Style.primary,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
               ),
             ),
+          ),
+          const Divider(
+            color: Style.primary,
+            thickness: 2,
           ),
           Expanded(
             child: ListView.builder(
@@ -92,10 +93,13 @@ class AthletesList extends StatelessWidget {
                 final AthleteDTO athlete = athletes[index];
                 return Card(
                   child: ListTile(
-                    title: Text(athlete.name),
+                    title: Text(
+                      athlete.name,
+                      style: const TextStyle(color: Style.secondary, fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
                     trailing: const Icon(
                       Icons.arrow_forward,
-                      color: Colors.teal,
+                      color: Style.accent,
                       size: 28,
                     ),
                     onTap: () => Navigator.push(context, MaterialPageRoute(

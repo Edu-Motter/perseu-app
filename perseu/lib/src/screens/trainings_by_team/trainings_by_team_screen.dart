@@ -6,6 +6,7 @@ import 'package:perseu/src/components/widgets/center_error.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/components/widgets/center_rounded_container.dart';
 import 'package:perseu/src/services/foundation.dart';
+import 'package:perseu/src/utils/style.dart';
 import 'package:provider/provider.dart';
 
 import 'trainings_by_team_viewmodel.dart';
@@ -79,7 +80,7 @@ class TrainingsList extends StatelessWidget {
               child: Text(
                 'Quantidade de treinos: ${trainings.length}',
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: Style.background,
                   fontSize: 18,
                 ),
               ),
@@ -95,7 +96,7 @@ class TrainingsList extends StatelessWidget {
                     title: Text(training.name),
                     trailing: const Icon(
                       Icons.arrow_forward,
-                      color: Colors.teal,
+                      color: Style.primary,
                       size: 28,
                     ),
                     onTap: () => Navigator.push(context, MaterialPageRoute(

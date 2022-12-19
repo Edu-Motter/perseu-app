@@ -6,6 +6,7 @@ import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_s
 import 'package:perseu/src/screens/profile_screen/profile_viewmodel.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/utils/formatters.dart';
+import 'package:perseu/src/utils/style.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:perseu/src/utils/validators.dart';
 import 'package:provider/provider.dart';
@@ -211,12 +212,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         ),
                                         const SizedBox(height: 16),
                                         ElevatedButton(
+                                            style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                        Colors.white),
+                                                shape:
+                                                    MaterialStateProperty.all(
+                                                  const RoundedRectangleBorder(
+                                                    side: BorderSide(color: Style.accent, width: 2),
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(4),
+                                                    ),
+                                                  ),
+                                                ),),
                                             onPressed: model.isBusy
                                                 ? null
                                                 : () => Navigator.of(context)
                                                     .pushNamed(
                                                         Routes.changePassword),
-                                            child: const Text('Alterar senha')),
+                                            child: const Text(
+                                              'Alterar senha',
+                                              style: TextStyle(
+                                                  color: Style.accent),
+                                            )),
                                         const SizedBox(height: 16),
                                         ElevatedButton(
                                             onPressed: model.isBusy

@@ -3,6 +3,7 @@ import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/components/dialogs/passwords_not_match_dialog.dart';
 import 'package:perseu/src/screens/sign_up/sign_up_viewmodel.dart';
 import 'package:perseu/src/utils/formatters.dart';
+import 'package:perseu/src/utils/style.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:perseu/src/utils/validators.dart';
 import 'package:provider/provider.dart';
@@ -63,7 +64,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               leading: IconButton(
                   icon: Icon(
                     Icons.arrow_back,
-                    color: model.isBusy ? Colors.grey : Colors.white,
+                    color: model.isBusy ? Colors.grey : Style.background,
                   ),
                   onPressed: () {
                     if (model.isBusy) return;
@@ -82,12 +83,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: Icon(
                           Icons.person_add,
                           size: 32,
-                          color: Colors.teal,
+                          color: Style.primary,
                         ),
                       ),
                       Text(
                         'Informe os seguintes dados:',
-                        style: TextStyle(color: Colors.teal, fontSize: 18),
+                        style: TextStyle(color: Style.primary, fontSize: 18),
                       ),
                       SizedBox(height: 8)
                     ],

@@ -5,6 +5,7 @@ import 'package:perseu/src/models/dtos/training_dto.dart';
 import 'package:perseu/src/screens/coach_assign_training/athletes_assign_training_viewmodel.dart';
 import 'package:perseu/src/components/widgets/center_error.dart';
 import 'package:perseu/src/services/foundation.dart';
+import 'package:perseu/src/utils/style.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
@@ -53,10 +54,11 @@ class _AssignTrainingState extends State<AssignTrainingScreen> {
                                           MainAxisAlignment.start,
                                       children: [
                                         const Text(
-                                          'Atletas',
-                                          textAlign: TextAlign.center,
+                                          'Atletas disponíveis',
                                           style: TextStyle(
-                                              color: Colors.teal, fontSize: 24),
+                                              color: Style.primary,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16),
                                         ),
                                         ListView.builder(
                                           scrollDirection: Axis.vertical,
@@ -68,6 +70,7 @@ class _AssignTrainingState extends State<AssignTrainingScreen> {
                                             );
                                           },
                                         ),
+                                        const SizedBox(height: 16),
                                         ElevatedButton(
                                             onPressed: () async {
                                               _handleAssign(context);
@@ -116,7 +119,13 @@ class _AthleteCheckboxTileState extends State<AthleteCheckboxTile> {
   @override
   Widget build(BuildContext context) {
     return CheckboxListTile(
-        title: Text(widget.athlete.athleteName),
+        checkColor: Style.background,
+        activeColor: Style.primary,
+        selectedTileColor: Style.accent,
+        title: Text(
+          widget.athlete.athleteName,
+          style: const TextStyle(color: Style.primary),
+        ),
         value: widget.athlete.assigned,
         onChanged: (bool? checkboxState) {
           setState(() {

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:perseu/src/utils/style.dart';
 
 class FlashNotification extends StatelessWidget {
   final WidgetBuilder builder;
@@ -26,8 +27,8 @@ class FlashNotification extends StatelessWidget {
 
   FlashNotification.simple(IconData icon, String message):
         this.column(<Widget>[
-        Icon(icon, color: Colors.white, size: 50),
-        Text(message, style: const TextStyle(color: Colors.white, fontSize: 16)),
+        Icon(icon, color: Style.background, size: 50),
+        Text(message, style: const TextStyle(color: Style.background, fontSize: 16)),
       ]);
 
   @override

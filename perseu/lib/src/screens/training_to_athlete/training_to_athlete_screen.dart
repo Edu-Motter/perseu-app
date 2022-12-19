@@ -7,6 +7,7 @@ import 'package:perseu/src/components/widgets/center_error.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/components/widgets/center_rounded_container.dart';
 import 'package:perseu/src/services/foundation.dart';
+import 'package:perseu/src/utils/style.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
@@ -67,7 +68,7 @@ class TrainingToAthleteScreen extends StatelessWidget {
                                       'Escolha o treino para $athleteName',
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
-                                        color: Colors.white,
+                                        color: Style.background,
                                         fontSize: 18,
                                       ),
                                     ),
@@ -126,7 +127,7 @@ class TrainingsListToAssign extends StatelessWidget {
             title: Text(training.name),
             trailing: const Icon(
               Icons.note_add,
-              color: Colors.teal,
+              color: Style.primary,
               size: 28,
             ),
             onTap: () => UIHelper.showBoolDialog(
@@ -178,7 +179,7 @@ class AthletesList extends StatelessWidget {
               child: Text(
                 'Quantidade de atletas: ${athletes.length}',
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: Style.background,
                   fontSize: 18,
                 ),
               ),
@@ -194,7 +195,7 @@ class AthletesList extends StatelessWidget {
                     title: Text(athlete.name),
                     trailing: const Icon(
                       Icons.arrow_forward,
-                      color: Colors.teal,
+                      color: Style.primary,
                       size: 28,
                     ),
                     onTap: () => Navigator.push(context, MaterialPageRoute(

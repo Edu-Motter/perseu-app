@@ -7,6 +7,7 @@ import 'package:perseu/src/models/dtos/training_dto.dart';
 import 'package:perseu/src/screens/training_details/training_details_screen.dart';
 import 'package:perseu/src/screens/training_to_athlete/training_to_athlete_screen.dart';
 import 'package:perseu/src/services/foundation.dart';
+import 'package:perseu/src/utils/style.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
@@ -30,37 +31,43 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
       child: Consumer<AthleteTrainingsDetailsViewModel>(
         builder: (__, model, _) {
           return Scaffold(
+            backgroundColor: Style.background,
             appBar: AppBar(
-              title: Text(athleteName),
+              title: const Text('Atleta'),
             ),
-            floatingActionButton: SizedBox(
-              width: 140,
-              child: ElevatedButton(
-                child: Row(
-                  children: const [
-                    Expanded(
-                      child: Text(
-                        'Novo treino',
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Icon(Icons.assignment_ind),
-                  ],
-                ),
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TrainingToAthleteScreen(
-                      athleteName: athleteName,
-                      athleteId: athleteId,
-                    ),
+            floatingActionButton: FloatingActionButton(
+              child: const Icon(Icons.add, size: 28),
+              backgroundColor: Style.accent,
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TrainingToAthleteScreen(
+                    athleteName: athleteName,
+                    athleteId: athleteId,
                   ),
                 ),
               ),
             ),
+            // SizedBox(
+            //   width: 140,
+            //   child: ElevatedButton(
+            //     child: Row(
+            //       children: const [
+            //         // Expanded(
+            //         //   child: Text(
+            //         //     'Novo treino',
+            //         //     textAlign: TextAlign.center,
+            //         //   ),
+            //         // ),
+            //         // SizedBox(
+            //         //   width: 8,
+            //         // ),
+            //          Icon(Icons.add),
+            //       ],
+            //     ),
+            //
+            //   ),
+            // ),
             body: CustomScrollView(
               slivers: [
                 SliverToBoxAdapter(
@@ -109,27 +116,31 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
                             final result = snapshot.data!;
                             if (result.success) {
                               final currentTraining = result.data!;
-                              return Card(
-                                color: Colors.teal,
-                                child: ListTile(
-                                  title: Text(
-                                    currentTraining.name,
-                                    style: const TextStyle(color: Colors.white),
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Card(
+                                  color: Style.primary,
+                                  child: ListTile(
+                                    title: Text(
+                                      currentTraining.name,
+                                      style: const TextStyle(
+                                          color: Colors.white),
+                                    ),
+                                    trailing: const Icon(
+                                      Icons.remove_red_eye,
+                                      color: Colors.white,
+                                      size: 28,
+                                    ),
+                                    onTap: () =>
+                                        Navigator.push(context, MaterialPageRoute(
+                                      builder: (context) {
+                                        return TrainingDetailsScreen(
+                                          trainingId: currentTraining.id,
+                                          trainingName: currentTraining.name,
+                                        );
+                                      },
+                                    )),
                                   ),
-                                  trailing: const Icon(
-                                    Icons.remove_red_eye,
-                                    color: Colors.white,
-                                    size: 28,
-                                  ),
-                                  onTap: () =>
-                                      Navigator.push(context, MaterialPageRoute(
-                                    builder: (context) {
-                                      return TrainingDetailsScreen(
-                                        trainingId: currentTraining.id,
-                                        trainingName: currentTraining.name,
-                                      );
-                                    },
-                                  )),
                                 ),
                               );
                             } else {
@@ -140,13 +151,13 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
                                     children: [
                                       const Icon(
                                         Icons.error,
-                                        color: Colors.teal,
+                                        color: Style.primary,
                                         size: 32,
                                       ),
                                       Text(
                                         result.message ?? 'Não encontrado',
                                         style: const TextStyle(
-                                          color: Colors.teal,
+                                          color: Colors.white,
                                           fontSize: 16,
                                         ),
                                       ),
@@ -224,65 +235,68 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
                       final activeTraining = athleteTrainings[index];
-                      return Card(
-                        color: Colors.teal,
-                        child: ListTile(
-                          title: Text(
-                            activeTraining.training.name,
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                onPressed: () => UIHelper.showBoolDialog(
-                                  context: context,
-                                  title: 'Desativar treino',
-                                  message:
-                                      'Tem certeza que deseja desativar o treino ${activeTraining.training.name} para $athleteName?',
-                                  onNoPressed: () => Navigator.pop(context),
-                                  onYesPressed: () async {
-                                    final navigator = Navigator.of(context);
-                                    final result =
-                                        await model.deactivateTraining(
-                                            athleteId,
-                                            activeTraining.training.id);
-                                    if (result.success) {
-                                      navigator.pop();
-                                      model.notifyListeners();
-                                      UIHelper.showSuccess(context,
-                                          Result.success(message: result.data));
-                                    } else {
-                                      navigator.pop();
-                                      UIHelper.showError(context, result);
-                                    }
-                                  },
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Card(
+                          color: Colors.white,
+                          child: ListTile(
+                            title: Text(
+                              activeTraining.training.name,
+                              style: const TextStyle(color: Style.primary),
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  onPressed: () => UIHelper.showBoolDialog(
+                                    context: context,
+                                    title: 'Desativar treino',
+                                    message:
+                                        'Tem certeza que deseja desativar o treino ${activeTraining.training.name} para $athleteName?',
+                                    onNoPressed: () => Navigator.pop(context),
+                                    onYesPressed: () async {
+                                      final navigator = Navigator.of(context);
+                                      final result =
+                                          await model.deactivateTraining(
+                                              athleteId,
+                                              activeTraining.training.id);
+                                      if (result.success) {
+                                        navigator.pop();
+                                        model.notifyListeners();
+                                        UIHelper.showSuccess(context,
+                                            Result.success(message: result.data));
+                                      } else {
+                                        navigator.pop();
+                                        UIHelper.showError(context, result);
+                                      }
+                                    },
+                                  ),
+                                  icon: const Icon(
+                                    Icons.cancel_outlined,
+                                    color: Style.primary,
+                                    size: 28,
+                                  ),
                                 ),
-                                icon: const Icon(
-                                  Icons.cancel_outlined,
-                                  color: Colors.white,
+                                const SizedBox(
+                                  width: 16,
+                                ),
+                                const Icon(
+                                  Icons.remove_red_eye,
+                                  color: Style.primary,
                                   size: 28,
                                 ),
-                              ),
-                              const SizedBox(
-                                width: 16,
-                              ),
-                              const Icon(
-                                Icons.remove_red_eye,
-                                color: Colors.white,
-                                size: 28,
-                              ),
-                            ],
+                              ],
+                            ),
+                            onTap: () =>
+                                Navigator.push(context, MaterialPageRoute(
+                              builder: (context) {
+                                return TrainingDetailsScreen(
+                                  trainingId: activeTraining.training.id,
+                                  trainingName: activeTraining.training.name,
+                                );
+                              },
+                            )),
                           ),
-                          onTap: () =>
-                              Navigator.push(context, MaterialPageRoute(
-                            builder: (context) {
-                              return TrainingDetailsScreen(
-                                trainingId: activeTraining.training.id,
-                                trainingName: activeTraining.training.name,
-                              );
-                            },
-                          )),
                         ),
                       );
                     },
@@ -308,30 +322,33 @@ class SliverDividerWithText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        Container(
-          color: Colors.teal,
-          height: 1.5,
-          width: 20,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Text(
-            text,
-            style: const TextStyle(
-              color: Colors.teal,
-              fontWeight: FontWeight.bold,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Container(
+            color: Style.primary,
+            height: 1.5,
+            width: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Text(
+              text,
+              style: const TextStyle(
+                color: Style.primary,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-        ),
-        Expanded(
-            child: Container(
-          color: Colors.teal,
-          height: 1.5,
-        )),
-      ],
+          Expanded(
+              child: Container(
+            color: Style.primary,
+            height: 1.5,
+          )),
+        ],
+      ),
     );
   }
 }
@@ -342,15 +359,15 @@ class NoFoundTrainingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Card(
-      color: Colors.teal,
+      color: Style.primary,
       child: ListTile(
         title: Text(
           'Treino não encontrado',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Style.background),
         ),
         trailing: Icon(
           Icons.error_outline,
-          color: Colors.white,
+          color: Style.background,
           size: 28,
         ),
       ),

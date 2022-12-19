@@ -5,6 +5,7 @@ import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/components/widgets/center_error.dart';
 import 'package:perseu/src/screens/user_chat/user_chat_screen.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
+import 'package:perseu/src/utils/style.dart';
 import 'package:provider/provider.dart';
 
 import 'chats_viewmodel.dart';
@@ -49,9 +50,9 @@ class ChatsScreen extends StatelessWidget {
                   leading: const CircleAvatar(
                     child: Text(
                       'T',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Style.background),
                     ),
-                    backgroundColor: Colors.teal,
+                    backgroundColor: Style.primary,
                   ),
                   title: const Text('Equipe'),
                   subtitle: StreamBuilder(
@@ -111,9 +112,9 @@ class ChatsScreen extends StatelessWidget {
                                             leading: CircleAvatar(
                                               child: Text(
                                                 getCircleLetters(friendName),
-                                                style: const TextStyle(color: Colors.white),
+                                                style: const TextStyle(color: Style.background),
                                               ),
-                                              backgroundColor: Colors.teal,
+                                              backgroundColor: Style.primary,
                                             ),
                                             title: Text(friendName),
                                             subtitle: Text(

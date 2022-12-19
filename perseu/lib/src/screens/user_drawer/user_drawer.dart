@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/screens/user_drawer/user_drawer_viewmodel.dart';
 import 'package:perseu/src/states/session.dart';
+import 'package:perseu/src/utils/style.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/locator.dart';
@@ -19,7 +20,7 @@ class UserDrawer extends StatelessWidget {
             child: ListView(
               children: [
                 DrawerHeader(
-                    decoration: const BoxDecoration(color: Colors.teal),
+                    decoration: const BoxDecoration(color: Style.primary),
                     child: Row(
                       children: [
                         const Padding(
@@ -27,7 +28,7 @@ class UserDrawer extends StatelessWidget {
                           child: Icon(
                             Icons.account_circle,
                             size: 48,
-                            color: Colors.white,
+                            color: Style.background,
                           ),
                         ),
                         Flexible(
@@ -40,14 +41,14 @@ class UserDrawer extends StatelessWidget {
                                   model.userName,
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
-                                      fontSize: 24, color: Colors.white),
+                                      fontSize: 24, color: Style.background),
                                 );
                               }),
                               Text(
                                 model.userEmail,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
-                                    fontSize: 16, color: Colors.white),
+                                    fontSize: 16, color: Style.background),
                               ),
                             ],
                           ),
