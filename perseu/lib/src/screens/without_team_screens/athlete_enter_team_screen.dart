@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:perseu/src/utils/palette.dart';
 
 class AthleteEnterTeam extends StatelessWidget {
   const AthleteEnterTeam({Key? key}) : super(key: key);
@@ -6,6 +7,7 @@ class AthleteEnterTeam extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Palette.background,
         appBar: AppBar(
           title: const Text('Entrar em uma equipe'),
         ),

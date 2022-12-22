@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/screens/user_drawer/user_drawer_viewmodel.dart';
 import 'package:perseu/src/states/session.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/locator.dart';
@@ -17,10 +17,11 @@ class UserDrawer extends StatelessWidget {
       child: Consumer<UserDrawerViewModel>(
         builder: (context, model, _) {
           return Drawer(
+            backgroundColor: Palette.background,
             child: ListView(
               children: [
                 DrawerHeader(
-                    decoration: const BoxDecoration(color: Style.primary),
+                    decoration: const BoxDecoration(color: Palette.primary),
                     child: Row(
                       children: [
                         const Padding(
@@ -28,7 +29,7 @@ class UserDrawer extends StatelessWidget {
                           child: Icon(
                             Icons.account_circle,
                             size: 48,
-                            color: Style.background,
+                            color: Colors.white,
                           ),
                         ),
                         Flexible(
@@ -41,14 +42,14 @@ class UserDrawer extends StatelessWidget {
                                   model.userName,
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
-                                      fontSize: 24, color: Style.background),
+                                      fontSize: 24, color: Colors.white),
                                 );
                               }),
                               Text(
                                 model.userEmail,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
-                                    fontSize: 16, color: Style.background),
+                                    fontSize: 16, color: Colors.white),
                               ),
                             ],
                           ),
@@ -56,12 +57,12 @@ class UserDrawer extends StatelessWidget {
                       ],
                     )),
                 ListTile(
-                  leading: const Icon(Icons.person),
+                  leading: const Icon(Icons.person, color: Palette.primary),
                   title: const Text('Perfil'),
                   onTap: () => Navigator.of(context).pushNamed(Routes.profile),
                 ),
                 ListTile(
-                  leading: const Icon(Icons.arrow_back),
+                  leading: const Icon(Icons.arrow_back, color: Palette.primary),
                   title: const Text('Sair'),
                   onTap: () => _handleLogout(context),
                 ),

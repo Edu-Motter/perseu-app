@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:perseu/src/screens/athlete_pending_request/athlete_pending_request_viewmodel.dart';
 import 'package:perseu/src/screens/user_drawer/user_drawer.dart';
 import 'package:perseu/src/services/foundation.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
@@ -22,7 +22,7 @@ class AthletePendingRequestScreen extends StatelessWidget {
           builder: (context, model, child) {
             return Scaffold(
               key: scaffoldKey,
-              backgroundColor: Style.background,
+              backgroundColor: Palette.background,
               drawer: const UserDrawer(),
               appBar: AppBar(
                 title: const Text('Solicitação pendente'),
@@ -38,14 +38,16 @@ class AthletePendingRequestScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
-                      Image.asset('assets/images/fitness-1.png', width: 160.0),
+                      const SizedBox(height: 16),
+                      Image.asset('assets/images/dumbbell-primary.png',
+                          width: 160.0),
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 16.0),
                         child: Text(
-                          'Sua solicitação de ingresso na equipe encontra-se'
-                          ' pendente ainda. O treinador é responsável por aceitá-la',
+                          'Sua solicitação de ingresso na equipe encontra-se pendente.',
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.black, fontSize: 16),
+                          style:
+                              TextStyle(color: Palette.primary, fontSize: 18),
                         ),
                       ),
                       ElevatedButton(
@@ -55,8 +57,24 @@ class AthletePendingRequestScreen extends StatelessWidget {
                         height: 16,
                       ),
                       ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                            shape: MaterialStateProperty.all(
+                              const RoundedRectangleBorder(
+                                side:
+                                    BorderSide(color: Palette.accent, width: 2),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(4),
+                                ),
+                              ),
+                            ),
+                          ),
                           onPressed: () => _handleCancelRequest(context, model),
-                          child: const Text('Cancelar solicitação')),
+                          child: const Text(
+                            'Cancelar solicitação',
+                            style: TextStyle(color: Palette.accent),
+                          )),
                       const SizedBox(
                         height: 16,
                       ),

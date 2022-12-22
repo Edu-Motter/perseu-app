@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
 
 class MenuButton extends StatelessWidget {
   const MenuButton({
@@ -13,7 +13,7 @@ class MenuButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  static const foregroundColor = Style.primary;
+  static const foregroundColor = Palette.primary;
   static const backgroundColor = Colors.white;
 
   @override
@@ -40,7 +40,7 @@ class MenuButton extends StatelessWidget {
                 alignment: Alignment.topLeft,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12.0),
-                  child: Icon(icon, color: Style.accent, size: 32),
+                  child: Icon(icon, color: Palette.accent, size: 32),
                 ),
               ),
             ),

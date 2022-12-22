@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
 
 class ExerciseCard extends StatelessWidget {
   const ExerciseCard({
@@ -26,7 +26,7 @@ class ExerciseCard extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
-                color: Style.secondary,
+                color: Palette.secondary,
               ),
             ),
             const SizedBox(height: 8),

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:perseu/src/app/locator.dart';
+import 'package:perseu/src/components/dialogs/checkin_dialog/checkin_dialog.dart';
 import 'package:perseu/src/components/exercise_card/exercise_card.dart';
 import 'package:perseu/src/models/dtos/training_dto.dart';
 import 'package:perseu/src/models/exercise_model.dart';
 import 'package:perseu/src/models/sessions_model.dart';
 import 'package:perseu/src/models/training_model.dart';
 import 'package:perseu/src/screens/user_view_training/user_view_training_viewmodel.dart';
-import 'package:perseu/src/components/dialogs/checkin_dialog/checkin_dialog.dart';
 import 'package:perseu/src/services/foundation.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
 import 'package:provider/provider.dart';
 
 class UserViewTrainingScreen extends StatefulWidget {
@@ -37,6 +37,7 @@ class _UserViewTrainingScreenState extends State<UserViewTrainingScreen> {
           return ModalProgressHUD(
             inAsyncCall: model.isBusy,
             child: Scaffold(
+                backgroundColor: Palette.background,
                 key: _scaffoldKey,
                 appBar: AppBar(
                   title: const Text('Treino atribuído'),
@@ -78,13 +79,15 @@ class _UserViewTrainingScreenState extends State<UserViewTrainingScreen> {
                                 return Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
+                                    const SizedBox(height: 4),
                                     Text(
                                       training.name,
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
-                                          color: Style.primary, fontSize: 24),
+                                          color: Palette.primary, fontSize: 24),
                                     ),
-                                    const Divider(),
+                                    const Divider(
+                                        color: Palette.primary, thickness: 2),
                                     Expanded(
                                       child: ListView.builder(
                                         scrollDirection: Axis.vertical,
@@ -93,7 +96,10 @@ class _UserViewTrainingScreenState extends State<UserViewTrainingScreen> {
                                         itemCount: training.sessions.length,
                                         itemBuilder: (context, index) {
                                           return Card(
-                                            color: Style.background,
+                                            shape: const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(8))),
+                                            color: Colors.white,
                                             child: ExpansionTile(
                                               trailing: Row(
                                                 mainAxisSize: MainAxisSize.min,
@@ -112,7 +118,7 @@ class _UserViewTrainingScreenState extends State<UserViewTrainingScreen> {
                                                 training.sessions[index].name,
                                                 style: const TextStyle(
                                                     fontSize: 18,
-                                                    color: Style.accent,
+                                                    color: Palette.primary,
                                                     fontWeight:
                                                         FontWeight.w500),
                                               ),

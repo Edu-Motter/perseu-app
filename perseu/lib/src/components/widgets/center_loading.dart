@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
 
 class CircularLoading extends StatelessWidget {
   const CircularLoading({Key? key}) : super(key: key);
@@ -8,7 +8,7 @@ class CircularLoading extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Center(
       child: CircularProgressIndicator(
-        color: Style.accent,
+        color: Palette.accent,
       ),
     );
   }

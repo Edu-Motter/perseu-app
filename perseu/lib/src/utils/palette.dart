@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Style {
+class Palette {
   ///https://colorhunt.co/palette/112b3c205375f66b0eefefef
   static const primaryHex = 0xFF112B3C;
   static const secondaryHex = 0xFF205375;
@@ -13,9 +13,11 @@ class Style {
   static const background = Color(backgroundHex);
 
   static const primaryMaterial = MaterialColor(primaryHex, primarySwatches);
-  static const secondaryMaterial = MaterialColor(secondaryHex, secondarySwatches);
+  static const secondaryMaterial =
+      MaterialColor(secondaryHex, secondarySwatches);
   static const accentMaterial = MaterialColor(accentHex, accentSwatches);
-  static const backgroundMaterial = MaterialColor(backgroundHex, backgroundSwatches);
+  static const backgroundMaterial =
+      MaterialColor(backgroundHex, backgroundSwatches);
 
   static const primarySwatches = {
     50: Color.fromRGBO(17, 43, 60, .1),
@@ -68,4 +70,28 @@ class Style {
     800: Color.fromRGBO(239, 239, 239, .9),
     900: Color.fromRGBO(239, 239, 239, 1),
   };
+
+  ButtonStyle get buttonStylePrimaryValid => ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(Palette.accent),
+        minimumSize: MaterialStateProperty.all(
+          const Size(104, 32),
+        ),
+      );
+
+  ButtonStyle get buttonStylePrimaryInvalid => ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(Palette.accent),
+        minimumSize: MaterialStateProperty.all(
+          const Size(104, 32),
+        ),
+      );
+
+  ButtonStyle get buttonStyleSecondary => ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(Colors.white),
+        side: MaterialStateProperty.all(
+          const BorderSide(color: Palette.primary, width: 2),
+        ),
+        minimumSize: MaterialStateProperty.all(
+          const Size(0, 32),
+        ),
+      );
 }

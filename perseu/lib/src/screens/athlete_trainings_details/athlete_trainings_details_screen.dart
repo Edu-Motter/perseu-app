@@ -7,12 +7,13 @@ import 'package:perseu/src/models/dtos/training_dto.dart';
 import 'package:perseu/src/screens/training_details/training_details_screen.dart';
 import 'package:perseu/src/screens/training_to_athlete/training_to_athlete_screen.dart';
 import 'package:perseu/src/services/foundation.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
 import 'athlete_trainings_details_viewmodel.dart';
 import 'components/athlete_information_with_icons.dart';
+import 'dart:math' as math;
 
 class AthleteTrainingsDetailsScreen extends StatelessWidget {
   const AthleteTrainingsDetailsScreen({
@@ -31,13 +32,19 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
       child: Consumer<AthleteTrainingsDetailsViewModel>(
         builder: (__, model, _) {
           return Scaffold(
-            backgroundColor: Style.background,
+            backgroundColor: Palette.background,
             appBar: AppBar(
               title: const Text('Atleta'),
             ),
             floatingActionButton: FloatingActionButton(
-              child: const Icon(Icons.add, size: 28),
-              backgroundColor: Style.accent,
+              backgroundColor: Palette.accent,
+              child: Transform(
+                alignment: Alignment.center,
+                transform: Matrix4.rotationY(math.pi),
+                child: const Icon(
+                  Icons.reply_all, color: Colors.white,
+                ),
+              ),
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -48,26 +55,6 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
                 ),
               ),
             ),
-            // SizedBox(
-            //   width: 140,
-            //   child: ElevatedButton(
-            //     child: Row(
-            //       children: const [
-            //         // Expanded(
-            //         //   child: Text(
-            //         //     'Novo treino',
-            //         //     textAlign: TextAlign.center,
-            //         //   ),
-            //         // ),
-            //         // SizedBox(
-            //         //   width: 8,
-            //         // ),
-            //          Icon(Icons.add),
-            //       ],
-            //     ),
-            //
-            //   ),
-            // ),
             body: CustomScrollView(
               slivers: [
                 SliverToBoxAdapter(
@@ -96,6 +83,9 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
                   ),
                 ),
                 const SliverToBoxAdapter(
+                  child: Divider(),
+                ),
+                const SliverToBoxAdapter(
                   child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 6),
                     child: SliverDividerWithText(text: 'Treino atual:'),
@@ -117,22 +107,25 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
                             if (result.success) {
                               final currentTraining = result.data!;
                               return Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12.0),
                                 child: Card(
-                                  color: Style.primary,
+                                  color: Colors.white,
                                   child: ListTile(
                                     title: Text(
                                       currentTraining.name,
                                       style: const TextStyle(
-                                          color: Colors.white),
+                                        color: Palette.primary,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                     trailing: const Icon(
-                                      Icons.remove_red_eye,
-                                      color: Colors.white,
+                                      Icons.arrow_forward,
+                                      color: Palette.secondary,
                                       size: 28,
                                     ),
-                                    onTap: () =>
-                                        Navigator.push(context, MaterialPageRoute(
+                                    onTap: () => Navigator.push(context,
+                                        MaterialPageRoute(
                                       builder: (context) {
                                         return TrainingDetailsScreen(
                                           trainingId: currentTraining.id,
@@ -151,7 +144,7 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
                                     children: [
                                       const Icon(
                                         Icons.error,
-                                        color: Style.primary,
+                                        color: Palette.secondary,
                                         size: 32,
                                       ),
                                       Text(
@@ -236,13 +229,15 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
                     (context, index) {
                       final activeTraining = athleteTrainings[index];
                       return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
                         child: Card(
                           color: Colors.white,
                           child: ListTile(
                             title: Text(
                               activeTraining.training.name,
-                              style: const TextStyle(color: Style.primary),
+                              style: const TextStyle(
+                                  color: Palette.primary,
+                                  fontWeight: FontWeight.bold),
                             ),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -263,8 +258,10 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
                                       if (result.success) {
                                         navigator.pop();
                                         model.notifyListeners();
-                                        UIHelper.showSuccess(context,
-                                            Result.success(message: result.data));
+                                        UIHelper.showSuccess(
+                                            context,
+                                            Result.success(
+                                                message: result.data));
                                       } else {
                                         navigator.pop();
                                         UIHelper.showError(context, result);
@@ -272,8 +269,8 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
                                     },
                                   ),
                                   icon: const Icon(
-                                    Icons.cancel_outlined,
-                                    color: Style.primary,
+                                    Icons.close,
+                                    color: Palette.secondary,
                                     size: 28,
                                   ),
                                 ),
@@ -281,8 +278,8 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
                                   width: 16,
                                 ),
                                 const Icon(
-                                  Icons.remove_red_eye,
-                                  color: Style.primary,
+                                  Icons.arrow_forward,
+                                  color: Palette.secondary,
                                   size: 28,
                                 ),
                               ],
@@ -323,12 +320,12 @@ class SliverDividerWithText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
           Container(
-            color: Style.primary,
+            color: Palette.primary,
             height: 1.5,
             width: 20,
           ),
@@ -337,14 +334,14 @@ class SliverDividerWithText extends StatelessWidget {
             child: Text(
               text,
               style: const TextStyle(
-                color: Style.primary,
+                color: Palette.primary,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
           Expanded(
               child: Container(
-            color: Style.primary,
+            color: Palette.primary,
             height: 1.5,
           )),
         ],
@@ -359,15 +356,15 @@ class NoFoundTrainingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Card(
-      color: Style.primary,
+      color: Palette.primary,
       child: ListTile(
         title: Text(
           'Treino não encontrado',
-          style: TextStyle(color: Style.background),
+          style: TextStyle(color: Palette.background),
         ),
         trailing: Icon(
           Icons.error_outline,
-          color: Style.background,
+          color: Palette.background,
           size: 28,
         ),
       ),

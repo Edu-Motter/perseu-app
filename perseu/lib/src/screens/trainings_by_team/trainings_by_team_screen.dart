@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
-import 'package:perseu/src/models/dtos/training_by_team_dto.dart';
-import 'package:perseu/src/screens/training_details/training_details_screen.dart';
 import 'package:perseu/src/components/widgets/center_error.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
-import 'package:perseu/src/components/widgets/center_rounded_container.dart';
+import 'package:perseu/src/models/dtos/training_by_team_dto.dart';
+import 'package:perseu/src/screens/manage_athletes/manage_athletes_screen.dart';
+import 'package:perseu/src/screens/training_details/training_details_screen.dart';
 import 'package:perseu/src/services/foundation.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
 import 'package:provider/provider.dart';
 
 import 'trainings_by_team_viewmodel.dart';
@@ -21,6 +21,7 @@ class TrainingsByTeamScreen extends StatelessWidget {
       child: Consumer<TrainingsByTeamViewModel>(
         builder: (__, model, _) {
           return Scaffold(
+            backgroundColor: Palette.background,
             appBar: AppBar(
               title: const Text('Lista de treinos'),
             ),
@@ -71,21 +72,7 @@ class TrainingsList extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 36.0,
-              vertical: 18.0,
-            ),
-            child: CenterRoundedContainer(
-              child: Text(
-                'Quantidade de treinos: ${trainings.length}',
-                style: const TextStyle(
-                  color: Style.background,
-                  fontSize: 18,
-                ),
-              ),
-            ),
-          ),
+          ListTitle(text: 'Quantidade de treinos: ${trainings.length}'),
           Expanded(
             child: ListView.builder(
               itemCount: trainings.length,
@@ -93,10 +80,16 @@ class TrainingsList extends StatelessWidget {
                 final TrainingByTeamDTO training = trainings[index];
                 return Card(
                   child: ListTile(
-                    title: Text(training.name),
+                    title: Text(
+                      training.name,
+                      style: const TextStyle(
+                          color: Palette.secondary,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold),
+                    ),
                     trailing: const Icon(
                       Icons.arrow_forward,
-                      color: Style.primary,
+                      color: Palette.accent,
                       size: 28,
                     ),
                     onTap: () => Navigator.push(context, MaterialPageRoute(

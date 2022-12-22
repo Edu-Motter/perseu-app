@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:perseu/src/components/dialogs/passwords_not_match_dialog.dart';
 import 'package:perseu/src/screens/change_password/change_password_viewmodel.dart';
+import 'package:perseu/src/utils/palette.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
@@ -29,8 +30,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         child: Consumer<ChangePasswordViewModel>(
           builder: (context, model, child) {
             return Scaffold(
+              backgroundColor: Palette.background,
               appBar: AppBar(
-                title: const Text('Alterando senha'),
+                title: const Text('Alterar senha'),
               ),
               body: SingleChildScrollView(
                 scrollDirection: Axis.vertical,

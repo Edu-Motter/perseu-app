@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
-import 'package:perseu/src/models/dtos/user_chat_dto.dart';
-import 'package:perseu/src/screens/user_chat/user_chat_screen.dart';
 import 'package:perseu/src/components/widgets/center_error.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/models/dtos/user_chat_dto.dart';
+import 'package:perseu/src/screens/user_chat/user_chat_screen.dart';
+import 'package:perseu/src/utils/palette.dart';
 import 'package:provider/provider.dart';
 
 import 'users_to_chat_viewmodel.dart';
@@ -26,6 +26,7 @@ class _UsersToChatScreenState extends State<UsersToChatScreen> {
       child: Consumer<UsersToChatViewModel>(
         builder: (context, model, child) {
           return Scaffold(
+            backgroundColor: Palette.background,
             appBar: AppBar(
               actions: [
                 model.searching
@@ -40,16 +41,16 @@ class _UsersToChatScreenState extends State<UsersToChatScreen> {
                   ? TextField(
                       controller: _searchController,
                       onChanged: (value) => model.searchingValue = value,
-                      cursorColor: Style.background,
+                      cursorColor: Colors.white,
                       decoration: const InputDecoration(
                         focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Style.background, width: 2),
+                          borderSide: BorderSide(color: Colors.white, width: 2),
                         ),
                         enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Style.background, width: 2),
+                          borderSide: BorderSide(color: Colors.white, width: 2),
                         ),
                       ),
-                      style: const TextStyle(color: Style.background, fontSize: 18),
+                      style: const TextStyle(color: Colors.white, fontSize: 18),
                     )
                   : const Text('Nova conversa'),
             ),
@@ -95,7 +96,7 @@ class UsersList extends StatelessWidget {
         return Card(
           child: ListTile(
             title: Text(user.name),
-            trailing: const Icon(Icons.message, color: Style.primary),
+            trailing: const Icon(Icons.message, color: Palette.primary),
             onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/components/widgets/center_error.dart';
-import 'package:perseu/src/screens/user_chat/user_chat_screen.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/screens/user_chat/user_chat_screen.dart';
+import 'package:perseu/src/utils/palette.dart';
 import 'package:provider/provider.dart';
 
 import 'chats_viewmodel.dart';
@@ -20,39 +20,25 @@ class ChatsScreen extends StatelessWidget {
       child: Consumer<ChatsViewModel>(
         builder: (context, model, __) {
           return Scaffold(
+            backgroundColor: Palette.background,
             appBar: AppBar(
               title: const Text('Conversas'),
             ),
-            floatingActionButton: SizedBox(
-              width: 140,
-              child: ElevatedButton(
-                child: Row(
-                  children: const [
-                    Expanded(
-                      child: Text(
-                        'Nova conversa',
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Icon(Icons.message),
-                  ],
-                ),
-                onPressed: () =>
-                    Navigator.pushNamed(context, Routes.usersToChat),
-              ),
+            floatingActionButton: FloatingActionButton(
+              backgroundColor: Palette.accent,
+              child: const Icon(Icons.add, size: 28),
+              onPressed: () =>
+                  Navigator.pushNamed(context, Routes.usersToChat),
             ),
             body: Column(
               children: [
                 ListTile(
                   leading: const CircleAvatar(
                     child: Text(
-                      'T',
-                      style: TextStyle(color: Style.background),
+                      'E',
+                      style: TextStyle(color: Colors.white),
                     ),
-                    backgroundColor: Style.primary,
+                    backgroundColor: Palette.secondary,
                   ),
                   title: const Text('Equipe'),
                   subtitle: StreamBuilder(
@@ -63,7 +49,7 @@ class ChatsScreen extends StatelessWidget {
                     builder:
                         (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                       if (snapshot.hasData) {
-                        String lastMessage = 'Inicie a conversa!';
+                        String lastMessage = 'Inicie a conversa';
                         if(snapshot.data!.exists) {
                           lastMessage = snapshot.data!.get('lastMessage');
                         }
@@ -112,9 +98,9 @@ class ChatsScreen extends StatelessWidget {
                                             leading: CircleAvatar(
                                               child: Text(
                                                 getCircleLetters(friendName),
-                                                style: const TextStyle(color: Style.background),
+                                                style: const TextStyle(color: Colors.white),
                                               ),
-                                              backgroundColor: Style.primary,
+                                              backgroundColor: Palette.secondary,
                                             ),
                                             title: Text(friendName),
                                             subtitle: Text(

@@ -4,7 +4,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/screens/new_team/new_team_viewmodel.dart';
 import 'package:perseu/src/screens/user_drawer/user_drawer.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
@@ -35,7 +35,7 @@ class _NewTeamScreenState extends State<NewTeamScreen> {
               key: scaffoldKey,
               drawer: const UserDrawer(),
               appBar: AppBar(
-                title: const Text('Criando Equipe'),
+                title: const Text('Criar Equipe'),
                 automaticallyImplyLeading: false,
                 leading: IconButton(
                   icon: const Icon(Icons.menu),
@@ -45,7 +45,7 @@ class _NewTeamScreenState extends State<NewTeamScreen> {
                 ),
               ),
               body: Container(
-                color: Style.background,
+                color: Palette.background,
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Padding(
@@ -71,8 +71,8 @@ class _NewTeamScreenState extends State<NewTeamScreen> {
                             onChanged: (value) => model.teamName = value,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
-                              hintText: 'Informe o nome da sua equipe:',
-                              labelText: 'Nome da equipe:',
+                              hintText: 'Informe o nome da sua equipe',
+                              labelText: 'Nome da equipe',
                             ),
                             validator: RequiredValidator(
                                 errorText: 'O nome precisa ser informado'),

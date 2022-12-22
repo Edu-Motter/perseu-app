@@ -7,7 +7,7 @@ import 'package:perseu/src/models/sessions_model.dart';
 import 'package:perseu/src/models/training_model.dart';
 import 'package:perseu/src/screens/coach_assign_training/athletes_assign_training_screen.dart';
 import 'package:perseu/src/services/foundation.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
 import 'package:perseu/src/utils/ui.dart';
 
 import 'new_session_screen.dart';
@@ -38,21 +38,21 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Style.background,
+      backgroundColor: Palette.background,
       appBar: AppBar(
         title: Text('Novo treino - ${widget.trainingName}'),
       ),
       floatingActionButton: SpeedDial(
-        backgroundColor: Style.primary,
+        backgroundColor: Palette.primary,
         animatedIcon: AnimatedIcons.menu_close,
         animatedIconTheme: const IconThemeData(size: 22.0),
         visible: true,
         curve: Curves.bounceIn,
         children: [
           SpeedDialChild(
-            backgroundColor: Style.accent,
+            backgroundColor: Palette.accent,
             foregroundColor: Colors.white,
-            labelBackgroundColor: Style.accent,
+            labelBackgroundColor: Palette.accent,
             child: const Icon(Icons.add),
             onTap: () {
               Navigator.of(context)
@@ -71,9 +71,9 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
             ),
           ),
           SpeedDialChild(
-            backgroundColor: Style.accent,
+            backgroundColor: Palette.accent,
             foregroundColor: Colors.white,
-            labelBackgroundColor: Style.accent,
+            labelBackgroundColor: Palette.accent,
             child: const Icon(Icons.forward),
             onTap: () => {
               if (training.sessions.isNotEmpty)
@@ -180,7 +180,7 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
                         session.name,
                         style: const TextStyle(
                             fontSize: 18,
-                            color: Style.primary, fontWeight: FontWeight.w500),
+                            color: Palette.primary, fontWeight: FontWeight.w500),
                       ),
                       children: [
                         for (ExerciseModel e in session.exercises)

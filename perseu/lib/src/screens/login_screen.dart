@@ -3,7 +3,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/models/dtos/status.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
 import 'package:perseu/src/viewModels/login_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +29,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color themeColor = Style.secondary;
+    Color themeColor = Palette.secondary;
     return ChangeNotifierProvider(
       create: (_) => locator<LoginViewModel>(),
       child: Consumer<LoginViewModel>(
@@ -37,7 +37,7 @@ class LoginScreen extends StatelessWidget {
           return ModalProgressHUD(
             inAsyncCall: loginModel.isBusy,
             child: Scaffold(
-                backgroundColor: Style.background,
+                backgroundColor: Palette.background,
                 appBar: AppBar(
                   title: const Text('Perseu'),
                 ),
@@ -70,8 +70,10 @@ class LoginScreen extends StatelessWidget {
                                 key: LoginScreen.usernameInputKey,
                                 controller: _usernameController,
                                 onChanged: (value) => loginModel.username = value,
-                                style: const TextStyle(color: Style.primary),
+                                style: const TextStyle(color: Palette.primary),
                                 decoration: const InputDecoration(
+                                  fillColor: Colors.white,
+                                  filled: true,
                                   border: OutlineInputBorder(),
                                   hintText: 'E-mail',
                                 ),
@@ -83,10 +85,12 @@ class LoginScreen extends StatelessWidget {
                                 key: LoginScreen.passwordInputKey,
                                 controller: _passwordController,
                                 onChanged: (value) => loginModel.password = value,
-                                style: const TextStyle(color: Style.primary),
+                                style: const TextStyle(color: Palette.primary),
                                 obscureText: true,
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
+                                  fillColor: Colors.white,
+                                  filled: true,
                                   hintText: 'Senha',
                                 ),
                                 validator: RequiredValidator(
@@ -96,7 +100,7 @@ class LoginScreen extends StatelessWidget {
                               ElevatedButton(
                                   style: ButtonStyle(
                                       backgroundColor:
-                                          MaterialStateProperty.all(Style.accent)),
+                                          MaterialStateProperty.all(Palette.accent)),
                                   onPressed: loginModel.isBusy
                                       ? null
                                       : () {
@@ -119,10 +123,10 @@ class LoginScreen extends StatelessWidget {
                                           border: Border(
                                               bottom: BorderSide(
                                                   width: 2.0,
-                                                  color: Style.secondary))),
+                                                  color: Palette.secondary))),
                                       child: const Text(
                                         'Não possuo conta ainda',
-                                        style: TextStyle(fontSize: 16, color: Style.secondary),
+                                        style: TextStyle(fontSize: 16, color: Palette.secondary),
                                       )),
                                 ),
                               ),

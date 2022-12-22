@@ -4,8 +4,9 @@ import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/models/dtos/training_dto.dart';
 import 'package:perseu/src/screens/coach_assign_training/athletes_assign_training_viewmodel.dart';
 import 'package:perseu/src/components/widgets/center_error.dart';
+import 'package:perseu/src/screens/manage_athletes/manage_athletes_screen.dart';
 import 'package:perseu/src/services/foundation.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
@@ -31,6 +32,7 @@ class _AssignTrainingState extends State<AssignTrainingScreen> {
             return ModalProgressHUD(
               inAsyncCall: model.isBusy,
               child: Scaffold(
+                backgroundColor: Palette.background,
                   appBar: AppBar(
                     title: const Text('Atribuir treino'),
                   ),
@@ -48,34 +50,32 @@ class _AssignTrainingState extends State<AssignTrainingScreen> {
                               Result result = snapshot.data as Result;
                               if (result.success) {
                                 return Padding(
-                                  padding: const EdgeInsets.all(16.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16.0),
                                   child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        const Text(
-                                          'Atletas disponíveis',
-                                          style: TextStyle(
-                                              color: Style.primary,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16),
+                                        const ListTitle(
+                                            text: 'Atletas disponíveis'),
+                                        Expanded(
+                                          child: ListView.builder(
+                                            scrollDirection: Axis.vertical,
+                                            shrinkWrap: true,
+                                            itemCount: model.athletes.length,
+                                            itemBuilder: (_, int index) {
+                                              return AthleteCheckboxTile(
+                                                athlete: model.athletes[index],
+                                              );
+                                            },
+                                          ),
                                         ),
-                                        ListView.builder(
-                                          scrollDirection: Axis.vertical,
-                                          shrinkWrap: true,
-                                          itemCount: model.athletes.length,
-                                          itemBuilder: (_, int index) {
-                                            return AthleteCheckboxTile(
-                                              athlete: model.athletes[index],
-                                            );
-                                          },
-                                        ),
-                                        const SizedBox(height: 16),
                                         ElevatedButton(
                                             onPressed: () async {
                                               _handleAssign(context);
                                             },
-                                            child: const Text('Atribuir'))
+                                            child: const Text('Atribuir')),
+                                        const SizedBox(height: 16),
                                       ]),
                                 );
                               }
@@ -119,12 +119,12 @@ class _AthleteCheckboxTileState extends State<AthleteCheckboxTile> {
   @override
   Widget build(BuildContext context) {
     return CheckboxListTile(
-        checkColor: Style.background,
-        activeColor: Style.primary,
-        selectedTileColor: Style.accent,
+        checkColor: Palette.background,
+        activeColor: Palette.primary,
+        selectedTileColor: Palette.accent,
         title: Text(
           widget.athlete.athleteName,
-          style: const TextStyle(color: Style.primary),
+          style: const TextStyle(color: Palette.primary),
         ),
         value: widget.athlete.assigned,
         onChanged: (bool? checkboxState) {

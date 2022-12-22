@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/components/exercise_card/exercise_card.dart';
+import 'package:perseu/src/components/widgets/center_error.dart';
 import 'package:perseu/src/models/dtos/exercise_dto.dart';
 import 'package:perseu/src/models/dtos/training_dto.dart';
 import 'package:perseu/src/screens/assign_training/assign_training_screen.dart';
 import 'package:perseu/src/screens/athlete_trainings_details/components/athlete_information_with_icons.dart';
 import 'package:perseu/src/screens/training_details/training_details_viewmodel.dart';
-import 'package:perseu/src/components/widgets/center_error.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/utils/date_formatters.dart';
 import 'package:perseu/src/utils/formatters.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
+
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
+import 'dart:math' as math;
 
 class TrainingDetailsScreen extends StatelessWidget {
   const TrainingDetailsScreen({
@@ -37,30 +39,21 @@ class TrainingDetailsScreen extends StatelessWidget {
       child: Consumer<TrainingDetailsViewModel>(
         builder: (__, model, _) {
           return Scaffold(
-            backgroundColor: Style.background,
+            backgroundColor: Palette.background,
             appBar: AppBar(
               title: Text(trainingName),
             ),
             floatingActionButton: showAssignTraining
-                ? SizedBox(
-                    width: 140,
-                    child: ElevatedButton(
-                      child: Row(
-                        children: const [
-                          Expanded(
-                            child: Text(
-                              'Atribuir treino',
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 16,
-                          ),
-                          Icon(Icons.assignment_ind),
-                        ],
+                ? FloatingActionButton(
+                    backgroundColor: Palette.accent,
+                    child: Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.rotationY(math.pi),
+                      child: const Icon(
+                        Icons.reply_all,
                       ),
-                      onPressed: () => _handleAssignTraining(context, model),
                     ),
+                    onPressed: () => _handleAssignTraining(context, model),
                   )
                 : const SizedBox.shrink(),
             body: Column(
@@ -128,8 +121,8 @@ class CheckDetails extends StatelessWidget {
   final String dateTimeCheck;
   final int effort;
 
-  static const backgroundColor = Style.background;
-  static const foregroundColor = Style.primary;
+  static const backgroundColor = Palette.background;
+  static const foregroundColor = Palette.primary;
 
   static const standardStyle = TextStyle(color: foregroundColor, fontSize: 16);
   static const standardStyleBold = TextStyle(
@@ -144,7 +137,7 @@ class CheckDetails extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Container(
         decoration: BoxDecoration(
-            color: backgroundColor,
+            color: Colors.white,
             border: Border.all(color: foregroundColor, width: 2),
             borderRadius: const BorderRadius.all(Radius.circular(16))),
         child: Padding(
@@ -171,12 +164,6 @@ class CheckDetails extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(
-                    Icons.circle,
-                    color: backgroundColor,
-                    size: 24,
-                  ),
-                  const SizedBox(width: 8),
                   const Text(
                     'Feedback: ',
                     style: standardStyleBold,
@@ -208,6 +195,8 @@ class TrainingView extends StatelessWidget {
       itemCount: sessions.length,
       itemBuilder: (context, index) {
         return Card(
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(8))),
           color: Colors.white,
           child: ExpansionTile(
             trailing: Row(
@@ -224,7 +213,8 @@ class TrainingView extends StatelessWidget {
               sessions[index].name,
               style: const TextStyle(
                   fontSize: 18,
-                  color: Style.primary, fontWeight: FontWeight.w500),
+                  color: Palette.primary,
+                  fontWeight: FontWeight.w500),
             ),
             children: [
               for (ExerciseDTO e in sessions[index].exercises!)

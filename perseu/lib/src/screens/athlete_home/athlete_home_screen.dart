@@ -5,6 +5,7 @@ import 'package:perseu/src/components/buttons/menu_button.dart';
 import 'package:perseu/src/screens/user_drawer/user_drawer.dart';
 import 'package:perseu/src/screens/athlete_home/athlete_home_viewmodel.dart';
 import 'package:perseu/src/states/session.dart';
+import 'package:perseu/src/utils/palette.dart';
 import 'package:provider/provider.dart';
 
 class AthleteHomeScreen extends StatelessWidget {
@@ -18,6 +19,7 @@ class AthleteHomeScreen extends StatelessWidget {
       child: Consumer<AthleteHomeViewModel>(
         builder: (BuildContext context, model, _) {
           return Scaffold(
+              backgroundColor: Palette.background,
               key: scaffoldKey,
               drawer: const UserDrawer(),
               appBar: AppBar(
@@ -71,8 +73,8 @@ class AthleteHomeScreen extends StatelessWidget {
                           MenuButton(
                             icon: Icons.check,
                             text: 'Check-ins',
-                            onPressed: () =>
-                                Navigator.of(context).pushNamed(Routes.athleteChecks),
+                            onPressed: () => Navigator.of(context)
+                                .pushNamed(Routes.athleteChecks),
                           )
                         ],
                       ),

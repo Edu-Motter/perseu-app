@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/models/dtos/status.dart';
 import 'package:perseu/src/screens/bootstrap/bootstrap_viewmodel.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
 import 'package:perseu/src/utils/trigger.dart';
 import 'package:provider/provider.dart';
 
@@ -22,20 +22,20 @@ class BootstrapScreen extends StatelessWidget {
               _loadSession(model, context);
             },
             child: Container(
-              color: Style.primary,
+              color: Palette.primary,
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Icon(
-                      Icons.wb_cloudy,
+                      Icons.fitness_center_outlined,
                       size: 86,
-                      color: Style.background,
+                      color: Colors.white,
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 16),
                     Visibility(
                         child: const CircularProgressIndicator(
-                          color: Style.background,
+                          color: Palette.accent,
                         ),
                         visible: model.isBusy)
                   ],

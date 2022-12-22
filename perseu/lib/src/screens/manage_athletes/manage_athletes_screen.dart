@@ -5,7 +5,7 @@ import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/models/dtos/athlete_dto.dart';
 import 'package:perseu/src/screens/athlete_trainings_details/athlete_trainings_details_screen.dart';
 import 'package:perseu/src/services/foundation.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
 import 'package:provider/provider.dart';
 
 import 'manage_athletes_viewmodel.dart';
@@ -20,7 +20,7 @@ class ManageAthletesScreen extends StatelessWidget {
       child: Consumer<ManageAthletesViewModel>(
         builder: (__, model, _) {
           return Scaffold(
-            backgroundColor: Style.background,
+            backgroundColor: Palette.background,
             appBar: AppBar(
               title: const Text('Gerenciar Atletas'),
             ),
@@ -71,21 +71,7 @@ class AthletesList extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8, top: 21),
-            child: Text(
-              'Quantidade de atletas: ${athletes.length}',
-              style: const TextStyle(
-                color: Style.primary,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-            ),
-          ),
-          const Divider(
-            color: Style.primary,
-            thickness: 2,
-          ),
+          ListTitle(text: 'Quantidade de atletas: ${athletes.length}'),
           Expanded(
             child: ListView.builder(
               itemCount: athletes.length,
@@ -95,11 +81,14 @@ class AthletesList extends StatelessWidget {
                   child: ListTile(
                     title: Text(
                       athlete.name,
-                      style: const TextStyle(color: Style.secondary, fontSize: 16, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          color: Palette.secondary,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold),
                     ),
                     trailing: const Icon(
                       Icons.arrow_forward,
-                      color: Style.accent,
+                      color: Palette.primary,
                       size: 28,
                     ),
                     onTap: () => Navigator.push(context, MaterialPageRoute(
@@ -117,6 +106,44 @@ class AthletesList extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+///TODO!: Colocar como componente gerenerico
+class ListTitle extends StatelessWidget {
+  const ListTitle({
+    Key? key,
+    required this.text,
+  }) : super(key: key);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 16, top: 21),
+          child: Text(
+            text,
+            style: const TextStyle(
+              color: Palette.primary,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+          child: Container(
+            width: double.infinity,
+            height: 4,
+            decoration: BoxDecoration(
+                color: Palette.accent, borderRadius: BorderRadius.circular(8)),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
-import 'package:perseu/src/screens/user_chat/user_chat_viewmodel.dart';
 import 'package:perseu/src/components/widgets/center_error.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
+import 'package:perseu/src/screens/user_chat/user_chat_viewmodel.dart';
 import 'package:perseu/src/utils/date_formatters.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
+
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
@@ -33,7 +34,7 @@ class _TeamChatScreenState extends State<UsersChatScreen> {
       child: Consumer<UserChatViewModel>(
         builder: (context, model, child) {
           return Scaffold(
-            backgroundColor: Style.background,
+            backgroundColor: Palette.background,
             appBar: AppBar(
               title: Text(widget.friendName),
             ),
@@ -72,21 +73,18 @@ class _TeamChatScreenState extends State<UsersChatScreen> {
                           return Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
-                            children: const [
-                              Center(
-                                child: Text(
-                                  'Inicie a conversa!',
-                                  style: TextStyle(
-                                      color: Style.primary, fontSize: 36),
+                            children: [
+                              Image.asset('assets/images/chat.png', height: 112, width: 112,),
+                              const Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(24.0),
+                                  child: Text(
+                                    'Inicie a conversa',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Palette.primary, fontSize: 24),
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              Icon(
-                                Icons.chat,
-                                size: 56,
-                                color: Style.primary,
                               ),
                             ],
                           );
@@ -101,7 +99,7 @@ class _TeamChatScreenState extends State<UsersChatScreen> {
                   ),
                 ),
                 Container(
-                  color: Style.background,
+                  color: Palette.background,
                   height: 60,
                   width: MediaQuery.of(context).size.width,
                   child: Row(
@@ -115,20 +113,21 @@ class _TeamChatScreenState extends State<UsersChatScreen> {
                           child: TextField(
                             controller: _controller,
                             maxLines: 1,
-                            cursorColor: Style.primary,
+                            cursorColor: Palette.primary,
                             decoration: const InputDecoration(
                               filled: true,
                               fillColor: Colors.white,
+                              hintText: 'Mensagem',
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    width: 2.5, color: Style.primary),
+                                    width: 2.5, color: Palette.primary),
                                 borderRadius: BorderRadius.all(
-                                  Radius.circular(8),
+                                  Radius.circular(4),
                                 ),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    width: 2.5, color: Style.primary),
+                                    width: 2.5, color: Palette.primary),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(8),
                                 ),
@@ -151,7 +150,7 @@ class _TeamChatScreenState extends State<UsersChatScreen> {
                           child: Container(
                             decoration: BoxDecoration(
                               color:
-                                  model.isNotBusy ? Style.accent : Colors.grey,
+                                  model.isNotBusy ? Palette.accent : Colors.grey,
                               borderRadius: const BorderRadius.all(
                                 Radius.circular(25),
                               ),
@@ -160,7 +159,7 @@ class _TeamChatScreenState extends State<UsersChatScreen> {
                             height: 50,
                             child: const Icon(
                               Icons.send,
-                              color: Style.background,
+                              color: Colors.white
                             ),
                           ),
                         ),
@@ -193,16 +192,15 @@ class MessageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color primaryColor =
-    isOwner ? Style.primary : Style.secondary;
-    final Color? randomColor = isOwner ? Style.background : Style.background;
+    final Color primaryColor = isOwner ? Palette.primary : Palette.secondary;
+    final Color? randomColor = isOwner ? Colors.white : Colors.white;
 
     final nameSize = UIHelper.textPixelSize(userName);
     BoxDecoration messageBoxDecoration =
         buildMessageBoxDecoration(primaryColor, nameSize.width);
 
     final messageSize = UIHelper.textPixelSize(message,
-        style: const TextStyle(color: Style.background, fontSize: 16));
+        style: const TextStyle(color: Colors.white, fontSize: 16));
 
     const padding = 6.0;
     final bool closeToNameWidth = (messageSize.width > nameSize.width &&
@@ -256,7 +254,7 @@ class MessageWidget extends StatelessWidget {
                               Text(
                                 message,
                                 style: const TextStyle(
-                                    color: Style.background, fontSize: 16),
+                                    color: Colors.white, fontSize: 16),
                               ),
                             ],
                           ),
@@ -273,7 +271,7 @@ class MessageWidget extends StatelessWidget {
                               Text(
                                 DateFormatters.toTime(date),
                                 style: TextStyle(
-                                    color: Style.background.withOpacity(.5),
+                                    color: Palette.background.withOpacity(.5),
                                     fontSize: 12),
                               ),
                             ],
@@ -291,7 +289,7 @@ class MessageWidget extends StatelessWidget {
 
   BoxDecoration buildMessageBoxDecoration(Color color, double nameWidth) {
     final messageSize = UIHelper.textPixelSize(message,
-        style: const TextStyle(color: Style.background, fontSize: 16));
+        style: const TextStyle(color: Colors.white, fontSize: 16));
 
     if (nameWidth >= messageSize.width) {
       return BoxDecoration(

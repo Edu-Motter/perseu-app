@@ -4,9 +4,8 @@ import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/models/exercise_model.dart';
 import 'package:perseu/src/models/sessions_model.dart';
 import 'package:perseu/src/screens/new_training/new_exercise_screen.dart';
-
 import 'package:perseu/src/services/foundation.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
 import 'package:perseu/src/utils/ui.dart';
 
 class NewSessionScreen extends StatefulWidget {
@@ -40,14 +39,14 @@ class _NewSessionState extends State<NewSessionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Style.background,
+        backgroundColor: Palette.background,
         appBar: AppBar(
           title: widget.hasSession
-              ? const Text('Editando sessão')
+              ? const Text('Editar sessão')
               : const Text('Nova sessão'),
         ),
         floatingActionButton: SpeedDial(
-          backgroundColor: Style.primary,
+          backgroundColor: Palette.primary,
           foregroundColor: Colors.white,
           animatedIcon: AnimatedIcons.menu_close,
           animatedIconTheme: const IconThemeData(size: 22.0),
@@ -55,9 +54,9 @@ class _NewSessionState extends State<NewSessionScreen> {
           curve: Curves.bounceIn,
           children: [
             SpeedDialChild(
-              backgroundColor: Style.accent,
+              backgroundColor: Palette.accent,
               foregroundColor: Colors.white,
-              labelBackgroundColor: Style.accent,
+              labelBackgroundColor: Palette.accent,
               child: const Icon(Icons.save),
               onTap: () {
                 String sessionName = _sessionNameController.text;
@@ -80,9 +79,9 @@ class _NewSessionState extends State<NewSessionScreen> {
               ),
             ),
             SpeedDialChild(
-              backgroundColor: Style.accent,
+              backgroundColor: Palette.accent,
               foregroundColor: Colors.white,
-              labelBackgroundColor: Style.accent,
+              labelBackgroundColor: Palette.accent,
               child: const Icon(Icons.add),
               onTap: () {
                 Navigator.of(context)
@@ -108,11 +107,17 @@ class _NewSessionState extends State<NewSessionScreen> {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  TextField(
+                  const SizedBox(height: 8),
+                  TextFormField(
                     controller: _sessionNameController,
-                    style: const TextStyle(color: Style.primary),
-                    decoration:
-                        const InputDecoration(labelText: 'Nome da sessão'),
+                    style: const TextStyle(color: Palette.primary),
+                    decoration: const InputDecoration(
+                      fillColor: Colors.white,
+                      filled: true,
+                      border: OutlineInputBorder(),
+                      hintText: 'Nome da Sessão',
+                      labelText: 'Nome da Sessão',
+                    ),
                   ),
                 ],
               ),
@@ -134,7 +139,7 @@ class _NewSessionState extends State<NewSessionScreen> {
                           decoration: const BoxDecoration(
                             color: Colors.white,
                             border: Border(
-                              top: BorderSide(color: Style.accent, width: 5),
+                              top: BorderSide(color: Palette.accent, width: 5),
                             ),
                           ),
                           child: ListTile(
@@ -142,13 +147,13 @@ class _NewSessionState extends State<NewSessionScreen> {
                             title: Text(
                               exercise.name,
                               style: const TextStyle(
-                                color: Style.primary,
+                                color: Palette.primary,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             subtitle: Text(
                               exercise.description,
-                              style: const TextStyle(color: Style.secondary),
+                              style: const TextStyle(color: Palette.secondary),
                             ),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -156,7 +161,7 @@ class _NewSessionState extends State<NewSessionScreen> {
                                 IconButton(
                                   icon: const Icon(
                                     Icons.edit,
-                                    color: Style.accent,
+                                    color: Palette.accent,
                                   ),
                                   onPressed: () {
                                     Navigator.of(context)
@@ -178,7 +183,7 @@ class _NewSessionState extends State<NewSessionScreen> {
                                 IconButton(
                                     icon: const Icon(
                                       Icons.delete,
-                                      color: Style.accent,
+                                      color: Palette.accent,
                                     ),
                                     onPressed: () {
                                       setState(() {

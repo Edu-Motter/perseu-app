@@ -6,7 +6,7 @@ import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_s
 import 'package:perseu/src/screens/profile_screen/profile_viewmodel.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/utils/formatters.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:perseu/src/utils/validators.dart';
 import 'package:provider/provider.dart';
@@ -79,22 +79,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           onChanged: (value) =>
                                               model.name = value,
                                           decoration: const InputDecoration(
+                                              fillColor: Colors.white,
+                                              filled: true,
                                               border: OutlineInputBorder(),
-                                              hintText: 'Nome:',
-                                              labelText: 'Nome:'),
+                                              hintText: 'Nome',
+                                              labelText: 'Nome'),
                                           validator: RequiredValidator(
                                               errorText:
                                                   'O nome de usuário precisa ser informado'),
                                         ),
-                                        const SizedBox(height: 16),
+                                        const SizedBox(height: 32),
                                         TextFormField(
                                             key: ProfileScreen.emailInputKey,
                                             controller: _emailController,
                                             enabled: false,
                                             decoration: const InputDecoration(
+                                                fillColor: Colors.white,
+                                                filled: true,
                                                 border: OutlineInputBorder(),
-                                                hintText: 'E-mail:',
-                                                labelText: 'E-mail:'),
+                                                hintText: 'E-mail',
+                                                labelText: 'E-mail'),
                                             validator: MultiValidator([
                                               RequiredValidator(
                                                   errorText:
@@ -111,9 +115,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 model.document = value,
                                             inputFormatters: [Formatters.cpf()],
                                             decoration: const InputDecoration(
+                                                fillColor: Colors.white,
+                                                filled: true,
                                                 border: OutlineInputBorder(),
-                                                hintText: 'CPF:',
-                                                labelText: 'CPF:'),
+                                                hintText: 'CPF',
+                                                labelText: 'CPF'),
                                             validator: MultiValidator([
                                               RequiredValidator(
                                                   errorText:
@@ -135,10 +141,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             keyboardType:
                                                 TextInputType.datetime,
                                             decoration: const InputDecoration(
+                                                fillColor: Colors.white,
+                                                filled: true,
                                                 border: OutlineInputBorder(),
-                                                hintText: 'Data de nascimento:',
+                                                hintText: 'Data de nascimento',
                                                 labelText:
-                                                    'Data de nascimento:'),
+                                                    'Data de nascimento'),
                                             validator: MultiValidator([
                                               RequiredValidator(
                                                   errorText:
@@ -156,9 +164,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             onChanged: (value) =>
                                                 model.cref = value,
                                             decoration: const InputDecoration(
+                                              fillColor: Colors.white,
+                                              filled: true,
                                               border: OutlineInputBorder(),
-                                              labelText: 'CREF:',
-                                              hintText: 'CREF:',
+                                              labelText: 'CREF',
+                                              hintText: 'CREF',
                                             ),
                                             validator: RequiredValidator(
                                                 errorText:
@@ -177,9 +187,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               Formatters.height()
                                             ],
                                             decoration: const InputDecoration(
+                                              fillColor: Colors.white,
+                                              filled: true,
                                               border: OutlineInputBorder(),
-                                              labelText: 'Altura:',
-                                              hintText: 'Altura: 0.00 m',
+                                              labelText: 'Altura',
+                                              hintText: 'Altura 0.00 m',
                                             ),
                                             validator: RequiredValidator(
                                                 errorText:
@@ -201,9 +213,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               Formatters.weight()
                                             ],
                                             decoration: const InputDecoration(
+                                              fillColor: Colors.white,
+                                              filled: true,
                                               border: OutlineInputBorder(),
-                                              labelText: 'Peso:',
-                                              hintText: 'Peso: 00 Kg',
+                                              labelText: 'Peso',
+                                              hintText: 'Peso 00 Kg',
                                             ),
                                             validator: RequiredValidator(
                                                 errorText:
@@ -212,20 +226,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         ),
                                         const SizedBox(height: 16),
                                         ElevatedButton(
+                                            onPressed: model.isBusy
+                                                ? null
+                                                : () => _handleSave(model),
+                                            child: const Text('Salvar')),
+                                        const SizedBox(height: 16),
+                                        ElevatedButton(
                                             style: ButtonStyle(
-                                                backgroundColor:
-                                                    MaterialStateProperty.all(
-                                                        Colors.white),
-                                                shape:
-                                                    MaterialStateProperty.all(
-                                                  const RoundedRectangleBorder(
-                                                    side: BorderSide(color: Style.accent, width: 2),
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                      Radius.circular(4),
-                                                    ),
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      Colors.white),
+                                              shape: MaterialStateProperty.all(
+                                                const RoundedRectangleBorder(
+                                                  side: BorderSide(
+                                                      color: Palette.accent,
+                                                      width: 2),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(4),
                                                   ),
-                                                ),),
+                                                ),
+                                              ),
+                                            ),
                                             onPressed: model.isBusy
                                                 ? null
                                                 : () => Navigator.of(context)
@@ -234,14 +256,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             child: const Text(
                                               'Alterar senha',
                                               style: TextStyle(
-                                                  color: Style.accent),
+                                                  color: Palette.accent),
                                             )),
-                                        const SizedBox(height: 16),
-                                        ElevatedButton(
-                                            onPressed: model.isBusy
-                                                ? null
-                                                : () => _handleSave(model),
-                                            child: const Text('Salvar')),
                                       ],
                                     ),
                                   ),

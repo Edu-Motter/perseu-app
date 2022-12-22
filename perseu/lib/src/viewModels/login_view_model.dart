@@ -28,6 +28,7 @@ class LoginViewModel extends AppViewModel {
 
   Future<Result<LoginDTO>> login() async {
     return tryExec(() async {
+      await Future.delayed(const Duration(milliseconds: 250));
       final result = await clientPerseu.loginRequest(username, password);
       if(result.success){
         session.setAuthTokenAndUser(result.data!.token, result.data!);

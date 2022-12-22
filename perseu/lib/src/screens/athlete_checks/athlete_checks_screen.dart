@@ -7,7 +7,7 @@ import 'package:perseu/src/screens/training_details/training_details_screen.dart
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/utils/date_formatters.dart';
 import 'package:perseu/src/utils/formatters.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -23,6 +23,7 @@ class AthleteChecksScreen extends StatelessWidget {
       child: Consumer<AthleteChecksViewModel>(
         builder: (__, model, _) {
           return Scaffold(
+            backgroundColor: Palette.background,
             appBar: AppBar(
               title: const Text('Check-ins'),
             ),
@@ -103,15 +104,15 @@ class _AthleteChecksListState extends State<AthleteChecksList> {
             },
             calendarStyle: CalendarStyle(
               todayDecoration: BoxDecoration(
-                color: Style.accent.withOpacity(.5),
+                color: Palette.accent.withOpacity(.5),
                 shape: BoxShape.circle,
               ),
               selectedDecoration: const BoxDecoration(
-                color: Style.primary,
+                color: Palette.primary,
                 shape: BoxShape.circle,
               ),
               markerDecoration: const BoxDecoration(
-                color: Style.accent,
+                color: Palette.accent,
                 shape: BoxShape.circle,
               ),
             ),
@@ -152,7 +153,7 @@ class _AthleteChecksListState extends State<AthleteChecksList> {
                     ),
                     trailing: const Icon(
                       Icons.arrow_forward,
-                      color: Style.primary,
+                      color: Palette.primary,
                       size: 28,
                     ),
                     onTap: () => Navigator.push(context, MaterialPageRoute(

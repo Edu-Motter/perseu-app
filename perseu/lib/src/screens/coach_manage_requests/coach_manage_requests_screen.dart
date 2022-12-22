@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:perseu/src/components/dialogs/athlete_information_dialog.dart';
 import 'package:perseu/src/models/dtos/invite_dto.dart';
 import 'package:perseu/src/screens/coach_home/coach_home_screen.dart';
 import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_viewmodel.dart';
-import 'package:perseu/src/components/dialogs/athlete_information_dialog.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
@@ -39,7 +39,7 @@ class _CoachManageRequestsScreenState extends State<CoachManageRequestsScreen> {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Card(
-                      color: Style.primary,
+                      color: Palette.primary,
                       elevation: 0.5,
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
@@ -48,7 +48,7 @@ class _CoachManageRequestsScreenState extends State<CoachManageRequestsScreen> {
                           children: [
                             TeamInfo(
                               futureTeamInfo: model.getTeamInfo(),
-                              style: const TextStyle(color: Style.background),
+                              style: const TextStyle(color: Palette.background),
                               showCode: true,
                             ),
                           ],
@@ -57,7 +57,7 @@ class _CoachManageRequestsScreenState extends State<CoachManageRequestsScreen> {
                     ),
                   ),
                   const Divider(
-                    color: Style.primary,
+                    color: Palette.primary,
                   ),
                   const Flexible(
                     child: RequestList(),
@@ -107,7 +107,7 @@ class _RequestListState extends State<RequestList> {
                     itemCount: inviteRequests.length,
                     itemBuilder: (context, index) {
                       return Card(
-                        color: Style.background,
+                        color: Palette.background,
                         child: ListTile(
                           onLongPress: () => _handleInformationDialog(
                             context,
@@ -115,7 +115,7 @@ class _RequestListState extends State<RequestList> {
                           ),
                           title: Text(
                             inviteRequests[index].athlete.name,
-                            style: const TextStyle(color: Style.primary),
+                            style: const TextStyle(color: Palette.primary),
                           ),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -126,7 +126,7 @@ class _RequestListState extends State<RequestList> {
                                   inviteRequests[index].athlete.id,
                                 ),
                                 icon: const Icon(Icons.info_outlined),
-                                color: Style.primary,
+                                color: Palette.primary,
                               ),
                               IconButton(
                                   onPressed: () {
@@ -136,7 +136,7 @@ class _RequestListState extends State<RequestList> {
                                         context);
                                   },
                                   icon: const Icon(Icons.clear),
-                                  color: Style.primary),
+                                  color: Palette.primary),
                               IconButton(
                                   onPressed: () {
                                     _handleAcceptRequest(
@@ -145,7 +145,7 @@ class _RequestListState extends State<RequestList> {
                                         context);
                                   },
                                   icon: const Icon(Icons.check),
-                                  color: Style.primary),
+                                  color: Palette.primary),
                             ],
                           ),
                         ),

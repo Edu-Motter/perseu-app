@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:perseu/src/screens/user_drawer/user_drawer.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/locator.dart';
@@ -32,10 +32,11 @@ class _AthleteRequestScreenState extends State<AthleteRequestScreen> {
           return ModalProgressHUD(
             inAsyncCall: model.isBusy,
             child: Scaffold(
+              backgroundColor: Palette.background,
               key: scaffoldKey,
               drawer: const UserDrawer(),
               appBar: AppBar(
-                title: const Text('Ingressando na Equipe'),
+                title: const Text('Ingressar na Equipe'),
                 leading: IconButton(
                   icon: const Icon(Icons.menu),
                   onPressed: () {
@@ -45,48 +46,52 @@ class _AthleteRequestScreenState extends State<AthleteRequestScreen> {
                   },
                 ),
               ),
-              body: Container(
-                color: Style.background,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        Image.asset('assets/images/fitness-1.png',
-                            width: 160.0),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 16.0),
-                          child: Text(
-                            'Bem vindo ao Perseu, ${model.athleteName}'
-                            ', para iniciar informe o código da equipe: ',
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                color: Colors.black, fontSize: 16),
-                          ),
-                        ),
-                        Form(
-                          key: _formKey,
-                          child: TextFormField(
-                            controller: _requestCodeController,
-                            onChanged: (value) => model.requestCode = value,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              hintText: 'Informe o código da sua equipe:',
-                              labelText: 'Código',
+              body: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      Column(
+                        children: [
+                          const SizedBox(height: 16),
+                          Image.asset('assets/images/dumbbell-accent.png',
+                              width: 160.0),
+                          const SizedBox(height: 16),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16.0),
+                            child: Text(
+                              '${model.athleteName}, informe o código da equipe: ',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                  color: Palette.primary, fontSize: 18),
                             ),
-                            validator: RequiredValidator(
-                                errorText: 'O código precisa ser informado'),
                           ),
-                        ),
-                        const SizedBox(height: 16),
-                        ElevatedButton(
-                            onPressed: () async {
-                              await handleSend(model, context);
-                            },
-                            child: const Text('Enviar'))
-                      ],
-                    ),
+                          const SizedBox(height: 16),
+                          Form(
+                            key: _formKey,
+                            child: TextFormField(
+                              controller: _requestCodeController,
+                              onChanged: (value) => model.requestCode = value,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                filled: true,
+                                fillColor: Colors.white,
+                                hintText: 'Código da equipe',
+                                labelText: 'Código',
+                              ),
+                              validator: RequiredValidator(
+                                  errorText: 'O código precisa ser informado'),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                          onPressed: () async {
+                            await handleSend(model, context);
+                          },
+                          child: const Text('Enviar'))
+                    ],
                   ),
                 ),
               ),

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/models/training_model.dart';
+import 'package:perseu/src/screens/manage_athletes/manage_athletes_screen.dart';
 import 'package:perseu/src/services/foundation.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
@@ -37,6 +38,7 @@ class _AssignTrainingState extends State<AthletesAssignTrainingScreen> {
             return ModalProgressHUD(
               inAsyncCall: model.isBusy,
               child: Scaffold(
+                  backgroundColor: Palette.background,
                   appBar: AppBar(
                     title: const Text('Atribuir treino'),
                   ),
@@ -52,19 +54,15 @@ class _AssignTrainingState extends State<AthletesAssignTrainingScreen> {
                           case ConnectionState.done:
                             Result result = snapshot.data as Result;
                             if (result.success) {
-                              return ListView(
-                                  padding: const EdgeInsets.all(16.0),
-                                  children: [
-                                    const Center(
-                                      child: Text(
-                                        'Atletas disponíveis',
-                                        style: TextStyle(
-                                            color: Style.primary,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16),
-                                      ),
-                                    ),
-                                    ListView.builder(
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Column(children: [
+                                  const ListTitle(
+                                    text: 'Atletas disponíveis',
+                                  ),
+                                  Expanded(
+                                    child: ListView.builder(
                                       scrollDirection: Axis.vertical,
                                       shrinkWrap: true,
                                       itemCount: model.athletes.length,
@@ -74,15 +72,15 @@ class _AssignTrainingState extends State<AthletesAssignTrainingScreen> {
                                         );
                                       },
                                     ),
-                                    const SizedBox(
-                                      height: 16,
-                                    ),
-                                    ElevatedButton(
-                                        onPressed: () async {
-                                          _handleAssign(context);
-                                        },
-                                        child: const Text('Atribuir'))
-                                  ]);
+                                  ),
+                                  ElevatedButton(
+                                      onPressed: () async {
+                                        _handleAssign(context);
+                                      },
+                                      child: const Text('Atribuir')),
+                                  const SizedBox(height: 16)
+                                ]),
+                              );
                             } else {
                               return const Center(
                                 child: Text('Erro ao carregar atletas'),
@@ -121,12 +119,12 @@ class _AthleteCheckboxTileState extends State<AthleteCheckboxTile> {
   @override
   Widget build(BuildContext context) {
     return CheckboxListTile(
-        checkColor: Style.background,
-        activeColor: Style.primary,
-        selectedTileColor: Style.accent,
+        checkColor: Palette.background,
+        activeColor: Palette.primary,
+        selectedTileColor: Palette.accent,
         title: Text(
           widget.athlete.athleteName,
-          style: const TextStyle(color: Style.primary),
+          style: const TextStyle(color: Palette.primary),
         ),
         value: widget.athlete.assigned,
         onChanged: (bool? checkboxState) {

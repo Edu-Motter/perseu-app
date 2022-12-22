@@ -3,7 +3,8 @@ import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/components/dialogs/passwords_not_match_dialog.dart';
 import 'package:perseu/src/screens/sign_up/sign_up_viewmodel.dart';
 import 'package:perseu/src/utils/formatters.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
+
 import 'package:perseu/src/utils/ui.dart';
 import 'package:perseu/src/utils/validators.dart';
 import 'package:provider/provider.dart';
@@ -59,12 +60,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: Consumer<SignUpViewModel>(
         builder: (context, model, child) {
           return Scaffold(
+            backgroundColor: Palette.background,
             appBar: AppBar(
               title: const Text('Cadastro'),
               leading: IconButton(
                   icon: Icon(
                     Icons.arrow_back,
-                    color: model.isBusy ? Colors.grey : Style.background,
+                    color: model.isBusy ? Colors.grey : Palette.background,
                   ),
                   onPressed: () {
                     if (model.isBusy) return;
@@ -83,12 +85,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: Icon(
                           Icons.person_add,
                           size: 32,
-                          color: Style.primary,
+                          color: Palette.primary,
                         ),
                       ),
                       Text(
                         'Informe os seguintes dados:',
-                        style: TextStyle(color: Style.primary, fontSize: 18),
+                        style: TextStyle(color: Palette.primary, fontSize: 18),
                       ),
                       SizedBox(height: 8)
                     ],
@@ -107,7 +109,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             onChanged: (value) => model.name = value,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
-                              hintText: 'Nome:',
+                              hintText: 'Nome',
                             ),
                             validator: RequiredValidator(
                                 errorText: 'O Nome precisa ser informado'),
@@ -119,7 +121,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             onChanged: (value) => model.email = value,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
-                              hintText: 'E-mail:',
+                              hintText: 'E-mail',
                             ),
                             validator: MultiValidator([
                               RequiredValidator(
@@ -135,7 +137,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             onChanged: (value) => model.cpf = value,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
-                              hintText: 'CPF:',
+                              hintText: 'CPF',
                             ),
                             keyboardType: TextInputType.number,
                             inputFormatters: [Formatters.cpf()],
@@ -153,7 +155,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               onChanged: (value) => model.birthdate = value,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
-                                hintText: 'Data de nascimento:',
+                                hintText: 'Data de nascimento',
                               ),
                               keyboardType: TextInputType.number,
                               inputFormatters: [Formatters.date()],

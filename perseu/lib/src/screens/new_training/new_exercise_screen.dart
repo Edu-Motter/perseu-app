@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/models/exercise_model.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
 
 class NewExerciseScreen extends StatefulWidget {
   const NewExerciseScreen({Key? key, this.exerciseModel}) : super(key: key);
@@ -30,10 +30,10 @@ class _NewExerciseState extends State<NewExerciseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Style.background,
+        backgroundColor: Palette.background,
         appBar: AppBar(
           title: widget.hasExercise
-              ? const Text('Editando exercício')
+              ? const Text('Editar exercício')
               : const Text('Novo exercício'),
         ),
         body: Padding(
@@ -55,7 +55,7 @@ class _NewExerciseState extends State<NewExerciseScreen> {
             ),
             Expanded(
                 child: Container(
-              color: Style.background,
+              color: Palette.background,
             )),
             ElevatedButton(
                 onPressed: () {

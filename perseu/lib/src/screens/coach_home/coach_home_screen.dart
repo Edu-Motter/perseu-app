@@ -3,12 +3,12 @@ import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/components/buttons/menu_button.dart';
 import 'package:perseu/src/models/dtos/team_info_dto.dart';
+import 'package:perseu/src/screens/coach_home/coach_home_viewmodel.dart';
 import 'package:perseu/src/screens/new_training/new_training_screen.dart';
 import 'package:perseu/src/screens/user_drawer/user_drawer.dart';
-import 'package:perseu/src/screens/coach_home/coach_home_viewmodel.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/states/session.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
 import 'package:provider/provider.dart';
 
 class CoachHomeScreen extends StatelessWidget {
@@ -23,7 +23,7 @@ class CoachHomeScreen extends StatelessWidget {
       child: Consumer<CoachHomeViewModel>(
         builder: (BuildContext context, model, _) {
           return Scaffold(
-            backgroundColor: Style.background,
+            backgroundColor: Palette.background,
             key: scaffoldKey,
             drawer: const UserDrawer(),
             appBar: AppBar(
@@ -161,39 +161,49 @@ class TrainingNameDialog extends StatefulWidget {
 
 class _TrainingNameDialogState extends State<TrainingNameDialog> {
   final TextEditingController _nameController = TextEditingController();
-  bool get valid => _nameController.text.length > 2;
+  bool get valid => _nameController.text.trim().length > 2;
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text(
         'Nome do treino',
-        style: TextStyle(color: Style.primary),
+        style: TextStyle(color: Palette.primary),
       ),
       content: TextField(
-        style: const TextStyle(color: Style.primary),
+        style: const TextStyle(color: Palette.primary),
         controller: _nameController,
         onChanged: (_) => setState(() {}),
       ),
+      actionsAlignment: MainAxisAlignment.spaceEvenly,
       actions: [
         ElevatedButton(
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Style.primary),
-                minimumSize: MaterialStateProperty.all(const Size(0, 32))),
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar')),
-        ElevatedButton(
           style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all(valid ? Style.accent : Colors.grey),
-              minimumSize: MaterialStateProperty.all(const Size(0, 32))),
+            backgroundColor: MaterialStateProperty.all(Colors.white),
+            side: MaterialStateProperty.all(
+              const BorderSide(color: Palette.accent, width: 2),
+            ),
+            minimumSize: MaterialStateProperty.all(
+              const Size(104, 32),
+            ),
+          ),
+          onPressed: () => Navigator.pop(context),
+          child: const Text(
+            'Cancelar',
+            style: TextStyle(color: Palette.accent),
+          ),
+        ),
+        ElevatedButton(
+          style: valid
+              ? Palette().buttonStylePrimaryValid
+              : Palette().buttonStylePrimaryInvalid,
           onPressed: valid
               ? () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => NewTrainingScreen(
-                        trainingName: _nameController.text,
+                        trainingName: _nameController.text.trim(),
                       ),
                     ),
                   );
@@ -250,15 +260,15 @@ class TeamInfo extends StatelessWidget {
                     ),
                     Text(
                       '${teamInfo.numberOfAthletes} atletas',
-                      style:
-                          style.copyWith(fontSize: 20, color: Style.secondary),
+                      style: style.copyWith(
+                          fontSize: 20, color: Palette.secondary),
                     ),
                     const SizedBox(height: 16),
                     if (showCode)
                       Text(
                         'Código de acesso: ${teamInfo.code}',
-                        style: const TextStyle(
-                            color: Style.background, fontSize: 16),
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 16),
                       ),
                   ],
                 );

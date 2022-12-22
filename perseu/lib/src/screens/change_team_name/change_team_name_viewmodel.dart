@@ -9,6 +9,7 @@ class ChangeTeamNameViewModel extends AppViewModel {
 
   String get authToken => session.authToken!;
   int get teamId => session.userSession!.team!.id;
+  String get oldTeamName => session.userSession!.team!.name;
 
   String? teamName;
 
@@ -17,5 +18,10 @@ class ChangeTeamNameViewModel extends AppViewModel {
       () async =>
           await clientCoach.changeTeamName(teamName!, teamId, authToken),
     );
+  }
+
+  void updateTeamSession() {
+    session.userSession!.team =
+        session.userSession!.team!.copyWith(name: teamName ?? oldTeamName);
   }
 }

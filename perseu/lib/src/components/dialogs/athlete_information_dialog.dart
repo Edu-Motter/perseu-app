@@ -6,7 +6,7 @@ import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/states/foundation.dart';
 import 'package:perseu/src/utils/date_formatters.dart';
 import 'package:perseu/src/utils/formatters.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
 import 'package:provider/provider.dart';
 
 class AthleteInformationDialog extends StatelessWidget {
@@ -27,7 +27,7 @@ class AthleteInformationDialog extends StatelessWidget {
             title: const Text(
               'Informações do Atleta',
               style: TextStyle(
-                color: Style.primary,
+                color: Palette.primary,
                 fontWeight: FontWeight.bold
               ),
             ),
@@ -111,7 +111,7 @@ class InformationLine extends StatelessWidget {
         Text(
           '$label: ',
           style: const TextStyle(
-            color: Style.primary,
+            color: Palette.primary,
             fontWeight: FontWeight.bold,
           ),
         ),

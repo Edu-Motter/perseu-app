@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
-import 'package:perseu/src/models/dtos/athlete_dto.dart';
-import 'package:perseu/src/models/dtos/training_by_team_dto.dart';
-import 'package:perseu/src/screens/athlete_trainings_details/athlete_trainings_details_screen.dart';
 import 'package:perseu/src/components/widgets/center_error.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/components/widgets/center_rounded_container.dart';
+import 'package:perseu/src/models/dtos/athlete_dto.dart';
+import 'package:perseu/src/models/dtos/training_by_team_dto.dart';
+import 'package:perseu/src/screens/athlete_trainings_details/athlete_trainings_details_screen.dart';
+import 'package:perseu/src/screens/manage_athletes/manage_athletes_screen.dart';
 import 'package:perseu/src/services/foundation.dart';
-import 'package:perseu/src/utils/style.dart';
+import 'package:perseu/src/utils/palette.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
+import 'dart:math' as math;
 
 import 'training_to_athlete_viewmodel.dart';
 
@@ -30,6 +32,7 @@ class TrainingToAthleteScreen extends StatelessWidget {
       child: Consumer<TrainingToAthleteViewModel>(
         builder: (__, model, _) {
           return Scaffold(
+            backgroundColor: Palette.background,
             appBar: AppBar(
               title: const Text('Selecione o treino'),
             ),
@@ -58,21 +61,8 @@ class TrainingToAthleteScreen extends StatelessWidget {
                                 const EdgeInsets.symmetric(horizontal: 4.0),
                             child: Column(
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 36.0,
-                                    vertical: 18.0,
-                                  ),
-                                  child: CenterRoundedContainer(
-                                    child: Text(
-                                      'Escolha o treino para $athleteName',
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                        color: Style.background,
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                  ),
+                                ListTitle(
+                                  text: 'Treino para $athleteName',
                                 ),
                                 Expanded(
                                   child: TrainingsListToAssign(
@@ -124,11 +114,20 @@ class TrainingsListToAssign extends StatelessWidget {
         final TrainingByTeamDTO training = trainings[index];
         return Card(
           child: ListTile(
-            title: Text(training.name),
-            trailing: const Icon(
-              Icons.note_add,
-              color: Style.primary,
-              size: 28,
+            title: Text(
+              training.name,
+              style: const TextStyle(
+                color: Palette.primary,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            trailing: Transform(
+              alignment: Alignment.center,
+              transform: Matrix4.rotationY(math.pi),
+              child: const Icon(
+                Icons.reply,
+                color: Palette.secondary,
+              ),
             ),
             onTap: () => UIHelper.showBoolDialog(
               context: context,
@@ -179,7 +178,7 @@ class AthletesList extends StatelessWidget {
               child: Text(
                 'Quantidade de atletas: ${athletes.length}',
                 style: const TextStyle(
-                  color: Style.background,
+                  color: Palette.background,
                   fontSize: 18,
                 ),
               ),
@@ -195,7 +194,7 @@ class AthletesList extends StatelessWidget {
                     title: Text(athlete.name),
                     trailing: const Icon(
                       Icons.arrow_forward,
-                      color: Style.primary,
+                      color: Palette.primary,
                       size: 28,
                     ),
                     onTap: () => Navigator.push(context, MaterialPageRoute(
