@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
+import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/screens/team_chat/team_chat_viewmodel.dart';
 import 'package:perseu/src/utils/date_formatters.dart';
 import 'package:perseu/src/utils/palette.dart';
@@ -83,9 +84,7 @@ class _TeamChatScreenState extends State<TeamChatScreen> {
                         }
                       } else if (snapshot.connectionState ==
                           ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
+                        return const CircularLoading();
                       } else {
                         return const Center(
                           child: Text('Erro interno'),

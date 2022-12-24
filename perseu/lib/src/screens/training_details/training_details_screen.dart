@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/components/exercise_card/exercise_card.dart';
 import 'package:perseu/src/components/widgets/center_error.dart';
+import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/models/dtos/exercise_dto.dart';
 import 'package:perseu/src/models/dtos/training_dto.dart';
 import 'package:perseu/src/screens/assign_training/assign_training_screen.dart';
 import 'package:perseu/src/screens/athlete_trainings_details/components/athlete_information_with_icons.dart';
+import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_screen.dart';
+import 'package:perseu/src/screens/manage_athletes/manage_athletes_screen.dart';
 import 'package:perseu/src/screens/training_details/training_details_viewmodel.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/utils/date_formatters.dart';
@@ -59,33 +62,37 @@ class TrainingDetailsScreen extends StatelessWidget {
             body: Column(
               children: [
                 if (dateTimeCheck != null && effort != null)
-                  CheckDetails(dateTimeCheck: dateTimeCheck!, effort: effort!),
+                  Column(
+                    children: [
+                      CheckDetails(
+                          dateTimeCheck: dateTimeCheck!, effort: effort!),
+                      const AccentDivider(
+                        dividerPadding: 16,
+                        accentColor: Palette.primary,
+                      ),
+                    ],
+                  ),
                 Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8, right: 16, left: 16),
-                    child: FutureBuilder(
-                      future: model.getTraining(trainingId),
-                      builder: (context,
-                          AsyncSnapshot<Result<TrainingDTO>> snapshot) {
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.none:
-                          case ConnectionState.waiting:
-                          case ConnectionState.active:
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          case ConnectionState.done:
-                            if (snapshot.hasData) {
-                              final result = snapshot.data!;
-                              if (result.success) {
-                                return TrainingView(training: result.data!);
-                              }
+                  child: FutureBuilder(
+                    future: model.getTraining(trainingId),
+                    builder:
+                        (context, AsyncSnapshot<Result<TrainingDTO>> snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.none:
+                        case ConnectionState.waiting:
+                        case ConnectionState.active:
+                          return const CircularLoading();
+                        case ConnectionState.done:
+                          if (snapshot.hasData) {
+                            final result = snapshot.data!;
+                            if (result.success) {
+                              return TrainingView(training: result.data!);
                             }
-                            return const CenterError(
-                                message: 'Problema ao carregar treino');
-                        }
-                      },
-                    ),
+                          }
+                          return const CenterError(
+                              message: 'Problema ao carregar treino');
+                      }
+                    },
                   ),
                 ),
               ],
@@ -133,47 +140,39 @@ class CheckDetails extends StatelessWidget {
     final formattedDate = DateFormatters.toDateTimeString(dateTimeCheck);
     final formattedEffort = Formatters.effortFormatter(effort);
 
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: foregroundColor, width: 2),
-            borderRadius: const BorderRadius.all(Radius.circular(16))),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
+    return PerseuCard(
+      insetPadding: const EdgeInsets.all(16),
+      contentPadding: const EdgeInsets.all(12),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.today,
-                    color: foregroundColor,
-                    size: 24,
-                  ),
-                  const SizedBox(width: 8),
-                  const Text(
-                    'Realizado: ',
-                    style: standardStyleBold,
-                  ),
-                  Text(formattedDate, style: standardStyle),
-                ],
+              const Icon(
+                Icons.today,
+                color: foregroundColor,
+                size: 24,
               ),
-              const InfoDivider(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Feedback: ',
-                    style: standardStyleBold,
-                  ),
-                  Text(formattedEffort, style: standardStyle),
-                ],
+              const SizedBox(width: 8),
+              const Text(
+                'Realizado: ',
+                style: standardStyleBold,
               ),
+              Text(formattedDate, style: standardStyle),
             ],
           ),
-        ),
+          const InfoDivider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Feedback: ',
+                style: standardStyleBold,
+              ),
+              Text(formattedEffort, style: standardStyle),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -188,44 +187,49 @@ class TrainingView extends StatelessWidget {
   Widget build(BuildContext context) {
     final sessions = training.sessions!;
 
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      physics: const BouncingScrollPhysics(),
-      itemCount: sessions.length,
-      itemBuilder: (context, index) {
-        return Card(
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(8))),
-          color: Colors.white,
-          child: ExpansionTile(
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: const [
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Icon(Icons.keyboard_arrow_down),
-                )
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: ListView.builder(
+        padding: const EdgeInsets.only(bottom: 16),
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        physics: const BouncingScrollPhysics(),
+        itemCount: sessions.length,
+        itemBuilder: (context, index) {
+          return Card(
+            margin: const EdgeInsets.only(top: 16),
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8))),
+            color: Colors.white,
+            child: ExpansionTile(
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Icon(Icons.keyboard_arrow_down),
+                  )
+                ],
+              ),
+              expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
+              title: Text(
+                sessions[index].name,
+                style: const TextStyle(
+                    fontSize: 18,
+                    color: Palette.primary,
+                    fontWeight: FontWeight.w500),
+              ),
+              children: [
+                for (ExerciseDTO e in sessions[index].exercises!)
+                  ExerciseCard(
+                    name: e.name,
+                    description: e.description,
+                  )
               ],
             ),
-            expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
-            title: Text(
-              sessions[index].name,
-              style: const TextStyle(
-                  fontSize: 18,
-                  color: Palette.primary,
-                  fontWeight: FontWeight.w500),
-            ),
-            children: [
-              for (ExerciseDTO e in sessions[index].exercises!)
-                ExerciseCard(
-                  name: e.name,
-                  description: e.description,
-                )
-            ],
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

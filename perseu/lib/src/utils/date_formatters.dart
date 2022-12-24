@@ -14,34 +14,34 @@ class DateFormatters {
   static String toDateString(String inputIsoInstant) {
     final DateFormat isoInstantFormatter = DateFormat(isoInstant);
     final DateFormat dateFormatter = DateFormat(date);
-    final DateTime parsedDate = isoInstantFormatter.parse(inputIsoInstant);
+    final DateTime parsedDate = isoInstantFormatter.parse(inputIsoInstant, true);
     return dateFormatter.format(parsedDate);
   }
 
   static String toDateTimeString(String inputIsoInstant) {
     final DateFormat isoInstantFormatter = DateFormat(isoInstant);
     final DateFormat dateFormatter = DateFormat(dateTime);
-    final DateTime parsedDate = isoInstantFormatter.parse(inputIsoInstant);
+    final DateTime parsedDate = isoInstantFormatter.parse(inputIsoInstant, true);
     return dateFormatter.format(parsedDate);
   }
 
   static String toTimeString(String inputIsoInstant) {
     final DateFormat isoInstantFormatter = DateFormat(isoInstant);
     final DateFormat timeFormatter = DateFormat(time);
-    final DateTime parsedDate = isoInstantFormatter.parse(inputIsoInstant);
+    final DateTime parsedDate = isoInstantFormatter.parse(inputIsoInstant, true);
     return timeFormatter.format(parsedDate);
   }
 
   static String toIsoInstant(String inputDate) {
     final DateFormat dateFormatter = DateFormat(date);
     final DateFormat isoInstantFormatter = DateFormat(isoInstant);
-    final DateTime parsedDate = dateFormatter.parse(inputDate);
+    final DateTime parsedDate = dateFormatter.parse(inputDate, true);
     return isoInstantFormatter.format(parsedDate);
   }
 
   static DateTime toDateTimeType(String inputIsoInstant) {
     final DateFormat isoInstantFormatter = DateFormat(isoInstant);
-    final DateTime parsedDate = isoInstantFormatter.parse(inputIsoInstant);
+    final DateTime parsedDate = isoInstantFormatter.parse(inputIsoInstant, true);
     return parsedDate;
   }
 

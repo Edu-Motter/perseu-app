@@ -65,30 +65,35 @@ class AthletesList extends StatelessWidget {
 
   final List<AthleteDTO> athletes;
 
+  static const buttonColor = Palette.secondary;
+  static const textColor = Palette.primary;
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4.0),
-      child: Column(
-        children: [
-          ListTitle(text: 'Quantidade de atletas: ${athletes.length}'),
-          Expanded(
+    return Column(
+      children: [
+        ListTitle(text: 'Quantidade de atletas: ${athletes.length}'),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: ListView.builder(
+              padding: EdgeInsets.zero,
               itemCount: athletes.length,
               itemBuilder: (context, index) {
                 final AthleteDTO athlete = athletes[index];
                 return Card(
+                  margin: const EdgeInsets.only(top: 8),
                   child: ListTile(
                     title: Text(
                       athlete.name,
                       style: const TextStyle(
-                          color: Palette.secondary,
+                          color: textColor,
                           fontSize: 16,
                           fontWeight: FontWeight.bold),
                     ),
                     trailing: const Icon(
                       Icons.arrow_forward,
-                      color: Palette.primary,
+                      color: buttonColor,
                       size: 28,
                     ),
                     onTap: () => Navigator.push(context, MaterialPageRoute(
@@ -104,8 +109,8 @@ class AthletesList extends StatelessWidget {
               },
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -115,9 +120,11 @@ class ListTitle extends StatelessWidget {
   const ListTitle({
     Key? key,
     required this.text,
+    this.dividerPadding = 8,
   }) : super(key: key);
 
   final String text;
+  final double dividerPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -134,16 +141,34 @@ class ListTitle extends StatelessWidget {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4.0),
-          child: Container(
-            width: double.infinity,
-            height: 4,
-            decoration: BoxDecoration(
-                color: Palette.accent, borderRadius: BorderRadius.circular(8)),
-          ),
-        ),
+        AccentDivider(dividerPadding: dividerPadding),
       ],
+    );
+  }
+}
+
+class AccentDivider extends StatelessWidget {
+  const AccentDivider({
+    Key? key,
+    this.dividerPadding = 8,
+    this.accentColor = Palette.accent,
+    this.height = 4,
+  }) : super(key: key);
+
+  final double dividerPadding;
+  final double height;
+  final Color accentColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: dividerPadding),
+      child: Container(
+        width: double.infinity,
+        height: height,
+        decoration: BoxDecoration(
+            color: accentColor, borderRadius: BorderRadius.circular(8)),
+      ),
     );
   }
 }

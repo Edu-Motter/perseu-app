@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/models/dtos/athlete_info_dto.dart';
+import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_screen.dart';
 import 'package:perseu/src/utils/date_formatters.dart';
 import 'package:perseu/src/utils/formatters.dart';
 import 'package:perseu/src/utils/palette.dart';
@@ -30,106 +31,91 @@ class AthleteInformationWithIcons extends StatelessWidget {
 
     MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start;
 
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            border: Border(
-              top: BorderSide(color: Palette.accent, width: 5),
-            ),
+    return PerseuCard(
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: mainAxisAlignment,
+            children: [
+              const Icon(
+                Icons.person,
+                color: foregroundColor,
+                size: 24,
+              ),
+              const SizedBox(width: 8),
+              // const Text(
+              //   'Nome: ',
+              //   style: standardStyleBold,
+              // ),
+              Text(athlete.name, style: standardStyle.copyWith(fontWeight: FontWeight.bold)),
+            ],
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: mainAxisAlignment,
-                  children: [
-                    const Icon(
-                      Icons.person,
-                      color: foregroundColor,
-                      size: 24,
-                    ),
-                    const SizedBox(width: 8),
-                    // const Text(
-                    //   'Nome: ',
-                    //   style: standardStyleBold,
-                    // ),
-                    Text(athlete.name, style: standardStyle.copyWith(fontWeight: FontWeight.bold)),
-                  ],
-                ),
-                const InfoDivider(),
-                Row(
-                  mainAxisAlignment: mainAxisAlignment,
-                  children: [
-                    const Icon(
-                      Icons.description,
-                      color: foregroundColor,
-                      size: 24,
-                    ),
-                    const SizedBox(width: 8),
-                    // const Text(
-                    //   'CPF: ',
-                    //   style: standardStyleBold,
-                    // ),
-                    Text(formattedCpf, style: standardStyle),
-                  ],
-                ),
-                const InfoDivider(),
-                Row(
-                  mainAxisAlignment: mainAxisAlignment,
-                  children: [
-                    const Icon(
-                      Icons.cake,
-                      color: foregroundColor,
-                      size: 24,
-                    ),
-                    const SizedBox(width: 8),
-                    // const Text(
-                    //   'Data de nascimento: ',
-                    //   style: standardStyleBold,
-                    // ),
-                    Text(formattedDate, style: standardStyle),
-                  ],
-                ),
-                const InfoDivider(),
-                Row(
-                  mainAxisAlignment: mainAxisAlignment,
-                  children: [
-                    const Icon(
-                      Icons.height_outlined,
-                      color: foregroundColor,
-                      size: 24,
-                    ),
-                    const SizedBox(width: 4),
-                    // const Text(
-                    //   'Altura: ',
-                    //   style: standardStyleBold,
-                    // ),
-                    Text('$formattedHeight m', style: standardStyle),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    const Icon(
-                      Icons.fitness_center_outlined,
-                      color: foregroundColor,
-                      size: 24,
-                    ),
-                    const SizedBox(width: 8),
-                    // const Text(
-                    //   'Peso: ',
-                    //   style: standardStyleBold,
-                    // ),
-                    Text('$formattedWeight Kg', style: standardStyle),
-                  ],
-                ),
-              ],
-            ),
+          const InfoDivider(),
+          Row(
+            mainAxisAlignment: mainAxisAlignment,
+            children: [
+              const Icon(
+                Icons.description,
+                color: foregroundColor,
+                size: 24,
+              ),
+              const SizedBox(width: 8),
+              // const Text(
+              //   'CPF: ',
+              //   style: standardStyleBold,
+              // ),
+              Text(formattedCpf, style: standardStyle),
+            ],
           ),
-        ),
+          const InfoDivider(),
+          Row(
+            mainAxisAlignment: mainAxisAlignment,
+            children: [
+              const Icon(
+                Icons.cake,
+                color: foregroundColor,
+                size: 24,
+              ),
+              const SizedBox(width: 8),
+              // const Text(
+              //   'Data de nascimento: ',
+              //   style: standardStyleBold,
+              // ),
+              Text(formattedDate, style: standardStyle),
+            ],
+          ),
+          const InfoDivider(),
+          Row(
+            mainAxisAlignment: mainAxisAlignment,
+            children: [
+              const Icon(
+                Icons.height_outlined,
+                color: foregroundColor,
+                size: 24,
+              ),
+              const SizedBox(width: 4),
+              // const Text(
+              //   'Altura: ',
+              //   style: standardStyleBold,
+              // ),
+              Text('$formattedHeight m', style: standardStyle),
+              const SizedBox(
+                width: 16,
+              ),
+              const Icon(
+                Icons.fitness_center_outlined,
+                color: foregroundColor,
+                size: 24,
+              ),
+              const SizedBox(width: 8),
+              // const Text(
+              //   'Peso: ',
+              //   style: standardStyleBold,
+              // ),
+              Text('$formattedWeight Kg', style: standardStyle),
+            ],
+          ),
+        ],
       ),
     );
   }

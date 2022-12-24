@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/components/buttons/menu_button.dart';
+import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/models/dtos/team_info_dto.dart';
 import 'package:perseu/src/screens/coach_home/coach_home_viewmodel.dart';
 import 'package:perseu/src/screens/new_training/new_training_screen.dart';
 import 'package:perseu/src/screens/user_drawer/user_drawer.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/states/session.dart';
+import 'package:perseu/src/states/style.dart';
 import 'package:perseu/src/utils/palette.dart';
 import 'package:provider/provider.dart';
 
@@ -165,6 +167,8 @@ class _TrainingNameDialogState extends State<TrainingNameDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final style = locator<Style>();
+
     return AlertDialog(
       title: const Text(
         'Nome do treino',
@@ -178,44 +182,32 @@ class _TrainingNameDialogState extends State<TrainingNameDialog> {
       actionsAlignment: MainAxisAlignment.spaceEvenly,
       actions: [
         ElevatedButton(
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.white),
-            side: MaterialStateProperty.all(
-              const BorderSide(color: Palette.accent, width: 2),
-            ),
-            minimumSize: MaterialStateProperty.all(
-              const Size(104, 32),
-            ),
-          ),
+          style: style.buttonAlertSecondary,
           onPressed: () => Navigator.pop(context),
-          child: const Text(
-            'Cancelar',
-            style: TextStyle(color: Palette.accent),
-          ),
+          child: const Text('Cancelar'),
         ),
         ElevatedButton(
-          style: valid
-              ? Palette().buttonStylePrimaryValid
-              : Palette().buttonStylePrimaryInvalid,
-          onPressed: valid
-              ? () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => NewTrainingScreen(
-                        trainingName: _nameController.text.trim(),
-                      ),
-                    ),
-                  );
-                }
-              : null,
-          child: const Text(
-            'Continuar',
-            style: TextStyle(color: Colors.white),
-          ),
+          style: style.buttonAlertPrimary,
+          onPressed: _handleTeamName(valid: valid),
+          child: const Text('Continuar'),
         ),
       ],
     );
+  }
+
+  VoidCallback? _handleTeamName({required bool valid}) {
+    if (!valid) return null;
+
+    return () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => NewTrainingScreen(
+            trainingName: _nameController.text.trim(),
+          ),
+        ),
+      );
+    };
   }
 }
 
@@ -240,9 +232,7 @@ class TeamInfo extends StatelessWidget {
           case ConnectionState.none:
           case ConnectionState.waiting:
           case ConnectionState.active:
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const CircularLoading();
           case ConnectionState.done:
             if (snapshot.hasData) {
               Result result = snapshot.data!;
@@ -263,12 +253,14 @@ class TeamInfo extends StatelessWidget {
                       style: style.copyWith(
                           fontSize: 20, color: Palette.secondary),
                     ),
-                    const SizedBox(height: 16),
                     if (showCode)
-                      Text(
-                        'Código de acesso: ${teamInfo.code}',
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 16),
+                      Column(
+                        children: [
+                          const Divider(),
+                          Text('Código de acesso: ${teamInfo.code}',
+                              style: style.copyWith(
+                                  fontSize: 16, fontWeight: FontWeight.bold)),
+                        ],
                       ),
                   ],
                 );

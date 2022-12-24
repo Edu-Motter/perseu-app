@@ -66,30 +66,36 @@ class TrainingsList extends StatelessWidget {
 
   final List<TrainingByTeamDTO> trainings;
 
+  static const Color buttonColor = Palette.secondary;
+  static const Color textColor = Palette.primary;
+
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4.0),
-      child: Column(
-        children: [
-          ListTitle(text: 'Quantidade de treinos: ${trainings.length}'),
-          Expanded(
+    return Column(
+      children: [
+        ListTitle(text: 'Quantidade de treinos: ${trainings.length}'),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: ListView.builder(
+              padding: EdgeInsets.zero,
               itemCount: trainings.length,
               itemBuilder: (context, index) {
                 final TrainingByTeamDTO training = trainings[index];
                 return Card(
+                  margin: const EdgeInsets.only(top: 8),
                   child: ListTile(
                     title: Text(
                       training.name,
                       style: const TextStyle(
-                          color: Palette.secondary,
+                          color: textColor,
                           fontSize: 16,
                           fontWeight: FontWeight.bold),
                     ),
                     trailing: const Icon(
                       Icons.arrow_forward,
-                      color: Palette.accent,
+                      color: buttonColor,
                       size: 28,
                     ),
                     onTap: () => Navigator.push(context, MaterialPageRoute(
@@ -106,8 +112,8 @@ class TrainingsList extends StatelessWidget {
               },
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

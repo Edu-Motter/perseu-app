@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:perseu/src/app/locator.dart';
+import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/models/dtos/training_dto.dart';
 import 'package:perseu/src/screens/coach_assign_training/athletes_assign_training_viewmodel.dart';
 import 'package:perseu/src/components/widgets/center_error.dart';
@@ -43,8 +44,7 @@ class _AssignTrainingState extends State<AssignTrainingScreen> {
                           case ConnectionState.none:
                           case ConnectionState.waiting:
                           case ConnectionState.active:
-                            return const Center(
-                                child: CircularProgressIndicator());
+                            return const CircularLoading();
                           case ConnectionState.done:
                             if (snapshot.hasData) {
                               Result result = snapshot.data as Result;

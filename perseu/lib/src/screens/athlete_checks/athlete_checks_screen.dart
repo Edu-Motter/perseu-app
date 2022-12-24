@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
-import 'package:perseu/src/components/widgets/center_error.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/models/dtos/athlete_check_dto.dart';
+import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_screen.dart';
+import 'package:perseu/src/screens/manage_athletes/manage_athletes_screen.dart';
 import 'package:perseu/src/screens/training_details/training_details_screen.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/utils/date_formatters.dart';
@@ -48,12 +49,13 @@ class AthleteChecksScreen extends StatelessWidget {
                         );
                       }
                       if (result.success && result.data!.isEmpty) {
-                        return const CenterError(
-                          message: 'Não possui check-ins ainda',
+                        return const PerseuMessage(
+                          message: 'Nenhum check-in ainda',
+                          icon: Icons.mood_bad,
                         );
                       }
                     }
-                    return const CenterError(message: 'Erro desconhecido');
+                    return PerseuMessage.defaultError();
                 }
               },
             ),
@@ -87,92 +89,112 @@ class _AthleteChecksListState extends State<AthleteChecksList> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4.0),
-      child: Column(
-        children: [
-          TableCalendar(
-            locale: 'pt_BR',
-            focusedDay: widget.model.focusedDay,
-            lastDay: widget.model.kLastDay,
-            firstDay: widget.model.kFirstDay,
-            calendarFormat: widget.model.calendarFormat,
-            availableCalendarFormats: const {
-              CalendarFormat.month: 'Mês',
-              CalendarFormat.twoWeeks: '2 semanas',
-              CalendarFormat.week: 'Semana'
-            },
-            calendarStyle: CalendarStyle(
-              todayDecoration: BoxDecoration(
-                color: Palette.accent.withOpacity(.5),
-                shape: BoxShape.circle,
-              ),
-              selectedDecoration: const BoxDecoration(
-                color: Palette.primary,
-                shape: BoxShape.circle,
-              ),
-              markerDecoration: const BoxDecoration(
-                color: Palette.accent,
-                shape: BoxShape.circle,
-              ),
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(4)),
             ),
-            onFormatChanged: (format) {
-              setState(() {
-                widget.model.calendarFormat = format;
-              });
-            },
-            selectedDayPredicate: (day) {
-              return isSameDay(widget.model.selectedDay, day);
-            },
-            onDaySelected: (selectedDay, focusedDay) {
-              setState(() {
-                widget.model.selectedDay = selectedDay;
-                widget.model.focusedDay = focusedDay;
-                widget.model.dayChecks = widget.model.loadChecks(selectedDay);
-              });
-            },
-            eventLoader: (day) => widget.model.loadChecks(day),
-            onPageChanged: (focusedDay) {
-              widget.model.focusedDay = focusedDay;
-            },
-          ),
-          const Divider(),
-          Expanded(
-            child: widget.model.dayChecks.isNotEmpty ? ListView.builder(
-              itemCount: widget.model.dayChecks.length,
-              itemBuilder: (context, index) {
-                final AthleteCheckDTO check = widget.model.dayChecks[index];
-                return Card(
-                  child: ListTile(
-                    title: Text(
-                      '${Formatters.effortFormatter(check.effort)}  '
-                      '${DateFormatters.toTimeString(check.date)} | '
-                      '${check.training.name}',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    trailing: const Icon(
-                      Icons.arrow_forward,
-                      color: Palette.primary,
-                      size: 28,
-                    ),
-                    onTap: () => Navigator.push(context, MaterialPageRoute(
-                      builder: (context) {
-                        return TrainingDetailsScreen(
-                          trainingId: check.training.id,
-                          trainingName: check.training.name,
-                          dateTimeCheck: check.date,
-                          effort: check.effort,
-                        );
-                      },
-                    )),
-                  ),
-                );
+            child: TableCalendar(
+              locale: 'pt_BR',
+              focusedDay: widget.model.focusedDay,
+              lastDay: widget.model.kLastDay,
+              firstDay: widget.model.kFirstDay,
+              calendarFormat: widget.model.calendarFormat,
+              availableCalendarFormats: const {
+                CalendarFormat.month: 'Mês',
+                CalendarFormat.twoWeeks: '2 semanas',
+                CalendarFormat.week: 'Semana'
               },
-            ) : const CenterError(message: 'Nenhum check-in nesse dia'),
+              calendarStyle: CalendarStyle(
+                todayDecoration: BoxDecoration(
+                  color: Palette.accent.withOpacity(.5),
+                  shape: BoxShape.circle,
+                ),
+                selectedDecoration: const BoxDecoration(
+                  color: Palette.secondary,
+                  shape: BoxShape.circle,
+                ),
+                markerDecoration: const BoxDecoration(
+                  color: Palette.accent,
+                  shape: BoxShape.circle,
+                ),
+              ),
+              onFormatChanged: (format) {
+                setState(() {
+                  widget.model.calendarFormat = format;
+                });
+              },
+              selectedDayPredicate: (day) {
+                return isSameDay(widget.model.selectedDay, day);
+              },
+              onDaySelected: (selectedDay, focusedDay) {
+                setState(() {
+                  widget.model.selectedDay = selectedDay;
+                  widget.model.focusedDay = focusedDay;
+                  widget.model.dayChecks = widget.model.loadChecks(selectedDay);
+                });
+              },
+              eventLoader: (day) => widget.model.loadChecks(day),
+              onPageChanged: (focusedDay) {
+                widget.model.focusedDay = focusedDay;
+              },
+            ),
           ),
-        ],
-      ),
+        ),
+        const AccentDivider(),
+        Expanded(
+          child: widget.model.dayChecks.isNotEmpty
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: ListView.builder(
+                    itemCount: widget.model.dayChecks.length,
+                    itemBuilder: (context, index) {
+                      final AthleteCheckDTO check =
+                          widget.model.dayChecks[index];
+                      return Card(
+                        margin: const EdgeInsets.only(top: 8),
+                        child: ListTile(
+                          title: Text(
+                            '${Formatters.effortFormatter(check.effort)}  '
+                            '${DateFormatters.toTimeString(check.date)} | '
+                            '${check.training.name}',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Palette.primary),
+                          ),
+                          trailing: const Icon(
+                            Icons.arrow_forward,
+                            color: Palette.secondary,
+                            size: 28,
+                          ),
+                          onTap: () =>
+                              Navigator.push(context, MaterialPageRoute(
+                            builder: (context) {
+                              return TrainingDetailsScreen(
+                                trainingId: check.training.id,
+                                trainingName: check.training.name,
+                                dateTimeCheck: check.date,
+                                effort: check.effort,
+                              );
+                            },
+                          )),
+                        ),
+                      );
+                    },
+                  ),
+                )
+              : const PerseuMessage(
+                  message: 'Nenhum check-in nesse dia',
+                  withoutIcon: true,
+                ),
+        ),
+      ],
     );
   }
 }

@@ -32,6 +32,7 @@ class _NewTeamScreenState extends State<NewTeamScreen> {
           return ModalProgressHUD(
             inAsyncCall: model.isBusy,
             child: Scaffold(
+              backgroundColor: Palette.background,
               key: scaffoldKey,
               drawer: const UserDrawer(),
               appBar: AppBar(
@@ -52,16 +53,16 @@ class _NewTeamScreenState extends State<NewTeamScreen> {
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       children: [
-                        Image.asset('assets/images/fitness-1.png',
+                        Image.asset('assets/images/dumbbell-primary.png',
                             width: 180.0),
+                        const SizedBox(height: 16),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 16.0),
                           child: Text(
-                            'Bem vindo ao app Perseu, treinador ${model.coachName}'
-                            ', para iniciar informe o nome da sua equipe: ',
+                            '${model.coachName}, informe o nome da sua equipe:',
                             textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                color: Colors.black, fontSize: 16),
+                            style:
+                            const TextStyle(color: Palette.primary, fontSize: 18),
                           ),
                         ),
                         Form(
@@ -71,6 +72,8 @@ class _NewTeamScreenState extends State<NewTeamScreen> {
                             onChanged: (value) => model.teamName = value,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
+                              filled: true,
+                              fillColor: Colors.white,
                               hintText: 'Informe o nome da sua equipe',
                               labelText: 'Nome da equipe',
                             ),
@@ -84,6 +87,7 @@ class _NewTeamScreenState extends State<NewTeamScreen> {
                               if (_formKey.currentState!.validate()) {
                                 final Result result = await model.createTeam();
                                 if (result.success) {
+
                                   UIHelper.showSuccessWithRoute(
                                       context,
                                       result,

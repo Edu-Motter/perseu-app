@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
+import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/models/dtos/athlete_info_dto.dart';
 import 'package:perseu/src/services/clients/client_athlete.dart';
 import 'package:perseu/src/services/foundation.dart';
@@ -47,9 +48,7 @@ class AthleteInformationDialog extends StatelessWidget {
                   case ConnectionState.none:
                   case ConnectionState.waiting:
                   case ConnectionState.active:
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    return const CircularLoading();
                 }
               },
             ),

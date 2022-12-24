@@ -32,7 +32,7 @@ class BootstrapScreen extends StatelessWidget {
                       size: 86,
                       color: Colors.white,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 24),
                     Visibility(
                         child: const CircularProgressIndicator(
                           color: Palette.accent,

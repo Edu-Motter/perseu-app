@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:perseu/src/components/dialogs/athlete_information_dialog.dart';
+import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/models/dtos/invite_dto.dart';
 import 'package:perseu/src/screens/coach_home/coach_home_screen.dart';
 import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_viewmodel.dart';
+import 'package:perseu/src/screens/manage_athletes/manage_athletes_screen.dart';
 import 'package:perseu/src/utils/palette.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
@@ -31,34 +33,21 @@ class _CoachManageRequestsScreenState extends State<CoachManageRequestsScreen> {
           return ModalProgressHUD(
             inAsyncCall: model.isBusy,
             child: Scaffold(
+                backgroundColor: Palette.background,
                 key: _scaffoldKey,
                 appBar: AppBar(
                   title: const Text('Solicitações'),
                 ),
                 body: Column(children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Card(
-                      color: Palette.primary,
-                      elevation: 0.5,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            TeamInfo(
-                              futureTeamInfo: model.getTeamInfo(),
-                              style: const TextStyle(color: Palette.background),
-                              showCode: true,
-                            ),
-                          ],
-                        ),
-                      ),
+                  PerseuCard(
+                    contentPadding: const EdgeInsets.all(16),
+                    child: TeamInfo(
+                      futureTeamInfo: model.getTeamInfo(),
+                      style: const TextStyle(color: Palette.primary),
+                      showCode: true,
                     ),
                   ),
-                  const Divider(
-                    color: Palette.primary,
-                  ),
+                  const AccentDivider(accentColor: Palette.primary),
                   const Flexible(
                     child: RequestList(),
                   ),
@@ -73,6 +62,10 @@ class _CoachManageRequestsScreenState extends State<CoachManageRequestsScreen> {
 class RequestList extends StatefulWidget {
   const RequestList({Key? key}) : super(key: key);
 
+  static const buttonColor = Palette.secondary;
+  static const primaryButtonColor = Palette.accent;
+  static const iconSize = 28.0;
+
   @override
   State<RequestList> createState() => _RequestListState();
 }
@@ -82,32 +75,34 @@ class _RequestListState extends State<RequestList> {
   Widget build(BuildContext context) {
     final model =
         Provider.of<CoachManageRequestsViewModel>(context, listen: false);
-    return Padding(
-      padding: const EdgeInsets.only(top: 8, right: 16, left: 16),
-      child: FutureBuilder(
-        future: model.getRequests(model.team.id),
-        builder: (context, snapshot) {
-          if (model.isBusy) {
-            return const Center(child: SizedBox.shrink());
-          }
+    return FutureBuilder(
+      future: model.getRequests(model.team.id),
+      builder: (context, snapshot) {
+        if (model.isBusy) {
+          return const Center(child: SizedBox.shrink());
+        }
 
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-            case ConnectionState.none:
-            case ConnectionState.active:
-              return const Center(child: CircularProgressIndicator());
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+          case ConnectionState.none:
+          case ConnectionState.active:
+            return const CircularLoading();
 
-            case ConnectionState.done:
-              if (snapshot.hasData) {
-                Result result = snapshot.data as Result;
-                List<InviteDTO> inviteRequests = result.data;
-                if (inviteRequests.isNotEmpty) {
-                  return ListView.builder(
+          case ConnectionState.done:
+            if (snapshot.hasData) {
+              Result result = snapshot.data as Result;
+              List<InviteDTO> inviteRequests = result.data;
+              if (inviteRequests.isNotEmpty) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
                     scrollDirection: Axis.vertical,
                     itemCount: inviteRequests.length,
                     itemBuilder: (context, index) {
                       return Card(
-                        color: Palette.background,
+                        margin: const EdgeInsets.only(top: 8),
+                        color: Colors.white,
                         child: ListTile(
                           onLongPress: () => _handleInformationDialog(
                             context,
@@ -115,7 +110,9 @@ class _RequestListState extends State<RequestList> {
                           ),
                           title: Text(
                             inviteRequests[index].athlete.name,
-                            style: const TextStyle(color: Palette.primary),
+                            style: const TextStyle(
+                                color: Palette.primary,
+                                fontWeight: FontWeight.bold),
                           ),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -126,44 +123,51 @@ class _RequestListState extends State<RequestList> {
                                   inviteRequests[index].athlete.id,
                                 ),
                                 icon: const Icon(Icons.info_outlined),
-                                color: Palette.primary,
+                                color: RequestList.buttonColor,
+                                iconSize: RequestList.iconSize,
                               ),
                               IconButton(
-                                  onPressed: () {
-                                    _handleRefuseRequest(
-                                        inviteRequests[index].athlete.id,
-                                        model,
-                                        context);
-                                  },
-                                  icon: const Icon(Icons.clear),
-                                  color: Palette.primary),
+                                onPressed: () {
+                                  _handleRefuseRequest(
+                                      inviteRequests[index].athlete.id,
+                                      model,
+                                      context);
+                                },
+                                icon: const Icon(Icons.clear),
+                                color: RequestList.buttonColor,
+                                iconSize: RequestList.iconSize,
+                              ),
                               IconButton(
-                                  onPressed: () {
-                                    _handleAcceptRequest(
-                                        inviteRequests[index].athlete.id,
-                                        model,
-                                        context);
-                                  },
-                                  icon: const Icon(Icons.check),
-                                  color: Palette.primary),
+                                onPressed: () {
+                                  _handleAcceptRequest(
+                                      inviteRequests[index].athlete.id,
+                                      model,
+                                      context);
+                                },
+                                icon: const Icon(Icons.check),
+                                color: RequestList.primaryButtonColor,
+                                iconSize: RequestList.iconSize,
+                              ),
                             ],
                           ),
                         ),
                       );
                     },
-                  );
-                } else {
-                  return const Center(
-                      child: Text('Não existem solicitações pendentes'));
-                }
+                  ),
+                );
               } else {
-                return const DefaultError();
+                return const PerseuMessage(
+                  message: 'Nenhuma solicitação pendente',
+                  icon: Icons.check_circle,
+                );
               }
-            default:
-              return const DefaultError();
-          }
-        },
-      ),
+            } else {
+              return PerseuMessage.defaultError();
+            }
+          default:
+            return PerseuMessage.defaultError();
+        }
+      },
     );
   }
 
@@ -201,18 +205,97 @@ class _RequestListState extends State<RequestList> {
   }
 }
 
-class DefaultError extends StatelessWidget {
-  const DefaultError({Key? key}) : super(key: key);
+class PerseuMessage extends StatelessWidget {
+  const PerseuMessage({
+    Key? key,
+    required this.message,
+    this.icon = Icons.circle,
+    this.primaryColor = Palette.primary,
+    this.withoutIcon = false,
+  }) : super(key: key);
+
+  final Color primaryColor;
+  final String message;
+  final IconData icon;
+  final bool withoutIcon;
+
+  factory PerseuMessage.defaultError() {
+    return const PerseuMessage(
+      message: 'Erro, tente novamente',
+      icon: Icons.cancel,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: const [
-        Icon(Icons.cancel, size: 36),
-        SizedBox(height: 16),
-        Text('Erro desconhecido')
-      ],
+    return Center(
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(32)),
+            border: Border.all(color: Colors.transparent, width: 3)),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (!withoutIcon)
+              Column(
+                children: [
+                  Icon(icon, size: 32, color: primaryColor),
+                  const SizedBox(height: 16),
+                ],
+              ),
+            Flexible(
+              child: Text(
+                message,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: primaryColor,
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class PerseuCard extends StatelessWidget {
+  const PerseuCard({
+    Key? key,
+    required this.child,
+    this.insetPadding = const EdgeInsets.all(16),
+    this.contentPadding = const EdgeInsets.all(8),
+  }) : super(key: key);
+
+  final Widget child;
+  final EdgeInsets insetPadding;
+  final EdgeInsets contentPadding;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: insetPadding,
+      child: ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
+        child: Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            border: Border(
+              top: BorderSide(
+                color: Palette.accent,
+                width: 5,
+              ),
+            ),
+          ),
+          child: Padding(
+            padding: contentPadding,
+            child: child,
+          ),
+        ),
+      ),
     );
   }
 }

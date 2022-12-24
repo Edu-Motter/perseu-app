@@ -14,7 +14,7 @@ class SignUpViewModel extends AppViewModel {
   static const _athlete = 'Atleta';
   static const _coach = 'Treinador';
 
-  String userType = _athlete;
+  String userType = '';
 
   String name = '';
   String email = '';

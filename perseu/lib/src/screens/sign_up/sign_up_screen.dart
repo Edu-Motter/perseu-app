@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/components/dialogs/passwords_not_match_dialog.dart';
+import 'package:perseu/src/screens/manage_athletes/manage_athletes_screen.dart';
 import 'package:perseu/src/screens/sign_up/sign_up_viewmodel.dart';
 import 'package:perseu/src/utils/formatters.dart';
 import 'package:perseu/src/utils/palette.dart';
@@ -32,26 +33,20 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final _nameController = TextEditingController();
-
   final _birthdayController = TextEditingController();
-
   final _emailController = TextEditingController();
-
   final _cpfController = TextEditingController();
-
   final _passwordController = TextEditingController();
-
   final _confirmPasswordController = TextEditingController();
-
   final _crefController = TextEditingController();
-
   final _heightController = TextEditingController();
-
   final _weightController = TextEditingController();
 
   final List<String> _userTypes = ['Atleta', 'Treinador'];
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  static const fillColor = Colors.white;
 
   @override
   Widget build(BuildContext context) {
@@ -75,29 +70,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             body: ListView(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Padding(
-                        padding: EdgeInsets.only(right: 8.0),
-                        child: Icon(
-                          Icons.person_add,
-                          size: 32,
-                          color: Palette.primary,
-                        ),
-                      ),
-                      Text(
-                        'Informe os seguintes dados:',
-                        style: TextStyle(color: Palette.primary, fontSize: 18),
-                      ),
-                      SizedBox(height: 8)
-                    ],
-                  ),
+                const ListTitle(
+                  text: 'Informe os seguintes dados:',
+                  dividerPadding: 8,
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Form(
                     key: _formKey,
                     child: Consumer<SignUpViewModel>(
@@ -109,6 +87,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             onChanged: (value) => model.name = value,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
+                              filled: true,
+                              fillColor: fillColor,
                               hintText: 'Nome',
                             ),
                             validator: RequiredValidator(
@@ -121,6 +101,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             onChanged: (value) => model.email = value,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
+                              filled: true,
+                              fillColor: fillColor,
                               hintText: 'E-mail',
                             ),
                             validator: MultiValidator([
@@ -137,6 +119,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             onChanged: (value) => model.cpf = value,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
+                              filled: true,
+                              fillColor: fillColor,
                               hintText: 'CPF',
                             ),
                             keyboardType: TextInputType.number,
@@ -155,6 +139,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               onChanged: (value) => model.birthdate = value,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
+                                filled: true,
+                                fillColor: fillColor,
                                 hintText: 'Data de nascimento',
                               ),
                               keyboardType: TextInputType.number,
@@ -173,6 +159,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             onChanged: (value) => model.password = value,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
+                              filled: true,
+                              fillColor: fillColor,
                               hintText: 'Senha',
                             ),
                             obscureText: true,
@@ -191,6 +179,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             onChanged: (value) => model.confirmPassword = value,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
+                              filled: true,
+                              fillColor: fillColor,
                               hintText: 'Confirmação da senha:',
                             ),
                             obscureText: true,
@@ -204,28 +194,49 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ]),
                           ),
                           const SizedBox(height: 8),
+                          const AccentDivider(dividerPadding: 0),
+                          const SizedBox(height: 8),
                           DropdownButtonFormField(
+                              validator: RequiredValidator(
+                                  errorText:
+                                      'Você precisa escolher seu tipo de conta'),
                               items: getDropDownMenuItems(),
                               value: model.userType,
                               onChanged: (value) {
                                 model.userTypeValue(value as String);
                               },
                               decoration: const InputDecoration(
+                                filled: true,
+                                fillColor: fillColor,
                                 border: OutlineInputBorder(),
                               )),
-                          const SizedBox(height: 8),
                           Visibility(
                             visible: model.isCoach,
-                            child: TextFormField(
-                              key: SignUpScreen.crefInputKey,
-                              controller: _crefController,
-                              onChanged: (value) => model.cref = value,
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                hintText: 'CREF:',
-                              ),
-                              validator: RequiredValidator(
-                                  errorText: 'O CREF precisa ser informado'),
+                            child: Column(
+                              children: [
+                                const SizedBox(height: 8),
+                                TextFormField(
+                                  key: SignUpScreen.crefInputKey,
+                                  controller: _crefController,
+                                  onChanged: (value) => model.cref = value,
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    filled: true,
+                                    fillColor: fillColor,
+                                    hintText: 'CREF',
+                                  ),
+                                  keyboardType: TextInputType.multiline,
+                                  inputFormatters: [Formatters.cref()],
+                                  validator: MultiValidator([
+                                    RequiredValidator(
+                                        errorText:
+                                            'Você precisa confirmar seu CREF'),
+                                    MinLengthValidator(11,
+                                        errorText:
+                                            'O CREF precisa ter 11 caracteres')
+                                  ]),
+                                ),
+                              ],
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -239,7 +250,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               inputFormatters: [Formatters.height()],
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
-                                hintText: 'Altura: 0.00 m',
+                                filled: true,
+                                fillColor: fillColor,
+                                hintText: 'Altura 0.00 m',
                               ),
                               validator: RequiredValidator(
                                   errorText: 'A Altura precisa ser informada'),
@@ -255,7 +268,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               onChanged: (value) => _formatWeight(value, model),
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
-                                hintText: 'Peso: 00 Kg',
+                                filled: true,
+                                fillColor: fillColor,
+                                hintText: 'Peso 00 Kg',
                               ),
                               validator: RequiredValidator(
                                   errorText: 'O Peso precisa ser informado'),
@@ -309,18 +324,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
     for (String type in _userTypes) {
       items.add(DropdownMenuItem(value: type, child: Text('Conta $type')));
     }
+    items.add(const DropdownMenuItem(value: '', child: Text('Tipo de conta')));
     return items;
   }
 
-
-  _formatWeight(String value, SignUpViewModel model){
-    if (value.length > 6){
-      _weightController.text = value.substring(0,6);
+  _formatWeight(String value, SignUpViewModel model) {
+    if (value.length > 6) {
+      _weightController.text = value.substring(0, 6);
       return;
     }
 
     String numberValue = '';
-    if(value.length > 5){
+    if (value.length > 5) {
       numberValue = value.replaceAll(' Kg', '');
     }
 
@@ -343,8 +358,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
 
     model.weight = value;
-    _weightController.selection =
-        TextSelection.fromPosition(TextPosition(
-            offset: _weightController.text.length));
+    _weightController.selection = TextSelection.fromPosition(
+        TextPosition(offset: _weightController.text.length));
   }
 }

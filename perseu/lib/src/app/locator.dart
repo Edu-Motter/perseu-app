@@ -33,6 +33,7 @@ import 'package:perseu/src/services/clients/client_firebase.dart';
 import 'package:perseu/src/services/clients/client_team.dart';
 import 'package:perseu/src/services/clients/client_training.dart';
 import 'package:perseu/src/services/clients/client_user.dart';
+import 'package:perseu/src/states/style.dart';
 import 'package:perseu/src/viewModels/login_view_model.dart';
 
 import '../screens/athlete_pending_request/athlete_pending_request_viewmodel.dart';
@@ -115,6 +116,7 @@ Future<void> initializeLocator() async {
 
   //Global states:
   locator.registerSingleton<Session>(PersistentSession());
+  locator.registerSingleton<Style>(Style());
 
   //Local states:
   locator.registerFactory<BootstrapViewModel>(() => BootstrapViewModel());

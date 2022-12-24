@@ -41,17 +41,15 @@ class Formatters {
         mask: '##.##', filter: {"#": RegExp('[0-9]')});
   }
 
-  static MaskTextInputFormatter cvv() {
-    return MaskTextInputFormatter(mask: '####', filter: {"#": RegExp('[0-9]')});
-  }
-
   static FilteringTextInputFormatter email() {
     return FilteringTextInputFormatter.allow(RegExp(r'[0-9A-Za-z@_.\-+]'));
   }
 
-  static MaskTextInputFormatter phone() {
+  static MaskTextInputFormatter cref() {
     return MaskTextInputFormatter(
-        mask: '(##) #####-####', filter: {"#": RegExp('[0-9]')});
+      type: MaskAutoCompletionType.eager,
+        mask: '######-@/@@',
+        filter: {'#': RegExp('[0-9]'), '@': RegExp('[A-Z]')});
   }
 
   static String effortFormatter(int effort) {

@@ -4,6 +4,7 @@ import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/models/dtos/athlete_info_dto.dart';
 import 'package:perseu/src/models/dtos/athlete_training_dto.dart';
 import 'package:perseu/src/models/dtos/training_dto.dart';
+import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_screen.dart';
 import 'package:perseu/src/screens/training_details/training_details_screen.dart';
 import 'package:perseu/src/screens/training_to_athlete/training_to_athlete_screen.dart';
 import 'package:perseu/src/services/foundation.dart';
@@ -42,7 +43,8 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
                 alignment: Alignment.center,
                 transform: Matrix4.rotationY(math.pi),
                 child: const Icon(
-                  Icons.reply_all, color: Colors.white,
+                  Icons.reply_all,
+                  color: Colors.white,
                 ),
               ),
               onPressed: () => Navigator.push(
@@ -75,9 +77,7 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
                         case ConnectionState.none:
                         case ConnectionState.waiting:
                         case ConnectionState.active:
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
+                          return const CircularLoading();
                       }
                     },
                   ),
@@ -107,8 +107,8 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
                             if (result.success) {
                               final currentTraining = result.data!;
                               return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 12.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12.0),
                                 child: Card(
                                   color: Colors.white,
                                   child: ListTile(
@@ -138,24 +138,9 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
                               );
                             } else {
                               if (ErrorType.notFound == result.errorType) {
-                                return Container(
-                                  padding: const EdgeInsets.all(16),
-                                  child: Column(
-                                    children: [
-                                      const Icon(
-                                        Icons.error,
-                                        color: Palette.secondary,
-                                        size: 32,
-                                      ),
-                                      Text(
-                                        result.message ?? 'Não encontrado',
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                return PerseuMessage(
+                                  message: result.message ?? 'Não encontrado',
+                                  icon: Icons.info,
                                 );
                               }
                             }

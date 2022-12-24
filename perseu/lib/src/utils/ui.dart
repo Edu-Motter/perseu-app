@@ -1,6 +1,8 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
+import 'package:perseu/src/states/style.dart';
 import 'package:perseu/src/utils/flash_notification.dart' as flash;
 
 import '../app/routes.dart';
@@ -161,6 +163,8 @@ class _BoolDialogState extends State<BoolDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final style = locator<Style>();
+
     if (busy) {
       return const AlertDialog(
         content: SizedBox(
@@ -175,11 +179,13 @@ class _BoolDialogState extends State<BoolDialog> {
       title: Text(widget.title),
       content: Text(widget.message),
       actions: [
-        TextButton(
+        ElevatedButton(
+          style: style.buttonAlertSecondary,
           onPressed: widget.onNoPressed,
           child: const Text('Não'),
         ),
-        TextButton(
+        ElevatedButton(
+          style: style.buttonAlertPrimary,
           onPressed: () async {
             setState(() => busy = true);
             await widget.onYesPressed();

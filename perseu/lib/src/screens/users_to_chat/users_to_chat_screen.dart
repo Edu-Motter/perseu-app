@@ -3,6 +3,7 @@ import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/components/widgets/center_error.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/models/dtos/user_chat_dto.dart';
+import 'package:perseu/src/screens/manage_athletes/manage_athletes_screen.dart';
 import 'package:perseu/src/screens/user_chat/user_chat_screen.dart';
 import 'package:perseu/src/utils/palette.dart';
 import 'package:provider/provider.dart';
@@ -64,7 +65,12 @@ class _UsersToChatScreenState extends State<UsersToChatScreen> {
                     return const CircularLoading();
                   case ConnectionState.done:
                     if (snapshot.hasData) {
-                      return UsersList(users: model.users);
+                      return Column(
+                        children: [
+                          ListTitle(text: 'Quantidade de usuários: ${model.users.length}'),
+                          Expanded(child: UsersList(users: model.users)),
+                        ],
+                      );
                     }
                     return const CenterError(
                       message: 'Erro ao buscar usuários',
@@ -89,25 +95,40 @@ class UsersList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: users.length,
-      itemBuilder: (context, index) {
-        final UserChatDTO user = users[index];
-        return Card(
-          child: ListTile(
-            title: Text(user.name),
-            trailing: const Icon(Icons.message, color: Palette.primary),
-            onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => UsersChatScreen(
-                    friendId: user.id,
-                    friendName: user.name,
-                  ),
-                )),
-          ),
-        );
-      },
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: ListView.builder(
+        padding: const EdgeInsets.only(bottom: 8),
+        itemCount: users.length,
+        itemBuilder: (context, index) {
+          final UserChatDTO user = users[index];
+          return Card(
+            margin: const EdgeInsets.only(top: 8),
+            child: ListTile(
+              title: Text(
+                user.name,
+                style: const TextStyle(
+                  color: Palette.primary,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+              trailing: const Icon(
+                Icons.message,
+                color: Palette.secondary,
+                size: 28,
+              ),
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UsersChatScreen(
+                      friendId: user.id,
+                      friendName: user.name,
+                    ),
+                  )),
+            ),
+          );
+        },
+      ),
     );
   }
 }

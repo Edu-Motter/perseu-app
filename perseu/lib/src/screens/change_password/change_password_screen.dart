@@ -37,7 +37,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               body: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -48,6 +48,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           obscureText: true,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
+                            filled: true,
+                            fillColor: Colors.white,
                             hintText: 'Informe sua senha atual',
                             labelText: 'Senha atual',
                           ),
@@ -60,13 +62,15 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                     'A senha precisa ter no mínimo 4 caracteres')
                           ]),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 8),
                         TextFormField(
                           controller: _newPasswordController,
                           onChanged: (value) => model.newPassword = value,
                           obscureText: true,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
+                            filled: true,
+                            fillColor: Colors.white,
                             hintText: 'Informe sua nova senha',
                             labelText: 'Nova senha',
                           ),
@@ -79,7 +83,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                     'A senha precisa ter no mínimo 4 caracteres')
                           ]),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 8),
                         TextFormField(
                           controller: _confirmNewPasswordController,
                           onChanged: (value) =>
@@ -87,6 +91,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           obscureText: true,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
+                            filled: true,
+                            fillColor: Colors.white,
                             hintText: 'Confirme sua nova nova senha',
                             labelText: 'Confirme nova senha',
                           ),
@@ -98,7 +104,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                     'A senha precisa ter no mínimo 4 caracteres')
                           ]),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 8),
                         ElevatedButton(
                             onPressed: model.isBusy
                                 ? null

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/app/routes.dart';
+import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_screen.dart';
 import 'package:perseu/src/screens/profile_screen/profile_viewmodel.dart';
 import 'package:perseu/src/services/foundation.dart';
+import 'package:perseu/src/states/style.dart';
 import 'package:perseu/src/utils/formatters.dart';
 import 'package:perseu/src/utils/palette.dart';
 import 'package:perseu/src/utils/ui.dart';
@@ -30,16 +32,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final _nameController = TextEditingController();
-  final _documentController = TextEditingController();
-  final _birthdateController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _crefController = TextEditingController();
-  final _heightController = TextEditingController();
-  final _weightController = TextEditingController();
-
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -59,213 +51,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         case ConnectionState.none:
                         case ConnectionState.waiting:
                         case ConnectionState.active:
-                          return const Center(
-                              child: CircularProgressIndicator());
+                          return const CircularLoading();
 
                         case ConnectionState.done:
                           if (snapshot.hasData) {
-                            loadInitialValuesFromModel(model);
-                            return ListView(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Form(
-                                    key: _formKey,
-                                    child: Column(
-                                      children: [
-                                        TextFormField(
-                                          key: ProfileScreen.nameInputKey,
-                                          controller: _nameController,
-                                          onChanged: (value) =>
-                                              model.name = value,
-                                          decoration: const InputDecoration(
-                                              fillColor: Colors.white,
-                                              filled: true,
-                                              border: OutlineInputBorder(),
-                                              hintText: 'Nome',
-                                              labelText: 'Nome'),
-                                          validator: RequiredValidator(
-                                              errorText:
-                                                  'O nome de usuário precisa ser informado'),
-                                        ),
-                                        const SizedBox(height: 32),
-                                        TextFormField(
-                                            key: ProfileScreen.emailInputKey,
-                                            controller: _emailController,
-                                            enabled: false,
-                                            decoration: const InputDecoration(
-                                                fillColor: Colors.white,
-                                                filled: true,
-                                                border: OutlineInputBorder(),
-                                                hintText: 'E-mail',
-                                                labelText: 'E-mail'),
-                                            validator: MultiValidator([
-                                              RequiredValidator(
-                                                  errorText:
-                                                      'O E-mail precisa ser informado'),
-                                              EmailValidator(
-                                                  errorText:
-                                                      'O E-mail precisa ser válido')
-                                            ])),
-                                        const SizedBox(height: 16),
-                                        TextFormField(
-                                            key: ProfileScreen.documentInputKey,
-                                            controller: _documentController,
-                                            onChanged: (value) =>
-                                                model.document = value,
-                                            inputFormatters: [Formatters.cpf()],
-                                            decoration: const InputDecoration(
-                                                fillColor: Colors.white,
-                                                filled: true,
-                                                border: OutlineInputBorder(),
-                                                hintText: 'CPF',
-                                                labelText: 'CPF'),
-                                            validator: MultiValidator([
-                                              RequiredValidator(
-                                                  errorText:
-                                                      'O CPF precisa ser informado'),
-                                              CpfValidator(
-                                                  errorText:
-                                                      'O CPF precisa ser válido')
-                                            ])),
-                                        const SizedBox(height: 16),
-                                        TextFormField(
-                                            key:
-                                                ProfileScreen.birthdateInputKey,
-                                            controller: _birthdateController,
-                                            onChanged: (value) =>
-                                                model.birthdate = value,
-                                            inputFormatters: [
-                                              Formatters.date()
-                                            ],
-                                            keyboardType:
-                                                TextInputType.datetime,
-                                            decoration: const InputDecoration(
-                                                fillColor: Colors.white,
-                                                filled: true,
-                                                border: OutlineInputBorder(),
-                                                hintText: 'Data de nascimento',
-                                                labelText:
-                                                    'Data de nascimento'),
-                                            validator: MultiValidator([
-                                              RequiredValidator(
-                                                  errorText:
-                                                      'A data de nascimento precisa ser informada'),
-                                              DateValidator('dd/MM/yyyy',
-                                                  errorText:
-                                                      'A data precisa ser válida')
-                                            ])),
-                                        const SizedBox(height: 16),
-                                        Visibility(
-                                          visible: model.isCoach,
-                                          child: TextFormField(
-                                            key: ProfileScreen.crefInputKey,
-                                            controller: _crefController,
-                                            onChanged: (value) =>
-                                                model.cref = value,
-                                            decoration: const InputDecoration(
-                                              fillColor: Colors.white,
-                                              filled: true,
-                                              border: OutlineInputBorder(),
-                                              labelText: 'CREF',
-                                              hintText: 'CREF',
-                                            ),
-                                            validator: RequiredValidator(
-                                                errorText:
-                                                    'O CREF precisa ser informado'),
-                                          ),
-                                        ),
-                                        Visibility(
-                                          visible: model.isAthlete,
-                                          child: TextFormField(
-                                            key: ProfileScreen.heightInputKey,
-                                            controller: _heightController,
-                                            keyboardType: TextInputType.number,
-                                            onChanged: (value) =>
-                                                model.height = value,
-                                            inputFormatters: [
-                                              Formatters.height()
-                                            ],
-                                            decoration: const InputDecoration(
-                                              fillColor: Colors.white,
-                                              filled: true,
-                                              border: OutlineInputBorder(),
-                                              labelText: 'Altura',
-                                              hintText: 'Altura 0.00 m',
-                                            ),
-                                            validator: RequiredValidator(
-                                                errorText:
-                                                    'A Altura precisa ser informada'),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 16),
-                                        Visibility(
-                                          visible: model.isAthlete,
-                                          child: TextFormField(
-                                            key: ProfileScreen.weightInputKey,
-                                            controller: _weightController,
-                                            keyboardType: const TextInputType
-                                                    .numberWithOptions(
-                                                decimal: true),
-                                            onChanged: (value) =>
-                                                model.weight = value,
-                                            inputFormatters: [
-                                              Formatters.weight()
-                                            ],
-                                            decoration: const InputDecoration(
-                                              fillColor: Colors.white,
-                                              filled: true,
-                                              border: OutlineInputBorder(),
-                                              labelText: 'Peso',
-                                              hintText: 'Peso 00 Kg',
-                                            ),
-                                            validator: RequiredValidator(
-                                                errorText:
-                                                    'O Peso precisa ser informado'),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 16),
-                                        ElevatedButton(
-                                            onPressed: model.isBusy
-                                                ? null
-                                                : () => _handleSave(model),
-                                            child: const Text('Salvar')),
-                                        const SizedBox(height: 16),
-                                        ElevatedButton(
-                                            style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all(
-                                                      Colors.white),
-                                              shape: MaterialStateProperty.all(
-                                                const RoundedRectangleBorder(
-                                                  side: BorderSide(
-                                                      color: Palette.accent,
-                                                      width: 2),
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(4),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            onPressed: model.isBusy
-                                                ? null
-                                                : () => Navigator.of(context)
-                                                    .pushNamed(
-                                                        Routes.changePassword),
-                                            child: const Text(
-                                              'Alterar senha',
-                                              style: TextStyle(
-                                                  color: Palette.accent),
-                                            )),
-                                      ],
-                                    ),
-                                  ),
-                                )
-                              ],
-                            );
+                            return FormProfile(model: model);
                           } else {
-                            return const Center(child: DefaultError());
+                            return PerseuMessage.defaultError();
                           }
                       }
                     }),
@@ -273,6 +65,240 @@ class _ProfileScreenState extends State<ProfileScreen> {
         },
       ),
     );
+  }
+}
+
+class FormProfile extends StatefulWidget {
+  const FormProfile({
+    Key? key,
+    required this.model,
+  }) : super(key: key);
+
+  final ProfileViewModel model;
+
+  @override
+  State<FormProfile> createState() => _FormProfileState();
+}
+
+class _FormProfileState extends State<FormProfile> {
+  final _nameController = TextEditingController();
+  final _documentController = TextEditingController();
+  final _birthdateController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _crefController = TextEditingController();
+  final _heightController = TextEditingController();
+  final _weightController = TextEditingController();
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  static const defaultPadding = 8.0;
+
+  @override
+  void initState() {
+    loadInitialValuesFromModel(widget.model);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(defaultPadding),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  key: ProfileScreen.nameInputKey,
+                  controller: _nameController,
+                  onChanged: (value) => widget.model.name = value,
+                  decoration: const InputDecoration(
+                      fillColor: Colors.white,
+                      filled: true,
+                      border: OutlineInputBorder(),
+                      hintText: 'Nome',
+                      labelText: 'Nome'),
+                  validator: RequiredValidator(
+                      errorText: 'O nome de usuário precisa ser informado'),
+                ),
+                const SizedBox(height: defaultPadding),
+                TextFormField(
+                    key: ProfileScreen.emailInputKey,
+                    controller: _emailController,
+                    enabled: false,
+                    decoration: const InputDecoration(
+                        fillColor: Colors.white,
+                        filled: true,
+                        border: OutlineInputBorder(),
+                        hintText: 'E-mail',
+                        labelText: 'E-mail'),
+                    validator: MultiValidator([
+                      RequiredValidator(
+                          errorText: 'O E-mail precisa ser informado'),
+                      EmailValidator(errorText: 'O E-mail precisa ser válido')
+                    ])),
+                const SizedBox(height: defaultPadding),
+                TextFormField(
+                    key: ProfileScreen.documentInputKey,
+                    controller: _documentController,
+                    onChanged: (value) => widget.model.document = value,
+                    inputFormatters: [Formatters.cpf()],
+                    decoration: const InputDecoration(
+                        fillColor: Colors.white,
+                        filled: true,
+                        border: OutlineInputBorder(),
+                        hintText: 'CPF',
+                        labelText: 'CPF'),
+                    validator: MultiValidator([
+                      RequiredValidator(
+                          errorText: 'O CPF precisa ser informado'),
+                      CpfValidator(errorText: 'O CPF precisa ser válido')
+                    ])),
+                const SizedBox(height: defaultPadding),
+                TextFormField(
+                    key: ProfileScreen.birthdateInputKey,
+                    controller: _birthdateController,
+                    onChanged: (value) => widget.model.birthdate = value,
+                    inputFormatters: [Formatters.date()],
+                    keyboardType: TextInputType.datetime,
+                    decoration: const InputDecoration(
+                        fillColor: Colors.white,
+                        filled: true,
+                        border: OutlineInputBorder(),
+                        hintText: 'Data de nascimento',
+                        labelText: 'Data de nascimento'),
+                    validator: MultiValidator([
+                      RequiredValidator(
+                          errorText:
+                              'A data de nascimento precisa ser informada'),
+                      DateValidator('dd/MM/yyyy',
+                          errorText: 'A data precisa ser válida')
+                    ])),
+                const SizedBox(height: defaultPadding),
+                Visibility(
+                  visible: widget.model.isCoach,
+                  child: TextFormField(
+                    key: ProfileScreen.crefInputKey,
+                    controller: _crefController,
+                    onChanged: (value) => widget.model.cref = value,
+                    decoration: const InputDecoration(
+                      fillColor: Colors.white,
+                      filled: true,
+                      border: OutlineInputBorder(),
+                      labelText: 'CREF',
+                      hintText: 'CREF',
+                    ),
+                    validator: RequiredValidator(
+                        errorText: 'O CREF precisa ser informado'),
+                  ),
+                ),
+                Visibility(
+                  visible: widget.model.isAthlete,
+                  child: TextFormField(
+                    key: ProfileScreen.heightInputKey,
+                    controller: _heightController,
+                    keyboardType: TextInputType.number,
+                    onChanged: (value) => widget.model.height = value,
+                    inputFormatters: [Formatters.height()],
+                    decoration: const InputDecoration(
+                      fillColor: Colors.white,
+                      filled: true,
+                      border: OutlineInputBorder(),
+                      labelText: 'Altura',
+                      hintText: 'Altura 0.00 m',
+                    ),
+                    validator: RequiredValidator(
+                        errorText: 'A Altura precisa ser informada'),
+                  ),
+                ),
+                const SizedBox(height: defaultPadding),
+                Visibility(
+                  visible: widget.model.isAthlete,
+                  child: TextFormField(
+                    key: ProfileScreen.weightInputKey,
+                    controller: _weightController,
+                    keyboardType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    onChanged: (value) => _formatWeight(value, widget.model),
+                    decoration: const InputDecoration(
+                      fillColor: Colors.white,
+                      filled: true,
+                      border: OutlineInputBorder(),
+                      labelText: 'Peso',
+                      hintText: 'Peso 00 Kg',
+                    ),
+                    validator: RequiredValidator(
+                        errorText: 'O Peso precisa ser informado'),
+                  ),
+                ),
+                const SizedBox(height: defaultPadding),
+                ElevatedButton(
+                    onPressed: widget.model.isBusy
+                        ? null
+                        : () => _handleSave(widget.model),
+                    child: const Text('Salvar')),
+                const SizedBox(height: defaultPadding),
+                ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.white),
+                      shape: MaterialStateProperty.all(
+                        const RoundedRectangleBorder(
+                          side: BorderSide(color: Palette.accent, width: 2),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(4),
+                          ),
+                        ),
+                      ),
+                    ),
+                    onPressed: widget.model.isBusy
+                        ? null
+                        : () => Navigator.of(context)
+                            .pushNamed(Routes.changePassword),
+                    child: const Text(
+                      'Alterar senha',
+                      style: TextStyle(color: Palette.accent),
+                    )),
+              ],
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  _formatWeight(String value, ProfileViewModel model) {
+    if (value.length > 6) {
+      _weightController.text = value.substring(0, 6);
+      return;
+    }
+
+    String numberValue = '';
+    if (value.length > 5) {
+      numberValue = value.replaceAll(' Kg', '');
+    }
+
+    if (value.length < model.weight.length && value.length > 2) {
+      setState(() {
+        _weightController.text = '';
+      });
+    }
+
+    if (value.length == 2) {
+      setState(() {
+        _weightController.text = '$value Kg';
+      });
+    }
+
+    if (numberValue.length == 3) {
+      setState(() {
+        _weightController.text = '$numberValue Kg';
+      });
+    }
+
+    model.weight = value;
+    _weightController.selection = TextSelection.fromPosition(
+        TextPosition(offset: _weightController.text.length));
   }
 
   void _handleSave(ProfileViewModel model) async {
@@ -322,8 +348,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _documentController.text = model.document ?? '';
     _birthdateController.text = model.birthdate ?? '';
     _crefController.text = model.cref ?? '';
-    _heightController.text = model.height ?? '';
-    _weightController.text = model.weight ?? '';
+    _heightController.text = model.height;
+    _weightController.text = model.weight;
   }
 }
 
@@ -334,12 +360,15 @@ class NoModificationsDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final style = locator<Style>();
+
     return AlertDialog(
       title: const Text('Sem modificações'),
       content: const Text(
           'Realize alguma alteração nos seus dados para então salvar'),
       actions: [
-        TextButton(
+        ElevatedButton(
+            style: style.buttonAlertPrimary,
             onPressed: () => Navigator.of(context).pop(),
             child: const Text('OK'))
       ],

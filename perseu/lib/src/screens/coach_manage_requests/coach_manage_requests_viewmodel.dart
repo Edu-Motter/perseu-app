@@ -15,6 +15,7 @@ class CoachManageRequestsViewModel extends AppViewModel {
   ClientCoach clientCoach = locator<ClientCoach>();
 
   Future<Result<List<InviteDTO>>> getRequests(int teamId) async {
+    await Future.delayed(const Duration(seconds: 2));
     return await clientCoach.getRequests(teamId, authToken);
   }
 

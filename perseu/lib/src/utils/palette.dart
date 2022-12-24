@@ -70,28 +70,4 @@ class Palette {
     800: Color.fromRGBO(239, 239, 239, .9),
     900: Color.fromRGBO(239, 239, 239, 1),
   };
-
-  ButtonStyle get buttonStylePrimaryValid => ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(Palette.accent),
-        minimumSize: MaterialStateProperty.all(
-          const Size(104, 32),
-        ),
-      );
-
-  ButtonStyle get buttonStylePrimaryInvalid => ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(Palette.accent),
-        minimumSize: MaterialStateProperty.all(
-          const Size(104, 32),
-        ),
-      );
-
-  ButtonStyle get buttonStyleSecondary => ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(Colors.white),
-        side: MaterialStateProperty.all(
-          const BorderSide(color: Palette.primary, width: 2),
-        ),
-        minimumSize: MaterialStateProperty.all(
-          const Size(0, 32),
-        ),
-      );
 }

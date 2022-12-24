@@ -19,8 +19,8 @@ class ProfileViewModel extends AppViewModel {
   String? birthdate;
   String? document;
   String? cref;
-  String? weight;
-  String? height;
+  late String weight;
+  late String height;
 
   Map<String, Object?> userData = {};
   String get oldName => userData['name'] as String;
@@ -65,6 +65,8 @@ class ProfileViewModel extends AppViewModel {
 
     if (isCoach) {
       cref = userData['cref'] as String;
+      height = '0';
+      weight = '0';
     }
     if (isAthlete) {
       weight = Formatters.weight().maskText(userData['weight'].toString());
@@ -123,16 +125,16 @@ class ProfileViewModel extends AppViewModel {
   }
 
   int parsedWeight() {
-    if (weight != null) {
-      final String unmaskedWeight = Formatters.weight().unmaskText(weight!);
+    if (weight.isNotEmpty) {
+      final String unmaskedWeight = Formatters.weight().unmaskText(weight);
       return int.parse(unmaskedWeight);
     }
     return oldWeight;
   }
 
   int parsedHeight() {
-    if (height != null) {
-      final String unmaskedHeight = Formatters.height().unmaskText(height!);
+    if (height.isNotEmpty) {
+      final String unmaskedHeight = Formatters.height().unmaskText(height);
       return int.parse(unmaskedHeight);
     }
     return oldHeight;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:perseu/src/screens/manage_athletes/manage_athletes_screen.dart';
 import 'package:perseu/src/utils/palette.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +19,6 @@ class _ChangeTeamNameScreenState extends State<ChangeTeamNameScreen> {
   final TextEditingController _controller = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  static const backgroundColor = Colors.white;
   static const foregroundColor = Palette.primary;
 
   static const standardStyle = TextStyle(color: foregroundColor, fontSize: 16);
@@ -45,14 +45,14 @@ class _ChangeTeamNameScreenState extends State<ChangeTeamNameScreen> {
                   child: Column(
                     children: [
                       ClipRRect(
-                        borderRadius: const BorderRadius.all(Radius.circular(8)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(8)),
                         child: Container(
                           decoration: const BoxDecoration(
-                            color: Colors.white,
-                            border: Border(
-                              top: BorderSide(color: Palette.accent, width: 5)
-                            )
-                          ),
+                              color: Colors.white,
+                              border: Border(
+                                  top: BorderSide(
+                                      color: Palette.accent, width: 5))),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 20, horizontal: 8.0),
@@ -68,9 +68,12 @@ class _ChangeTeamNameScreenState extends State<ChangeTeamNameScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      const Divider(),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 8),
+                      const AccentDivider(
+                        accentColor: Palette.primary,
+                        dividerPadding: 0,
+                      ),
+                      const SizedBox(height: 8),
                       TextFormField(
                         controller: _controller,
                         onChanged: (value) => model.teamName = value,
@@ -87,7 +90,7 @@ class _ChangeTeamNameScreenState extends State<ChangeTeamNameScreen> {
                             errorText: 'O novo nome precisa ser informado'),
                       ),
                       const SizedBox(
-                        height: 16,
+                        height: 8,
                       ),
                       ElevatedButton(
                           style: ButtonStyle(
@@ -100,7 +103,8 @@ class _ChangeTeamNameScreenState extends State<ChangeTeamNameScreen> {
                               final result = await model.changeTeamName();
                               if (result.success) {
                                 model.updateTeamSession();
-                                UIHelper.showSuccess(context, result, pop: true);
+                                UIHelper.showSuccess(context, result,
+                                    pop: true);
                               } else {
                                 UIHelper.showError(context, result);
                               }

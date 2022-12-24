@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/services/foundation.dart';
+import 'package:perseu/src/states/style.dart';
 import 'package:perseu/src/utils/palette.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +22,8 @@ class CheckInDialog extends StatelessWidget {
       create: (context) => locator<CheckInDialogViewModel>(),
       child: Consumer<CheckInDialogViewModel>(
         builder: (context, model, child) {
+          final style = locator<Style>();
+
           return AlertDialog(
             title: Column(
               children: [
@@ -65,10 +68,12 @@ class CheckInDialog extends StatelessWidget {
               ],
             ),
             actions: [
-              TextButton(
+              ElevatedButton(
+                  style: style.buttonAlertSecondary,
                   onPressed: () => Navigator.of(context).pop(),
                   child: const Text('Cancelar')),
-              TextButton(
+              ElevatedButton(
+                style: style.buttonAlertPrimary,
                 onPressed: model.enabled
                     ? () async {
                         final navigator = Navigator.of(context);
@@ -81,12 +86,7 @@ class CheckInDialog extends StatelessWidget {
                         }
                       }
                     : null,
-                child: Text(
-                  'Enviar',
-                  style: TextStyle(
-                    color: model.enabled ? Palette.accent : Colors.grey,
-                  ),
-                ),
+                child: const Text('Enviar'),
               ),
             ],
           );
