@@ -33,6 +33,7 @@ import 'package:perseu/src/services/clients/client_firebase.dart';
 import 'package:perseu/src/services/clients/client_team.dart';
 import 'package:perseu/src/services/clients/client_training.dart';
 import 'package:perseu/src/services/clients/client_user.dart';
+import 'package:perseu/src/services/fcm_service.dart';
 import 'package:perseu/src/states/style.dart';
 import 'package:perseu/src/viewModels/login_view_model.dart';
 
@@ -72,6 +73,16 @@ Future<void> initializeLocator() async {
       return ClientFirebase();
     }
   });
+
+  locator.registerLazySingleton<FcmService>(() {
+    // ignore: dead_code
+    if (false /*mock*/) {
+      //
+    } else {
+      return FcmService();
+    }
+  });
+
 
   locator.registerLazySingleton<ClientAthlete>(() {
     // ignore: dead_code

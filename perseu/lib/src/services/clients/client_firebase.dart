@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/states/session.dart';
 
-class ClientFirebase {
+class ClientFirebase extends ApiHelper {
   final FirebaseFirestore clientFirestore = locator.get<FirebaseFirestore>();
+  final Dio dio = locator.get<Dio>();
 
   Future<Result> saveMessage(String message, UserSession session) async {
     String userName = 'Desconhecido';
@@ -80,5 +82,41 @@ class ClientFirebase {
     } catch (e) {
       return Result.error(message: e.toString());
     }
+  }
+
+  Future<Result> saveDeviceToken(
+    String deviceToken,
+    int userId,
+    String authToken,
+  ) async {
+    return process(
+      dio.post(
+        '/user/$userId/notification/token',
+        options: Options(
+          headers: {'Authorization': 'Bearer $authToken'},
+        ),
+        data: {'token': deviceToken},
+      ),
+      onSuccess: (response) => const Result.success(),
+      onError: (response) =>
+          const Result.error(message: 'Falha ao salvar device token'),
+    );
+  }
+
+  Future<Result<String>> getDeviceToken(
+    int userId,
+    String authToken,
+  ) async {
+    return process(
+      dio.get(
+        '/user/$userId/notification/token',
+        options: Options(
+          headers: {'Authorization': 'Bearer $authToken'},
+        ),
+      ),
+      onSuccess: (response) => Result.success(data: response.data['token']),
+      onError: (response) =>
+          const Result.error(message: 'Falha ao resgatar device token'),
+    );
   }
 }
