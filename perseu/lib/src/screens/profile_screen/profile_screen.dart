@@ -91,7 +91,7 @@ class _FormProfileState extends State<FormProfile> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  static const defaultPadding = 8.0;
+  static const defaultPadding = 12.0;
 
   @override
   void initState() {
@@ -104,7 +104,8 @@ class _FormProfileState extends State<FormProfile> {
     return ListView(
       children: [
         Padding(
-          padding: const EdgeInsets.all(defaultPadding),
+          padding: const EdgeInsets.symmetric(
+              vertical: defaultPadding, horizontal: 8),
           child: Form(
             key: _formKey,
             child: Column(
@@ -238,7 +239,7 @@ class _FormProfileState extends State<FormProfile> {
                         ? null
                         : () => _handleSave(widget.model),
                     child: const Text('Salvar')),
-                const SizedBox(height: defaultPadding),
+                const SizedBox(height: 8),
                 ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.white),
