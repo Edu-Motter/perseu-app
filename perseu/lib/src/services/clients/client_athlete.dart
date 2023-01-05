@@ -8,6 +8,8 @@ import 'package:perseu/src/models/dtos/training_dto.dart';
 import 'package:perseu/src/models/dtos/updated_athlete_dto.dart';
 import 'package:perseu/src/services/foundation.dart';
 
+import '../../models/dtos/group_name_dto.dart';
+
 class ClientAthlete with ApiHelper {
   final dio = locator.get<Dio>();
 
@@ -141,6 +143,26 @@ class ClientAthlete with ApiHelper {
       },
       onError: (response) =>
           const Result.error(message: 'Falha ao buscar check-ins'),
+    );
+  }
+
+
+  Future<Result<List<GroupNameDTO>>> getAthleteGroups(
+      String authToken,
+      int teamId,
+      ) {
+    return process(
+      dio.get(
+        '/team/$teamId/group',
+        options: Options(headers: {'Authorization': 'Bearer $authToken'}),
+      ),
+      onSuccess: (response) {
+        final data = response.data as List;
+        return Result.success(
+            data: data.map((e) => GroupNameDTO.fromJson(e)).toList());
+      },
+      onError: (response) =>
+      const Result.error(message: 'Falha ao buscar grupos'),
     );
   }
 }

@@ -121,17 +121,19 @@ class ListTitle extends StatelessWidget {
     Key? key,
     required this.text,
     this.dividerPadding = 8,
+    this.topPadding = 21,
   }) : super(key: key);
 
   final String text;
   final double dividerPadding;
+  final double topPadding;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(bottom: 16, top: 21),
+          padding: EdgeInsets.only(bottom: 16, top: topPadding),
           child: Text(
             text,
             style: const TextStyle(

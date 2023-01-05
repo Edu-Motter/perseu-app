@@ -14,7 +14,9 @@ import 'package:perseu/src/screens/chats/chats_viewmodel.dart';
 import 'package:perseu/src/screens/coach_assign_training/athletes_assign_training_viewmodel.dart';
 import 'package:perseu/src/screens/coach_home/coach_home_viewmodel.dart';
 import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_viewmodel.dart';
+import 'package:perseu/src/screens/group_details/group_details_viewmodel.dart';
 import 'package:perseu/src/screens/manage_athletes/manage_athletes_viewmodel.dart';
+import 'package:perseu/src/screens/manage_groups/manage_groups_viewmodel.dart';
 import 'package:perseu/src/screens/new_team/new_team_viewmodel.dart';
 import 'package:perseu/src/screens/profile_screen/profile_viewmodel.dart';
 import 'package:perseu/src/screens/sign_up/sign_up_viewmodel.dart';
@@ -154,10 +156,12 @@ Future<void> initializeLocator() async {
   locator.registerFactory<TrainingsByTeamViewModel>(() => TrainingsByTeamViewModel());
   locator.registerFactory<TrainingDetailsViewModel>(() => TrainingDetailsViewModel());
   locator.registerFactory<ManageAthletesViewModel>(() => ManageAthletesViewModel());
+  locator.registerFactory<ManageGroupsViewModel>(() => ManageGroupsViewModel());
   locator.registerFactory<AthleteTrainingsDetailsViewModel>(() => AthleteTrainingsDetailsViewModel());
   locator.registerFactory<TrainingToAthleteViewModel>(() => TrainingToAthleteViewModel());
   locator.registerFactory<CheckInDialogViewModel>(() => CheckInDialogViewModel());
   locator.registerFactory<AthleteChecksViewModel>(() => AthleteChecksViewModel());
+  locator.registerFactory<GroupDetailsViewModel>(() => GroupDetailsViewModel());
 
   initializeDateFormatting();
 }

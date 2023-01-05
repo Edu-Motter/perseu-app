@@ -133,21 +133,22 @@ class SecondColumnMenuItems extends StatelessWidget {
         const SizedBox(height: 24),
         MenuButton(
           text: 'Gerenciar Atletas',
-          icon: Icons.group_outlined,
+          icon: Icons.model_training,
           onPressed: () =>
               Navigator.of(context).pushNamed(Routes.manageAthletes),
+        ),
+        const SizedBox(height: 24),
+        MenuButton(
+          text: 'Gerenciar Grupos',
+          icon: Icons.group_outlined,
+          onPressed: () =>
+              Navigator.of(context).pushNamed(Routes.manageGroups),
         ),
         const SizedBox(height: 24),
         MenuButton(
           text: 'Gerenciar Perfil',
           icon: Icons.person_outline,
           onPressed: () => Navigator.of(context).pushNamed(Routes.profile),
-        ),
-        const SizedBox(height: 24),
-        MenuButton(
-          text: 'Placeholder',
-          icon: Icons.cancel_outlined,
-          onPressed: () {},
         ),
       ],
     );

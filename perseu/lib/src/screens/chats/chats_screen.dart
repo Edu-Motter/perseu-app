@@ -4,7 +4,9 @@ import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/components/widgets/center_error.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
+import 'package:perseu/src/models/dtos/group_name_dto.dart';
 import 'package:perseu/src/screens/user_chat/user_chat_screen.dart';
+import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/utils/palette.dart';
 import 'package:provider/provider.dart';
 
@@ -27,56 +29,99 @@ class ChatsScreen extends StatelessWidget {
             floatingActionButton: FloatingActionButton(
               backgroundColor: Palette.accent,
               child: const Icon(Icons.add, size: 28),
-              onPressed: () =>
-                  Navigator.pushNamed(context, Routes.usersToChat),
+              onPressed: () => Navigator.pushNamed(context, Routes.usersToChat),
             ),
-            body: Column(
-              children: [
-                ListTile(
-                  leading: const CircleAvatar(
-                    child: Text(
-                      'E',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    backgroundColor: Palette.secondary,
+            body: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Stack(
+                    children: [
+                      Visibility(
+                        visible: model.isTeamChatVisible,
+                        child: ListTile(
+                          leading: const CircleAvatar(
+                            child: Text(
+                              'E',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            backgroundColor: Palette.secondary,
+                          ),
+                          title: const Text('Equipe'),
+                          subtitle: StreamBuilder(
+                            stream: FirebaseFirestore.instance
+                                .collection('teams')
+                                .doc(model.teamId.toString())
+                                .snapshots(),
+                            builder: (context,
+                                AsyncSnapshot<DocumentSnapshot> snapshot) {
+                              if (snapshot.hasData) {
+                                String lastMessage = 'Inicie a conversa';
+                                if (snapshot.data!.exists) {
+                                  lastMessage =
+                                      snapshot.data!.get('lastMessage');
+                                }
+                                return Text(
+                                  lastMessage,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                );
+                              }
+                              return const CircularLoading();
+                            },
+                          ),
+                          onTap: () =>
+                              Navigator.pushNamed(context, Routes.teamChat),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Visibility(
+                              visible: !model.isTeamChatVisible,
+                              child: const Padding(
+                                padding: EdgeInsets.only(left: 8.0),
+                                child: Text(
+                                  'Equipe',
+                                  style: TextStyle(
+                                    color: Palette.primary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () => model.changeTeamChatVisibility(),
+                              child: _getIcon(model.isTeamChatVisible),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  title: const Text('Equipe'),
-                  subtitle: StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection('teams')
-                        .doc(model.teamId.toString())
-                        .snapshots(),
-                    builder:
-                        (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                      if (snapshot.hasData) {
-                        String lastMessage = 'Inicie a conversa';
-                        if(snapshot.data!.exists) {
-                          lastMessage = snapshot.data!.get('lastMessage');
-                        }
-                        return Text(
-                          lastMessage,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        );
-                      }
-                      return const CircularLoading();
-                    },
-                  ),
-                  onTap: () => Navigator.pushNamed(context, Routes.teamChat),
                 ),
-                Expanded(
-                  child: StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection('users')
-                        .doc(model.userId.toString())
-                        .collection('chats')
-                        .snapshots(),
-                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.hasData) {
-                        if (snapshot.data!.docs.isNotEmpty) {
-                          return ListView.builder(
-                            itemCount: snapshot.data!.docs.length,
-                            itemBuilder: (context, index) {
+                const SliverToBoxAdapter(
+                  child: Divider(),
+                ),
+                SliverToBoxAdapter(
+                  child: _buildGroupsTiles(model),
+                ),
+                const SliverToBoxAdapter(
+                  child: Divider(),
+                ),
+                StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(model.userId.toString())
+                      .collection('chats')
+                      .snapshots(),
+                  builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasData) {
+                      if (snapshot.data!.docs.isNotEmpty) {
+                        return SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) {
                               final String friendIdString =
                                   snapshot.data!.docs[index].id;
                               final int? friendId =
@@ -85,22 +130,26 @@ class ChatsScreen extends StatelessWidget {
                                   snapshot.data!.docs[index]['lastMessage'];
                               return FutureBuilder(
                                 future: model.getFriendName(friendId!),
-                                builder: (context, AsyncSnapshot<String> snapshot){
-                                  switch(snapshot.connectionState){
+                                builder:
+                                    (context, AsyncSnapshot<String> snapshot) {
+                                  switch (snapshot.connectionState) {
                                     case ConnectionState.none:
                                     case ConnectionState.waiting:
                                     case ConnectionState.active:
                                       return const CircularLoading();
                                     case ConnectionState.done:
-                                      if (snapshot.hasData){
-                                        String friendName = snapshot.data ?? 'Não encontrado';
+                                      if (snapshot.hasData) {
+                                        String friendName =
+                                            snapshot.data ?? 'Não encontrado';
                                         return ListTile(
                                             leading: CircleAvatar(
                                               child: Text(
                                                 getCircleLetters(friendName),
-                                                style: const TextStyle(color: Colors.white),
+                                                style: const TextStyle(
+                                                    color: Colors.white),
                                               ),
-                                              backgroundColor: Palette.secondary,
+                                              backgroundColor:
+                                                  Palette.secondary,
                                             ),
                                             title: Text(friendName),
                                             subtitle: Text(
@@ -112,7 +161,8 @@ class ChatsScreen extends StatelessWidget {
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
-                                                  builder: (context) => UsersChatScreen(
+                                                  builder: (context) =>
+                                                      UsersChatScreen(
                                                     friendId: friendId,
                                                     friendName: friendName,
                                                   ),
@@ -120,28 +170,33 @@ class ChatsScreen extends StatelessWidget {
                                               );
                                             });
                                       } else {
-                                        return const CenterError(message: 'Não encontrado');
+                                        return const CenterError(
+                                            message: 'Não encontrado');
                                       }
                                   }
                                 },
                               );
                             },
-                          );
-                        } else {
-                          return Column(
-                            children: const  [
+                            childCount: snapshot.data!.docs.length,
+                          ),
+                        );
+                      } else {
+                        return SliverToBoxAdapter(
+                          child: Column(
+                            children: const [
                               Divider(),
                               Padding(
                                 padding: EdgeInsets.all(8.0),
-                                child: Text('Nenhum chat individual encontrado'),
+                                child:
+                                    Text('Nenhum chat individual encontrado'),
                               ),
                             ],
-                          );
-                        }
+                          ),
+                        );
                       }
-                      return const CircularLoading();
-                    },
-                  ),
+                    }
+                    return const SliverToBoxAdapter(child: CircularLoading());
+                  },
                 ),
               ],
             ),
@@ -149,6 +204,14 @@ class ChatsScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Icon _getIcon(bool visible) {
+    if (visible) {
+      return const Icon(Icons.arrow_drop_up, color: Palette.secondary);
+    }
+
+    return const Icon(Icons.arrow_drop_down, color: Palette.secondary);
   }
 
   static String getCircleLetters(String name) {
@@ -164,5 +227,104 @@ class ChatsScreen extends StatelessWidget {
 
   static String getFirstCharacter(String string) {
     return string.substring(0, 1).toUpperCase();
+  }
+
+  Widget _buildGroupsTiles(ChatsViewModel model) {
+    return FutureBuilder(
+      future: model.getUserGroups(),
+      builder: (context, AsyncSnapshot<Result<List<GroupNameDTO>>> snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+          case ConnectionState.waiting:
+          case ConnectionState.active:
+            return const CircularLoading();
+          case ConnectionState.done:
+            if (snapshot.data!.error) {
+              return ListTile(
+                  leading: const CircleAvatar(
+                    child: Text(
+                      'E',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    backgroundColor: Palette.secondary,
+                  ),
+                  title: const Text('Grupos'),
+                  subtitle: const Text('Não foi possível carregar os grupos'),
+                  onTap: () {});
+            }
+            final List<GroupNameDTO> groups = snapshot.data!.data!;
+            return Stack(
+              children: [
+                Visibility(
+                  visible: model.isGroupsChatVisible,
+                  child: Column(
+                    children: [
+                      for (GroupNameDTO group in groups)
+                        ListTile(
+                          leading: CircleAvatar(
+                            child: Text(
+                              getCircleLetters(group.name),
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            backgroundColor: Palette.secondary,
+                          ),
+                          title: Text(group.name),
+                          subtitle: StreamBuilder(
+                            stream: FirebaseFirestore.instance
+                                .collection('groups')
+                                .doc(group.id.toString())
+                                .snapshots(),
+                            builder: (context,
+                                AsyncSnapshot<DocumentSnapshot> snapshot) {
+                              if (snapshot.hasData) {
+                                String lastMessage = 'Inicie a conversa';
+                                if (snapshot.data!.exists) {
+                                  lastMessage =
+                                      snapshot.data!.get('lastMessage');
+                                }
+                                return Text(
+                                  lastMessage,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                );
+                              }
+                              return const CircularLoading();
+                            },
+                          ),
+                          onTap: () {},
+                        ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Visibility(
+                        visible: !model.isGroupsChatVisible,
+                        child: const Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: Text(
+                            'Grupos',
+                            style: TextStyle(
+                              color: Palette.primary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => model.changeGroupsChatVisibility(),
+                        child: _getIcon(model.isGroupsChatVisible),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+        }
+      },
+    );
   }
 }
