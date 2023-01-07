@@ -8,28 +8,28 @@ class DateFormatters {
 
   static String toTime(DateTime inputDate) {
     final DateFormat dateTimeFormatter = DateFormat(time);
-    return dateTimeFormatter.format(inputDate);
+    return dateTimeFormatter.format(inputDate.toLocal());
   }
 
   static String toDateString(String inputIsoInstant) {
     final DateFormat isoInstantFormatter = DateFormat(isoInstant);
     final DateFormat dateFormatter = DateFormat(date);
     final DateTime parsedDate = isoInstantFormatter.parse(inputIsoInstant, true);
-    return dateFormatter.format(parsedDate);
+    return dateFormatter.format(parsedDate.toLocal());
   }
 
   static String toDateTimeString(String inputIsoInstant) {
     final DateFormat isoInstantFormatter = DateFormat(isoInstant);
     final DateFormat dateFormatter = DateFormat(dateTime);
     final DateTime parsedDate = isoInstantFormatter.parse(inputIsoInstant, true);
-    return dateFormatter.format(parsedDate);
+    return dateFormatter.format(parsedDate.toLocal());
   }
 
   static String toTimeString(String inputIsoInstant) {
     final DateFormat isoInstantFormatter = DateFormat(isoInstant);
     final DateFormat timeFormatter = DateFormat(time);
     final DateTime parsedDate = isoInstantFormatter.parse(inputIsoInstant, true);
-    return timeFormatter.format(parsedDate);
+    return timeFormatter.format(parsedDate.toLocal());
   }
 
   static String toIsoInstant(String inputDate) {
