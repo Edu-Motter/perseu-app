@@ -28,17 +28,17 @@ class ClientTraining with ApiHelper {
   Future<Result> assignTraining(
     List<int> athletesIds,
     int trainingId,
-    String jwt,
+    String authToken,
   ) async {
     return process(
-        dio.post('/training/$trainingId',
-            data: jsonEncode({'athletes': athletesIds}),
-            options: Options(headers: {'Authorization': 'Bearer $jwt'})),
-        onSuccess: (response) {
-          return const Result.success(message: 'Treino atribuído com sucesso');
-        },
-        onError: (response) =>
-            const Result.error(message: 'Falha ao atribuir treino'));
+      dio.post('/training/$trainingId',
+          data: {'athletes': athletesIds},
+          options: Options(headers: {'Authorization': 'Bearer $authToken'})),
+      onSuccess: (response) =>
+          const Result.success(message: 'Treino atribuído com sucesso'),
+      onError: (response) =>
+          const Result.error(message: 'Falha ao atribuir treino'),
+    );
   }
 
   Future<Result> checkIn(

@@ -111,13 +111,8 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
                         onPressed: () {
                           Navigator.of(context)
                               .pushNamed(Routes.newSession)
-                              .then((sessionFuture) {
-                            SessionModel session =
-                                sessionFuture as SessionModel;
-                            setState(() {
-                              training.sessions.add(session);
-                            });
-                          });
+                              .then((sessionFuture) =>
+                                  _handleAddSession(sessionFuture));
                         },
                         child: const Text('Adicionar sessão')),
                   )
@@ -180,7 +175,8 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
                         session.name,
                         style: const TextStyle(
                             fontSize: 18,
-                            color: Palette.primary, fontWeight: FontWeight.w500),
+                            color: Palette.primary,
+                            fontWeight: FontWeight.w500),
                       ),
                       children: [
                         for (ExerciseModel e in session.exercises)
@@ -194,5 +190,13 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
                 );
               }),
     );
+  }
+
+  void _handleAddSession(sessionFuture) {
+    if (sessionFuture == null) return;
+    SessionModel session = sessionFuture as SessionModel;
+    setState(() {
+      training.sessions.add(session);
+    });
   }
 }

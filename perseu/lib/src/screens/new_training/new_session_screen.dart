@@ -123,82 +123,113 @@ class _NewSessionState extends State<NewSessionScreen> {
               ),
             ),
             Flexible(
-              child: ListView.builder(
-                  padding: const EdgeInsets.only(bottom: 56),
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: sessionModel.exercises.length,
-                  itemBuilder: (context, index) {
-                    ExerciseModel exercise = sessionModel.exercises[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0, vertical: 6.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            border: Border(
-                              top: BorderSide(color: Palette.accent, width: 5),
-                            ),
+              child: sessionModel.exercises.isEmpty
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                              'Crie um exercício em "Adicionar exercício"'),
+                          const SizedBox(
+                            height: 16,
                           ),
-                          child: ListTile(
-                            contentPadding: const EdgeInsets.all(8),
-                            title: Text(
-                              exercise.name,
-                              style: const TextStyle(
-                                color: Palette.primary,
-                                fontWeight: FontWeight.bold,
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 32.0),
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pushNamed(Routes.newExercise)
+                                      .then((exerciseFuture) => _handleAddExercise(exerciseFuture as ExerciseModel, 0)
+                                    );
+                                },
+                                child: const Text('Adicionar exercício')),
+                          )
+                        ],
+                      ))
+                  : ListView.builder(
+                      padding: const EdgeInsets.only(bottom: 56),
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: sessionModel.exercises.length,
+                      itemBuilder: (context, index) {
+                        ExerciseModel exercise = sessionModel.exercises[index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 6.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                border: Border(
+                                  top: BorderSide(
+                                      color: Palette.accent, width: 5),
+                                ),
+                              ),
+                              child: ListTile(
+                                contentPadding: const EdgeInsets.all(8),
+                                title: Text(
+                                  exercise.name,
+                                  style: const TextStyle(
+                                    color: Palette.primary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  exercise.description,
+                                  style:
+                                      const TextStyle(color: Palette.secondary),
+                                ),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.edit,
+                                        color: Palette.accent,
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                                builder: (_) =>
+                                                    NewExerciseScreen(
+                                                        exerciseModel:
+                                                            exercise)))
+                                            .then((exerciseFuture) =>
+                                          _handleAddExercise(exerciseFuture, index)
+                                        );
+                                      },
+                                    ),
+                                    IconButton(
+                                        icon: const Icon(
+                                          Icons.delete,
+                                          color: Palette.accent,
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            sessionModel.exercises
+                                                .removeAt(index);
+                                          });
+                                        }),
+                                  ],
+                                ),
                               ),
                             ),
-                            subtitle: Text(
-                              exercise.description,
-                              style: const TextStyle(color: Palette.secondary),
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.edit,
-                                    color: Palette.accent,
-                                  ),
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                            builder: (_) => NewExerciseScreen(
-                                                exerciseModel: exercise)))
-                                        .then((exerciseFuture) {
-                                      ExerciseModel exerciseModel =
-                                          exerciseFuture as ExerciseModel;
-                                      setState(() {
-                                        sessionModel.exercises.removeWhere(
-                                            (e) => e.id == exerciseModel.id);
-                                        sessionModel.exercises
-                                            .insert(index, exerciseModel);
-                                      });
-                                    });
-                                  },
-                                ),
-                                IconButton(
-                                    icon: const Icon(
-                                      Icons.delete,
-                                      color: Palette.accent,
-                                    ),
-                                    onPressed: () {
-                                      setState(() {
-                                        sessionModel.exercises.removeAt(index);
-                                      });
-                                    }),
-                              ],
-                            ),
                           ),
-                        ),
-                      ),
-                    );
-                  }),
+                        );
+                      }),
             )
           ],
         ));
+  }
+
+  void _handleAddExercise(ExerciseModel exerciseFuture, index) {
+    ExerciseModel exerciseModel = exerciseFuture;
+    setState(() {
+      sessionModel.exercises.removeWhere((e) => e.id == exerciseModel.id);
+      sessionModel.exercises.insert(index, exerciseModel);
+    });
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/components/widgets/center_error.dart';
@@ -11,7 +13,6 @@ import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/utils/palette.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
-import 'dart:math' as math;
 
 import 'training_to_athlete_viewmodel.dart';
 
@@ -114,41 +115,48 @@ class TrainingsListToAssign extends StatelessWidget {
         final TrainingByTeamDTO training = trainings[index];
         return Card(
           child: ListTile(
-            title: Text(
-              training.name,
-              style: const TextStyle(
-                color: Palette.primary,
-                fontWeight: FontWeight.bold,
+              title: Text(
+                training.name,
+                style: const TextStyle(
+                  color: Palette.primary,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            trailing: Transform(
-              alignment: Alignment.center,
-              transform: Matrix4.rotationY(math.pi),
-              child: const Icon(
-                Icons.reply,
-                color: Palette.secondary,
+              trailing: Transform(
+                alignment: Alignment.center,
+                transform: Matrix4.rotationY(math.pi),
+                child: const Icon(
+                  Icons.reply,
+                  color: Palette.secondary,
+                ),
               ),
-            ),
-            onTap: () => UIHelper.showBoolDialog(
-              context: context,
-              title: 'Atribuindo Treino',
-              message:
-                  'Tem certeza que deseja atribuir o treino ${training.name} para $athleteName?',
-              onNoPressed: () => Navigator.pop(context),
-              onYesPressed: () async {
-                final navigator = Navigator.of(context);
-                final result =
-                    await model.assignTraining(athleteId, training.id);
-                if (result.success) {
-                  navigator.pop();
-                  UIHelper.showSuccess(context, result);
-                } else {
-                  navigator.pop();
-                  UIHelper.showError(context, result);
-                }
-              },
-            ),
-          ),
+              onTap: () => UIHelper.showBoolDialog(
+                    context: context,
+                    title: 'Atribuindo Treino',
+                    message:
+                        'Tem certeza que deseja atribuir o treino ${training.name} para $athleteName?',
+                    onNoPressed: () => Navigator.pop(context),
+                    onYesPressed: () async {
+                      final navigator = Navigator.of(context);
+                      final result =
+                          await model.assignTraining(athleteId, training.id);
+                      if (result.success) {
+                        navigator.pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => AthleteTrainingsDetailsScreen(
+                                athleteId: athleteId, athleteName: athleteName),
+                          ),
+                          (route) {
+                            return route.settings.name == 'coach-home';
+                          },
+                        );
+                        UIHelper.showSuccess(context, result);
+                      } else {
+                        navigator.pop();
+                        UIHelper.showError(context, result);
+                      }
+                    },
+                  )),
         );
       },
     );

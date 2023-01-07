@@ -30,6 +30,7 @@ class _NewExerciseState extends State<NewExerciseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Palette.background,
         appBar: AppBar(
           title: widget.hasExercise
@@ -39,24 +40,54 @@ class _NewExerciseState extends State<NewExerciseScreen> {
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(children: [
-            TextField(
+            TextFormField(
               controller: _exerciseNameController,
+              style: const TextStyle(color: Palette.primary),
               decoration: const InputDecoration(
-                labelText: 'Nome do Exercício',
+                fillColor: Colors.white,
+                filled: true,
+                border: OutlineInputBorder(),
+                hintText: 'Nome do exercício',
+                labelText: 'Nome do exercício',
               ),
             ),
-            TextField(
+            const SizedBox(height: 8),
+            TextFormField(
               controller: _exerciseDescriptionController,
+              style: const TextStyle(color: Palette.primary),
               keyboardType: TextInputType.multiline,
-              maxLines: null,
+              minLines: 6,
+              maxLines: 6,
               decoration: const InputDecoration(
-                labelText: 'Descrição do Exercício',
+                fillColor: Colors.white,
+                filled: true,
+                border: OutlineInputBorder(),
+                hintText: 'Descrição do exercício',
+                labelText: 'Descrição do exercício',
               ),
             ),
             Expanded(
                 child: Container(
               color: Palette.background,
             )),
+            ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                  shape: MaterialStateProperty.all(
+                    const RoundedRectangleBorder(
+                      side: BorderSide(color: Palette.accent, width: 2),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(4),
+                      ),
+                    ),
+                  ),
+                ),
+                onPressed: () {},
+                child: const Text(
+                  'Salvar e novo',
+                  style: TextStyle(color: Palette.accent),
+                )),
+            const SizedBox(height: 8),
             ElevatedButton(
                 onPressed: () {
                   String exerciseName = _exerciseNameController.text;
@@ -71,8 +102,7 @@ class _NewExerciseState extends State<NewExerciseScreen> {
                     Navigator.of(context).pop(exerciseModel);
                   }
                 },
-                child: const Text('Salvar exercício',
-                    style: TextStyle(fontSize: 16)))
+                child: const Text('Salvar', style: TextStyle(fontSize: 16)))
           ]),
         ));
   }

@@ -16,9 +16,8 @@ class TrainingToAthleteViewModel extends AppViewModel {
     return clientCoach.getTrainings(authToken, teamId);
   }
 
-  Future<Result> assignTraining(int trainingId, int athleteId) async {
-    await Future.delayed(const Duration(seconds: 2));
-    final result = await clientTraining.assignTraining([athleteId], trainingId, authToken);
-    return result;
+  Future<Result> assignTraining(int athleteId, int trainingId) async {
+    await Future.delayed(const Duration(milliseconds: 250));
+    return await clientTraining.assignTraining([athleteId], trainingId, authToken);
   }
 }

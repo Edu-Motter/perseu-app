@@ -16,7 +16,7 @@ import 'athlete_trainings_details_viewmodel.dart';
 import 'components/athlete_information_with_icons.dart';
 import 'dart:math' as math;
 
-class AthleteTrainingsDetailsScreen extends StatelessWidget {
+class AthleteTrainingsDetailsScreen extends StatefulWidget {
   const AthleteTrainingsDetailsScreen({
     Key? key,
     required this.athleteId,
@@ -26,6 +26,13 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
   final int athleteId;
   final String athleteName;
 
+  @override
+  State<AthleteTrainingsDetailsScreen> createState() =>
+      _AthleteTrainingsDetailsScreenState();
+}
+
+class _AthleteTrainingsDetailsScreenState
+    extends State<AthleteTrainingsDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<AthleteTrainingsDetailsViewModel>(
@@ -51,17 +58,19 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => TrainingToAthleteScreen(
-                    athleteName: athleteName,
-                    athleteId: athleteId,
+                    athleteName: widget.athleteName,
+                    athleteId: widget.athleteId,
                   ),
                 ),
-              ),
+              ).then((value) {
+                if (value != null && value) setState(() {});
+              }),
             ),
             body: CustomScrollView(
               slivers: [
                 SliverToBoxAdapter(
                   child: FutureBuilder(
-                    future: model.getAthleteInfo(athleteId),
+                    future: model.getAthleteInfo(widget.athleteId),
                     builder: (context,
                         AsyncSnapshot<Result<AthleteInfoDTO>> snapshot) {
                       switch (snapshot.connectionState) {
@@ -93,7 +102,7 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
                 ),
                 SliverToBoxAdapter(
                   child: FutureBuilder(
-                    future: model.getCurrentTraining(athleteId),
+                    future: model.getCurrentTraining(widget.athleteId),
                     builder:
                         (context, AsyncSnapshot<Result<TrainingDTO>> snapshot) {
                       switch (snapshot.connectionState) {
@@ -152,7 +161,7 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
                 ),
                 SliverToBoxAdapter(
                   child: FutureBuilder(
-                    future: model.isJustOneTraining(athleteId),
+                    future: model.isJustOneTraining(widget.athleteId),
                     builder: (context, AsyncSnapshot<bool> snapshot) {
                       switch (snapshot.connectionState) {
                         case ConnectionState.none:
@@ -193,7 +202,7 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
     AthleteTrainingsDetailsViewModel model,
   ) {
     return FutureBuilder(
-      future: model.getActiveTrainings(athleteId),
+      future: model.getActiveTrainings(widget.athleteId),
       builder: (
         context,
         AsyncSnapshot<Result<Object?>> snapshot,
@@ -232,13 +241,13 @@ class AthleteTrainingsDetailsScreen extends StatelessWidget {
                                     context: context,
                                     title: 'Desativar treino',
                                     message:
-                                        'Tem certeza que deseja desativar o treino ${activeTraining.training.name} para $athleteName?',
+                                        'Tem certeza que deseja desativar o treino ${activeTraining.training.name} para ${widget.athleteName}?',
                                     onNoPressed: () => Navigator.pop(context),
                                     onYesPressed: () async {
                                       final navigator = Navigator.of(context);
                                       final result =
                                           await model.deactivateTraining(
-                                              athleteId,
+                                              widget.athleteId,
                                               activeTraining.training.id);
                                       if (result.success) {
                                         navigator.pop();
