@@ -5,6 +5,7 @@ import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/models/dtos/athlete_dto.dart';
 import 'package:perseu/src/models/dtos/group_dto.dart';
 import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_screen.dart';
+import 'package:perseu/src/screens/group_chat/group_chat_screen.dart';
 import 'package:perseu/src/screens/group_details/group_details_viewmodel.dart';
 import 'package:perseu/src/screens/manage_athletes/manage_athletes_screen.dart';
 import 'package:perseu/src/services/foundation.dart';
@@ -31,6 +32,17 @@ class GroupDetailsScreen extends StatelessWidget {
             backgroundColor: Palette.background,
             appBar: AppBar(
               title: Text(groupName),
+            ),
+            floatingActionButton: FloatingActionButton(
+              backgroundColor: Palette.accent,
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      GroupChatScreen(groupId: groupId, groupName: groupName),
+                ),
+              ),
+              child: const Icon(Icons.chat),
             ),
             body: FutureBuilder(
               future: model.getGroupDetails(groupId),

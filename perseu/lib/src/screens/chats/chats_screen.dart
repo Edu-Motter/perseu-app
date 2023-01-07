@@ -5,6 +5,7 @@ import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/components/widgets/center_error.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/models/dtos/group_name_dto.dart';
+import 'package:perseu/src/screens/group_chat/group_chat_screen.dart';
 import 'package:perseu/src/screens/user_chat/user_chat_screen.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/utils/palette.dart';
@@ -38,56 +39,54 @@ class ChatsScreen extends StatelessWidget {
                     children: [
                       Visibility(
                         visible: model.isTeamChatVisible,
-                        child: ListTile(
-                          leading: const CircleAvatar(
-                            child: Text(
-                              'E',
-                              style: TextStyle(color: Colors.white),
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 24.0),
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              child: Text(
+                                getCircleLetters(model.teamName),
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              backgroundColor: Palette.secondary,
                             ),
-                            backgroundColor: Palette.secondary,
-                          ),
-                          title: const Text('Equipe'),
-                          subtitle: StreamBuilder(
-                            stream: FirebaseFirestore.instance
-                                .collection('teams')
-                                .doc(model.teamId.toString())
-                                .snapshots(),
-                            builder: (context,
-                                AsyncSnapshot<DocumentSnapshot> snapshot) {
-                              if (snapshot.hasData) {
-                                String lastMessage = 'Inicie a conversa';
-                                if (snapshot.data!.exists) {
-                                  lastMessage =
-                                      snapshot.data!.get('lastMessage');
+                            title: Text(model.teamName),
+                            subtitle: StreamBuilder(
+                              stream: FirebaseFirestore.instance
+                                  .collection('teams')
+                                  .doc(model.teamId.toString())
+                                  .snapshots(),
+                              builder: (context,
+                                  AsyncSnapshot<DocumentSnapshot> snapshot) {
+                                if (snapshot.hasData) {
+                                  String lastMessage =
+                                      handleLastMessage(snapshot.data, model);
+                                  return Text(
+                                    lastMessage,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  );
                                 }
-                                return Text(
-                                  lastMessage,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                );
-                              }
-                              return const CircularLoading();
-                            },
+                                return const CircularLoading();
+                              },
+                            ),
+                            onTap: () =>
+                                Navigator.pushNamed(context, Routes.teamChat),
                           ),
-                          onTap: () =>
-                              Navigator.pushNamed(context, Routes.teamChat),
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 4),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Visibility(
-                              visible: !model.isTeamChatVisible,
-                              child: const Padding(
-                                padding: EdgeInsets.only(left: 8.0),
-                                child: Text(
-                                  'Equipe',
-                                  style: TextStyle(
-                                    color: Palette.primary,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                            const Padding(
+                              padding: EdgeInsets.only(left: 8.0),
+                              child: Text(
+                                'Equipe',
+                                style: TextStyle(
+                                  color: Palette.primary,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
@@ -126,8 +125,8 @@ class ChatsScreen extends StatelessWidget {
                                   snapshot.data!.docs[index].id;
                               final int? friendId =
                                   int.tryParse(friendIdString);
-                              final String lastMessage =
-                                  snapshot.data!.docs[index]['lastMessage'];
+                              final String lastMessage = handleLastMessage(
+                                  snapshot.data!.docs[index], model);
                               return FutureBuilder(
                                 future: model.getFriendName(friendId!),
                                 builder:
@@ -208,10 +207,12 @@ class ChatsScreen extends StatelessWidget {
 
   Icon _getIcon(bool visible) {
     if (visible) {
-      return const Icon(Icons.arrow_drop_up, color: Palette.secondary);
+      return const Icon(Icons.keyboard_arrow_up_rounded,
+          color: Palette.secondary);
     }
 
-    return const Icon(Icons.arrow_drop_down, color: Palette.secondary);
+    return const Icon(Icons.keyboard_arrow_down_rounded,
+        color: Palette.secondary);
   }
 
   static String getCircleLetters(String name) {
@@ -257,43 +258,49 @@ class ChatsScreen extends StatelessWidget {
               children: [
                 Visibility(
                   visible: model.isGroupsChatVisible,
-                  child: Column(
-                    children: [
-                      for (GroupNameDTO group in groups)
-                        ListTile(
-                          leading: CircleAvatar(
-                            child: Text(
-                              getCircleLetters(group.name),
-                              style: const TextStyle(color: Colors.white),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 24.0),
+                    child: Column(
+                      children: [
+                        for (GroupNameDTO group in groups)
+                          ListTile(
+                            leading: CircleAvatar(
+                              child: Text(
+                                getCircleLetters(group.name),
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              backgroundColor: Palette.secondary,
                             ),
-                            backgroundColor: Palette.secondary,
-                          ),
-                          title: Text(group.name),
-                          subtitle: StreamBuilder(
-                            stream: FirebaseFirestore.instance
-                                .collection('groups')
-                                .doc(group.id.toString())
-                                .snapshots(),
-                            builder: (context,
-                                AsyncSnapshot<DocumentSnapshot> snapshot) {
-                              if (snapshot.hasData) {
-                                String lastMessage = 'Inicie a conversa';
-                                if (snapshot.data!.exists) {
-                                  lastMessage =
-                                      snapshot.data!.get('lastMessage');
+                            title: Text(group.name),
+                            subtitle: StreamBuilder(
+                              stream: FirebaseFirestore.instance
+                                  .collection('groups')
+                                  .doc(group.id.toString())
+                                  .snapshots(),
+                              builder: (context,
+                                  AsyncSnapshot<DocumentSnapshot> snapshot) {
+                                if (snapshot.hasData) {
+                                  String lastMessage =
+                                      handleLastMessage(snapshot.data, model);
+                                  return Text(
+                                    lastMessage,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  );
                                 }
-                                return Text(
-                                  lastMessage,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                );
-                              }
-                              return const CircularLoading();
-                            },
+                                return const CircularLoading();
+                              },
+                            ),
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: ((context) => GroupChatScreen(
+                                    groupId: group.id, groupName: group.name)),
+                              ),
+                            ),
                           ),
-                          onTap: () {},
-                        ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 Padding(
@@ -301,16 +308,13 @@ class ChatsScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Visibility(
-                        visible: !model.isGroupsChatVisible,
-                        child: const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
-                          child: Text(
-                            'Grupos',
-                            style: TextStyle(
-                              color: Palette.primary,
-                              fontWeight: FontWeight.bold,
-                            ),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 8.0),
+                        child: Text(
+                          'Grupos',
+                          style: TextStyle(
+                            color: Palette.primary,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
@@ -326,5 +330,26 @@ class ChatsScreen extends StatelessWidget {
         }
       },
     );
+  }
+
+  String handleLastMessage(DocumentSnapshot? data, ChatsViewModel model) {
+    if (data == null || !(data.exists)) return 'Inicie a conversa';
+
+    String lastMessage = data.get('lastMessage');
+
+    int? messageUserId;
+    try {
+      data.get('userId');
+      messageUserId = int.tryParse(data.get('userId'));
+    } catch (e) {
+      return lastMessage;
+    }
+
+    if (messageUserId == model.userId) {
+      var index = lastMessage.indexOf(':');
+      lastMessage = lastMessage.replaceRange(0, index, 'Você');
+    }
+
+    return lastMessage;
   }
 }

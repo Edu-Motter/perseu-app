@@ -22,7 +22,7 @@ class FcmService {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
-      final session = locator<PersistentSession>();
+      final session = locator<Session>();
       final userId = session.userSession!.user.id;
       final authToken = session.authToken!;
 

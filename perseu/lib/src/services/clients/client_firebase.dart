@@ -25,10 +25,43 @@ class ClientFirebase extends ApiHelper {
         'message': message,
         'date': DateTime.now(),
         'userId': session.user.email,
+      }).then((_) =>
+              FirebaseFirestore.instance.collection('teams').doc(teamId).set({
+                'lastMessage': '$userName: $message',
+                'userId': session.user.id.toString(),
+              }));
+      return const Result.success();
+    } catch (e) {
+      return Result.error(message: e.toString());
+    }
+  }
+
+  Future<Result> saveMessageGroup({
+    required String message,
+    required int groupId,
+    required UserSession session,
+  }) async {
+    String userName = 'Desconhecido';
+    if (session.isAthlete) userName = session.athlete!.name;
+    if (session.isCoach) userName = session.coach!.name;
+
+    try {
+      await clientFirestore
+          .collection('groups')
+          .doc(groupId.toString())
+          .collection('chat')
+          .add({
+        'userName': userName,
+        'message': message,
+        'date': DateTime.now(),
+        'userId': session.user.id,
       }).then((_) => FirebaseFirestore.instance
-              .collection('teams')
-              .doc(teamId)
-              .set({'lastMessage': message}));
+                  .collection('groups')
+                  .doc(groupId.toString())
+                  .set({
+                'lastMessage': '$userName: $message',
+                'userId': session.user.id.toString(),
+              }));
       return const Result.success();
     } catch (e) {
       return Result.error(message: e.toString());
@@ -59,11 +92,14 @@ class ClientFirebase extends ApiHelper {
           .collection('messages')
           .add(messageData)
           .then((_) => clientFirestore
-              .collection('users')
-              .doc(userSession.user.id.toString())
-              .collection('chats')
-              .doc(friendId.toString())
-              .set({'lastMessage': message}));
+                  .collection('users')
+                  .doc(userSession.user.id.toString())
+                  .collection('chats')
+                  .doc(friendId.toString())
+                  .set({
+                'lastMessage': '$userName: $message',
+                'userId': userSession.user.id.toString(),
+              }));
       //Saves on friend's collection
       await clientFirestore
           .collection('users')
@@ -73,11 +109,14 @@ class ClientFirebase extends ApiHelper {
           .collection('messages')
           .add(messageData)
           .then((_) => clientFirestore
-              .collection('users')
-              .doc(friendId.toString())
-              .collection('chats')
-              .doc(userSession.user.id.toString())
-              .set({'lastMessage': message}));
+                  .collection('users')
+                  .doc(friendId.toString())
+                  .collection('chats')
+                  .doc(userSession.user.id.toString())
+                  .set({
+                'lastMessage': '$userName: $message',
+                'userId': userSession.user.id.toString(),
+              }));
       return const Result.success();
     } catch (e) {
       return Result.error(message: e.toString());

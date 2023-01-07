@@ -13,6 +13,7 @@ class ChatsViewModel extends AppViewModel {
 
   int get userId => session.userSession!.user.id;
   int get teamId => session.userSession!.team!.id;
+  String get teamName => session.userSession!.team!.name;
   bool get isAthlete => session.userSession!.isAthlete;
 
   String get authToken => session.authToken!;
