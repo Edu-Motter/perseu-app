@@ -31,8 +31,6 @@ class Routes {
   static const String athleteHome = 'athlete-home';
   static const String coachHome = 'coach-home';
   static const String newTraining = 'new-training';
-  static const String newSession = 'new-session';
-  static const String newExercise = 'new-exercise';
   static const String manageInvites = 'manage-invites';
   static const String athleteEnterTeam = 'athlete-enter-team';
   static const String coachCreatesTeam = 'coach-creates-team';
@@ -58,8 +56,6 @@ class Routes {
     signUp: (context) => const SignUpScreen(),
     athleteHome: (context) => AthleteHomeScreen(),
     coachHome: (context) => CoachHomeScreen(),
-    newSession: (context) => const NewSessionScreen(),
-    newExercise: (context) => const NewExerciseScreen(),
     athleteEnterTeam: (context) => const AthleteEnterTeam(),
     coachCreatesTeam: (context) => const CoachCreatesTeam(),
     manageInvites: (context) => const CoachManageRequestsScreen(),

@@ -21,6 +21,7 @@ import 'package:perseu/src/screens/group_details/group_details_viewmodel.dart';
 import 'package:perseu/src/screens/manage_athletes/manage_athletes_viewmodel.dart';
 import 'package:perseu/src/screens/manage_groups/manage_groups_viewmodel.dart';
 import 'package:perseu/src/screens/new_team/new_team_viewmodel.dart';
+import 'package:perseu/src/screens/new_training/new_training_viewmodel.dart';
 import 'package:perseu/src/screens/profile_screen/profile_viewmodel.dart';
 import 'package:perseu/src/screens/sign_up/sign_up_viewmodel.dart';
 import 'package:perseu/src/screens/training_details/training_details_viewmodel.dart';
@@ -139,6 +140,7 @@ Future<void> initializeLocator() async {
   locator.registerFactory<ProfileViewModel>(() => ProfileViewModel());
   locator.registerFactory<ChangePasswordViewModel>(() => ChangePasswordViewModel());
   locator.registerFactory<NewTeamViewModel>(() => NewTeamViewModel());
+  locator.registerFactory<NewTrainingViewModel>(() => NewTrainingViewModel());
   locator.registerFactory<AthleteRequestViewModel>(() => AthleteRequestViewModel());
   locator.registerFactory<SignUpViewModel>(() => SignUpViewModel());
   locator.registerFactory<ChangeTeamNameViewModel>(() => ChangeTeamNameViewModel());
