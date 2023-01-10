@@ -183,7 +183,6 @@ class ChatsScreen extends StatelessWidget {
                         return SliverToBoxAdapter(
                           child: Column(
                             children: const [
-                              Divider(),
                               Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child:
@@ -297,6 +296,13 @@ class ChatsScreen extends StatelessWidget {
                                 builder: ((context) => GroupChatScreen(
                                     groupId: group.id, groupName: group.name)),
                               ),
+                            ),
+                          ),
+                        if (groups.isEmpty)
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Text('Nenhum chat em grupo foi criado'),
                             ),
                           ),
                       ],

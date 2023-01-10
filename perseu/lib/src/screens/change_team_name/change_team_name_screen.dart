@@ -62,7 +62,12 @@ class _ChangeTeamNameScreenState extends State<ChangeTeamNameScreen> {
                                 const Text('Nome atual:',
                                     style: standardStyleBold),
                                 const SizedBox(width: 4),
-                                Text(model.oldTeamName, style: standardStyle)
+                                Flexible(
+                                    child: Text(
+                                  model.oldTeamName,
+                                  style: standardStyle,
+                                  overflow: TextOverflow.ellipsis,
+                                ))
                               ],
                             ),
                           ),
@@ -96,7 +101,8 @@ class _ChangeTeamNameScreenState extends State<ChangeTeamNameScreen> {
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(standardBorder))))),
                           onPressed: () async {
-                            if (_formKey.currentState!.validate() && _controller.text.trim().isNotEmpty) {
+                            if (_formKey.currentState!.validate() &&
+                                _controller.text.trim().isNotEmpty) {
                               final result = await model.changeTeamName();
                               if (result.success) {
                                 model.updateTeamSession();
@@ -106,7 +112,10 @@ class _ChangeTeamNameScreenState extends State<ChangeTeamNameScreen> {
                                 UIHelper.showError(context, result);
                               }
                             } else {
-                              UIHelper.showError(context, const Result.error(message: 'Informe um nome válido'));
+                              UIHelper.showError(
+                                  context,
+                                  const Result.error(
+                                      message: 'Informe um nome válido'));
                             }
                           },
                           child: const Text('Salvar'))

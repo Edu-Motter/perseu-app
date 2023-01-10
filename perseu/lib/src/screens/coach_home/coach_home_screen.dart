@@ -141,8 +141,7 @@ class SecondColumnMenuItems extends StatelessWidget {
         MenuButton(
           text: 'Gerenciar Grupos',
           icon: Icons.group_outlined,
-          onPressed: () =>
-              Navigator.of(context).pushNamed(Routes.manageGroups),
+          onPressed: () => Navigator.of(context).pushNamed(Routes.manageGroups),
         ),
         const SizedBox(height: 24),
         MenuButton(
@@ -247,6 +246,7 @@ class TeamInfo extends StatelessWidget {
                   children: [
                     Text(
                       teamInfo.name,
+                      textAlign: TextAlign.center,
                       style: style.copyWith(fontSize: 32),
                     ),
                     Text(
@@ -263,6 +263,7 @@ class TeamInfo extends StatelessWidget {
                                   fontSize: 16, fontWeight: FontWeight.bold)),
                         ],
                       ),
+                    if (!showCode) const SizedBox(height: 8),
                   ],
                 );
               }
