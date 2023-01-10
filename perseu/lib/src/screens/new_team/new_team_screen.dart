@@ -61,8 +61,8 @@ class _NewTeamScreenState extends State<NewTeamScreen> {
                           child: Text(
                             '${model.coachName}, informe o nome da sua equipe:',
                             textAlign: TextAlign.center,
-                            style:
-                            const TextStyle(color: Palette.primary, fontSize: 18),
+                            style: const TextStyle(
+                                color: Palette.primary, fontSize: 18),
                           ),
                         ),
                         Form(
@@ -84,10 +84,10 @@ class _NewTeamScreenState extends State<NewTeamScreen> {
                         const SizedBox(height: 16),
                         ElevatedButton(
                             onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
+                              if (_formKey.currentState!.validate() &&
+                                  _teamNameController.text.trim().isNotEmpty) {
                                 final Result result = await model.createTeam();
                                 if (result.success) {
-
                                   UIHelper.showSuccessWithRoute(
                                       context,
                                       result,
@@ -97,6 +97,8 @@ class _NewTeamScreenState extends State<NewTeamScreen> {
                                 } else {
                                   UIHelper.showError(context, result);
                                 }
+                              } else {
+                                UIHelper.showError(context, const Result.error(message: 'Informe um nome válido'));
                               }
                             },
                             child: const Text('Cadastrar'))

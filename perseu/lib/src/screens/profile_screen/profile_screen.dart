@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/app/routes.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
@@ -38,30 +37,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
       create: (_) => locator<ProfileViewModel>(),
       child: Consumer<ProfileViewModel>(
         builder: (context, model, child) {
-          return ModalProgressHUD(
-              inAsyncCall: model.isBusy,
-              child: Scaffold(
-                appBar: AppBar(
-                  title: const Text('Perfil'),
-                ),
-                body: FutureBuilder(
-                    future: model.getUserData(),
-                    builder: (context, AsyncSnapshot<Result> snapshot) {
-                      switch (snapshot.connectionState) {
-                        case ConnectionState.none:
-                        case ConnectionState.waiting:
-                        case ConnectionState.active:
-                          return const CircularLoading();
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Perfil'),
+            ),
+            body: FutureBuilder(
+                future: model.getUserData(),
+                builder: (context, AsyncSnapshot<Result> snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.none:
+                    case ConnectionState.waiting:
+                    case ConnectionState.active:
+                      return const CircularLoading();
 
-                        case ConnectionState.done:
-                          if (snapshot.hasData) {
-                            return FormProfile(model: model);
-                          } else {
-                            return PerseuMessage.defaultError();
-                          }
+                    case ConnectionState.done:
+                      if (snapshot.hasData) {
+                        return FormProfile(model: model);
+                      } else {
+                        return PerseuMessage.defaultError();
                       }
-                    }),
-              ));
+                  }
+                }),
+          );
         },
       ),
     );
@@ -113,7 +110,7 @@ class _FormProfileState extends State<FormProfile> {
                 TextFormField(
                   key: ProfileScreen.nameInputKey,
                   controller: _nameController,
-                  onChanged: (value) => widget.model.name = value,
+                  onChanged: (value) => widget.model.name = value.trim(),
                   decoration: const InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
@@ -182,7 +179,7 @@ class _FormProfileState extends State<FormProfile> {
                   child: TextFormField(
                     key: ProfileScreen.crefInputKey,
                     controller: _crefController,
-                    onChanged: (value) => widget.model.cref = value,
+                    onChanged: (value) => widget.model.cref = value.trim(),
                     decoration: const InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
@@ -237,7 +234,7 @@ class _FormProfileState extends State<FormProfile> {
                 ElevatedButton(
                     onPressed: widget.model.isBusy
                         ? null
-                        : () => _handleSave(widget.model),
+                        : () => _handleSave(context, widget.model),
                     child: const Text('Salvar')),
                 const SizedBox(height: 8),
                 ElevatedButton(
@@ -302,13 +299,20 @@ class _FormProfileState extends State<FormProfile> {
         TextPosition(offset: _weightController.text.length));
   }
 
-  void _handleSave(ProfileViewModel model) async {
+  void _handleSave(BuildContext context, ProfileViewModel model) async {
     if (_formKey.currentState == null) return;
     if (_formKey.currentState!.validate()) {
+      if (_hasBlancFields(model)) {
+        UIHelper.showError(
+            context, const Result.error(message: 'Preencha todos os campos'));
+        return;
+      }
+
       if (_profileHasModification(model)) {
         final result = await model.updateUser();
         if (result.success) {
           UIHelper.showSuccess(context, result);
+          model.notifyListeners();
         } else {
           UIHelper.showError(context, result);
         }
@@ -338,6 +342,22 @@ class _FormProfileState extends State<FormProfile> {
         _weightController.text != model.oldWeight.toString()) {
       return true;
     }
+
+    return false;
+  }
+
+  bool _hasBlancFields(ProfileViewModel model) {
+    if (_nameController.text.trim().isEmpty) return true;
+
+    if (_documentController.text.trim().isEmpty) return true;
+
+    if (_birthdateController.text.trim().isEmpty) return true;
+
+    if (model.isCoach && _crefController.text.trim().isEmpty) return true;
+
+    if (model.isAthlete && _heightController.text.trim().isEmpty) return true;
+
+    if (model.isAthlete && _weightController.text.trim().isEmpty) return true;
 
     return false;
   }

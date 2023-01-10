@@ -45,7 +45,10 @@ class LoginScreen extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(top: 24.0),
-                      child: Image.asset(LoginViewModel.image, height: 160,),
+                      child: Image.asset(
+                        LoginViewModel.image,
+                        height: 160,
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -58,8 +61,7 @@ class LoginScreen extends StatelessWidget {
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 8.0),
-                                  child: Text(
-                                      'Olá! Realize seu login:',
+                                  child: Text('Olá! Realize seu login:',
                                       style: TextStyle(
                                           color: themeColor,
                                           fontSize: 18,
@@ -69,7 +71,8 @@ class LoginScreen extends StatelessWidget {
                               TextFormField(
                                 key: LoginScreen.usernameInputKey,
                                 controller: _usernameController,
-                                onChanged: (value) => loginModel.username = value,
+                                onChanged: (value) =>
+                                    loginModel.username = value,
                                 style: const TextStyle(color: Palette.primary),
                                 decoration: const InputDecoration(
                                   fillColor: Colors.white,
@@ -78,13 +81,15 @@ class LoginScreen extends StatelessWidget {
                                   hintText: 'E-mail',
                                 ),
                                 validator: RequiredValidator(
-                                    errorText: 'O usuário precisa ser informado'),
+                                    errorText:
+                                        'O usuário precisa ser informado'),
                               ),
                               const SizedBox(height: 8),
                               TextFormField(
                                 key: LoginScreen.passwordInputKey,
                                 controller: _passwordController,
-                                onChanged: (value) => loginModel.password = value,
+                                onChanged: (value) =>
+                                    loginModel.password = value,
                                 style: const TextStyle(color: Palette.primary),
                                 obscureText: true,
                                 decoration: const InputDecoration(
@@ -100,7 +105,8 @@ class LoginScreen extends StatelessWidget {
                               ElevatedButton(
                                   style: ButtonStyle(
                                       backgroundColor:
-                                          MaterialStateProperty.all(Palette.accent)),
+                                          MaterialStateProperty.all(
+                                              Palette.accent)),
                                   onPressed: loginModel.isBusy
                                       ? null
                                       : () {
@@ -126,7 +132,9 @@ class LoginScreen extends StatelessWidget {
                                                   color: Palette.secondary))),
                                       child: const Text(
                                         'Não possuo conta ainda',
-                                        style: TextStyle(fontSize: 16, color: Palette.secondary),
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Palette.secondary),
                                       )),
                                 ),
                               ),
@@ -142,7 +150,9 @@ class LoginScreen extends StatelessWidget {
   }
 
   void _login(LoginViewModel loginModel, BuildContext context) async {
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate() &&
+        _passwordController.text.trim().isNotEmpty &&
+        _usernameController.text.trim().isNotEmpty) {
       final result = await loginModel.login();
       if (result.success) {
         final loginDto = result.data!;
@@ -153,7 +163,7 @@ class LoginScreen extends StatelessWidget {
     }
   }
 
-  _handleUserNavigation(BuildContext context, Status statusLogin){
+  _handleUserNavigation(BuildContext context, Status statusLogin) {
     switch (statusLogin) {
       case Status.athleteWithTeam:
         Navigator.pushReplacementNamed(context, Routes.athleteHome);
@@ -171,7 +181,8 @@ class LoginScreen extends StatelessWidget {
         Navigator.pushReplacementNamed(context, Routes.newTeam);
         break;
       default:
-        UIHelper.showError(context, const Result.error(message: 'Rota não encontrada'));
+        UIHelper.showError(
+            context, const Result.error(message: 'Rota não encontrada'));
     }
   }
 }

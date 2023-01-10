@@ -13,16 +13,12 @@ import 'package:perseu/src/screens/login_screen.dart';
 import 'package:perseu/src/screens/manage_athletes/manage_athletes_screen.dart';
 import 'package:perseu/src/screens/manage_groups/manage_groups_screen.dart';
 import 'package:perseu/src/screens/new_team/new_team_screen.dart';
-import 'package:perseu/src/screens/new_training/new_exercise_screen.dart';
-import 'package:perseu/src/screens/new_training/new_session_screen.dart';
 import 'package:perseu/src/screens/profile_screen/profile_screen.dart';
 import 'package:perseu/src/screens/sign_up/sign_up_screen.dart';
 import 'package:perseu/src/screens/team_chat/team_chat_screen.dart';
 import 'package:perseu/src/screens/trainings_by_team/trainings_by_team_screen.dart';
 import 'package:perseu/src/screens/user_view_training/user_view_training_screen.dart';
 import 'package:perseu/src/screens/users_to_chat/users_to_chat_screen.dart';
-import 'package:perseu/src/screens/without_team_screens/athlete_enter_team_screen.dart';
-import 'package:perseu/src/screens/without_team_screens/coach_creates_team_screen.dart';
 
 class Routes {
   static const String bootstrap = 'bootstrap';
@@ -32,8 +28,6 @@ class Routes {
   static const String coachHome = 'coach-home';
   static const String newTraining = 'new-training';
   static const String manageInvites = 'manage-invites';
-  static const String athleteEnterTeam = 'athlete-enter-team';
-  static const String coachCreatesTeam = 'coach-creates-team';
   static const String profile = 'profile';
   static const String changePassword = 'change-password';
   static const String newTeam = 'new-team';
@@ -56,8 +50,6 @@ class Routes {
     signUp: (context) => const SignUpScreen(),
     athleteHome: (context) => AthleteHomeScreen(),
     coachHome: (context) => CoachHomeScreen(),
-    athleteEnterTeam: (context) => const AthleteEnterTeam(),
-    coachCreatesTeam: (context) => const CoachCreatesTeam(),
     manageInvites: (context) => const CoachManageRequestsScreen(),
     profile: (context) => const ProfileScreen(),
     changePassword: (context) => const ChangePasswordScreen(),

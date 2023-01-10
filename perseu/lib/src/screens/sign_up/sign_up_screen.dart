@@ -84,7 +84,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           TextFormField(
                             key: SignUpScreen.nameInputKey,
                             controller: _nameController,
-                            onChanged: (value) => model.name = value,
+                            onChanged: (value) => model.name = value.trim(),
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               filled: true,
@@ -218,7 +218,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 TextFormField(
                                   key: SignUpScreen.crefInputKey,
                                   controller: _crefController,
-                                  onChanged: (value) => model.cref = value,
+                                  onChanged: (value) => model.cref = value.trim(),
                                   decoration: const InputDecoration(
                                     border: OutlineInputBorder(),
                                     filled: true,
@@ -226,14 +226,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     hintText: 'CREF',
                                   ),
                                   keyboardType: TextInputType.multiline,
-                                  inputFormatters: [Formatters.cref()],
                                   validator: MultiValidator([
                                     RequiredValidator(
                                         errorText:
                                             'Você precisa confirmar seu CREF'),
-                                    MinLengthValidator(11,
-                                        errorText:
-                                            'O CREF precisa ter 11 caracteres')
                                   ]),
                                 ),
                               ],
@@ -298,6 +294,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   _handleSignUp(BuildContext context, SignUpViewModel model) async {
     if (_formKey.currentState!.validate()) {
+      if (_blancFieldsValidation(model)) {
+        UIHelper.showError(
+            context, const Result.error(message: 'Preencha todos os campos'));
+        return;
+      }
+
       if (_passwordsValidation(model)) {
         showDialog(
             context: context,
@@ -317,6 +319,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   bool _passwordsValidation(SignUpViewModel model) {
     return model.password != model.confirmPassword;
+  }
+
+  bool _blancFieldsValidation(SignUpViewModel model) {
+    if (_nameController.text.trim().isEmpty) return true;
+    if (_cpfController.text.trim().isEmpty) return true;
+    if (_emailController.text.trim().isEmpty) return true;
+    if (_birthdayController.text.trim().isEmpty) return true;
+    if (_passwordController.text.trim().isEmpty) return true;
+    if (_confirmPasswordController.text.trim().isEmpty) return true;
+    if (model.isCoach && _crefController.text.trim().isEmpty) return true;
+    if (model.isAthlete && _weightController.text.trim().isEmpty) return true;
+    if (model.isAthlete && _heightController.text.trim().isEmpty) return true;
+
+    return false;
   }
 
   List<DropdownMenuItem<String>> getDropDownMenuItems() {

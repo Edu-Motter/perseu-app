@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:perseu/src/components/dialogs/passwords_not_match_dialog.dart';
 import 'package:perseu/src/screens/change_password/change_password_viewmodel.dart';
+import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/utils/palette.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
@@ -121,9 +122,17 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   }
 
   _handleSave(ChangePasswordViewModel model, BuildContext context) async {
-    if (_formKey.currentState!.validate() && _passwordsValidation(model)) {
+    if (!_formKey.currentState!.validate()) return;
+
+    if (_blancValidation()) {
+      UIHelper.showError(
+          context, const Result.error(message: 'Informe senhas válidas'));
+      return;
+    }
+
+    if (_passwordsValidation(model)) {
       final result = await model.changePassword();
-      if(result.success) {
+      if (result.success) {
         Navigator.of(context).pop();
         UIHelper.showSuccess(context, result);
         return;
@@ -137,6 +146,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     'Verifique suas novas senhas, pois elas não são iguais',
               ));
     }
+  }
+
+  bool _blancValidation() {
+    if (_passwordController.text.trim().isEmpty) return true;
+    if (_confirmNewPasswordController.text.trim().isEmpty) return true;
+    if (_newPasswordController.text.trim().isEmpty) return true;
+
+    return false;
   }
 
   bool _passwordsValidation(ChangePasswordViewModel model) {

@@ -28,6 +28,7 @@ class ProfileViewModel extends AppViewModel {
     final isoInstant = userData['birthdate'] as String;
     return DateFormatters.toDateString(isoInstant);
   }
+
   String get oldDocument =>
       Formatters.cpf().maskText(userData['document'] as String);
   String get oldCref => userData['cref'] as String? ?? '';
@@ -50,6 +51,7 @@ class ProfileViewModel extends AppViewModel {
     }
     userData = result.data;
     loadUserData();
+    await Future.delayed(const Duration(milliseconds: 800));
     return const Result.success();
   }
 
@@ -75,27 +77,25 @@ class ProfileViewModel extends AppViewModel {
   }
 
   Future<Result> updateUser() async {
-    return tryExec(() async {
-      Result result;
-      if (isAthlete) {
-        result =
-            await clientAthlete.updateAthlete(updatedAthlete(), id, authToken);
-      } else {
-        result = await clientCoach.updateCoach(updatedCoach(), id, authToken);
-      }
+    Result result;
+    if (isAthlete) {
+      result =
+          await clientAthlete.updateAthlete(updatedAthlete(), id, authToken);
+    } else {
+      result = await clientCoach.updateCoach(updatedCoach(), id, authToken);
+    }
 
-      if (result.error) {
-        return const Result.error(message: 'Falha ao atualizar seu usuário');
-      }
+    if (result.error) {
+      return const Result.error(message: 'Falha ao atualizar seu usuário');
+    }
 
-      final userUpdated = await clientUser.getUser(authToken);
-      if (userUpdated.error) {
-        return const Result.error(message: 'Falha ao recarregar seus dados');
-      }
+    final userUpdated = await clientUser.getUser(authToken);
+    if (userUpdated.error) {
+      return const Result.error(message: 'Falha ao recarregar seus dados');
+    }
 
-      session.setAuthTokenAndUser(userUpdated.data!.token, userUpdated.data);
-      return const Result.success(message: 'Usuário atualizado com sucesso');
-    });
+    session.setAuthTokenAndUser(userUpdated.data!.token, userUpdated.data);
+    return const Result.success(message: 'Usuário atualizado com sucesso');
   }
 
   UpdatedCoachDTO updatedCoach() {

@@ -61,7 +61,7 @@ class SignUpViewModel extends AppViewModel {
     String unmaskedWeight,
   ) async {
     SignUpAthleteRequest signUpAthleteRequest = SignUpAthleteRequest(
-      name: name,
+      name: name.trim(),
       email: email,
       document: unmaskedCpf,
       birthdate: parsedDate,

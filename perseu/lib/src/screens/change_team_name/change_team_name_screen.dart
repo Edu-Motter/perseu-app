@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:perseu/src/screens/manage_athletes/manage_athletes_screen.dart';
+import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/utils/palette.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
@@ -69,14 +69,11 @@ class _ChangeTeamNameScreenState extends State<ChangeTeamNameScreen> {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      const AccentDivider(
-                        accentColor: Palette.primary,
-                        dividerPadding: 0,
-                      ),
+                      const Divider(),
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: _controller,
-                        onChanged: (value) => model.teamName = value,
+                        onChanged: (value) => model.teamName = value.trim(),
                         decoration: const InputDecoration(
                           fillColor: Colors.white,
                           filled: true,
@@ -99,7 +96,7 @@ class _ChangeTeamNameScreenState extends State<ChangeTeamNameScreen> {
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(standardBorder))))),
                           onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
+                            if (_formKey.currentState!.validate() && _controller.text.trim().isNotEmpty) {
                               final result = await model.changeTeamName();
                               if (result.success) {
                                 model.updateTeamSession();
@@ -108,6 +105,8 @@ class _ChangeTeamNameScreenState extends State<ChangeTeamNameScreen> {
                               } else {
                                 UIHelper.showError(context, result);
                               }
+                            } else {
+                              UIHelper.showError(context, const Result.error(message: 'Informe um nome válido'));
                             }
                           },
                           child: const Text('Salvar'))

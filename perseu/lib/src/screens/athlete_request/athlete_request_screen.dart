@@ -40,7 +40,7 @@ class _AthleteRequestScreenState extends State<AthleteRequestScreen> {
                 leading: IconButton(
                   icon: const Icon(Icons.menu),
                   onPressed: () {
-                    if(scaffoldKey.currentState != null){
+                    if (scaffoldKey.currentState != null) {
                       scaffoldKey.currentState!.openDrawer();
                     }
                   },
@@ -105,7 +105,8 @@ class _AthleteRequestScreenState extends State<AthleteRequestScreen> {
   Future<void> handleSend(
       AthleteRequestViewModel model, BuildContext context) async {
     final navigator = Navigator.of(context);
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate() &&
+        _requestCodeController.text.trim().isNotEmpty) {
       final Result result = await model.createRequest();
       if (result.success) {
         navigator.pushNamedAndRemoveUntil(
@@ -114,6 +115,9 @@ class _AthleteRequestScreenState extends State<AthleteRequestScreen> {
       } else {
         UIHelper.showError(context, result);
       }
+    } else {
+      UIHelper.showError(
+          context, const Result.error(message: 'Informe um código válido'));
     }
   }
 }

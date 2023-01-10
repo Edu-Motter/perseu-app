@@ -18,7 +18,7 @@ class NewTeamViewModel extends AppViewModel {
   Future<Result> createTeam() {
     Result result;
     return tryExec(() async {
-      result = await clientCoach.createTeam(teamName!, coachId, authToken);
+      result = await clientCoach.createTeam(teamName!.trim(), coachId, authToken);
 
       if (result.error) return result;
       final String name = result.data!;
