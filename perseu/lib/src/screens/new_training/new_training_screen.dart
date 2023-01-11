@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/components/exercise_card/exercise_card.dart';
 import 'package:perseu/src/models/exercise_model.dart';
@@ -37,60 +36,28 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
             appBar: AppBar(
               title: Text('Novo treino - ${widget.trainingName}'),
             ),
-            floatingActionButton: SpeedDial(
-              backgroundColor: Palette.primary,
-              animatedIcon: AnimatedIcons.menu_close,
-              animatedIconTheme: const IconThemeData(size: 22.0),
-              visible: true,
-              curve: Curves.bounceIn,
-              children: [
-                SpeedDialChild(
-                  backgroundColor: Palette.accent,
-                  foregroundColor: Colors.white,
-                  labelBackgroundColor: Palette.accent,
-                  child: const Icon(Icons.add),
-                  onTap: () => goToSession(context, model),
-                  label: 'Adicionar sessão',
-                  labelStyle: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white,
+            floatingActionButton: model.hasNoSession
+                ? null
+                : Padding(
+                    padding: const EdgeInsets.only(bottom: 56.0),
+                    child: FloatingActionButton(
+                      backgroundColor: Palette.secondary,
+                      child: const Icon(Icons.add),
+                      onPressed: () => goToSession(context, model),
+                    ),
                   ),
-                ),
-                SpeedDialChild(
-                  backgroundColor: Palette.accent,
-                  foregroundColor: Colors.white,
-                  labelBackgroundColor: Palette.accent,
-                  child: const Icon(Icons.forward),
-                  onTap: () => {
-                    if (model.training.sessions.isNotEmpty)
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => AthletesAssignTrainingScreen(
-                              training: model.training),
-                        ),
-                      )
-                    else
-                      UIHelper.showError(
-                          context,
-                          const Result.error(
-                              message: 'Não há sessões para serem atribuidas'))
-                  },
-                  label: 'Atribuir treino',
-                  labelStyle: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-            body: model.training.sessions.isEmpty
+            body: model.hasNoSession
                 ? Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text(
-                            'Crie uma sessão de exercícios em "Adicionar sessão"'),
+                          'Inicie criando uma sessão',
+                          style: TextStyle(
+                              color: Palette.primary,
+                              fontWeight: FontWeight.bold),
+                        ),
                         const SizedBox(
                           height: 16,
                         ),
@@ -103,73 +70,88 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
                       ],
                     ),
                   )
-                : ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: model.training.sessions.length,
-                    itemBuilder: (context, index) {
-                      SessionModel session = model.training.sessions[index];
-                      return Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Card(
-                          color: Colors.white,
-                          child: ExpansionTile(
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        model.training.sessions.removeAt(index);
-                                      });
-                                    },
-                                    icon: const Icon(
-                                      Icons.delete,
-                                      size: 20,
-                                    )),
-                                IconButton(
-                                    onPressed: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (_) => NewSessionScreen(
-                                            model: model,
-                                            index: index,
-                                            sessionModel: session,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    icon: const Icon(
-                                      Icons.edit,
-                                      size: 20,
-                                    )),
-                                const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Icon(Icons.keyboard_arrow_down),
-                                )
-                              ],
-                            ),
-                            expandedCrossAxisAlignment:
-                                CrossAxisAlignment.stretch,
-                            title: Text(
-                              session.name,
-                              style: const TextStyle(
-                                  fontSize: 18,
-                                  color: Palette.primary,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            children: [
-                              for (ExerciseModel e in session.exercises)
-                                ExerciseCard(
-                                  name: e.name,
-                                  description: e.description,
-                                )
-                            ],
+                : Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: model.training.sessions.length,
+                          itemBuilder: (context, index) {
+                            SessionModel session =
+                                model.training.sessions[index];
+                            return Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Card(
+                                color: Colors.white,
+                                child: ExpansionTile(
+                                  trailing: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      IconButton(
+                                          onPressed: () => confirmRemove(
+                                              context, index, model),
+                                          icon: const Icon(
+                                            Icons.clear,
+                                            size: 24,
+                                          )),
+                                      IconButton(
+                                          onPressed: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (_) =>
+                                                    NewSessionScreen(
+                                                  model: model,
+                                                  index: index,
+                                                  sessionModel: session,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          icon: const Icon(
+                                            Icons.edit,
+                                            size: 20,
+                                          )),
+                                      const Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Icon(Icons.keyboard_arrow_down),
+                                      )
+                                    ],
+                                  ),
+                                  expandedCrossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  title: Text(
+                                    session.name,
+                                    style: const TextStyle(
+                                        fontSize: 18,
+                                        color: Palette.primary,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  children: [
+                                    for (ExerciseModel e in session.exercises)
+                                      ExerciseCard(
+                                        name: e.name,
+                                        description: e.description,
+                                      )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () => saveTraining(context, model),
+                          child: const Text(
+                            'Salvar',
+                            style: TextStyle(fontSize: 16),
                           ),
                         ),
-                      );
-                    },
+                      ),
+                    ],
                   ),
           );
         },
@@ -181,6 +163,40 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
     model.startNewSession();
     Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => NewSessionScreen(model: model)),
+    );
+  }
+
+  void saveTraining(BuildContext context, NewTrainingViewModel model) {
+    if (!model.hasNoSession) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) =>
+              AthletesAssignTrainingScreen(training: model.training),
+        ),
+      );
+    } else {
+      UIHelper.showError(
+        context,
+        const Result.error(message: 'Adicione sessões para salvar'),
+      );
+    }
+  }
+
+  void confirmRemove(
+    BuildContext context,
+    int index,
+    NewTrainingViewModel model,
+  ) {
+    String sessionName = model.training.sessions[index].name;
+    UIHelper.showBoolDialog(
+      context: context,
+      onNoPressed: () => Navigator.pop(context),
+      onYesPressed: () async {
+        await model.removeSession(index);
+        Navigator.pop(context);
+      },
+      title: 'Removendo sessão',
+      message: 'Deseja realmente remover a sessão $sessionName?',
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:perseu/src/models/exercise_model.dart';
 import 'package:perseu/src/models/sessions_model.dart';
 import 'package:perseu/src/screens/new_training/new_exercise_screen.dart';
@@ -50,50 +49,27 @@ class _NewSessionState extends State<NewSessionScreen> {
       child: Consumer<NewTrainingViewModel>(
         builder: (_, model, __) {
           return Scaffold(
+            resizeToAvoidBottomInset: false,
             backgroundColor: Palette.background,
             appBar: AppBar(
               title: editingSession
                   ? const Text('Editar sessão')
                   : const Text('Nova sessão'),
             ),
-            floatingActionButton: SpeedDial(
-              backgroundColor: Palette.primary,
-              foregroundColor: Colors.white,
-              animatedIcon: AnimatedIcons.menu_close,
-              animatedIconTheme: const IconThemeData(size: 22.0),
-              visible: true,
-              curve: Curves.bounceIn,
-              children: [
-                SpeedDialChild(
-                  backgroundColor: Palette.accent,
-                  foregroundColor: Colors.white,
-                  labelBackgroundColor: Palette.accent,
-                  child: const Icon(Icons.save),
-                  onTap: () => saveSession(context, model),
-                  label: 'Salvar sessão',
-                  labelStyle: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white,
+            floatingActionButton: model.hasNoExercise
+                ? null
+                : Padding(
+                    padding: const EdgeInsets.only(bottom: 56.0),
+                    child: FloatingActionButton(
+                        backgroundColor: Palette.secondary,
+                        child: const Icon(Icons.add),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                NewExerciseScreen(model: model),
+                          ));
+                        }),
                   ),
-                ),
-                SpeedDialChild(
-                  backgroundColor: Palette.accent,
-                  foregroundColor: Colors.white,
-                  labelBackgroundColor: Palette.accent,
-                  child: const Icon(Icons.add),
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => NewExerciseScreen(model: model),
-                    ));
-                  },
-                  label: 'Adicionar exercício',
-                  labelStyle: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
             body: Column(
               children: [
                 Padding(
@@ -115,15 +91,19 @@ class _NewSessionState extends State<NewSessionScreen> {
                     ],
                   ),
                 ),
-                Flexible(
-                  child: model.baseSession.exercises.isEmpty
+                Expanded(
+                  child: model.hasNoExercise
                       ? Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.only(bottom: 32.0),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Text(
-                                  'Crie um exercício em "Adicionar exercício"'),
+                                'Crie um exercício para sua sessão',
+                                style: TextStyle(
+                                    color: Palette.primary,
+                                    fontWeight: FontWeight.bold),
+                              ),
                               const SizedBox(
                                 height: 16,
                               ),
@@ -141,7 +121,8 @@ class _NewSessionState extends State<NewSessionScreen> {
                                     child: const Text('Adicionar exercício')),
                               )
                             ],
-                          ))
+                          ),
+                        )
                       : ListView.builder(
                           padding: const EdgeInsets.only(bottom: 56),
                           scrollDirection: Axis.vertical,
@@ -164,6 +145,17 @@ class _NewSessionState extends State<NewSessionScreen> {
                                     ),
                                   ),
                                   child: ListTile(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (_) => NewExerciseScreen(
+                                            exerciseModel: exercise,
+                                            model: model,
+                                            index: index,
+                                          ),
+                                        ),
+                                      );
+                                    },
                                     contentPadding: const EdgeInsets.all(8),
                                     title: Text(
                                       exercise.name,
@@ -182,33 +174,13 @@ class _NewSessionState extends State<NewSessionScreen> {
                                       children: [
                                         IconButton(
                                           icon: const Icon(
-                                            Icons.edit,
+                                            Icons.clear,
                                             color: Palette.accent,
+                                            size: 28,
                                           ),
-                                          onPressed: () {
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder: (_) =>
-                                                    NewExerciseScreen(
-                                                  exerciseModel: exercise,
-                                                  model: model,
-                                                  index: index,
-                                                ),
-                                              ),
-                                            );
-                                          },
+                                          onPressed: () => confirmRemove(
+                                              context, index, model),
                                         ),
-                                        IconButton(
-                                            icon: const Icon(
-                                              Icons.delete,
-                                              color: Palette.accent,
-                                            ),
-                                            onPressed: () {
-                                              setState(() {
-                                                model.baseSession.exercises
-                                                    .removeAt(index);
-                                              });
-                                            }),
                                       ],
                                     ),
                                   ),
@@ -216,6 +188,17 @@ class _NewSessionState extends State<NewSessionScreen> {
                               ),
                             );
                           }),
+                ),
+                Visibility(
+                  visible: !model.hasNoExercise,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: 8.0),
+                    child: ElevatedButton(
+                      onPressed: () => saveSession(context, model),
+                      child: const Text('Salvar'),
+                    ),
+                  ),
                 )
               ],
             ),
@@ -245,5 +228,23 @@ class _NewSessionState extends State<NewSessionScreen> {
     );
     model.saveSession(session, widget.index);
     Navigator.of(context).pop();
+  }
+
+  void confirmRemove(
+    BuildContext context,
+    int index,
+    NewTrainingViewModel model,
+  ) {
+    String exerciseName = model.baseSession.exercises[index].name;
+    UIHelper.showBoolDialog(
+      context: context,
+      onNoPressed: () => Navigator.pop(context),
+      onYesPressed: () async {
+        await model.removeExercise(index);
+        Navigator.pop(context);
+      },
+      title: 'Removendo exercício',
+      message: 'Deseja realmente remover o exercício $exerciseName?',
+    );
   }
 }

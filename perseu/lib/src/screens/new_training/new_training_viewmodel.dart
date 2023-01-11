@@ -14,6 +14,9 @@ class NewTrainingViewModel extends AppViewModel {
 
   late SessionModel baseSession;
 
+  bool get hasNoSession => training.sessions.isEmpty;
+  bool get hasNoExercise => baseSession.exercises.isEmpty;
+
   void startNewSession() => baseSession =  SessionModel(
     id: 0,
     name: '',
@@ -55,5 +58,17 @@ class NewTrainingViewModel extends AppViewModel {
   }) {
     id ??= Random().nextInt(99999);
     return ExerciseModel(id: id, name: name, description: description);
+  }
+
+  Future<void> removeExercise(index) async {
+    baseSession.exercises.removeAt(index);
+    await Future.delayed(const Duration(milliseconds: 300));
+    notifyListeners();
+  }
+
+  Future<void> removeSession(index) async {
+    training.sessions.removeAt(index);
+    await Future.delayed(const Duration(milliseconds: 300));
+    notifyListeners();
   }
 }
