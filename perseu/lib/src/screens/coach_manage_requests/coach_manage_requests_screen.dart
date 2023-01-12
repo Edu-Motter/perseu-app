@@ -104,7 +104,7 @@ class _RequestListState extends State<RequestList> {
                         margin: const EdgeInsets.only(top: 8),
                         color: Colors.white,
                         child: ListTile(
-                          onLongPress: () => _handleInformationDialog(
+                          onTap: () => _handleInformationDialog(
                             context,
                             inviteRequests[index].athlete.id,
                           ),
@@ -118,20 +118,9 @@ class _RequestListState extends State<RequestList> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               IconButton(
-                                onPressed: () => _handleInformationDialog(
-                                  context,
-                                  inviteRequests[index].athlete.id,
-                                ),
-                                icon: const Icon(Icons.info_outlined),
-                                color: RequestList.buttonColor,
-                                iconSize: RequestList.iconSize,
-                              ),
-                              IconButton(
                                 onPressed: () {
                                   _handleRefuseRequest(
-                                      inviteRequests[index].athlete.id,
-                                      model,
-                                      context);
+                                      inviteRequests[index], model, context);
                                 },
                                 icon: const Icon(Icons.clear),
                                 color: RequestList.buttonColor,
@@ -192,16 +181,27 @@ class _RequestListState extends State<RequestList> {
     setState(() {});
   }
 
-  void _handleRefuseRequest(int athleteId, CoachManageRequestsViewModel model,
-      BuildContext context) async {
-    Result result = await model.declineRequest(athleteId);
-    if (result.success) {
-      UIHelper.showFlashNotification(context, result.message!);
-    } else {
-      UIHelper.showError(context, result);
-    }
-
-    setState(() {});
+  void _handleRefuseRequest(
+    InviteDTO request,
+    CoachManageRequestsViewModel model,
+    BuildContext context,
+  ) async {
+    UIHelper.showBoolDialog(
+      context: context,
+      title: 'Removendo solicitação',
+      message:
+          'Deseja realmente remover a solicitação do(a) ${request.athlete.name}',
+      onNoPressed: () => Navigator.pop(context),
+      onYesPressed: () async {
+        Result result = await model.declineRequest(request.athlete.id);
+        if (result.success) {
+          UIHelper.showFlashNotification(context, result.message!);
+        } else {
+          UIHelper.showError(context, result);
+        }
+        model.notifyListeners();
+      },
+    );
   }
 }
 

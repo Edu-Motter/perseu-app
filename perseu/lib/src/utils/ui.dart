@@ -8,7 +8,6 @@ import 'package:perseu/src/utils/flash_notification.dart' as flash;
 import '../app/routes.dart';
 import '../services/foundation.dart';
 
-
 typedef FutureVoidCallback = Future<void> Function();
 
 class UIHelper {
@@ -35,7 +34,8 @@ class UIHelper {
     }
   }
 
-  static void showSuccess(BuildContext context, Result result, {bool pop = false}) {
+  static void showSuccess(BuildContext context, Result result,
+      {bool pop = false}) {
     assert(result.success);
     if (pop) Navigator.pop(context);
     Flushbar(
@@ -98,6 +98,33 @@ class UIHelper {
         message: message,
         onNoPressed: onNoPressed,
         onYesPressed: onYesPressed,
+      ),
+    );
+  }
+
+  static Future<bool?> showBool({
+    required BuildContext context,
+    required String title,
+    required String message,
+  }) {
+    final style = locator<Style>();
+    return showDialog<bool>(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: [
+          ElevatedButton(
+            style: style.buttonAlertSecondary,
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Não'),
+          ),
+          ElevatedButton(
+            style: style.buttonAlertPrimary,
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Sim'),
+          ),
+        ],
       ),
     );
   }

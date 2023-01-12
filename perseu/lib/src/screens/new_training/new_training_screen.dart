@@ -30,129 +30,131 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
       child: Consumer<NewTrainingViewModel>(
         builder: (_, model, __) {
           model.training.name = widget.trainingName;
-
-          return Scaffold(
-            backgroundColor: Palette.background,
-            appBar: AppBar(
-              title: Text('Novo treino - ${widget.trainingName}'),
-            ),
-            floatingActionButton: model.hasNoSession
-                ? null
-                : Padding(
-                    padding: const EdgeInsets.only(bottom: 56.0),
-                    child: FloatingActionButton(
-                      backgroundColor: Palette.secondary,
-                      child: const Icon(Icons.add),
-                      onPressed: () => goToSession(context, model),
+          return WillPopScope(
+            onWillPop: () => confirmEraseTraining(context),
+            child: Scaffold(
+              backgroundColor: Palette.background,
+              appBar: AppBar(
+                title: Text('Novo treino - ${widget.trainingName}'),
+              ),
+              floatingActionButton: model.hasNoSession
+                  ? null
+                  : Padding(
+                      padding: const EdgeInsets.only(bottom: 56.0),
+                      child: FloatingActionButton(
+                        backgroundColor: Palette.secondary,
+                        child: const Icon(Icons.add),
+                        onPressed: () => goToSession(context, model),
+                      ),
                     ),
-                  ),
-            body: model.hasNoSession
-                ? Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+              body: model.hasNoSession
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Inicie criando uma sessão',
+                            style: TextStyle(
+                                color: Palette.primary,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                            child: ElevatedButton(
+                                onPressed: () => goToSession(context, model),
+                                child: const Text('Adicionar sessão')),
+                          )
+                        ],
+                      ),
+                    )
+                  : Column(
                       children: [
-                        const Text(
-                          'Inicie criando uma sessão',
-                          style: TextStyle(
-                              color: Palette.primary,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                          child: ElevatedButton(
-                              onPressed: () => goToSession(context, model),
-                              child: const Text('Adicionar sessão')),
-                        )
-                      ],
-                    ),
-                  )
-                : Column(
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          physics: const BouncingScrollPhysics(),
-                          itemCount: model.training.sessions.length,
-                          itemBuilder: (context, index) {
-                            SessionModel session =
-                                model.training.sessions[index];
-                            return Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Card(
-                                color: Colors.white,
-                                child: ExpansionTile(
-                                  trailing: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      IconButton(
-                                          onPressed: () => confirmRemove(
-                                              context, index, model),
-                                          icon: const Icon(
-                                            Icons.clear,
-                                            size: 24,
-                                          )),
-                                      IconButton(
-                                          onPressed: () {
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder: (_) =>
-                                                    NewSessionScreen(
-                                                  model: model,
-                                                  index: index,
-                                                  sessionModel: session,
+                        Expanded(
+                          child: ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: model.training.sessions.length,
+                            itemBuilder: (context, index) {
+                              SessionModel session =
+                                  model.training.sessions[index];
+                              return Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Card(
+                                  color: Colors.white,
+                                  child: ExpansionTile(
+                                    trailing: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                            onPressed: () => confirmRemove(
+                                                context, index, model),
+                                            icon: const Icon(
+                                              Icons.clear,
+                                              size: 24,
+                                            )),
+                                        IconButton(
+                                            onPressed: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (_) =>
+                                                      NewSessionScreen(
+                                                    model: model,
+                                                    index: index,
+                                                    sessionModel: session,
+                                                  ),
                                                 ),
-                                              ),
-                                            );
-                                          },
-                                          icon: const Icon(
-                                            Icons.edit,
-                                            size: 20,
-                                          )),
-                                      const Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Icon(Icons.keyboard_arrow_down),
-                                      )
+                                              );
+                                            },
+                                            icon: const Icon(
+                                              Icons.edit,
+                                              size: 20,
+                                            )),
+                                        const Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Icon(Icons.keyboard_arrow_down),
+                                        )
+                                      ],
+                                    ),
+                                    expandedCrossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    title: Text(
+                                      session.name,
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          color: Palette.primary,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    children: [
+                                      for (ExerciseModel e in session.exercises)
+                                        ExerciseCard(
+                                          name: e.name,
+                                          description: e.description,
+                                        )
                                     ],
                                   ),
-                                  expandedCrossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  title: Text(
-                                    session.name,
-                                    style: const TextStyle(
-                                        fontSize: 18,
-                                        color: Palette.primary,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  children: [
-                                    for (ExerciseModel e in session.exercises)
-                                      ExerciseCard(
-                                        name: e.name,
-                                        description: e.description,
-                                      )
-                                  ],
                                 ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
-                          onPressed: () => saveTraining(context, model),
-                          child: const Text(
-                            'Salvar',
-                            style: TextStyle(fontSize: 16),
+                              );
+                            },
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                            onPressed: () => saveTraining(context, model),
+                            child: const Text(
+                              'Salvar',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+            ),
           );
         },
       ),
@@ -198,5 +200,13 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
       title: 'Removendo sessão',
       message: 'Deseja realmente remover a sessão $sessionName?',
     );
+  }
+
+  Future<bool> confirmEraseTraining(BuildContext context) async {
+    final result = await UIHelper.showBool(
+        context: context,
+        title: 'Apagar treino?',
+        message: 'Deseja realmente sair sem salvar o treino?');
+    return Future.value(result ?? false);
   }
 }
