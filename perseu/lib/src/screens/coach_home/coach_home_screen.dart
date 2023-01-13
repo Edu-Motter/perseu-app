@@ -247,22 +247,18 @@ class TeamInfo extends StatelessWidget {
                     Text(
                       teamInfo.name,
                       textAlign: TextAlign.center,
-                      style: style.copyWith(fontSize: 32),
+                      style: style.copyWith(fontSize: 32, color: Palette.primary),
                     ),
-                    Text(
-                      '${teamInfo.numberOfAthletes} atletas',
-                      style: style.copyWith(
-                          fontSize: 20, color: Palette.secondary),
-                    ),
+                    // Text(
+                    //   '${teamInfo.numberOfAthletes} atletas',
+                    //   style: style.copyWith(
+                    //       fontSize: 20, color: Palette.secondary),
+                    // ),
+                    const Divider(),
                     if (showCode)
-                      Column(
-                        children: [
-                          const Divider(),
-                          Text('Código de acesso: ${teamInfo.code}',
-                              style: style.copyWith(
-                                  fontSize: 16, fontWeight: FontWeight.bold)),
-                        ],
-                      ),
+                      Text('Código de acesso: ${teamInfo.code}',
+                          style: style.copyWith(
+                              fontSize: 16, fontWeight: FontWeight.bold)),
                     if (!showCode) const SizedBox(height: 8),
                   ],
                 );
