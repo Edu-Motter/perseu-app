@@ -52,7 +52,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                     case ConnectionState.done:
                       if (snapshot.hasData) {
-                        return FormProfile(model: model);
+                        final result = snapshot.data!;
+                        if(result.success) {
+                          return FormProfile(model: model);
+                        } else {
+                          return PerseuMessage.result(result);
+                        }
                       } else {
                         return PerseuMessage.defaultError();
                       }

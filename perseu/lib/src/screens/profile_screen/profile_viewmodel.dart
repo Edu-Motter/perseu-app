@@ -49,6 +49,9 @@ class ProfileViewModel extends AppViewModel {
     } else {
       result = await clientCoach.getCoach(id, authToken);
     }
+
+    if(result.error) return result;
+
     userData = result.data;
     loadUserData();
     await Future.delayed(const Duration(milliseconds: 800));

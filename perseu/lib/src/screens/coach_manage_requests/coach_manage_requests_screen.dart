@@ -77,7 +77,7 @@ class _RequestListState extends State<RequestList> {
         Provider.of<CoachManageRequestsViewModel>(context, listen: false);
     return FutureBuilder(
       future: model.getRequests(model.team.id),
-      builder: (context, snapshot) {
+      builder: (context, AsyncSnapshot<Result<List<InviteDTO>>> snapshot) {
         if (model.isBusy) {
           return const Center(child: SizedBox.shrink());
         }
@@ -90,70 +90,71 @@ class _RequestListState extends State<RequestList> {
 
           case ConnectionState.done:
             if (snapshot.hasData) {
-              Result result = snapshot.data as Result;
-              List<InviteDTO> inviteRequests = result.data;
-              if (inviteRequests.isNotEmpty) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    scrollDirection: Axis.vertical,
-                    itemCount: inviteRequests.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        margin: const EdgeInsets.only(top: 8),
-                        color: Colors.white,
-                        child: ListTile(
-                          onTap: () => _handleInformationDialog(
-                            context,
-                            inviteRequests[index].athlete.id,
+              final result = snapshot.data!;
+              if (result.success) {
+                List<InviteDTO> inviteRequests = result.data!;
+                if (inviteRequests.isNotEmpty) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      scrollDirection: Axis.vertical,
+                      itemCount: inviteRequests.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          margin: const EdgeInsets.only(top: 8),
+                          color: Colors.white,
+                          child: ListTile(
+                            onTap: () => _handleInformationDialog(
+                              context,
+                              inviteRequests[index].athlete.id,
+                            ),
+                            title: Text(
+                              inviteRequests[index].athlete.name,
+                              style: const TextStyle(
+                                  color: Palette.primary,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    _handleRefuseRequest(
+                                        inviteRequests[index], model, context);
+                                  },
+                                  icon: const Icon(Icons.clear),
+                                  color: RequestList.buttonColor,
+                                  iconSize: RequestList.iconSize,
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    _handleAcceptRequest(
+                                        inviteRequests[index].athlete.id,
+                                        model,
+                                        context);
+                                  },
+                                  icon: const Icon(Icons.check),
+                                  color: RequestList.primaryButtonColor,
+                                  iconSize: RequestList.iconSize,
+                                ),
+                              ],
+                            ),
                           ),
-                          title: Text(
-                            inviteRequests[index].athlete.name,
-                            style: const TextStyle(
-                                color: Palette.primary,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  _handleRefuseRequest(
-                                      inviteRequests[index], model, context);
-                                },
-                                icon: const Icon(Icons.clear),
-                                color: RequestList.buttonColor,
-                                iconSize: RequestList.iconSize,
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  _handleAcceptRequest(
-                                      inviteRequests[index].athlete.id,
-                                      model,
-                                      context);
-                                },
-                                icon: const Icon(Icons.check),
-                                color: RequestList.primaryButtonColor,
-                                iconSize: RequestList.iconSize,
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                );
+                        );
+                      },
+                    ),
+                  );
+                } else {
+                  return const PerseuMessage(
+                    message: 'Nenhuma solicitação pendente',
+                    icon: Icons.check_circle,
+                  );
+                }
               } else {
-                return const PerseuMessage(
-                  message: 'Nenhuma solicitação pendente',
-                  icon: Icons.check_circle,
-                );
+                return PerseuMessage.result(result);
               }
-            } else {
-              return PerseuMessage.defaultError();
             }
-          default:
             return PerseuMessage.defaultError();
         }
       },
@@ -209,7 +210,7 @@ class PerseuMessage extends StatelessWidget {
   const PerseuMessage({
     Key? key,
     required this.message,
-    this.icon = Icons.circle,
+    this.icon = Icons.mood_bad,
     this.primaryColor = Palette.primary,
     this.withoutIcon = false,
   }) : super(key: key);
@@ -222,6 +223,13 @@ class PerseuMessage extends StatelessWidget {
   factory PerseuMessage.defaultError() {
     return const PerseuMessage(
       message: 'Erro, tente novamente',
+      icon: Icons.cancel,
+    );
+  }
+
+  factory PerseuMessage.result(Result result) {
+    return PerseuMessage(
+      message: result.message ?? 'Erro, tente novamente',
       icon: Icons.cancel,
     );
   }

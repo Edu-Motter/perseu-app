@@ -2,12 +2,12 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
-import 'package:perseu/src/components/widgets/center_error.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/components/widgets/center_rounded_container.dart';
 import 'package:perseu/src/models/dtos/athlete_dto.dart';
 import 'package:perseu/src/models/dtos/training_by_team_dto.dart';
 import 'package:perseu/src/screens/athlete_trainings_details/athlete_trainings_details_screen.dart';
+import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_screen.dart';
 import 'package:perseu/src/screens/manage_athletes/manage_athletes_screen.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/utils/palette.dart';
@@ -78,11 +78,12 @@ class TrainingToAthleteScreen extends StatelessWidget {
                         }
                       }
                       if (result.success && result.data!.isEmpty) {
-                        return const CenterError(
+                        return const PerseuMessage(
                             message: 'Não possui atletas ainda');
                       }
+                      return PerseuMessage.result(result);
                     }
-                    return const CenterError(message: 'Erro desconhecido');
+                    return PerseuMessage.defaultError();
                 }
               },
             ),

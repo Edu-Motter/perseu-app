@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
-import 'package:perseu/src/components/widgets/center_error.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/models/dtos/athlete_dto.dart';
 import 'package:perseu/src/models/dtos/group_dto.dart';
@@ -63,8 +62,10 @@ class GroupDetailsScreen extends StatelessWidget {
                           Expanded(
                             child: group.athletes.isNotEmpty
                                 ? GroupAthletesList(athletes: group.athletes)
-                                : const CenterError(
-                                    message: 'Nenhum atleta nesse grupo'),
+                                : const PerseuMessage(
+                                    message: 'Nenhum atleta nesse grupo',
+                                    icon: Icons.mood_bad,
+                                  ),
                           ),
                         ],
                       );

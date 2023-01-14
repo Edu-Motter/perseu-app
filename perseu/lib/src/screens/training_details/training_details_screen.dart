@@ -1,7 +1,8 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/components/exercise_card/exercise_card.dart';
-import 'package:perseu/src/components/widgets/center_error.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/models/dtos/exercise_dto.dart';
 import 'package:perseu/src/models/dtos/training_dto.dart';
@@ -14,10 +15,8 @@ import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/utils/date_formatters.dart';
 import 'package:perseu/src/utils/formatters.dart';
 import 'package:perseu/src/utils/palette.dart';
-
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
-import 'dart:math' as math;
 
 class TrainingDetailsScreen extends StatelessWidget {
   const TrainingDetailsScreen({
@@ -88,9 +87,9 @@ class TrainingDetailsScreen extends StatelessWidget {
                             if (result.success) {
                               return TrainingView(training: result.data!);
                             }
+                            return PerseuMessage.result(result);
                           }
-                          return const CenterError(
-                              message: 'Problema ao carregar treino');
+                          return PerseuMessage.defaultError();
                       }
                     },
                   ),

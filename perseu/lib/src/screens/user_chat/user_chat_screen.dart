@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
-import 'package:perseu/src/components/widgets/center_error.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
+import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_screen.dart';
 import 'package:perseu/src/screens/user_chat/user_chat_viewmodel.dart';
 import 'package:perseu/src/utils/date_formatters.dart';
 import 'package:perseu/src/utils/palette.dart';
-
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
@@ -93,7 +92,7 @@ class _TeamChatScreenState extends State<UsersChatScreen> {
                           ConnectionState.waiting) {
                         return const CircularLoading();
                       } else {
-                        return const CenterError(message: 'Erro desconhecido');
+                        return PerseuMessage.defaultError();
                       }
                     },
                   ),

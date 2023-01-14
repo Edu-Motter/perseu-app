@@ -5,6 +5,7 @@ import 'package:perseu/src/components/buttons/menu_button.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/models/dtos/team_info_dto.dart';
 import 'package:perseu/src/screens/coach_home/coach_home_viewmodel.dart';
+import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_screen.dart';
 import 'package:perseu/src/screens/new_training/new_training_screen.dart';
 import 'package:perseu/src/screens/user_drawer/user_drawer.dart';
 import 'package:perseu/src/services/foundation.dart';
@@ -128,7 +129,8 @@ class SecondColumnMenuItems extends StatelessWidget {
           text: 'Gerenciar Solicitações',
           icon: Icons.notifications_active_outlined,
           onPressed: () =>
-              Navigator.of(context).pushNamed(Routes.manageInvites),
+              Navigator.of(context).pushNamed(Routes.
+              manageInvites),
         ),
         const SizedBox(height: 24),
         MenuButton(
@@ -237,9 +239,7 @@ class TeamInfo extends StatelessWidget {
             if (snapshot.hasData) {
               Result result = snapshot.data!;
               if (result.error) {
-                return Center(
-                  child: Text(result.message ?? 'Erro não informado'),
-                );
+                return PerseuMessage.result(result);
               } else {
                 TeamInfoDTO teamInfo = result.data!;
                 return Column(
@@ -264,8 +264,8 @@ class TeamInfo extends StatelessWidget {
                 );
               }
             } else {
-              return const Center(
-                child: Text('Nenhuma informação foi encontrada'),
+              return const PerseuMessage(
+                message: 'Nenhuma informação foi encontrada',
               );
             }
         }

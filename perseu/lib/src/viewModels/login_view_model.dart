@@ -36,7 +36,7 @@ class LoginViewModel extends AppViewModel {
       final result = await clientPerseu.loginRequest(username, password);
 
       if (result.error) {
-        return const Result.error(message: 'Erro ao fazer login');
+        return result;
       }
 
       //Check device token

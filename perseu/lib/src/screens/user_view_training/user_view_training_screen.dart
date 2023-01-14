@@ -8,6 +8,7 @@ import 'package:perseu/src/models/dtos/training_dto.dart';
 import 'package:perseu/src/models/exercise_model.dart';
 import 'package:perseu/src/models/sessions_model.dart';
 import 'package:perseu/src/models/training_model.dart';
+import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_screen.dart';
 import 'package:perseu/src/screens/manage_athletes/manage_athletes_screen.dart';
 import 'package:perseu/src/screens/user_view_training/user_view_training_viewmodel.dart';
 import 'package:perseu/src/services/foundation.dart';
@@ -58,107 +59,109 @@ class _UserViewTrainingScreenState extends State<UserViewTrainingScreen> {
                           case ConnectionState.active:
                             return const CircularLoading();
                           case ConnectionState.done:
-                            if (snapshot.hasData &&
-                                snapshot.data!.data != null) {
-                              final result = snapshot.data!.data!;
-                              final training = TrainingModel(
-                                  name: result.name,
-                                  id: result.id,
-                                  sessions: result.sessions!
-                                      .map((s) => SessionModel(
-                                          id: s.id,
-                                          name: s.name,
-                                          exercises: s.exercises!
-                                              .map((e) => ExerciseModel(
-                                                  id: e.id,
-                                                  name: e.name,
-                                                  description: e.description))
-                                              .toList()))
-                                      .toList());
-                              return Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    training.name,
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                        color: Palette.primary, fontSize: 24),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  const AccentDivider(
-                                      dividerPadding: defaultPadding),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: defaultPadding),
-                                      child: ListView.builder(
-                                        padding: const EdgeInsets.only(bottom: 16),
-                                        scrollDirection: Axis.vertical,
-                                        shrinkWrap: true,
-                                        itemCount: training.sessions.length,
-                                        itemBuilder: (context, index) {
-                                          return Card(
-                                            margin: const EdgeInsets.only(
-                                                top: defaultPadding),
-                                            shape: const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(8))),
-                                            color: Colors.white,
-                                            child: ExpansionTile(
-                                              trailing: Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: const [
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsets.all(8.0),
-                                                    child: Icon(Icons
-                                                        .keyboard_arrow_down),
-                                                  )
+                            if (snapshot.hasData) {
+                              final result = snapshot.data!;
+                              if(result.success){
+                                final resultData = result.data!;
+                                final training = TrainingModel(
+                                    name: resultData.name,
+                                    id: resultData.id,
+                                    sessions: resultData.sessions!
+                                        .map((s) => SessionModel(
+                                        id: s.id,
+                                        name: s.name,
+                                        exercises: s.exercises!
+                                            .map((e) => ExerciseModel(
+                                            id: e.id,
+                                            name: e.name,
+                                            description: e.description))
+                                            .toList()))
+                                        .toList());
+                                return Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      training.name,
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                          color: Palette.primary, fontSize: 24),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    const AccentDivider(
+                                        dividerPadding: defaultPadding),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: defaultPadding),
+                                        child: ListView.builder(
+                                          padding: const EdgeInsets.only(bottom: 16),
+                                          scrollDirection: Axis.vertical,
+                                          shrinkWrap: true,
+                                          itemCount: training.sessions.length,
+                                          itemBuilder: (context, index) {
+                                            return Card(
+                                              margin: const EdgeInsets.only(
+                                                  top: defaultPadding),
+                                              shape: const RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(8))),
+                                              color: Colors.white,
+                                              child: ExpansionTile(
+                                                trailing: Row(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: const [
+                                                    Padding(
+                                                      padding:
+                                                      EdgeInsets.all(8.0),
+                                                      child: Icon(Icons
+                                                          .keyboard_arrow_down),
+                                                    )
+                                                  ],
+                                                ),
+                                                expandedCrossAxisAlignment:
+                                                CrossAxisAlignment.stretch,
+                                                title: Text(
+                                                  training.sessions[index].name,
+                                                  style: const TextStyle(
+                                                      fontSize: 18,
+                                                      color: Palette.primary,
+                                                      fontWeight:
+                                                      FontWeight.w500),
+                                                ),
+                                                children: [
+                                                  for (ExerciseModel e in training
+                                                      .sessions[index].exercises)
+                                                    ExerciseCard(
+                                                      name: e.name,
+                                                      description: e.description,
+                                                    )
                                                 ],
                                               ),
-                                              expandedCrossAxisAlignment:
-                                                  CrossAxisAlignment.stretch,
-                                              title: Text(
-                                                training.sessions[index].name,
-                                                style: const TextStyle(
-                                                    fontSize: 18,
-                                                    color: Palette.primary,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              children: [
-                                                for (ExerciseModel e in training
-                                                    .sessions[index].exercises)
-                                                  ExerciseCard(
-                                                    name: e.name,
-                                                    description: e.description,
-                                                  )
-                                              ],
-                                            ),
-                                          );
-                                        },
+                                            );
+                                          },
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: defaultPadding,
-                                        right: defaultPadding,
-                                        bottom: defaultPadding),
-                                    child: ElevatedButton(
-                                      child: const Text('Check in'),
-                                      onPressed: () => _handleCheckIn(
-                                          context, training.id, model),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: defaultPadding,
+                                          right: defaultPadding,
+                                          bottom: defaultPadding),
+                                      child: ElevatedButton(
+                                        child: const Text('Check in'),
+                                        onPressed: () => _handleCheckIn(
+                                            context, training.id, model),
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              );
-                              // return Text(snapshot.data!.data!.createdAt);
+                                  ],
+                                );
+                              }else {
+                                return PerseuMessage.result(result);
+                              }
                             } else {
-                              return const Center(
-                                child: Text('Nenhum treino atribuído'),
-                              );
+                              return const PerseuMessage(
+                                  message: 'Nenhum treino atribuído');
                             }
                         }
                       },

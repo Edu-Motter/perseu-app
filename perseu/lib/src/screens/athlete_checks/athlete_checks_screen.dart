@@ -54,6 +54,7 @@ class AthleteChecksScreen extends StatelessWidget {
                           icon: Icons.mood_bad,
                         );
                       }
+                      return PerseuMessage.result(result);
                     }
                     return PerseuMessage.defaultError();
                 }

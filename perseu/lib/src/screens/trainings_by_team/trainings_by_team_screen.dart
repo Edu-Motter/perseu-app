@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
-import 'package:perseu/src/components/widgets/center_error.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/models/dtos/training_by_team_dto.dart';
+import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_screen.dart';
 import 'package:perseu/src/screens/manage_athletes/manage_athletes_screen.dart';
 import 'package:perseu/src/screens/training_details/training_details_screen.dart';
 import 'package:perseu/src/services/foundation.dart';
@@ -43,11 +43,12 @@ class TrainingsByTeamScreen extends StatelessWidget {
                         return TrainingsList(trainings: result.data!);
                       }
                       if (result.success && result.data!.isEmpty) {
-                        return const CenterError(
+                        return const PerseuMessage(
                             message: 'Não possui treinos ainda');
                       }
+                      return PerseuMessage.result(result);
                     }
-                    return const CenterError(message: 'Erro desconhecido');
+                    return PerseuMessage.defaultError();
                 }
               },
             ),

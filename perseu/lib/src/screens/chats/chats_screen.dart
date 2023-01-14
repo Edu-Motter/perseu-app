@@ -32,171 +32,173 @@ class ChatsScreen extends StatelessWidget {
               child: const Icon(Icons.add, size: 28),
               onPressed: () => Navigator.pushNamed(context, Routes.usersToChat),
             ),
-            body: CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Stack(
-                    children: [
-                      Visibility(
-                        visible: model.isTeamChatVisible,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 24.0),
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              child: Text(
-                                getCircleLetters(model.teamName),
-                                style: const TextStyle(color: Colors.white),
+            body: SystemOnline(
+              child: CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Stack(
+                      children: [
+                        Visibility(
+                          visible: model.isTeamChatVisible,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 24.0),
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                child: Text(
+                                  getCircleLetters(model.teamName),
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                                backgroundColor: Palette.secondary,
                               ),
-                              backgroundColor: Palette.secondary,
+                              title: Text(model.teamName),
+                              subtitle: StreamBuilder(
+                                stream: FirebaseFirestore.instance
+                                    .collection('teams')
+                                    .doc(model.teamId.toString())
+                                    .snapshots(),
+                                builder: (context,
+                                    AsyncSnapshot<DocumentSnapshot> snapshot) {
+                                  if (snapshot.hasData) {
+                                    String lastMessage =
+                                        handleLastMessage(snapshot.data, model);
+                                    return Text(
+                                      lastMessage,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    );
+                                  }
+                                  return const CircularLoading();
+                                },
+                              ),
+                              onTap: () =>
+                                  Navigator.pushNamed(context, Routes.teamChat),
                             ),
-                            title: Text(model.teamName),
-                            subtitle: StreamBuilder(
-                              stream: FirebaseFirestore.instance
-                                  .collection('teams')
-                                  .doc(model.teamId.toString())
-                                  .snapshots(),
-                              builder: (context,
-                                  AsyncSnapshot<DocumentSnapshot> snapshot) {
-                                if (snapshot.hasData) {
-                                  String lastMessage =
-                                      handleLastMessage(snapshot.data, model);
-                                  return Text(
-                                    lastMessage,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  );
-                                }
-                                return const CircularLoading();
-                              },
-                            ),
-                            onTap: () =>
-                                Navigator.pushNamed(context, Routes.teamChat),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0, vertical: 4),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.only(left: 8.0),
-                              child: Text(
-                                'Equipe',
-                                style: TextStyle(
-                                  color: Palette.primary,
-                                  fontWeight: FontWeight.bold,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 4),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(left: 8.0),
+                                child: Text(
+                                  'Equipe',
+                                  style: TextStyle(
+                                    color: Palette.primary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
-                            ),
-                            GestureDetector(
-                              onTap: () => model.changeTeamChatVisibility(),
-                              child: _getIcon(model.isTeamChatVisible),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SliverToBoxAdapter(
-                  child: Divider(),
-                ),
-                SliverToBoxAdapter(
-                  child: _buildGroupsTiles(model),
-                ),
-                const SliverToBoxAdapter(
-                  child: Divider(),
-                ),
-                StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .collection('users')
-                      .doc(model.userId.toString())
-                      .collection('chats')
-                      .snapshots(),
-                  builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.hasData) {
-                      if (snapshot.data!.docs.isNotEmpty) {
-                        return SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) {
-                              final String friendIdString =
-                                  snapshot.data!.docs[index].id;
-                              final int? friendId =
-                                  int.tryParse(friendIdString);
-                              final String lastMessage = handleLastMessage(
-                                  snapshot.data!.docs[index], model);
-                              return FutureBuilder(
-                                future: model.getFriendName(friendId!),
-                                builder:
-                                    (context, AsyncSnapshot<String> snapshot) {
-                                  switch (snapshot.connectionState) {
-                                    case ConnectionState.none:
-                                    case ConnectionState.waiting:
-                                    case ConnectionState.active:
-                                      return const CircularLoading();
-                                    case ConnectionState.done:
-                                      if (snapshot.hasData) {
-                                        String friendName =
-                                            snapshot.data ?? 'Não encontrado';
-                                        return ListTile(
-                                            leading: CircleAvatar(
-                                              child: Text(
-                                                getCircleLetters(friendName),
-                                                style: const TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                              backgroundColor:
-                                                  Palette.secondary,
-                                            ),
-                                            title: Text(friendName),
-                                            subtitle: Text(
-                                              lastMessage,
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      UsersChatScreen(
-                                                    friendId: friendId,
-                                                    friendName: friendName,
-                                                  ),
-                                                ),
-                                              );
-                                            });
-                                      } else {
-                                        return const CenterError(
-                                            message: 'Não encontrado');
-                                      }
-                                  }
-                                },
-                              );
-                            },
-                            childCount: snapshot.data!.docs.length,
-                          ),
-                        );
-                      } else {
-                        return SliverToBoxAdapter(
-                          child: Column(
-                            children: const [
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child:
-                                    Text('Nenhum chat individual encontrado'),
+                              GestureDetector(
+                                onTap: () => model.changeTeamChatVisibility(),
+                                child: _getIcon(model.isTeamChatVisible),
                               ),
                             ],
                           ),
-                        );
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SliverToBoxAdapter(
+                    child: Divider(),
+                  ),
+                  SliverToBoxAdapter(
+                    child: _buildGroupsTiles(model),
+                  ),
+                  const SliverToBoxAdapter(
+                    child: Divider(),
+                  ),
+                  StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(model.userId.toString())
+                        .collection('chats')
+                        .snapshots(),
+                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasData) {
+                        if (snapshot.data!.docs.isNotEmpty) {
+                          return SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) {
+                                final String friendIdString =
+                                    snapshot.data!.docs[index].id;
+                                final int? friendId =
+                                    int.tryParse(friendIdString);
+                                final String lastMessage = handleLastMessage(
+                                    snapshot.data!.docs[index], model);
+                                return FutureBuilder(
+                                  future: model.getFriendName(friendId!),
+                                  builder:
+                                      (context, AsyncSnapshot<String> snapshot) {
+                                    switch (snapshot.connectionState) {
+                                      case ConnectionState.none:
+                                      case ConnectionState.waiting:
+                                      case ConnectionState.active:
+                                        return const CircularLoading();
+                                      case ConnectionState.done:
+                                        if (snapshot.hasData) {
+                                          String friendName =
+                                              snapshot.data ?? 'Não encontrado';
+                                          return ListTile(
+                                              leading: CircleAvatar(
+                                                child: Text(
+                                                  getCircleLetters(friendName),
+                                                  style: const TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                                backgroundColor:
+                                                    Palette.secondary,
+                                              ),
+                                              title: Text(friendName),
+                                              subtitle: Text(
+                                                lastMessage,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        UsersChatScreen(
+                                                      friendId: friendId,
+                                                      friendName: friendName,
+                                                    ),
+                                                  ),
+                                                );
+                                              });
+                                        } else {
+                                          return const CenterError(
+                                              message: 'Não encontrado');
+                                        }
+                                    }
+                                  },
+                                );
+                              },
+                              childCount: snapshot.data!.docs.length,
+                            ),
+                          );
+                        } else {
+                          return SliverToBoxAdapter(
+                            child: Column(
+                              children: const [
+                                Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child:
+                                      Text('Nenhum chat individual encontrado'),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
                       }
-                    }
-                    return const SliverToBoxAdapter(child: CircularLoading());
-                  },
-                ),
-              ],
+                      return const SliverToBoxAdapter(child: CircularLoading());
+                    },
+                  ),
+                ],
+              ),
             ),
           );
         },

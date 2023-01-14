@@ -76,11 +76,16 @@ class _AthleteTrainingsDetailsScreenState
                       switch (snapshot.connectionState) {
                         case ConnectionState.done:
                           if (snapshot.hasData) {
-                            return AthleteInformationWithIcons(
-                                athlete: snapshot.data!.data!);
+                            final result = snapshot.data!;
+                            if(result.success) {
+                              return AthleteInformationWithIcons(
+                                athlete: result.data!);
+                            } else {
+                              return PerseuMessage.result(result);
+                            }
                           } else {
-                            return const Center(
-                              child: Text('Falha ao carregar dados do usuário'),
+                            return const PerseuMessage(
+                              message: 'Ocorreu um erro ao carregar dados do usuário, tente novamente'
                             );
                           }
                         case ConnectionState.none:
@@ -215,7 +220,7 @@ class _AthleteTrainingsDetailsScreenState
           case ConnectionState.done:
             if (snapshot.hasData) {
               final result = snapshot.data!;
-              if (snapshot.data!.success) {
+              if (result.success) {
                 final athleteTrainings =
                     result.data! as List<AthleteTrainingDTO>;
                 return SliverList(
@@ -294,9 +299,11 @@ class _AthleteTrainingsDetailsScreenState
                     childCount: athleteTrainings.length,
                   ),
                 );
+              } else {
+                return SliverToBoxAdapter(child: PerseuMessage.result(result));
               }
             }
-            return const SliverToBoxAdapter(child: SizedBox.shrink());
+            return SliverToBoxAdapter(child: PerseuMessage.defaultError());
         }
       },
     );

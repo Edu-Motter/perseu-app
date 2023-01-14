@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
-import 'package:perseu/src/components/widgets/center_error.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
+import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_screen.dart';
 import 'package:perseu/src/screens/group_chat/group_chat_viewmodel.dart';
+import 'package:perseu/src/services/clients/client_team.dart';
+import 'package:perseu/src/services/foundation.dart';
+import 'package:perseu/src/states/session.dart';
 import 'package:perseu/src/utils/date_formatters.dart';
 import 'package:perseu/src/utils/palette.dart';
 import 'package:perseu/src/utils/ui.dart';
@@ -48,7 +51,8 @@ class _TeamChatScreenState extends State<GroupChatScreen> {
                         .collection('chat')
                         .orderBy('date', descending: true)
                         .snapshots(),
-                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                    builder:
+                        (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasData) {
                         if (snapshot.data!.docs.isNotEmpty) {
                           return ListView.builder(
@@ -71,7 +75,11 @@ class _TeamChatScreenState extends State<GroupChatScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Image.asset('assets/images/chat.png', height: 98, width: 98,),
+                              Image.asset(
+                                'assets/images/chat.png',
+                                height: 98,
+                                width: 98,
+                              ),
                               const Center(
                                 child: Padding(
                                   padding: EdgeInsets.all(24.0),
@@ -90,7 +98,7 @@ class _TeamChatScreenState extends State<GroupChatScreen> {
                           ConnectionState.waiting) {
                         return const CircularLoading();
                       } else {
-                        return const CenterError(message: 'Erro desconhecido');
+                        return PerseuMessage.defaultError();
                       }
                     },
                   ),
@@ -146,18 +154,17 @@ class _TeamChatScreenState extends State<GroupChatScreen> {
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                              color:
-                                  model.isNotBusy ? Palette.accent : Colors.grey,
+                              color: model.isNotBusy
+                                  ? Palette.accent
+                                  : Colors.grey,
                               borderRadius: const BorderRadius.all(
                                 Radius.circular(25),
                               ),
                             ),
                             width: 50,
                             height: 50,
-                            child: const Icon(
-                              Icons.send,
-                              color: Colors.white
-                            ),
+                            child:
+                                const Icon(Icons.send, color: Colors.white),
                           ),
                         ),
                       )
@@ -169,6 +176,41 @@ class _TeamChatScreenState extends State<GroupChatScreen> {
           );
         },
       ),
+    );
+  }
+}
+
+class SystemOnline extends StatelessWidget {
+  const SystemOnline({Key? key, required this.child}) : super(key: key);
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final teamId = locator<Session>().userSession!.team!.id;
+    final authToken = locator<Session>().authToken!;
+    var clientTeam = locator<ClientTeam>();
+    return FutureBuilder(
+      future: clientTeam.getTeamInfo(teamId, authToken),
+      builder: (context, AsyncSnapshot<Result> snapshot) {
+        switch(snapshot.connectionState){
+          case ConnectionState.none:
+          case ConnectionState.waiting:
+          case ConnectionState.active:
+            return const CircularLoading();
+          case ConnectionState.done:
+            if(snapshot.hasData){
+              final result = snapshot.data!;
+              if(result.success){
+                return child;
+              } else {
+                return PerseuMessage.result(result);
+              }
+            } else {
+              return PerseuMessage.defaultError();
+            }
+        }
+      },
     );
   }
 }

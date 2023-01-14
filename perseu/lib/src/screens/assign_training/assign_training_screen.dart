@@ -4,7 +4,7 @@ import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/models/dtos/training_dto.dart';
 import 'package:perseu/src/screens/coach_assign_training/athletes_assign_training_viewmodel.dart';
-import 'package:perseu/src/components/widgets/center_error.dart';
+import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_screen.dart';
 import 'package:perseu/src/screens/manage_athletes/manage_athletes_screen.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/utils/palette.dart';
@@ -79,13 +79,10 @@ class _AssignTrainingState extends State<AssignTrainingScreen> {
                                       ]),
                                 );
                               }
-                              return CenterError(
-                                  message: result.message ??
-                                      'Erro ao carregar atletas');
+                              return PerseuMessage.result(result);
                             }
-                            return const Center(
-                              child: Text(
-                                  'Consulta aos atletas não obteve retorno'),
+                            return const PerseuMessage(
+                              message: 'Consulta aos atletas não obteve retorno',
                             );
                         }
                       })),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:perseu/src/app/locator.dart';
-import 'package:perseu/src/components/widgets/center_error.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/models/dtos/user_chat_dto.dart';
+import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_screen.dart';
 import 'package:perseu/src/screens/manage_athletes/manage_athletes_screen.dart';
 import 'package:perseu/src/screens/user_chat/user_chat_screen.dart';
 import 'package:perseu/src/utils/palette.dart';
@@ -65,16 +65,21 @@ class _UsersToChatScreenState extends State<UsersToChatScreen> {
                     return const CircularLoading();
                   case ConnectionState.done:
                     if (snapshot.hasData) {
-                      return Column(
-                        children: [
-                          ListTitle(text: 'Quantidade de usuários: ${model.users.length}'),
-                          Expanded(child: UsersList(users: model.users)),
-                        ],
-                      );
+                      if (model.users.isNotEmpty) {
+                        return Column(
+                          children: [
+                            ListTitle(text: 'Contatos: ${model.users.length}'),
+                            Expanded(child: UsersList(users: model.users)),
+                          ],
+                        );
+                      } else {
+                        return const PerseuMessage(
+                            message:
+                                'Ocorreu um problema ao buscar seus contatos,'
+                                ' tente novamente');
+                      }
                     }
-                    return const CenterError(
-                      message: 'Erro ao buscar usuários',
-                    );
+                    return PerseuMessage.defaultError();
                 }
               },
             ),
@@ -108,9 +113,7 @@ class UsersList extends StatelessWidget {
               title: Text(
                 user.name,
                 style: const TextStyle(
-                  color: Palette.primary,
-                  fontWeight: FontWeight.bold
-                ),
+                    color: Palette.primary, fontWeight: FontWeight.bold),
               ),
               trailing: const Icon(
                 Icons.message,

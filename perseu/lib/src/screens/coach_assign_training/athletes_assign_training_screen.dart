@@ -3,6 +3,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/models/training_model.dart';
+import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_screen.dart';
 import 'package:perseu/src/screens/manage_athletes/manage_athletes_screen.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/utils/palette.dart';
@@ -52,40 +53,43 @@ class _AssignTrainingState extends State<AthletesAssignTrainingScreen> {
                           case ConnectionState.active:
                             return const CircularLoading();
                           case ConnectionState.done:
-                            Result result = snapshot.data as Result;
-                            if (result.success) {
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Column(children: [
-                                  const ListTitle(
-                                    text: 'Atletas disponíveis',
-                                  ),
-                                  Expanded(
-                                    child: ListView.builder(
-                                      scrollDirection: Axis.vertical,
-                                      shrinkWrap: true,
-                                      itemCount: model.athletes.length,
-                                      itemBuilder: (_, int index) {
-                                        return AthleteCheckboxTile(
-                                          athlete: model.athletes[index],
-                                        );
-                                      },
+                            if(snapshot.hasData){
+                              Result result = snapshot.data as Result;
+                              if (result.success) {
+                                return Padding(
+                                  padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                                  child: Column(children: [
+                                    const ListTitle(
+                                      text: 'Atletas disponíveis',
                                     ),
-                                  ),
-                                  ElevatedButton(
-                                      onPressed: () async {
-                                        _handleAssign(context);
-                                      },
-                                      child: const Text('Atribuir')),
-                                  const SizedBox(height: 16)
-                                ]),
-                              );
-                            } else {
-                              return const Center(
-                                child: Text('Erro ao carregar atletas'),
-                              );
+                                    Expanded(
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.vertical,
+                                        shrinkWrap: true,
+                                        itemCount: model.athletes.length,
+                                        itemBuilder: (_, int index) {
+                                          return AthleteCheckboxTile(
+                                            athlete: model.athletes[index],
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    ElevatedButton(
+                                        onPressed: () async {
+                                          _handleAssign(context);
+                                        },
+                                        child: const Text('Atribuir')),
+                                    const SizedBox(height: 16)
+                                  ]),
+                                );
+                              } else {
+                                return PerseuMessage.result(result);
+                              }
                             }
+                            return const PerseuMessage(
+                                message: 'Ocorreu um problema ao carregar atletas'
+                            );
                         }
                       })),
             );
