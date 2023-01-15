@@ -36,7 +36,7 @@ class ClientTeam with ApiHelper {
   }
 
   Future<Result<TeamInfoDTO>> getTeamInfo(int teamId, String authToken) async {
-    await Future.delayed(Duration(seconds: 5));
+    await Future.delayed(const Duration(milliseconds: 600));
     return process(
         dio.get(
           '/team/$teamId',

@@ -3,6 +3,7 @@ import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/components/widgets/center_loading.dart';
 import 'package:perseu/src/models/dtos/athlete_info_dto.dart';
 import 'package:perseu/src/screens/coach_manage_requests/coach_manage_requests_screen.dart';
+import 'package:perseu/src/screens/manage_athletes/manage_athletes_screen.dart';
 import 'package:perseu/src/services/clients/client_athlete.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/states/foundation.dart';
@@ -28,34 +29,44 @@ class AthleteInformationDialog extends StatelessWidget {
           return AlertDialog(
             title: const Text(
               'Informações do Atleta',
+              textAlign: TextAlign.center,
               style: TextStyle(
-                  color: Palette.primary, fontWeight: FontWeight.bold),
+                color: Palette.primary,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            content: FutureBuilder(
-              future: model.getAthleteInfo(athleteId),
-              builder:
-                  (context, AsyncSnapshot<Result<AthleteInfoDTO>> snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.done:
-                    if (snapshot.hasData) {
-                      final result = snapshot.data!;
-                      if (result.success) {
-                        return AthleteInformation(
-                            athlete: snapshot.data!.data!);
-                      } else {
-                        return PerseuMessage.result(result);
-                      }
-                    } else {
-                      return const PerseuMessage(
-                          message:
-                              'Ocorreu um erro ao carregar os dados do usuário');
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const AccentDivider(dividerPadding: 0),
+                const SizedBox(height: 16),
+                FutureBuilder(
+                  future: model.getAthleteInfo(athleteId),
+                  builder: (context,
+                      AsyncSnapshot<Result<AthleteInfoDTO>> snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.done:
+                        if (snapshot.hasData) {
+                          final result = snapshot.data!;
+                          if (result.success) {
+                            return AthleteInformation(
+                                athlete: snapshot.data!.data!);
+                          } else {
+                            return PerseuMessage.result(result);
+                          }
+                        } else {
+                          return const PerseuMessage(
+                              message:
+                                  'Ocorreu um erro ao carregar os dados do usuário');
+                        }
+                      case ConnectionState.none:
+                      case ConnectionState.waiting:
+                      case ConnectionState.active:
+                        return const CircularLoading();
                     }
-                  case ConnectionState.none:
-                  case ConnectionState.waiting:
-                  case ConnectionState.active:
-                    return const CircularLoading();
-                }
-              },
+                  },
+                ),
+              ],
             ),
           );
         },
@@ -88,7 +99,7 @@ class AthleteInformation extends StatelessWidget {
         const Divider(),
         InformationLine(label: 'CPF', text: formattedCpf),
         const Divider(),
-        InformationLine(label: 'Data de nascimento', text: formattedDate),
+        InformationLine(label: 'Nascimento', text: formattedDate),
         const Divider(),
         InformationLine(label: 'Altura', text: '$formattedHeight m'),
         const Divider(),
