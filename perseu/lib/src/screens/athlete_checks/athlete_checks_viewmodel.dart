@@ -7,6 +7,13 @@ import 'package:perseu/src/utils/date_formatters.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class AthleteChecksViewModel extends AppViewModel {
+  bool _calendarView = true;
+  bool get calendarView => _calendarView;
+  void changeView(){
+    _calendarView = !_calendarView;
+    notifyListeners();
+  }
+
   ClientAthlete clientAthlete = locator<ClientAthlete>();
 
   final kToday = DateTime.now();

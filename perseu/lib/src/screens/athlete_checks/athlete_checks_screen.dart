@@ -27,6 +27,31 @@ class AthleteChecksScreen extends StatelessWidget {
             backgroundColor: Palette.background,
             appBar: AppBar(
               title: const Text('Check-ins'),
+              actions: [
+                TextButton(
+                  onPressed: () => model.changeView(),
+                  child: Row(
+                    children: [
+                      Text(
+                        model.calendarView ? 'Lista' : 'Calendário',
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      const SizedBox(width: 8),
+                      model.calendarView
+                          ? const Icon(
+                              Icons.list,
+                              color: Colors.white,
+                            )
+                          : const Icon(
+                              Icons.calendar_today,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                      const SizedBox(width: 8),
+                    ],
+                  ),
+                ),
+              ],
             ),
             body: FutureBuilder(
               future: model.getAthleteChecks(),
@@ -43,15 +68,28 @@ class AthleteChecksScreen extends StatelessWidget {
                     if (snapshot.hasData) {
                       final result = snapshot.data!;
                       if (result.success && result.data!.isNotEmpty) {
-                        return AthleteChecksList(
-                          checks: result.data!,
-                          model: model,
-                        );
+                        if (model.calendarView) {
+                          return AthleteChecksList(
+                              model: model, checks: result.data!);
+                        } else {
+                          return ListView.builder(
+                            itemCount: result.data!.length,
+                            itemBuilder: (context, index) {
+                              result.data!.sort((c1, c2) => DateFormatters
+                                      .toDateTimeType(c1.date)
+                                  .compareTo(
+                                      DateFormatters.toDateTimeType(c2.date)));
+                              final orderedChecks = result.data!.reversed;
+                              final AthleteCheckDTO check =
+                                  orderedChecks.elementAt(index);
+                              return CheckCardExpanded(check: check);
+                            },
+                          );
+                        }
                       }
                       if (result.success && result.data!.isEmpty) {
                         return const PerseuMessage(
                           message: 'Nenhum check-in ainda',
-                          icon: Icons.mood_bad,
                         );
                       }
                       return PerseuMessage.result(result);
@@ -156,37 +194,7 @@ class _AthleteChecksListState extends State<AthleteChecksList> {
                     itemBuilder: (context, index) {
                       final AthleteCheckDTO check =
                           widget.model.dayChecks[index];
-                      return Card(
-                        margin: const EdgeInsets.only(top: 8),
-                        child: ListTile(
-                          title: Text(
-                            '${Formatters.effortFormatter(check.effort)}  '
-                            '${DateFormatters.toTimeString(check.date)} | '
-                            '${check.training.name}',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Palette.primary),
-                          ),
-                          trailing: const Icon(
-                            Icons.arrow_forward,
-                            color: Palette.secondary,
-                            size: 28,
-                          ),
-                          onTap: () =>
-                              Navigator.push(context, MaterialPageRoute(
-                            builder: (context) {
-                              return TrainingDetailsScreen(
-                                trainingId: check.training.id,
-                                trainingName: check.training.name,
-                                dateTimeCheck: check.date,
-                                effort: check.effort,
-                              );
-                            },
-                          )),
-                        ),
-                      );
+                      return CheckCard(check: check);
                     },
                   ),
                 )
@@ -196,6 +204,93 @@ class _AthleteChecksListState extends State<AthleteChecksList> {
                 ),
         ),
       ],
+    );
+  }
+}
+
+class CheckCard extends StatelessWidget {
+  const CheckCard({
+    Key? key,
+    required this.check,
+  }) : super(key: key);
+
+  final AthleteCheckDTO check;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(top: 8),
+      child: ListTile(
+        title: Text(
+          '${Formatters.effortFormatter(check.effort)}  '
+          '${DateFormatters.toTimeString(check.date)} | '
+          '${check.training.name}',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(
+              fontWeight: FontWeight.bold, color: Palette.primary),
+        ),
+        trailing: const Icon(
+          Icons.arrow_forward,
+          color: Palette.secondary,
+          size: 28,
+        ),
+        onTap: () => Navigator.push(context, MaterialPageRoute(
+          builder: (context) {
+            return TrainingDetailsScreen(
+              trainingId: check.training.id,
+              trainingName: check.training.name,
+              dateTimeCheck: check.date,
+              effort: check.effort,
+            );
+          },
+        )),
+      ),
+    );
+  }
+}
+
+class CheckCardExpanded extends StatelessWidget {
+  const CheckCardExpanded({
+    Key? key,
+    required this.check,
+  }) : super(key: key);
+
+  final AthleteCheckDTO check;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(top: 8),
+      child: ListTile(
+        isThreeLine: false,
+        title: Text(
+          check.training.name,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(
+              fontWeight: FontWeight.bold, color: Palette.primary),
+        ),
+        enabled: true,
+        selected: true,
+
+        subtitle: Text('${Formatters.effortFormatter(check.effort)} | ${DateFormatters.toDateTimeString(check.date)} '),
+        trailing: const Icon(
+          Icons.arrow_forward,
+          color: Palette.secondary,
+          size: 28,
+        ),
+        onTap: () => Navigator.push(context, MaterialPageRoute(
+          builder: (context) {
+            return TrainingDetailsScreen(
+              trainingId: check.training.id,
+              trainingName: check.training.name,
+              dateTimeCheck: check.date,
+              effort: check.effort,
+            );
+          },
+        )),
+      ),
     );
   }
 }
