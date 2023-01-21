@@ -181,7 +181,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               border: OutlineInputBorder(),
                               filled: true,
                               fillColor: fillColor,
-                              hintText: 'Confirmação da senha:',
+                              hintText: 'Confirmação da senha',
                             ),
                             obscureText: true,
                             validator: MultiValidator([
