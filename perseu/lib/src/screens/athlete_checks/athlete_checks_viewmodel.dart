@@ -9,7 +9,7 @@ import 'package:table_calendar/table_calendar.dart';
 class AthleteChecksViewModel extends AppViewModel {
   bool _calendarView = true;
   bool get calendarView => _calendarView;
-  void changeView(){
+  void changeView() {
     _calendarView = !_calendarView;
     notifyListeners();
   }
@@ -25,14 +25,14 @@ class AthleteChecksViewModel extends AppViewModel {
   DateTime selectedDay = DateTime.now();
 
   String get authToken => session.authToken!;
-  int get athleteId => session.userSession!.athlete!.id;
+  int get sessionId => session.userSession!.athlete!.id;
 
   List<AthleteCheckDTO> checks = [];
   List<AthleteCheckDTO> dayChecks = [];
 
-  Future<Result<List<AthleteCheckDTO>>> getAthleteChecks() async {
+  Future<Result<List<AthleteCheckDTO>>> getAthleteChecks(int? athleteId) async {
     Result<List<AthleteCheckDTO>> athleteChecksResult =
-        await clientAthlete.getAthleteChecks(athleteId, authToken);
+        await clientAthlete.getAthleteChecks(athleteId ?? sessionId, authToken);
     if (athleteChecksResult.success) checks = athleteChecksResult.data!;
     return athleteChecksResult;
   }

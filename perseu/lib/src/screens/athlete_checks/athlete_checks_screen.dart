@@ -15,7 +15,12 @@ import 'package:table_calendar/table_calendar.dart';
 import 'athlete_checks_viewmodel.dart';
 
 class AthleteChecksScreen extends StatelessWidget {
-  const AthleteChecksScreen({Key? key}) : super(key: key);
+  const AthleteChecksScreen({
+    Key? key,
+    this.athleteId
+  }) : super(key: key);
+
+  final int? athleteId;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +59,7 @@ class AthleteChecksScreen extends StatelessWidget {
               ],
             ),
             body: FutureBuilder(
-              future: model.getAthleteChecks(),
+              future: model.getAthleteChecks(athleteId),
               builder: (
                 context,
                 AsyncSnapshot<Result<List<AthleteCheckDTO>>> snapshot,
@@ -273,8 +278,8 @@ class CheckCardExpanded extends StatelessWidget {
         ),
         enabled: true,
         selected: true,
-
-        subtitle: Text('${Formatters.effortFormatter(check.effort)} | ${DateFormatters.toDateTimeString(check.date)} '),
+        subtitle: Text(
+            '${Formatters.effortFormatter(check.effort)} | ${DateFormatters.toDateTimeString(check.date)} '),
         trailing: const Icon(
           Icons.arrow_forward,
           color: Palette.secondary,

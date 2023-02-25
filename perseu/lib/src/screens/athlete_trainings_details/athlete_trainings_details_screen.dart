@@ -12,6 +12,7 @@ import 'package:perseu/src/utils/palette.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
+import '../athlete_checks/athlete_checks_screen.dart';
 import 'athlete_trainings_details_viewmodel.dart';
 import 'components/athlete_information_with_icons.dart';
 import 'dart:math' as math;
@@ -77,16 +78,71 @@ class _AthleteTrainingsDetailsScreenState
                         case ConnectionState.done:
                           if (snapshot.hasData) {
                             final result = snapshot.data!;
-                            if(result.success) {
-                              return AthleteInformationWithIcons(
-                                athlete: result.data!);
+                            if (result.success) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: AthleteInformationWithIcons(
+                                        athlete: result.data!),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 16.0, top: 16.0),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                          width: 75,
+                                          height: 45,
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => AthleteChecksScreen(
+                                                    athleteId: widget.athleteId,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            child: const Icon(
+                                              Icons.calendar_today_outlined,
+                                              color: Colors.white,
+                                              size: 28,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 16.0),
+                                          child: Text(
+                                            model.athletesChecksCount.toString(),
+                                            style: const TextStyle(
+                                                fontSize: 28,
+                                                color: Palette.secondary,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        const Text(
+                                          'Check-ins',
+                                          style: TextStyle(
+                                            color: Palette.primary,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              );
                             } else {
                               return PerseuMessage.result(result);
                             }
                           } else {
                             return const PerseuMessage(
-                              message: 'Ocorreu um erro ao carregar dados do usuário, tente novamente'
-                            );
+                                message:
+                                    'Ocorreu um erro ao carregar dados do usuário, tente novamente');
                           }
                         case ConnectionState.none:
                         case ConnectionState.waiting:

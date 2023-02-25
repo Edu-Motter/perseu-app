@@ -8,6 +8,8 @@ import 'package:perseu/src/services/clients/client_training.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/states/foundation.dart';
 
+import '../../models/dtos/athlete_check_dto.dart';
+
 class AthleteTrainingsDetailsViewModel extends AppViewModel {
   ClientCoach clientCoach = locator<ClientCoach>();
   ClientAthlete clientAthlete = locator<ClientAthlete>();
@@ -16,6 +18,7 @@ class AthleteTrainingsDetailsViewModel extends AppViewModel {
   String get authToken => session.authToken!;
   int get teamId => session.userSession!.team!.id;
   TrainingDTO? training;
+  int athletesChecksCount = 0;
 
   Future<Result<TrainingDTO>> getTraining(int trainingId) async {
     Result<TrainingDTO> result =
@@ -35,7 +38,7 @@ class AthleteTrainingsDetailsViewModel extends AppViewModel {
     Result<List<AthleteTrainingDTO>> result =
         await clientAthlete.getActiveTrainings(authToken, athleteId);
 
-    if(result.error) return false;
+    if (result.error) return false;
 
     return result.data!.length > 1;
   }
@@ -74,8 +77,16 @@ class AthleteTrainingsDetailsViewModel extends AppViewModel {
     final result =
         await clientAthlete.getAthlete(athleteId, session.authToken!);
     if (result.success) {
+      athletesChecksCount = await getAthleteChecksCount(athleteId);
       return Result.success(data: AthleteInfoDTO.fromJson(result.data));
     }
     return Result.error(message: result.message);
+  }
+
+  Future<int> getAthleteChecksCount(int athleteId) async {
+    Result<List<AthleteCheckDTO>> athleteChecksResult =
+        await clientAthlete.getAthleteChecks(athleteId, authToken);
+    final checks = athleteChecksResult.data!;
+    return checks.length;
   }
 }

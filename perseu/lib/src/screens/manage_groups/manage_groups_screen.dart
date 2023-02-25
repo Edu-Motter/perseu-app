@@ -170,28 +170,33 @@ class _GroupNameDialogState extends State<GroupNameDialog> {
                       if (result.success) {
                         final List<AthleteToGroup> athletes =
                             widget.model.athletes;
-                        return Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              const Divider(),
-                              const ListTitle(
-                                text: 'Atletas disponíveis',
-                                dividerPadding: 0,
-                                topPadding: 4,
-                              ),
-                              Expanded(
-                                child: ListView.builder(
-                                  scrollDirection: Axis.vertical,
-                                  shrinkWrap: true,
-                                  itemCount: athletes.length,
-                                  itemBuilder: (_, int index) {
-                                    return AthleteCheckboxTile(
-                                      athlete: athletes[index],
-                                    );
-                                  },
+                        return SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.8,
+                          width: MediaQuery.of(context).size.height * 0.8,
+                          child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                const Divider(),
+                                const ListTitle(
+                                  text: 'Atletas disponíveis',
+                                  dividerPadding: 0,
+                                  topPadding: 4,
                                 ),
-                              ),
-                            ]);
+                                Expanded(
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    shrinkWrap: true,
+                                    itemCount: athletes.length,
+                                    itemBuilder: (_, int index) {
+                                      return AthleteCheckboxTile(
+                                        athlete: athletes[index],
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ]),
+                        );
                       }
                       return PerseuMessage.result(result);
                     }
