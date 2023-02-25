@@ -42,7 +42,7 @@ class DateFormatters {
   static DateTime toDateTimeType(String inputIsoInstant) {
     final DateFormat isoInstantFormatter = DateFormat(isoInstant);
     final DateTime parsedDate = isoInstantFormatter.parse(inputIsoInstant, true);
-    return parsedDate;
+    return parsedDate.toLocal();
   }
 
 }
