@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:perseu/src/app/locator.dart';
 import 'package:perseu/src/models/dtos/group_name_dto.dart';
 import 'package:perseu/src/services/clients/client_athlete.dart';
@@ -6,10 +7,13 @@ import 'package:perseu/src/services/clients/client_user.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/states/foundation.dart';
 
+import '../../services/clients/client_firebase.dart';
+
 class ChatsViewModel extends AppViewModel {
   ClientUser clientUser = locator<ClientUser>();
   ClientAthlete clientAthlete = locator<ClientAthlete>();
   ClientTeam clientTeam = locator<ClientTeam>();
+  ClientFirebase clientFirebase = locator<ClientFirebase>();
 
   int get userId => session.userSession!.user.id;
   int get teamId => session.userSession!.team!.id;
@@ -20,21 +24,21 @@ class ChatsViewModel extends AppViewModel {
 
   bool _teamChatVisible = true;
   bool get isTeamChatVisible => _teamChatVisible;
-  void changeTeamChatVisibility(){
+  void changeTeamChatVisibility() {
     _teamChatVisible = !_teamChatVisible;
     notifyListeners();
   }
 
   bool _groupsChatVisible = true;
   bool get isGroupsChatVisible => _groupsChatVisible;
-  void changeGroupsChatVisibility(){
+  void changeGroupsChatVisibility() {
     _groupsChatVisible = !_groupsChatVisible;
     notifyListeners();
   }
 
   bool _usersChatVisible = true;
   bool get isUsersChatVisible => _usersChatVisible;
-  void changeUsersChatVisibility(){
+  void changeUsersChatVisibility() {
     _usersChatVisible = !_usersChatVisible;
     notifyListeners();
   }
@@ -54,4 +58,16 @@ class ChatsViewModel extends AppViewModel {
       return clientTeam.getGroups(authToken, teamId);
     }
   }
+
+  Stream<DocumentSnapshot> getTeamLastMessage() =>
+      clientFirebase.getTeamLastMessage(teamId: teamId);
+
+  Stream<QuerySnapshot> getUsersLastMessages() =>
+      clientFirebase.getUsersLastMessages(userId: userId, teamId: teamId);
+
+  Stream<DocumentSnapshot> getGroupsLastMessages(int groupId) =>
+      clientFirebase.getGroupsLastMessages(teamId: teamId, groupId: groupId);
+
+
+
 }

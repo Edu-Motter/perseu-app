@@ -5,7 +5,7 @@ import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/states/session.dart';
 
 class ClientFirebase extends ApiHelper {
-  final FirebaseFirestore clientFirestore = locator.get<FirebaseFirestore>();
+  final FirebaseFirestore firestore = locator.get<FirebaseFirestore>();
   final Dio dio = locator.get<Dio>();
 
   Future<Result> saveMessage(String message, UserSession session) async {
@@ -16,24 +16,88 @@ class ClientFirebase extends ApiHelper {
     final teamId = session.team!.id.toString();
 
     try {
-      await clientFirestore
-          .collection('teams')
-          .doc(teamId)
-          .collection('chat')
-          .add({
+      await firestore.collection('teams').doc(teamId).collection('chat').add({
         'userName': userName,
         'message': message,
         'date': DateTime.now(),
         'userId': session.user.email,
-      }).then((_) =>
-              FirebaseFirestore.instance.collection('teams').doc(teamId).set({
-                'lastMessage': '$userName: $message',
-                'userId': session.user.id.toString(),
-              }));
+      }).then((_) => firestore.collection('teams').doc(teamId).set({
+            'lastMessage': '$userName: $message',
+            'userId': session.user.id.toString(),
+          }));
       return const Result.success();
     } catch (e) {
       return Result.error(message: e.toString());
     }
+  }
+
+  Stream<QuerySnapshot> getGroupMessages({
+    required int groupId,
+    required int teamId,
+  }) {
+    return firestore
+        .collection('teams')
+        .doc(teamId.toString())
+        .collection('groups')
+        .doc(groupId.toString())
+        .collection('chat')
+        .orderBy('date', descending: true)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getUsersMessages({
+    required int userId,
+    required int friendId,
+    required int teamId,
+  }) {
+    return firestore
+        .collection('teams')
+        .doc(teamId.toString())
+        .collection('users')
+        .doc(userId.toString())
+        .collection('chats')
+        .doc(friendId.toString())
+        .collection('messages')
+        .orderBy('date', descending: true)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getTeamMessages({required int teamId}) {
+    return firestore
+        .collection('teams')
+        .doc(teamId.toString())
+        .collection('chat')
+        .orderBy('date', descending: true)
+        .snapshots();
+  }
+
+  Stream<DocumentSnapshot> getTeamLastMessage({required int teamId}) {
+    return firestore.collection('teams').doc(teamId.toString()).snapshots();
+  }
+
+  Stream<QuerySnapshot> getUsersLastMessages({
+    required int userId,
+    required int teamId,
+  }) {
+    return firestore
+        .collection('teams')
+        .doc(teamId.toString())
+        .collection('users')
+        .doc(userId.toString())
+        .collection('chats')
+        .snapshots();
+  }
+
+  Stream<DocumentSnapshot> getGroupsLastMessages({
+    required int groupId,
+    required int teamId,
+  }) {
+    return firestore
+        .collection('teams')
+        .doc(teamId.toString())
+        .collection('groups')
+        .doc(groupId.toString())
+        .snapshots();
   }
 
   Future<Result> saveMessageGroup({
@@ -41,12 +105,15 @@ class ClientFirebase extends ApiHelper {
     required int groupId,
     required UserSession session,
   }) async {
+    String teamId = session.team!.id.toString();
     String userName = 'Desconhecido';
     if (session.isAthlete) userName = session.athlete!.name;
     if (session.isCoach) userName = session.coach!.name;
 
     try {
-      await clientFirestore
+      await firestore
+          .collection('teams')
+          .doc(teamId)
           .collection('groups')
           .doc(groupId.toString())
           .collection('chat')
@@ -55,10 +122,8 @@ class ClientFirebase extends ApiHelper {
         'message': message,
         'date': DateTime.now(),
         'userId': session.user.id,
-      }).then((_) => FirebaseFirestore.instance
-                  .collection('groups')
-                  .doc(groupId.toString())
-                  .set({
+      }).then((_) =>
+              firestore.collection('groups').doc(groupId.toString()).set({
                 'lastMessage': '$userName: $message',
                 'userId': session.user.id.toString(),
               }));
@@ -82,16 +147,22 @@ class ClientFirebase extends ApiHelper {
       'userId': userSession.user.id,
     };
 
+    String teamId = userSession.team!.id.toString();
+
     try {
       //Saves on user's collection
-      await clientFirestore
+      await firestore
+          .collection('teams')
+          .doc(teamId)
           .collection('users')
           .doc(userSession.user.id.toString())
           .collection('chats')
           .doc(friendId.toString())
           .collection('messages')
           .add(messageData)
-          .then((_) => clientFirestore
+          .then((_) => firestore
+                  .collection('teams')
+                  .doc(teamId)
                   .collection('users')
                   .doc(userSession.user.id.toString())
                   .collection('chats')
@@ -101,14 +172,18 @@ class ClientFirebase extends ApiHelper {
                 'userId': userSession.user.id.toString(),
               }));
       //Saves on friend's collection
-      await clientFirestore
+      await firestore
+          .collection('teams')
+          .doc(teamId)
           .collection('users')
           .doc(friendId.toString())
           .collection('chats')
           .doc(userSession.user.id.toString())
           .collection('messages')
           .add(messageData)
-          .then((_) => clientFirestore
+          .then((_) => firestore
+                  .collection('teams')
+                  .doc(teamId)
                   .collection('users')
                   .doc(friendId.toString())
                   .collection('chats')

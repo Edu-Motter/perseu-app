@@ -34,12 +34,7 @@ class _TeamChatScreenState extends State<TeamChatScreen> {
               children: [
                 Expanded(
                   child: StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection('teams')
-                        .doc(model.teamId.toString())
-                        .collection('chat')
-                        .orderBy('date', descending: true)
-                        .snapshots(),
+                    stream: model.getMessages(),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasData) {
                         if (snapshot.data!.docs.isNotEmpty) {

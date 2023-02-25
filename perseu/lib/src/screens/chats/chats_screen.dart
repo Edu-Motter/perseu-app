@@ -52,10 +52,7 @@ class ChatsScreen extends StatelessWidget {
                               ),
                               title: Text(model.teamName),
                               subtitle: StreamBuilder(
-                                stream: FirebaseFirestore.instance
-                                    .collection('teams')
-                                    .doc(model.teamId.toString())
-                                    .snapshots(),
+                                stream: model.getTeamLastMessage(),
                                 builder: (context,
                                     AsyncSnapshot<DocumentSnapshot> snapshot) {
                                   if (snapshot.hasData) {
@@ -111,11 +108,7 @@ class ChatsScreen extends StatelessWidget {
                     child: Divider(),
                   ),
                   StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection('users')
-                        .doc(model.userId.toString())
-                        .collection('chats')
-                        .snapshots(),
+                    stream: model.getUsersLastMessages(),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasData) {
                         if (snapshot.data!.docs.isNotEmpty) {
@@ -274,10 +267,7 @@ class ChatsScreen extends StatelessWidget {
                             ),
                             title: Text(group.name),
                             subtitle: StreamBuilder(
-                              stream: FirebaseFirestore.instance
-                                  .collection('groups')
-                                  .doc(group.id.toString())
-                                  .snapshots(),
+                              stream: model.getGroupsLastMessages(group.id),
                               builder: (context,
                                   AsyncSnapshot<DocumentSnapshot> snapshot) {
                                 if (snapshot.hasData) {

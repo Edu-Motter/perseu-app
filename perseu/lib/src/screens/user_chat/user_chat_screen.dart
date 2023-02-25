@@ -43,14 +43,7 @@ class _TeamChatScreenState extends State<UsersChatScreen> {
               children: [
                 Expanded(
                   child: StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection('users')
-                        .doc(model.userId.toString())
-                        .collection('chats')
-                        .doc(widget.friendId.toString())
-                        .collection('messages')
-                        .orderBy('date', descending: true)
-                        .snapshots(),
+                    stream: model.getMessages(widget.friendId),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasData) {
                         if (snapshot.data!.docs.isNotEmpty) {
