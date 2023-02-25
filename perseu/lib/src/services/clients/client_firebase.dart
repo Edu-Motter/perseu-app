@@ -122,8 +122,12 @@ class ClientFirebase extends ApiHelper {
         'message': message,
         'date': DateTime.now(),
         'userId': session.user.id,
-      }).then((_) =>
-              firestore.collection('groups').doc(groupId.toString()).set({
+      }).then((_) => firestore
+                  .collection('teams')
+                  .doc(teamId)
+                  .collection('groups')
+                  .doc(groupId.toString())
+                  .set({
                 'lastMessage': '$userName: $message',
                 'userId': session.user.id.toString(),
               }));
