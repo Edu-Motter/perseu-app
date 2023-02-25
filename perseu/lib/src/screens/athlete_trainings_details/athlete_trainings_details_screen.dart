@@ -92,36 +92,39 @@ class _AthleteTrainingsDetailsScreenState
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
-                                        SizedBox(
-                                          width: 75,
-                                          height: 45,
-                                          child: ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) => AthleteChecksScreen(
-                                                    athleteId: widget.athleteId,
-                                                  ),
+                                        Visibility(
+                                          visible: model.athletesChecksCount > 0,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(bottom: 16.0),
+                                            child: SizedBox(
+                                              width: 75,
+                                              height: 45,
+                                              child: ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) => AthleteChecksScreen(
+                                                        athleteId: widget.athleteId,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                child: const Icon(
+                                                  Icons.calendar_today_outlined,
+                                                  color: Colors.white,
+                                                  size: 28,
                                                 ),
-                                              );
-                                            },
-                                            child: const Icon(
-                                              Icons.calendar_today_outlined,
-                                              color: Colors.white,
-                                              size: 28,
+                                              ),
                                             ),
                                           ),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(top: 16.0),
-                                          child: Text(
-                                            model.athletesChecksCount.toString(),
-                                            style: const TextStyle(
-                                                fontSize: 28,
-                                                color: Palette.secondary,
-                                                fontWeight: FontWeight.bold),
-                                          ),
+                                        Text(
+                                          model.athletesChecksCount.toString(),
+                                          style: const TextStyle(
+                                              fontSize: 28,
+                                              color: Palette.secondary,
+                                              fontWeight: FontWeight.bold),
                                         ),
                                         const Text(
                                           'Check-ins',
