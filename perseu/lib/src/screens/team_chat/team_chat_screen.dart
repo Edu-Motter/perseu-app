@@ -63,21 +63,22 @@ class _TeamChatScreenState extends State<TeamChatScreen> {
                           return Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
-                            children: const [
-                              Center(
-                                child: Text(
-                                  'Inicie a conversa',
-                                  style: TextStyle(
-                                      color: Palette.primary, fontSize: 36),
+                            children: [
+                              Image.asset(
+                                'assets/images/chat.png',
+                                height: 90,
+                                width: 90,
+                              ),
+                              const Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(24.0),
+                                  child: Text(
+                                    'Inicie a conversa',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Palette.primary, fontSize: 24),
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              Icon(
-                                Icons.chat,
-                                size: 56,
-                                color: Palette.primary,
                               ),
                             ],
                           );

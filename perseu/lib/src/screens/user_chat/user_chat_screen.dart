@@ -33,6 +33,7 @@ class _TeamChatScreenState extends State<UsersChatScreen> {
       child: Consumer<UserChatViewModel>(
         builder: (context, model, child) {
           return Scaffold(
+            resizeToAvoidBottomInset: true,
             backgroundColor: Palette.background,
             appBar: AppBar(
               title: Text(widget.friendName),
@@ -73,7 +74,11 @@ class _TeamChatScreenState extends State<UsersChatScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Image.asset('assets/images/chat.png', height: 112, width: 112,),
+                              Image.asset(
+                                'assets/images/chat.png',
+                                height: 90,
+                                width: 90,
+                              ),
                               const Center(
                                 child: Padding(
                                   padding: EdgeInsets.all(24.0),

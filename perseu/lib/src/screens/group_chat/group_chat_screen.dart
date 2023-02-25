@@ -77,8 +77,8 @@ class _TeamChatScreenState extends State<GroupChatScreen> {
                             children: [
                               Image.asset(
                                 'assets/images/chat.png',
-                                height: 98,
-                                width: 98,
+                                height: 90,
+                                width: 90,
                               ),
                               const Center(
                                 child: Padding(
