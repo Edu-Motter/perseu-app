@@ -33,12 +33,13 @@ class _CoachManageRequestsScreenState extends State<CoachManageRequestsScreen> {
           return ModalProgressHUD(
             inAsyncCall: model.isBusy,
             child: Scaffold(
-                backgroundColor: Palette.background,
-                key: _scaffoldKey,
-                appBar: AppBar(
-                  title: const Text('Solicitações'),
-                ),
-                body: Column(children: [
+              backgroundColor: Palette.background,
+              key: _scaffoldKey,
+              appBar: AppBar(
+                title: const Text('Solicitações'),
+              ),
+              body: Column(
+                children: [
                   PerseuCard(
                     contentPadding: const EdgeInsets.all(16),
                     child: TeamInfo(
@@ -48,10 +49,12 @@ class _CoachManageRequestsScreenState extends State<CoachManageRequestsScreen> {
                     ),
                   ),
                   const AccentDivider(accentColor: Palette.primary),
-                  const Flexible(
-                    child: RequestList(),
+                  Flexible(
+                    child: RequestList(model: model),
                   ),
-                ])),
+                ],
+              ),
+            ),
           );
         },
       ),
@@ -60,7 +63,9 @@ class _CoachManageRequestsScreenState extends State<CoachManageRequestsScreen> {
 }
 
 class RequestList extends StatefulWidget {
-  const RequestList({Key? key}) : super(key: key);
+  const RequestList({Key? key, required this.model}) : super(key: key);
+
+  final CoachManageRequestsViewModel model;
 
   static const buttonColor = Palette.secondary;
   static const primaryButtonColor = Palette.accent;
@@ -73,8 +78,8 @@ class RequestList extends StatefulWidget {
 class _RequestListState extends State<RequestList> {
   @override
   Widget build(BuildContext context) {
-    final model =
-        Provider.of<CoachManageRequestsViewModel>(context, listen: false);
+    final model = widget.model;
+
     return FutureBuilder(
       future: model.getRequests(model.team.id),
       builder: (context, AsyncSnapshot<Result<List<InviteDTO>>> snapshot) {
@@ -174,7 +179,7 @@ class _RequestListState extends State<RequestList> {
       BuildContext context) async {
     Result result = await model.acceptRequest(athleteId);
     if (result.success) {
-      UIHelper.showFlashNotification(context, result.message!);
+      UIHelper.showSuccess(context, result);
     } else {
       UIHelper.showError(context, result);
     }
@@ -196,7 +201,8 @@ class _RequestListState extends State<RequestList> {
       onYesPressed: () async {
         Result result = await model.declineRequest(request.athlete.id);
         if (result.success) {
-          UIHelper.showFlashNotification(context, result.message!);
+          Navigator.pop(context);
+          UIHelper.showSuccess(context, result);
         } else {
           UIHelper.showError(context, result);
         }
