@@ -109,11 +109,6 @@ class GroupAthletesList extends StatelessWidget {
                       fontSize: 16,
                       fontWeight: FontWeight.bold),
                 ),
-                trailing: const Icon(
-                  Icons.clear,
-                  color: Palette.secondary,
-                  size: 28,
-                ),
                 onTap: () {}),
           );
         },

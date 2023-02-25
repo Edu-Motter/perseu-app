@@ -294,7 +294,7 @@ class ChatsScreen extends StatelessWidget {
                           const Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Center(
-                              child: Text('Nenhum chat em grupo foi criado'),
+                              child: Text('Nenhum chat em grupo encontrado'),
                             ),
                           ),
                       ],

@@ -53,7 +53,8 @@ class ChatsViewModel extends AppViewModel {
 
   Future<Result<List<GroupNameDTO>>> getUserGroups() {
     if (isAthlete) {
-      return clientAthlete.getAthleteGroups(authToken, teamId);
+      final athleteId = session.userSession!.athlete!.id;
+      return clientAthlete.getAthleteGroups(authToken, athleteId);
     } else {
       return clientTeam.getGroups(authToken, teamId);
     }

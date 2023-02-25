@@ -149,11 +149,11 @@ class ClientAthlete with ApiHelper {
 
   Future<Result<List<GroupNameDTO>>> getAthleteGroups(
       String authToken,
-      int teamId,
+      int athleteId,
       ) {
     return process(
       dio.get(
-        '/team/$teamId/group',
+        '/athlete/$athleteId/group',
         options: Options(headers: {'Authorization': 'Bearer $authToken'}),
       ),
       onSuccess: (response) {
