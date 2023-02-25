@@ -23,6 +23,11 @@ class FcmService {
 
     FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
       final session = locator<Session>();
+      if (session.userSession == null) {
+        debugPrint('userSession is null, not possible to refresh the token');
+        return;
+      }
+
       final userId = session.userSession!.user.id;
       final authToken = session.authToken!;
 
