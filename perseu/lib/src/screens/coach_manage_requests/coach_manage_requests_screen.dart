@@ -227,10 +227,10 @@ class PerseuMessage extends StatelessWidget {
     );
   }
 
-  factory PerseuMessage.result(Result result) {
+  factory PerseuMessage.result(Result result, {IconData? icon}) {
     return PerseuMessage(
       message: result.message ?? 'Erro, tente novamente',
-      icon: Icons.cancel,
+      icon: icon ?? Icons.cancel,
     );
   }
 

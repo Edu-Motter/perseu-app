@@ -157,7 +157,7 @@ class _UserViewTrainingScreenState extends State<UserViewTrainingScreen> {
                                   ],
                                 );
                               }else {
-                                return PerseuMessage.result(result);
+                                return PerseuMessage.result(result, icon: Icons.mood_bad);
                               }
                             } else {
                               return const PerseuMessage(

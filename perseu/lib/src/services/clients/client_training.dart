@@ -67,7 +67,7 @@ class ClientTraining with ApiHelper {
       TrainingDTO trainingInfo = TrainingDTO.fromJson(response.data);
       return Result.success(data: trainingInfo);
     }, onError: (response) {
-      return const Result.error(message: 'Falha ao atribuir treino');
+      return const Result.error(message: 'Nenhum treino atribuído por enquanto');
     });
   }
 
