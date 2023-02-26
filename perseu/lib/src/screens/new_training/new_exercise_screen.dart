@@ -39,6 +39,11 @@ class _NewExerciseState extends State<NewExerciseScreen> {
     super.initState();
   }
 
+  bool get emptyExerciseDescription =>
+      _exerciseDescriptionController.text.trim().isEmpty;
+  bool get emptyExerciseName => _exerciseNameController.text.trim().isEmpty;
+  bool get emptyExercise => emptyExerciseName && emptyExerciseDescription;
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
@@ -46,7 +51,8 @@ class _NewExerciseState extends State<NewExerciseScreen> {
       child: Consumer<NewTrainingViewModel>(
         builder: (_, model, __) {
           return WillPopScope(
-            onWillPop: () => confirmEraseExercise(context),
+            onWillPop: () =>
+                confirmEraseExercise(context, isEmpty: emptyExercise),
             child: Scaffold(
                 resizeToAvoidBottomInset: false,
                 backgroundColor: Palette.background,
@@ -105,7 +111,8 @@ class _NewExerciseState extends State<NewExerciseScreen> {
                                   ),
                                 ),
                               ),
-                              onPressed: () => saveExercise(context, model, true),
+                              onPressed: () =>
+                                  saveExercise(context, model, true),
                               child: const Text(
                                 'Salvar e novo',
                                 style: TextStyle(color: Palette.accent),
@@ -115,8 +122,8 @@ class _NewExerciseState extends State<NewExerciseScreen> {
                       ),
                     ElevatedButton(
                         onPressed: () => saveExercise(context, model, false),
-                        child:
-                            const Text('Salvar', style: TextStyle(fontSize: 16)))
+                        child: const Text('Salvar',
+                            style: TextStyle(fontSize: 16)))
                   ]),
                 )),
           );
@@ -160,7 +167,15 @@ class _NewExerciseState extends State<NewExerciseScreen> {
     model.notifyListeners();
   }
 
-  Future<bool> confirmEraseExercise(BuildContext context) async {
+  Future<bool> confirmEraseExercise(
+    BuildContext context, {
+    bool isEmpty = false,
+  }) async {
+    if (isEmpty) {
+      Navigator.pop(context);
+      return Future.value(true);
+    }
+
     final result = await UIHelper.showBool(
         context: context,
         title: 'Apagar exercício?',

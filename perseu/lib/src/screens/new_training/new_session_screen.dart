@@ -29,6 +29,8 @@ class _NewSessionState extends State<NewSessionScreen> {
 
   bool get editingSession => widget.sessionModel != null;
 
+  bool get emptySessionName => _sessionNameController.text.trim().isEmpty;
+
   @override
   void initState() {
     if (editingSession) {
@@ -49,7 +51,10 @@ class _NewSessionState extends State<NewSessionScreen> {
       child: Consumer<NewTrainingViewModel>(
         builder: (_, model, __) {
           return WillPopScope(
-            onWillPop: () => confirmEraseSession(context),
+            onWillPop: () => confirmEraseSession(
+              context,
+              isEmpty: model.hasNoExercise && emptySessionName,
+            ),
             child: Scaffold(
               resizeToAvoidBottomInset: false,
               backgroundColor: Palette.background,
@@ -251,7 +256,15 @@ class _NewSessionState extends State<NewSessionScreen> {
     );
   }
 
-  Future<bool> confirmEraseSession(BuildContext context) async {
+  Future<bool> confirmEraseSession(
+    BuildContext context, {
+    bool isEmpty = false,
+  }) async {
+    if (isEmpty) {
+      Navigator.pop(context);
+      return Future.value(true);
+    }
+
     final result = await UIHelper.showBool(
         context: context,
         title: 'Apagar sessão?',

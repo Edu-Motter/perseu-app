@@ -106,6 +106,7 @@ class UIHelper {
     required BuildContext context,
     required String title,
     required String message,
+    VoidCallback? onYes,
   }) {
     final style = locator<Style>();
     return showDialog<bool>(
@@ -121,7 +122,14 @@ class UIHelper {
           ),
           ElevatedButton(
             style: style.buttonAlertPrimary,
-            onPressed: () => Navigator.pop(context, true),
+            onPressed: () {
+              if (onYes != null) {
+                onYes();
+                return;
+              }
+
+              Navigator.pop(context, true);
+            },
             child: const Text('Sim'),
           ),
         ],

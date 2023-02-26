@@ -31,7 +31,10 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
         builder: (_, model, __) {
           model.training.name = widget.trainingName;
           return WillPopScope(
-            onWillPop: () => confirmEraseTraining(context),
+            onWillPop: () => confirmEraseTraining(
+              context,
+              isEmpty: model.hasNoSession
+            ),
             child: Scaffold(
               backgroundColor: Palette.background,
               appBar: AppBar(
@@ -63,7 +66,8 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
                             height: 16,
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 32.0),
                             child: ElevatedButton(
                                 onPressed: () => goToSession(context, model),
                                 child: const Text('Adicionar sessão')),
@@ -116,7 +120,8 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
                                             )),
                                         const Padding(
                                           padding: EdgeInsets.all(8.0),
-                                          child: Icon(Icons.keyboard_arrow_down),
+                                          child:
+                                              Icon(Icons.keyboard_arrow_down),
                                         )
                                       ],
                                     ),
@@ -202,11 +207,24 @@ class _NewTrainingScreenState extends State<NewTrainingScreen> {
     );
   }
 
-  Future<bool> confirmEraseTraining(BuildContext context) async {
+  Future<bool> confirmEraseTraining(
+    BuildContext context, {
+    bool isEmpty = false,
+  }) async {
+    if(isEmpty){
+      closeNewTraining(context);
+      return Future.value(true);
+    }
+
     final result = await UIHelper.showBool(
-        context: context,
-        title: 'Apagar treino?',
-        message: 'Deseja realmente sair sem salvar o treino?');
+      context: context,
+      title: 'Apagar treino?',
+      message: 'Deseja realmente sair sem salvar o treino?',
+      onYes: () => closeNewTraining(context),
+    );
     return Future.value(result ?? false);
   }
+
+  void closeNewTraining(context) =>
+      Navigator.popUntil(context, (route) => route.isFirst);
 }
