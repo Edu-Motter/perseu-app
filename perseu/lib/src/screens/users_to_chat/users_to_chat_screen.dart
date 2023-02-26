@@ -120,7 +120,7 @@ class UsersList extends StatelessWidget {
                 color: Palette.secondary,
                 size: 28,
               ),
-              onTap: () => Navigator.push(
+              onTap: () => Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => UsersChatScreen(

@@ -95,6 +95,8 @@ class _AssignTrainingState extends State<AssignTrainingScreen> {
     final model = Provider.of<AssignTrainingViewModel>(context, listen: false);
     Result result = await model.assign(widget.training, model.athletes);
     if (result.success) {
+      Navigator.pop(context);
+      Navigator.pop(context);
       UIHelper.showSuccess(context, result);
     } else {
       UIHelper.showError(context, result);

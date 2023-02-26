@@ -53,12 +53,12 @@ class _AssignTrainingState extends State<AthletesAssignTrainingScreen> {
                           case ConnectionState.active:
                             return const CircularLoading();
                           case ConnectionState.done:
-                            if(snapshot.hasData){
+                            if (snapshot.hasData) {
                               Result result = snapshot.data as Result;
                               if (result.success) {
                                 return Padding(
-                                  padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
                                   child: Column(children: [
                                     const ListTitle(
                                       text: 'Atletas disponíveis',
@@ -88,8 +88,8 @@ class _AssignTrainingState extends State<AthletesAssignTrainingScreen> {
                               }
                             }
                             return const PerseuMessage(
-                                message: 'Ocorreu um problema ao carregar atletas'
-                            );
+                                message:
+                                    'Ocorreu um problema ao carregar atletas');
                         }
                       })),
             );
@@ -102,7 +102,13 @@ class _AssignTrainingState extends State<AthletesAssignTrainingScreen> {
         Provider.of<AthletesAssignTrainingViewModel>(context, listen: false);
     Result result = await model.assign(training, model.athletes);
     if (result.success) {
-      UIHelper.showSuccess(context, result);
+      Navigator.popUntil(context, (route) => route.isFirst);
+      UIHelper.showSuccess(
+        context,
+        const Result.success(
+          message: 'Treino criado e atribuído com successo',
+        ),
+      );
     } else {
       UIHelper.showError(context, result);
     }

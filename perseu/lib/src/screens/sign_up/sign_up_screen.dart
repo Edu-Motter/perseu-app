@@ -309,8 +309,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
       Result result = await model.signUp();
       if (result.success) {
-        UIHelper.showSuccessWithRoute(context, result,
-            () => Navigator.of(context).pushReplacementNamed(Routes.login));
+        Navigator.of(context).pushReplacementNamed(Routes.login);
+        UIHelper.showSuccess(context, result);
       } else {
         UIHelper.showError(context, result);
       }

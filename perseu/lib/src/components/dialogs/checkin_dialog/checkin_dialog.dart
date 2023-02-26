@@ -78,7 +78,7 @@ class CheckInDialog extends StatelessWidget {
                     ? () async {
                         final navigator = Navigator.of(context);
                         final Result result = await model.checkIn(trainingId);
-                        navigator.pop();
+                        navigator.popUntil((route) => route.isFirst);
                         if (result.success) {
                           UIHelper.showSuccess(context, result);
                         } else {

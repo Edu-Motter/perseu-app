@@ -88,17 +88,17 @@ class _NewTeamScreenState extends State<NewTeamScreen> {
                                   _teamNameController.text.trim().isNotEmpty) {
                                 final Result result = await model.createTeam();
                                 if (result.success) {
-                                  UIHelper.showSuccessWithRoute(
-                                      context,
-                                      result,
-                                      () => Navigator.of(context)
-                                          .pushReplacementNamed(
-                                              Routes.coachHome));
+                                  Navigator.of(context)
+                                      .pushReplacementNamed(Routes.coachHome);
+                                  UIHelper.showSuccess(context, result);
                                 } else {
                                   UIHelper.showError(context, result);
                                 }
                               } else {
-                                UIHelper.showError(context, const Result.error(message: 'Informe um nome válido'));
+                                UIHelper.showError(
+                                    context,
+                                    const Result.error(
+                                        message: 'Informe um nome válido'));
                               }
                             },
                             child: const Text('Cadastrar'))
