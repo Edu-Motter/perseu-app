@@ -14,7 +14,7 @@ class UIHelper {
   // ignore: unused_element
   UIHelper._();
 
-  static const _errorDuration = Duration(seconds: 4);
+  static const _errorDuration = Duration(milliseconds: 3200);
 
   static void showError(BuildContext context, Result result,
       {bool dialog = false}) {
