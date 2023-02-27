@@ -40,7 +40,7 @@ class ClientUser with ApiHelper {
           return Result.success(data: login);
         },
         onError: (response) =>
-            const Result.error(message: 'Falha ao realizar login'));
+            const Result.error(message: 'E-mail ou senha inválidos'));
   }
 
   Future<Result<LoginDTO>> getUser(String token) async {
