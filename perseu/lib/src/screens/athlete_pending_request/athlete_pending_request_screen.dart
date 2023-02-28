@@ -92,7 +92,11 @@ class AthletePendingRequestScreen extends StatelessWidget {
     AthletePendingRequestViewModel model,
   ) async {
     final Result result = await model.checkRequestStatus();
-    if (result.success) {
+    if (result.success && result.data == true) {
+      Navigator.popUntil(context, (route) => false);
+      Navigator.pushNamed(context, Routes.login);
+      UIHelper.showSuccess(context, result);
+    } else if (result.success) {
       UIHelper.showSuccess(context, result);
     } else {
       UIHelper.showError(context, result);

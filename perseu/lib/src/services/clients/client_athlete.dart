@@ -146,11 +146,10 @@ class ClientAthlete with ApiHelper {
     );
   }
 
-
   Future<Result<List<GroupNameDTO>>> getAthleteGroups(
-      String authToken,
-      int athleteId,
-      ) {
+    String authToken,
+    int athleteId,
+  ) {
     return process(
       dio.get(
         '/athlete/$athleteId/group',
@@ -162,7 +161,7 @@ class ClientAthlete with ApiHelper {
             data: data.map((e) => GroupNameDTO.fromJson(e)).toList());
       },
       onError: (response) =>
-      const Result.error(message: 'Falha ao buscar grupos'),
+          const Result.error(message: 'Falha ao buscar grupos'),
     );
   }
 }

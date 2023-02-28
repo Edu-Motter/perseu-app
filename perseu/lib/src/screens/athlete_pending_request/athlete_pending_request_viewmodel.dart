@@ -17,7 +17,11 @@ class AthletePendingRequestViewModel extends AppViewModel {
       );
       if (result.success) {
         final String status = parseStatus(result.data as String);
-        return Result.success(message: status);
+        if (status.contains('endente')) {
+          return Result.success(message: status, data: false);
+        } else {
+          return Result.success(message: status, data: true);
+        }
       } else {
         return result;
       }
@@ -43,7 +47,7 @@ class AthletePendingRequestViewModel extends AppViewModel {
       case 'PENDING':
         return 'Solicitação está pendente';
       case 'ACCEPTED':
-        return 'Solicitação foi aprovada, favor relogar';
+        return 'Solicitação foi aprovada, realize o login';
       case 'DECLINED':
         return 'Solicitação foi recusada, cancele e tente outra equipe';
       default:
@@ -51,7 +55,7 @@ class AthletePendingRequestViewModel extends AppViewModel {
     }
   }
 
-  void logout(){
+  void logout() {
     session.setAuthTokenAndUser(null, null);
     notifyListeners();
   }
