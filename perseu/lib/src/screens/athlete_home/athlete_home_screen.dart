@@ -37,45 +37,58 @@ class AthleteHomeScreen extends StatelessWidget {
               body: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  child: Column(
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          MenuButton(
-                            icon: Icons.description,
-                            text: 'Visualizar treino',
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .pushNamed(Routes.userViewTraining);
-                            },
-                          ),
-                          const SizedBox(height: 24),
-                          MenuButton(
-                            icon: Icons.message,
-                            text: 'Visualizar conversas',
-                            onPressed: () =>
-                                Navigator.of(context).pushNamed(Routes.chats),
-                          ),
-                        ],
+                      Text(
+                        model.teamName,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 32,
+                          color: Palette.primary,
+                        ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          MenuButton(
-                            icon: Icons.person,
-                            text: 'Gerenciar perfil',
-                            onPressed: () =>
-                                Navigator.of(context).pushNamed(Routes.profile),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              MenuButton(
+                                icon: Icons.description,
+                                text: 'Visualizar treino',
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pushNamed(Routes.userViewTraining);
+                                },
+                              ),
+                              const SizedBox(height: 24),
+                              MenuButton(
+                                icon: Icons.message,
+                                text: 'Visualizar conversas',
+                                onPressed: () =>
+                                    Navigator.of(context).pushNamed(Routes.chats),
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 24),
-                          MenuButton(
-                            icon: Icons.check,
-                            text: 'Check-ins',
-                            onPressed: () => Navigator.of(context)
-                                .pushNamed(Routes.athleteChecks),
-                          )
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              MenuButton(
+                                icon: Icons.person,
+                                text: 'Gerenciar perfil',
+                                onPressed: () =>
+                                    Navigator.of(context).pushNamed(Routes.profile),
+                              ),
+                              const SizedBox(height: 24),
+                              MenuButton(
+                                icon: Icons.check,
+                                text: 'Check-ins',
+                                onPressed: () => Navigator.of(context)
+                                    .pushNamed(Routes.athleteChecks),
+                              )
+                            ],
+                          ),
                         ],
                       ),
                     ],
