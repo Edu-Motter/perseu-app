@@ -16,7 +16,7 @@ class LoginViewModel extends AppViewModel {
   String username = '';
   String password = '';
 
-  final clientPerseu = locator<ClientUser>();
+  final clientUser = locator<ClientUser>();
 
   String get getUsername => username;
   set setUsername(String value) {
@@ -33,7 +33,7 @@ class LoginViewModel extends AppViewModel {
   Future<Result<dynamic>> login() async {
     return tryExec(() async {
       await Future.delayed(const Duration(milliseconds: 250));
-      final result = await clientPerseu.loginRequest(username, password);
+      final result = await clientUser.loginRequest(username, password);
 
       if (result.error) {
         return result;
