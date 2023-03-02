@@ -33,7 +33,7 @@ class _AssignTrainingState extends State<AssignTrainingScreen> {
             return ModalProgressHUD(
               inAsyncCall: model.isBusy,
               child: Scaffold(
-                backgroundColor: Palette.background,
+                  backgroundColor: Palette.background,
                   appBar: AppBar(
                     title: const Text('Atribuir treino'),
                   ),
@@ -57,7 +57,7 @@ class _AssignTrainingState extends State<AssignTrainingScreen> {
                                           MainAxisAlignment.start,
                                       children: [
                                         const ListTitle(
-                                            text: 'Atletas disponíveis'),
+                                            text: 'Atletas e grupos disponíveis'),
                                         Expanded(
                                           child: ListView.builder(
                                             scrollDirection: Axis.vertical,
@@ -82,7 +82,8 @@ class _AssignTrainingState extends State<AssignTrainingScreen> {
                               return PerseuMessage.result(result);
                             }
                             return const PerseuMessage(
-                              message: 'Consulta aos atletas não obteve retorno',
+                              message:
+                                  'Consulta aos atletas não obteve retorno',
                             );
                         }
                       })),
@@ -121,9 +122,9 @@ class _AthleteCheckboxTileState extends State<AthleteCheckboxTile> {
         checkColor: Palette.background,
         activeColor: Palette.primary,
         selectedTileColor: Palette.accent,
-        title: Text(
-          widget.athlete.athleteName,
-          style: const TextStyle(color: Palette.primary),
+        title: _getTitle(
+          isGroup: widget.athlete.isGroupOfAthletes,
+          name: widget.athlete.name,
         ),
         value: widget.athlete.assigned,
         onChanged: (bool? checkboxState) {
@@ -131,5 +132,39 @@ class _AthleteCheckboxTileState extends State<AthleteCheckboxTile> {
             widget.athlete.assigned = checkboxState ?? true;
           });
         });
+  }
+
+  Widget _getTitle({required bool isGroup, required String name}) {
+    return Row(
+      children: [
+        Visibility(
+          visible: isGroup,
+          child: const Padding(
+              padding: EdgeInsets.only(right: 4.0),
+              child: Text(
+                'Grupo:',
+                style: TextStyle(
+                  color: Palette.accent,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+        ),
+        Visibility(
+          visible: !isGroup,
+          child: const Padding(
+            padding: EdgeInsets.only(right: 4.0),
+            child: Text(
+              'Atleta:',
+              style: TextStyle(
+                color: Palette.secondary,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+        Text(name, style: const TextStyle(color: Palette.primary)),
+      ],
+    );
   }
 }

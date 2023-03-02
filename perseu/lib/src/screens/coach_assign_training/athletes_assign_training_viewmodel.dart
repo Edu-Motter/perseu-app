@@ -7,16 +7,20 @@ import 'package:perseu/src/services/clients/client_training.dart';
 import 'package:perseu/src/services/foundation.dart';
 import 'package:perseu/src/states/foundation.dart';
 
+import '../../models/dtos/group_name_dto.dart';
+
 class AthletesToAssignTrainingModel {
   AthletesToAssignTrainingModel({
-    required this.athleteName,
-    required this.athleteId,
+    required this.name,
+    required this.id,
     this.assigned = false,
+    this.isGroupOfAthletes = false,
   });
 
-  String athleteName;
-  int athleteId;
+  int id;
+  String name;
   bool assigned;
+  bool isGroupOfAthletes;
 }
 
 class AthletesAssignTrainingViewModel extends AppViewModel {
@@ -27,15 +31,32 @@ class AthletesAssignTrainingViewModel extends AppViewModel {
   String get authToken => session.authToken!;
 
   Future<Result> assign(TrainingModel training,
-      List<AthletesToAssignTrainingModel> athletes) async {
-    List<int> athletesIds = athletes
-        .where((athlete) => athlete.assigned)
-        .map((athlete) => athlete.athleteId)
+      List<AthletesToAssignTrainingModel> athletesAndGroups) async {
+    List<int> athletesIds = athletesAndGroups
+        .where((athlete) => athlete.assigned && !athlete.isGroupOfAthletes)
+        .map((athlete) => athlete.id)
         .toList();
 
-    if (athletesIds.isEmpty) {
+    List<int> groupsIds = athletesAndGroups
+        .where((group) => group.assigned && group.isGroupOfAthletes)
+        .map((group) => group.id)
+        .toList();
+
+    if (athletesIds.isEmpty && groupsIds.isEmpty) {
       return const Result.error(
-          message: 'Deve ter ao menos um atleta selecionado');
+        message: 'Deve ter ao menos um atleta ou grupo selecionado',
+      );
+    }
+
+    //Aq antes puxar os ids dos atletas dos grupos e fazer athletesIds += AthletesOfGroups;
+    for (int groupId in groupsIds) {
+      final result = await clientTeam.getGroupDetails(authToken, groupId);
+      if (result.error) {
+        return const Result.error(message: 'Falha ao buscar atletas do grupo');
+      }
+      List<int> athletesIdsOfGroup =
+          result.data!.athletes.map((a) => a.id).toList();
+      athletesIds += athletesIdsOfGroup;
     }
 
     final trainingRequest = AssignTrainingRequest.model(training, athletesIds);
@@ -52,19 +73,40 @@ class AthletesAssignTrainingViewModel extends AppViewModel {
   }
 
   List<AthletesToAssignTrainingModel> athletes = [];
+  List<AthletesToAssignTrainingModel> groups = [];
 
   Future<Result> getAthletes() async {
-    final Result<List<AthleteDTO>> result = await clientTeam.getAthletes(
-        session.userSession!.team!.id, session.authToken!);
-    if (result.success) {
-      athletes = result.data!
-          .map(
-            (i) => AthletesToAssignTrainingModel(
-                athleteName: i.name, athleteId: i.id, assigned: false),
-          )
-          .toList();
-      return const Result.success();
-    }
-    return Result.error(message: result.message);
+    final Result<List<AthleteDTO>> rAthletes = await clientTeam.getAthletes(
+      session.userSession!.team!.id,
+      session.authToken!,
+    );
+
+    final Result<List<GroupNameDTO>> rGroups = await clientTeam.getGroups(
+      session.authToken!,
+      session.userSession!.team!.id,
+    );
+
+    if (rAthletes.error) return Result.error(message: rAthletes.message);
+
+    if (rGroups.error) return Result.error(message: rGroups.message);
+
+    athletes = rAthletes.data!
+        .map((i) => AthletesToAssignTrainingModel(
+              name: i.name,
+              id: i.id,
+            ))
+        .toList();
+
+    groups = rGroups.data!
+        .map((i) => AthletesToAssignTrainingModel(
+              id: i.id,
+              name: i.name,
+              isGroupOfAthletes: true,
+            ))
+        .toList();
+
+    athletes += groups;
+
+    return const Result.success();
   }
 }

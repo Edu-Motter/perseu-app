@@ -10,6 +10,7 @@ import 'package:perseu/src/utils/palette.dart';
 import 'package:perseu/src/utils/ui.dart';
 import 'package:provider/provider.dart';
 
+import '../assign_training/assign_training_screen.dart';
 import 'athletes_assign_training_viewmodel.dart';
 
 class AthletesAssignTrainingScreen extends StatefulWidget {
@@ -34,67 +35,69 @@ class _AssignTrainingState extends State<AthletesAssignTrainingScreen> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => locator<AthletesAssignTrainingViewModel>(),
-        child: Consumer<AthletesAssignTrainingViewModel>(
-          builder: (context, model, child) {
-            return ModalProgressHUD(
-              inAsyncCall: model.isBusy,
-              child: Scaffold(
-                  backgroundColor: Palette.background,
-                  appBar: AppBar(
-                    title: const Text('Atribuir treino'),
-                  ),
-                  body: FutureBuilder(
-                      future: model.getAthletes(),
-                      builder: (context, AsyncSnapshot<Result> snapshot) {
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.none:
-                          case ConnectionState.waiting:
-                          case ConnectionState.active:
-                            return const CircularLoading();
-                          case ConnectionState.done:
-                            if (snapshot.hasData) {
-                              Result result = snapshot.data as Result;
-                              if (result.success) {
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: Column(children: [
-                                    const ListTitle(
-                                      text: 'Atletas disponíveis',
-                                    ),
-                                    Expanded(
-                                      child: ListView.builder(
-                                        scrollDirection: Axis.vertical,
-                                        shrinkWrap: true,
-                                        itemCount: model.athletes.length,
-                                        itemBuilder: (_, int index) {
-                                          return AthleteCheckboxTile(
-                                            athlete: model.athletes[index],
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                    ElevatedButton(
-                                        onPressed: () async {
-                                          _handleAssign(context);
-                                        },
-                                        child: const Text('Atribuir')),
-                                    const SizedBox(height: 16)
-                                  ]),
-                                );
-                              } else {
-                                return PerseuMessage.result(result);
-                              }
-                            }
-                            return const PerseuMessage(
-                                message:
-                                    'Ocorreu um problema ao carregar atletas');
+      create: (_) => locator<AthletesAssignTrainingViewModel>(),
+      child: Consumer<AthletesAssignTrainingViewModel>(
+        builder: (context, model, child) {
+          return ModalProgressHUD(
+            inAsyncCall: model.isBusy,
+            child: Scaffold(
+              backgroundColor: Palette.background,
+              appBar: AppBar(
+                title: const Text('Atribuir treino'),
+              ),
+              body: FutureBuilder(
+                future: model.getAthletes(),
+                builder: (context, AsyncSnapshot<Result> snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.none:
+                    case ConnectionState.waiting:
+                    case ConnectionState.active:
+                      return const CircularLoading();
+                    case ConnectionState.done:
+                      if (snapshot.hasData) {
+                        Result result = snapshot.data as Result;
+                        if (result.success) {
+                          return Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Column(children: [
+                              const ListTitle(
+                                text: 'Atletas e grupos disponíveis',
+                              ),
+                              Expanded(
+                                child: ListView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  itemCount: (model.athletes.length),
+                                  itemBuilder: (_, int index) {
+                                    return AthleteCheckboxTile(
+                                      athlete: model.athletes[index],
+                                    );
+                                  },
+                                ),
+                              ),
+                              ElevatedButton(
+                                  onPressed: () async {
+                                    _handleAssign(context);
+                                  },
+                                  child: const Text('Atribuir')),
+                              const SizedBox(height: 16)
+                            ]),
+                          );
+                        } else {
+                          return PerseuMessage.result(result);
                         }
-                      })),
-            );
-          },
-        ));
+                      }
+                      return const PerseuMessage(
+                          message: 'Ocorreu um problema ao carregar atletas');
+                  }
+                },
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 
   void _handleAssign(BuildContext context) async {
@@ -112,35 +115,5 @@ class _AssignTrainingState extends State<AthletesAssignTrainingScreen> {
     } else {
       UIHelper.showError(context, result);
     }
-  }
-}
-
-class AthleteCheckboxTile extends StatefulWidget {
-  const AthleteCheckboxTile({Key? key, required this.athlete})
-      : super(key: key);
-
-  final AthletesToAssignTrainingModel athlete;
-
-  @override
-  State<AthleteCheckboxTile> createState() => _AthleteCheckboxTileState();
-}
-
-class _AthleteCheckboxTileState extends State<AthleteCheckboxTile> {
-  @override
-  Widget build(BuildContext context) {
-    return CheckboxListTile(
-        checkColor: Palette.background,
-        activeColor: Palette.primary,
-        selectedTileColor: Palette.accent,
-        title: Text(
-          widget.athlete.athleteName,
-          style: const TextStyle(color: Palette.primary),
-        ),
-        value: widget.athlete.assigned,
-        onChanged: (bool? checkboxState) {
-          setState(() {
-            widget.athlete.assigned = checkboxState ?? true;
-          });
-        });
   }
 }

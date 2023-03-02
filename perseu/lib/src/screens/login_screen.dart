@@ -17,8 +17,6 @@ class LoginScreen extends StatelessWidget {
   static const Key usernameInputKey = Key('emailInput');
   static const Key passwordInputKey = Key('passwordInput');
   static const Key submitButtonKey = Key('submitButton');
-  static const userType = 'coach';
-  static const teamId = '14';
 
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();

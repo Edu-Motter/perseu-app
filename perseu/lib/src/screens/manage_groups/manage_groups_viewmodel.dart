@@ -16,6 +16,8 @@ class ManageGroupsViewModel extends AppViewModel {
 
   List<AthleteToGroup> athletes = [];
 
+  List<GroupToGroup> groups = [];
+
   Future<Result<List<TrainingByTeamDTO>>> getTrainings() {
     return clientCoach.getTrainings(authToken, teamId);
   }
@@ -52,4 +54,13 @@ class AthleteToGroup {
   bool checked;
 
   AthleteToGroup({required this.id, required this.name, required this.checked});
+}
+
+class GroupToGroup {
+  final int id;
+  final String name;
+
+  bool checked;
+
+  GroupToGroup({required this.id, required this.name, required this.checked});
 }
